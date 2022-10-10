@@ -2,7 +2,7 @@
 - 切换到 [中文文档]()
 - knowledge base(Coming soon)
   <a href="">
-  <img src = ""/>
+  <img src = "https://user-images.githubusercontent.com/113756063/194832492-f8c184c1-55e8-4f16-943a-34b99ac751d4.png"/>
   </a>
 
 Toolkits for various algorithms, support vector computing, linear regression and other functions, machine learning and mathematics, medicine, artificial intelligence and other fields of high practicality.
