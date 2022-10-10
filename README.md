@@ -5,8 +5,7 @@
   <img src = "https://user-images.githubusercontent.com/113756063/194832492-f8c184c1-55e8-4f16-943a-34b99ac751d4.png"/>
   </a>
 
-Toolkits for various algorithms, support vector computing, linear regression and other functions, machine learning and mathematics, medicine, artificial intelligence and other fields of high practicality.
-### Maven dependency
+Various algorithms, vector computing, coordinate computing, spatial coordinates and other functions are included. The API is simple to operate, and machine learning and mathematics, medicine, artificial intelligence and other fields are highly practical.### Maven dependency
 You can integrate Arithmetic Star into your project through maven, and the configuration of Maven is shown below. You can add it to your maven project, or you can download it from Releases and manually integrate it into your project.
 ```
 Waiting
