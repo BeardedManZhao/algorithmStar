@@ -17,6 +17,7 @@ Waiting
 ```
 
 # directory structure
+
 ### KnowledgeDocument
 The knowledge base file archive is used for the storage task of ASMB series knowledge documents. You can access it directly through the documents on the home page. There is no need to enter here directly. It is messy internally.
 
