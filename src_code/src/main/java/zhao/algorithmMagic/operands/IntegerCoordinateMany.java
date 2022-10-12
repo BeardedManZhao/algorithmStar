@@ -2,12 +2,18 @@ package zhao.algorithmMagic.operands;
 
 import zhao.algorithmMagic.exception.OperatorOperationException;
 
+import java.util.Arrays;
+
 /**
  * Java类于 2022/10/10 12:51:29 创建
+ * <p>
+ * 整数类型的多维坐标，该坐标点的每一个坐标轴数值都是整数类型，该坐标点是一个final，如果您需要实现一个属于您自己的坐标，您可以实现"IntegerCoordinates"接口。
+ * <p>
+ * Many-dimensional coordinates of integer type, each axis value of the coordinate point is of integer type, the coordinate point is a final, if you need to implement your own coordinates, you can implement the "Integer Coordinates" interface.
  *
  * @author 4
  */
-public class IntegerCoordinateMany implements Operands<IntegerCoordinateMany> {
+public final class IntegerCoordinateMany implements IntegerCoordinates<IntegerCoordinateMany> {
 
     private final int[] coordinate;
 
@@ -21,12 +27,24 @@ public class IntegerCoordinateMany implements Operands<IntegerCoordinateMany> {
     /**
      * @return 该坐标点的维度数量，一般情况下，只有相同维度数量的两个坐标才能进行加减运算！
      */
+    @Override
     public int getNumberOfDimensions() {
         return this.coordinate.length;
     }
 
-    public int[] getCoordinate() {
+    @Override
+    public int[] toArray() {
         return coordinate;
+    }
+
+    /**
+     * @return 该类的实现类对象，用于拓展该接口成为其子类，这里一般只需要返回实现类对象即可。
+     * <p>
+     * The implementation class object of this class is used to expand the interface to become its subclass. Generally, only the implementation class object needs to be returned here.
+     */
+    @Override
+    public IntegerCoordinateMany expand() {
+        return this;
     }
 
     /**
@@ -42,7 +60,7 @@ public class IntegerCoordinateMany implements Operands<IntegerCoordinateMany> {
     public IntegerCoordinateMany add(IntegerCoordinateMany value) {
         if (this.getNumberOfDimensions() == value.getNumberOfDimensions()) {
             int[] res = new int[this.getNumberOfDimensions()];
-            int[] coordinate = value.getCoordinate();
+            int[] coordinate = value.toArray();
             for (int n = 0; n < this.coordinate.length; n++) {
                 res[n] = this.coordinate[n] + coordinate[n];
             }
@@ -67,7 +85,7 @@ public class IntegerCoordinateMany implements Operands<IntegerCoordinateMany> {
     public IntegerCoordinateMany diff(IntegerCoordinateMany value) {
         if (this.getNumberOfDimensions() == value.getNumberOfDimensions()) {
             int[] res = new int[this.getNumberOfDimensions()];
-            int[] coordinate = value.getCoordinate();
+            int[] coordinate = value.toArray();
             for (int n = 0; n < this.coordinate.length; n++) {
                 res[n] = this.coordinate[n] - coordinate[n];
             }
@@ -77,5 +95,10 @@ public class IntegerCoordinateMany implements Operands<IntegerCoordinateMany> {
                     "An error occurred when 'DoubleCoordinateMany1 add DoubleCoordinateMany2', the two coordinates have different number of dimensions!\n" +
                     "number of dimensions => DoubleCoordinateMany1:[" + this.coordinate.length + "]\tDoubleCoordinateMany1:[" + value.coordinate.length + "]");
         }
+    }
+
+    @Override
+    public String toString() {
+        return "(IntegerCoordinateMany=" + Arrays.toString(coordinate) + ")";
     }
 }

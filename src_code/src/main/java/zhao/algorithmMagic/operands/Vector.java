@@ -18,23 +18,23 @@ public abstract class Vector<ImplementationType, ElementType> implements Operand
      * <p>
      * Vector data container, which is the data of the vector, and subclasses should operate on this class.
      */
-    private ElementType[] VectorArray;
+    private ElementType[] VectorArrayPacking;
 
     /**
      * 使用初始传参的方式构建出来一个向量
      * <p>
      * Construct a vector using the initial parameter pass method.
      *
-     * @param vectorArray 向量中的数值序列集合
-     *                    <p>
-     *                    collection of numeric sequences in a vector
+     * @param vectorArrayPacking 向量中的数值序列集合
+     *                           <p>
+     *                           collection of numeric sequences in a vector
      */
-    public Vector(ElementType[] vectorArray) {
-        VectorArray = vectorArray;
+    public Vector(ElementType[] vectorArrayPacking) {
+        VectorArrayPacking = vectorArrayPacking;
     }
 
     /**
-     * 构造一个空向量，注意，如果您使用了此方法，那么您要在子类中调用"setVectorArray"
+     * 构造一个空向量，注意，如果您使用了此方法，那么您要在子类中调用"setVectorArrayPacking"
      * <p>
      * Constructs an empty vector, note that if you use this method then you call "set Vector Array" in your subclass
      */
@@ -46,8 +46,8 @@ public abstract class Vector<ImplementationType, ElementType> implements Operand
      * <p>
      * The array form of the vector data container, call this method, you will get the value in the vector
      */
-    public ElementType[] getVectorArray() {
-        return VectorArray;
+    public ElementType[] getVectorArrayPacking() {
+        return VectorArrayPacking;
     }
 
     /**
@@ -59,8 +59,8 @@ public abstract class Vector<ImplementationType, ElementType> implements Operand
      *                    <p>
      *                    Array form of vector data container
      */
-    protected void setVectorArray(ElementType[] vectorArray) {
-        this.VectorArray = vectorArray;
+    protected void setVectorArrayPacking(ElementType[] vectorArray) {
+        this.VectorArrayPacking = vectorArray;
     }
 
     /**
@@ -98,12 +98,34 @@ public abstract class Vector<ImplementationType, ElementType> implements Operand
     public abstract ElementType innerProduct(ImplementationType vector);
 
     /**
-     * 向量的数乘运算，将向量延伸/缩短为原来的x倍
-     * <p>
-     * Vector multiplication operation, shortening the vector extension to x times the original
-     *
-     * @param x 倍数 multiple
-     * @apiNote waiting to be realized
+     * @return 该类的实现类对象，用于拓展该接口的子类
      */
-    public abstract ElementType scalarMultiplication(ElementType x);
+    public abstract ImplementationType expand();
+
+    /**
+     * @return 是否使用基元类型，基元类型能更好地降低内存占用，如果您不使用基元，将会启动父类的数据容器
+     * <p>
+     * Whether to use primitive types, primitive types can better reduce memory usage, if you do not use primitives, the data container of the parent class will be started
+     */
+    public abstract boolean isUsePrimitiveType();
+
+    /**
+     * @return 不论是基元还是包装，都返回一个基元的浮点数组，该方法是万能的，始终都会返回出来一个真正的向量数组！
+     * <p>
+     * Both primitives and wrappers return a floating-point array of primitives. This method is omnipotent and will always return a true vector array!
+     */
+    public abstract double[] toArray();
+
+    /**
+     * @return 向量中包含的维度数量
+     * <p>
+     * the number of dimensions contained in the vector
+     */
+    public abstract int getNumberOfDimensions();
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
 }

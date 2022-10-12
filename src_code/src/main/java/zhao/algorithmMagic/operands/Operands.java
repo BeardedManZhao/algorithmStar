@@ -5,10 +5,10 @@ package zhao.algorithmMagic.operands;
  * <p>
  * The operand interface in the calculated parameter object AlgorithmMagic. All operands come from this class. For details, please refer to the API description
  *
- * @param <valueType> 操作数的实现类型，也就是运算时需要的类型，只有相同数据类型的两个操作数才可以进行运算
+ * @param <ImplementationType> 操作数的实现类型，也就是运算时需要的类型，只有相同数据类型的两个操作数才可以进行运算
  * @apiNote There is no description for the super interface, please refer to the subclass documentation
  */
-public interface Operands<valueType> {
+public interface Operands<ImplementationType> extends Cloneable {
 
     /**
      * 将两个操作数进行求和的方法，具体用法请参阅API说明。
@@ -19,7 +19,7 @@ public interface Operands<valueType> {
      * @return 求和之后的数值  the value after the sum
      * @apiNote There is no description for the super interface, please refer to the subclass documentation
      */
-    valueType add(valueType value);
+    ImplementationType add(ImplementationType value);
 
     /**
      * 在两个操作数之间做差的方法，具体用法请参阅API说明。
@@ -30,6 +30,6 @@ public interface Operands<valueType> {
      * @return 差异数值  difference value
      * @apiNote There is no description for the super interface, please refer to the subclass documentation
      */
-    valueType diff(valueType value);
+    ImplementationType diff(ImplementationType value);
 
 }

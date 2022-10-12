@@ -13,15 +13,15 @@ import java.util.HashMap;
  *
  * @author zhao
  */
-public class OperationAlgorithmManager {
+public final class OperationAlgorithmManager implements OperationAlgorithm {
     /**
      * 算法对象存档集合，您可以将算法对象存储到该集合中
      * <p>
      * An archive collection of algorithm objects into which you can store algorithm objects
      */
-    protected final static HashMap<String, OperationAlgorithm<?>> hashMap = new HashMap<>();
-    protected final static Logger logger = Logger.getLogger("OperationAlgorithmManager");
-    private final static OperationAlgorithmManager operationAlgorithmManager = new OperationAlgorithmManager();
+    private final static HashMap<String, OperationAlgorithm> STRING_OPERATION_ALGORITHM_HASH_MAP = new HashMap<>();
+    private final static Logger logger = Logger.getLogger("OperationAlgorithmManager");
+    private final static OperationAlgorithmManager OPERATION_ALGORITHM_MANAGER = new OperationAlgorithmManager();
 
     private OperationAlgorithmManager() {
     }
@@ -32,7 +32,7 @@ public class OperationAlgorithmManager {
      * The object of the manager, the globally unique manager object is obtained through this method.
      */
     public static OperationAlgorithmManager getInstance() {
-        return operationAlgorithmManager;
+        return OPERATION_ALGORITHM_MANAGER;
     }
 
     /**
@@ -47,7 +47,7 @@ public class OperationAlgorithmManager {
      * The specified algorithm component is registered. If registered, this will return true
      */
     public static boolean containsAlgorithmName(String algorithmName) {
-        return hashMap.containsKey(algorithmName);
+        return STRING_OPERATION_ALGORITHM_HASH_MAP.containsKey(algorithmName);
     }
 
     /**
@@ -59,9 +59,9 @@ public class OperationAlgorithmManager {
      *                           <p>
      *                           The algorithm object that needs to be registered
      */
-    public void register(OperationAlgorithm<?> operationAlgorithm) {
+    public void register(OperationAlgorithm operationAlgorithm) {
         logger.info("register OperationAlgorithm:" + operationAlgorithm.getAlgorithmName());
-        hashMap.put(operationAlgorithm.getAlgorithmName(), operationAlgorithm);
+        STRING_OPERATION_ALGORITHM_HASH_MAP.put(operationAlgorithm.getAlgorithmName(), operationAlgorithm);
     }
 
     /**
@@ -71,16 +71,40 @@ public class OperationAlgorithmManager {
      * @return 算法的父类对象，不要忘记调用extract进行一个父子的转换哦！
      * @throws OperationAlgorithmNotFound 没有找到指定的算法时会抛出
      */
-    public OperationAlgorithm<?> get(String algorithmName) {
-        OperationAlgorithm<?> operationAlgorithm = hashMap.get(algorithmName);
+    public OperationAlgorithm get(String algorithmName) {
+        OperationAlgorithm operationAlgorithm = STRING_OPERATION_ALGORITHM_HASH_MAP.get(algorithmName);
         if (operationAlgorithm != null) {
             logger.info("register OperationAlgorithm:" + algorithmName);
             return operationAlgorithm;
         } else {
-            String s = "没有找到算法[" + algorithmName + "]";
-            OperationAlgorithmNotFound operationAlgorithmNotFound = new OperationAlgorithmNotFound();
+            String s = "没有找到名为[" + algorithmName + "]的算法\tNo name was found[" + algorithmName + "]algorithm";
+            OperationAlgorithmNotFound operationAlgorithmNotFound = new OperationAlgorithmNotFound(s);
             logger.error(s, operationAlgorithmNotFound);
             throw operationAlgorithmNotFound;
         }
+    }
+
+    /**
+     * @return 该算法组件的名称，也可有是一个识别码，在获取算法的时候您可以通过该名称获取到算法对象
+     * <p>
+     * The name of the algorithm component, or an identification code, you can obtain the algorithm object through this name when obtaining the algorithm.
+     */
+    @Override
+    public String getAlgorithmName() {
+        return "OperationAlgorithmManager";
+    }
+
+    /**
+     * 算法模块的初始化方法，在这里您可以进行组件的初始化方法，当初始化成功之后，该算法就可以处于就绪的状态，一般这里就是将自己添加到算法管理类中
+     * <p>
+     * The initialization method of the algorithm module, here you can perform the initialization method of the component, when the initialization is successful, the algorithm can be in a ready state, generally here is to add yourself to the algorithm management class
+     *
+     * @return 初始化成功或失败。
+     * <p>
+     * Initialization succeeded or failed.
+     */
+    @Override
+    public boolean init() {
+        return false;
     }
 }

@@ -2,11 +2,14 @@ package zhao.algorithmMagic.operands;
 
 /**
  * Java类于 2022/10/10 09:35:09 创建
- * Double类型的二维坐标
+ * <p>
+ * Double类型的二维坐标，该坐标点的每一个坐标轴数值都是double类型，该坐标点是一个final，如果您需要实现一个属于您自己的坐标，您可以实现"FloatingPointCoordinates"接口。
+ * <p>
+ * Two-dimensional coordinates of type Double, each axis value of the coordinate point is of type double, the coordinate point is a final, if you need to implement a coordinate of your own, you can implement the "Floating Point Coordinates" interface.
  *
- * @author 4
+ * @author zhao
  */
-public class DoubleCoordinateTwo implements Operands<DoubleCoordinateTwo> {
+public final class DoubleCoordinateTwo implements FloatingPointCoordinates<DoubleCoordinateTwo> {
 
     private final double x;
     private final double y;
@@ -61,5 +64,33 @@ public class DoubleCoordinateTwo implements Operands<DoubleCoordinateTwo> {
     @Override
     public String toString() {
         return "(" + this.x + "," + this.y + ")";
+    }
+
+    /**
+     * @return 该浮点坐标的维度数量，每一个坐标都有不同的维度，获取到所有维度的数量，有助于定位到坐标点的位置。
+     * <p>
+     * The number of dimensions of the floating-point coordinate, each coordinate has a different dimension, and obtaining the number of all dimensions is helpful for locating the position of the coordinate point.
+     */
+    @Override
+    public int getNumberOfDimensions() {
+        return 0b10;
+    }
+
+    /**
+     * @return 该浮点坐标的数组形式，将浮点坐标转换成为一个数组返回出去，当然某些实现类可能会直接将数组作为一个对象的全局直接返回，这样有利于性能。
+     * <p>
+     * In the array form of the floating point coordinates, the floating point coordinates are converted into an array and returned. Of course, some implementation classes may directly return the array as a global object, which is beneficial to performance.
+     */
+    @Override
+    public double[] toArray() {
+        return new double[]{x, y};
+    }
+
+    /**
+     * @return 该类的实现类对象，用于拓展该接口的子类
+     */
+    @Override
+    public DoubleCoordinateTwo expand() {
+        return this;
     }
 }

@@ -1,7 +1,10 @@
 package zhao.algorithmMagic.algorithm;
 
 import org.apache.log4j.Logger;
-import zhao.algorithmMagic.operands.*;
+import zhao.algorithmMagic.exception.TargetNotRealizedException;
+import zhao.algorithmMagic.operands.FloatingPointCoordinates;
+import zhao.algorithmMagic.operands.IntegerCoordinates;
+import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASMath;
 
 /**
@@ -15,16 +18,49 @@ import zhao.algorithmMagic.utils.ASMath;
  * <p>
  * Euclidean distance in 2D and 3D space is the actual distance between two points.
  *
+ * @param <I> 本类中参与运算的整数坐标的类型，您需要在此类种指定该类可以运算的整形坐标
+ *            <p>
+ *            The type of integer coordinates involved in the operation in this class, you need to specify the integer coordinates that this class can operate on in this class.
+ * @param <D> 本类中参与运算的浮点坐标的类型，您需要在此类种指定该类可以运算的浮点坐标
+ *            <p>
+ *            The type of floating-point coordinates involved in the operation in this class. You need to specify the floating-point coordinates that this class can operate on.
  * @author LingYuZhao
  */
-public class EuclideanMetric implements OperationAlgorithm<EuclideanMetric> {
+public class EuclideanMetric<I extends IntegerCoordinates<?>, D extends FloatingPointCoordinates<?>> implements OperationAlgorithm {
     protected final Logger logger;
     protected final String AlgorithmName;
 
-    public EuclideanMetric(String algorithmName) {
+    protected EuclideanMetric() {
+        this.AlgorithmName = "EuclideanMetric";
+        this.logger = Logger.getLogger("EuclideanMetric");
+    }
+
+    protected EuclideanMetric(String algorithmName) {
         this.AlgorithmName = algorithmName;
         this.logger = Logger.getLogger(algorithmName);
-        this.init();
+    }
+
+    /**
+     * 获取到该算法的类对象，
+     *
+     * @param Name 该算法的名称
+     * @return 算法类对象
+     * @throws TargetNotRealizedException 当您传入的算法名称对应的组件不能被成功提取的时候会抛出异常
+     */
+    public static <II extends IntegerCoordinates<?>, DD extends FloatingPointCoordinates<?>> EuclideanMetric<II, DD> getInstance(String Name) {
+        if (OperationAlgorithmManager.containsAlgorithmName(Name)) {
+            OperationAlgorithm operationAlgorithm = OperationAlgorithmManager.getInstance().get(Name);
+            if (operationAlgorithm instanceof EuclideanMetric<?, ?>) {
+                return ASClass.transform(operationAlgorithm);
+            } else {
+                throw new TargetNotRealizedException("您提取的[" + Name + "]算法被找到了，但是它不属于EuclideanMetric类型，请您为这个算法重新定义一个名称。\n" +
+                        "The [" + Name + "] algorithm you extracted has been found, but it does not belong to the Cosine Distance type. Please redefine a name for this algorithm.");
+            }
+        } else {
+            EuclideanMetric<II, DD> euclideanMetric = new EuclideanMetric<>(Name);
+            OperationAlgorithmManager.getInstance().register(euclideanMetric);
+            return euclideanMetric;
+        }
     }
 
     /**
@@ -38,16 +74,6 @@ public class EuclideanMetric implements OperationAlgorithm<EuclideanMetric> {
     }
 
     /**
-     * @return 该算法的具体实现类，您可以通过该函数将算法从抽象转换为一个具体的实现
-     * <p>
-     * The concrete implementation class of the algorithm, through which you can convert the algorithm from an abstract to a concrete implementation
-     */
-    @Override
-    public EuclideanMetric extract() {
-        return this;
-    }
-
-    /**
      * 算法模块的初始化方法，在这里您可以进行组件的初始化方法，当初始化成功之后，该算法就可以处于就绪的状态，一般这里就是将自己添加到算法管理类中
      * <p>
      * The initialization method of the algorithm module, here you can perform the initialization method of the component, when the initialization is successful, the algorithm can be in a ready state, generally here is to add yourself to the algorithm management class
@@ -58,7 +84,7 @@ public class EuclideanMetric implements OperationAlgorithm<EuclideanMetric> {
      */
     @Override
     public boolean init() {
-        if (OperationAlgorithmManager.containsAlgorithmName(this.getAlgorithmName())) {
+        if (!OperationAlgorithmManager.containsAlgorithmName(this.getAlgorithmName())) {
             OperationAlgorithmManager.getInstance().register(this);
             return true;
         } else {
@@ -67,179 +93,19 @@ public class EuclideanMetric implements OperationAlgorithm<EuclideanMetric> {
     }
 
     /**
-     * 计算从自身坐标开始到原点的欧氏距离
-     * <p>
-     * Calculate the euclidean distance from own coordinates to the origin
-     *
-     * @param integerCoordinateTwo 二维坐标对象，其中坐标系为 "(x, y)"形式。
-     *                             <p>
-     *                             A two-dimensional coordinate object, where the coordinate system is of the form "(x, y)".
-     * @return Euclidean distance from its own coordinates to the origin
-     */
-    public double getTrueDistance(IntegerCoordinateTwo integerCoordinateTwo) {
-        int vx = integerCoordinateTwo.getX();
-        int vy = integerCoordinateTwo.getY();
-        logger.info("√(" + vx + "² + " + vy + "²)");
-        return Math.sqrt(ASMath.Power2(vx) + ASMath.Power2(vy));
-    }
-
-    /**
-     * 计算从自身坐标开始到原点的欧氏距离
-     * <p>
-     * Calculate the euclidean distance from own coordinates to the origin
-     *
-     * @param integerCoordinateThree 三维坐标对象，其中坐标系为 "(x, y, z)"形式。
-     *                               <p>
-     *                               A three-dimensional coordinate object, where the coordinate system is of the form "(x, y, z)".
-     * @return Euclidean distance from its own coordinates to the origin
-     */
-    public double getTrueDistance(IntegerCoordinateThree integerCoordinateThree) {
-        int vx = integerCoordinateThree.getX();
-        int vy = integerCoordinateThree.getY();
-        int vz = integerCoordinateThree.getZ();
-        logger.info("√(" + vx + "² + " + vy + "² + " + vz + "²)");
-        return Math.sqrt(ASMath.Power2(vx) + ASMath.Power2(vy) + ASMath.Power2(vz));
-    }
-
-    /**
-     * 计算从自身坐标开始到原点的欧氏距离
-     * <p>
-     * Calculate the euclidean distance from own coordinates to the origin
-     *
-     * @param doubleCoordinateTwo 二维坐标对象，其中坐标系为 "(x, y)"形式。
-     *                            <p>
-     *                            A two-dimensional coordinate object, where the coordinate system is of the form "(x, y)".
-     * @return Euclidean distance from its own coordinates to the origin
-     */
-    public double getTrueDistance(DoubleCoordinateTwo doubleCoordinateTwo) {
-        double vx = doubleCoordinateTwo.getX();
-        double vy = doubleCoordinateTwo.getY();
-        logger.info("√(" + vx + "² + " + vy + "²)");
-        return Math.sqrt(vx * vx + vy * vy);
-    }
-
-    /**
-     * 计算从自身坐标开始到原点的欧式距离
-     *
-     * @param doubleCoordinateThree 三维坐标对象，其中坐标系为 "(x, y, z)"形式。
-     *                              <p>
-     *                              A three-dimensional coordinate object, where the coordinate system is of the form "(x, y, z)".
-     * @return Euclidean distance from its own coordinates to the origin
-     */
-    public double getTrueDistance(DoubleCoordinateThree doubleCoordinateThree) {
-        double vx = doubleCoordinateThree.getX();
-        double vy = doubleCoordinateThree.getY();
-        double vz = doubleCoordinateThree.getZ();
-        logger.info("√(" + vx + "² + " + vy + "² + " + vz + "²)");
-        return Math.sqrt(vx * vx + vy * vy + vz * vz);
-    }
-
-    /**
-     * 二维平面之内，计算两个点之间的真实欧式距离
-     *
-     * @param integerCoordinateTwo1 欧式距离的起始二维坐标
-     *                              <p>
-     *                              The starting 2D coordinates of the Euclidean distance
-     * @param integerCoordinateTwo2 欧式距离的终点二维坐标
-     *                              <p>
-     *                              2D coordinates of the end point of the Euclidean distance
-     * @return True Euclidean distance between two points
-     */
-    public double getTrueDistance(IntegerCoordinateTwo integerCoordinateTwo1, IntegerCoordinateTwo integerCoordinateTwo2) {
-        int vx1 = integerCoordinateTwo1.getX();
-        int vy1 = integerCoordinateTwo1.getY();
-        int vx2 = integerCoordinateTwo2.getX();
-        int vy2 = integerCoordinateTwo2.getY();
-        logger.info("√((" + vx1 + " - " + vx2 + ")² + (" + vy1 + " - " + vy2 + ")²)");
-        return Math.sqrt(ASMath.Power2(vx1 - vx2) + ASMath.Power2(vy1 - vy2));
-    }
-
-    /**
-     * 二维平面之内，计算两个点之间的真实欧式距离
-     *
-     * @param doubleCoordinateTwo1 欧式距离的起始二维坐标
-     *                             <p>
-     *                             The starting 2D coordinates of the Euclidean distance
-     * @param doubleCoordinateTwo2 欧式距离的终点二维坐标
-     *                             <p>
-     *                             * 2D coordinates of the end point of the Euclidean distance
-     * @return True Euclidean distance between two points
-     */
-    public double getTrueDistance(DoubleCoordinateTwo doubleCoordinateTwo1, DoubleCoordinateTwo doubleCoordinateTwo2) {
-        double vx1 = doubleCoordinateTwo1.getX();
-        double vy1 = doubleCoordinateTwo1.getY();
-        double vx2 = doubleCoordinateTwo2.getX();
-        double vy2 = doubleCoordinateTwo2.getY();
-        logger.info("√((" + vx1 + " - " + vx2 + ")² + (" + vy1 + " - " + vy2 + ")²)");
-        return Math.sqrt(vx1 * vx2 + vy1 * vy2);
-    }
-
-    /**
-     * 三维平面之内，计算两个点之间的真实欧式距离
-     *
-     * @param integerCoordinateThree1 欧式距离的起始三维坐标
-     *                                <p>
-     *                                The starting 3D coordinates of the Euclidean distance
-     * @param integerCoordinateThree2 欧式距离的终止三维坐标
-     *                                <p>
-     *                                Terminating 3D coordinate of Euclidean distance
-     * @return True Euclidean distance between two points
-     */
-    public double getTrueDistance(IntegerCoordinateThree integerCoordinateThree1, IntegerCoordinateThree integerCoordinateThree2) {
-        int vx1 = integerCoordinateThree1.getX();
-        int vy1 = integerCoordinateThree1.getY();
-        int vz1 = integerCoordinateThree1.getZ();
-        int vx2 = integerCoordinateThree2.getX();
-        int vy2 = integerCoordinateThree2.getY();
-        int vz2 = integerCoordinateThree2.getZ();
-        logger.info("√((" + vx1 + " - " + vx2 + ")² + (" + vy1 + " - " + vy2 + ")² + (" + vz1 + " - " + vz2 + ")²)");
-        return Math.sqrt(
-                ASMath.Power2(
-                        vx1 - vx2
-                ) + ASMath.Power2(
-                        vy1 - vy2
-                ) + ASMath.Power2(
-                        vz1 - vz2
-                )
-        );
-    }
-
-    /**
-     * 三维之内，计算两个点之间的真实欧式距离
-     *
-     * @param doubleCoordinateThree1 欧式距离的起始三维坐标
-     *                               <p>
-     *                               The starting 3D coordinates of the Euclidean distance
-     * @param doubleCoordinateThree2 欧式距离的终止三维坐标
-     *                               <p>
-     *                               Terminating 3D coordinate of Euclidean distance
-     * @return True Euclidean distance between two points
-     */
-    public double getTrueDistance(DoubleCoordinateThree doubleCoordinateThree1, DoubleCoordinateThree doubleCoordinateThree2) {
-        double vx1 = doubleCoordinateThree1.getX();
-        double vy1 = doubleCoordinateThree1.getY();
-        double vz1 = doubleCoordinateThree1.getZ();
-        double vx2 = doubleCoordinateThree2.getX();
-        double vy2 = doubleCoordinateThree2.getY();
-        double vz2 = doubleCoordinateThree2.getZ();
-        logger.info("√((" + vx1 + " - " + vx2 + ")² + (" + vy1 + " - " + vy2 + ")² + (" + vz1 + " - " + vz2 + ")²)");
-        return Math.sqrt(Math.pow(vx1 - vx2, 2) + Math.pow(vy1 - vy2, 2) + Math.pow(vz1 - vz2, 2));
-    }
-
-    /**
      * 多维空间之中，自身坐标点到原点的距离，这里是多维空间，所以是每一个维度的坐标点都会被进行2次方
      * <p>
      * In the multidimensional space, the distance from its own coordinate point to the origin, here is a multidimensional space, so the coordinate points of each dimension will be squared
      *
-     * @param doubleCoordinateMany 一个被计算的多维度坐标，其中的坐标点所处空间位置的坐标描述是无数个的
-     *                             <p>
-     *                             A multidimensional coordinate, in which the coordinate description of the spatial position of the coordinate point is infinite
+     * @param iFloatingPointCoordinates 一个被计算的多维度坐标，其中的坐标点所处空间位置的坐标描述是无数个的
+     *                                  <p>
+     *                                  A multidimensional coordinate, in which the coordinate description of the spatial position of the coordinate point is infinite
      * @return Euclidean distance from its own coordinates to the origin
      */
-    public double getTrueDistance(DoubleCoordinateMany doubleCoordinateMany) {
+    public double getTrueDistance(FloatingPointCoordinates<D> iFloatingPointCoordinates) {
         double res = 0;
         logger.info("√ ⁿ∑₁( coordinate² )");
-        for (double d : doubleCoordinateMany.getCoordinate()) {
+        for (double d : iFloatingPointCoordinates.toArray()) {
             res += d * d;
         }
         return Math.sqrt(res);
@@ -250,15 +116,15 @@ public class EuclideanMetric implements OperationAlgorithm<EuclideanMetric> {
      * <p>
      * In the multidimensional space, the distance from its own coordinate point to the origin, here is a multidimensional space, so the coordinate points of each dimension will be squared
      *
-     * @param integerCoordinateMany 一个被计算的多维度坐标，其中的坐标点所处空间位置的坐标描述是无数个的
-     *                              <p>
-     *                              A multidimensional coordinate, in which the coordinate description of the spatial position of the coordinate point is infinite
+     * @param integerCoordinates 一个被计算的多维度坐标，其中的坐标点所处空间位置的坐标描述是无数个的
+     *                           <p>
+     *                           A multidimensional coordinate, in which the coordinate description of the spatial position of the coordinate point is infinite
      * @return Euclidean distance from its own coordinates to the origin
      */
-    public double getTrueDistance(IntegerCoordinateMany integerCoordinateMany) {
+    public double getTrueDistance(IntegerCoordinates<I> integerCoordinates) {
         int res = 0;
         logger.info("√ ⁿ∑₁( coordinate² )");
-        for (int d : integerCoordinateMany.getCoordinate()) {
+        for (int d : integerCoordinates.toArray()) {
             res += ASMath.Power2(d);
         }
         return Math.sqrt(res);
@@ -273,11 +139,10 @@ public class EuclideanMetric implements OperationAlgorithm<EuclideanMetric> {
      * @param integerCoordinateMany2 整形坐标2
      * @return True Euclidean distance between two points
      */
-    public double getTrueDistance(IntegerCoordinateMany integerCoordinateMany1, IntegerCoordinateMany integerCoordinateMany2) {
-        IntegerCoordinateMany diff = integerCoordinateMany1.diff(integerCoordinateMany2);
+    public double getTrueDistance(IntegerCoordinates<I> integerCoordinateMany1, IntegerCoordinates<I> integerCoordinateMany2) {
         logger.info("√ ⁿ∑₁( " + integerCoordinateMany1 + " - " + integerCoordinateMany2 + ").map(d -> d²)");
         int res = 0;
-        for (int i : diff.getCoordinate()) {
+        for (int i : integerCoordinateMany1.diff(integerCoordinateMany2.expand()).toArray()) {
             res += ASMath.Power2(i);
         }
         return Math.sqrt(res);
@@ -292,12 +157,11 @@ public class EuclideanMetric implements OperationAlgorithm<EuclideanMetric> {
      * @param doubleCoordinateMany2 整形坐标2
      * @return True Euclidean distance between two points
      */
-    public double getTrueDistance(DoubleCoordinateMany doubleCoordinateMany1, DoubleCoordinateMany doubleCoordinateMany2) {
-        DoubleCoordinateMany diff = doubleCoordinateMany1.diff(doubleCoordinateMany2);
+    public double getTrueDistance(FloatingPointCoordinates<D> doubleCoordinateMany1, FloatingPointCoordinates<D> doubleCoordinateMany2) {
         logger.info("√ ⁿ∑₁( " + doubleCoordinateMany1 + " - " + doubleCoordinateMany2 + ").map(d -> d²)");
         int res = 0;
-        for (double i : diff.getCoordinate()) {
-            res += i * i;
+        for (double i : doubleCoordinateMany1.diff(doubleCoordinateMany2.expand()).toArray()) {
+            res += ASMath.Power2(i);
         }
         return Math.sqrt(res);
     }

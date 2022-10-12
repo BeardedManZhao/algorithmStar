@@ -1,7 +1,9 @@
 package zhao.algorithmMagic.algorithm;
 
 import org.apache.log4j.Logger;
-import zhao.algorithmMagic.operands.DoubleVector;
+import zhao.algorithmMagic.exception.TargetNotRealizedException;
+import zhao.algorithmMagic.operands.Vector;
+import zhao.algorithmMagic.utils.ASClass;
 
 /**
  * Java类于 2022/10/9 22:51:01 创建
@@ -13,22 +15,46 @@ import zhao.algorithmMagic.operands.DoubleVector;
  * <p>
  * Compared with distance measures, cosine similarity pays more attention to the difference in direction of two vectors, rather than distance or length.
  *
- * @author 4
+ * @param <V> 参与本算法运算的类对象类型
+ *            <p>
+ *            The class object type that participates in the operation of this algorithm
+ * @author zhao
  */
-public class CosineDistance implements OperationAlgorithm<CosineDistance> {
+public class CosineDistance<V extends Vector<?, ?>> implements OperationAlgorithm {
     protected final Logger logger;
     protected final String AlgorithmName;
 
-    private CosineDistance() {
-        logger = Logger.getLogger("CosineDistance");
+    protected CosineDistance() {
         this.AlgorithmName = "CosineDistance";
-        this.init();
+        this.logger = Logger.getLogger("CosineDistance");
     }
 
-    public CosineDistance(String AlgorithmName) {
+    protected CosineDistance(String AlgorithmName) {
         this.logger = Logger.getLogger(AlgorithmName);
         this.AlgorithmName = AlgorithmName;
-        this.init();
+    }
+
+    /**
+     * 获取到该算法的类对象
+     *
+     * @param Name 该算法的名称
+     * @return 算法类对象
+     * @throws TargetNotRealizedException 当您传入的算法名称对应的组件不能被成功提取的时候会抛出异常
+     */
+    public static <V extends Vector<?, ?>> CosineDistance<V> getInstance(String Name) {
+        if (OperationAlgorithmManager.containsAlgorithmName(Name)) {
+            OperationAlgorithm operationAlgorithm = OperationAlgorithmManager.getInstance().get(Name);
+            if (operationAlgorithm instanceof CosineDistance) {
+                return ASClass.transform(operationAlgorithm);
+            } else {
+                throw new TargetNotRealizedException("您提取的[" + Name + "]算法被找到了，但是它不属于CosineDistance类型，请您为这个算法重新定义一个名称。\n" +
+                        "The [" + Name + "] algorithm you extracted has been found, but it does not belong to the Cosine Distance type. Please redefine a name for this algorithm.");
+            }
+        } else {
+            CosineDistance<V> cosineDistance = new CosineDistance<>(Name);
+            OperationAlgorithmManager.getInstance().register(cosineDistance);
+            return cosineDistance;
+        }
     }
 
     /**
@@ -42,30 +68,20 @@ public class CosineDistance implements OperationAlgorithm<CosineDistance> {
     }
 
     /**
-     * @return 该算法的具体实现类，您可以通过该函数将算法从抽象转换为一个具体的实现
-     * <p>
-     * The concrete implementation class of the algorithm, through which you can convert the algorithm from an abstract to a concrete implementation
-     */
-    @Override
-    public CosineDistance extract() {
-        return this;
-    }
-
-    /**
      * 获取到两个向量夹角的余弦值
      * <p>
      * Get the cosine of the angle between two vectors
      *
-     * @param doubleVector1 浮点向量1
-     * @param doubleVector2 浮点向量2
+     * @param vector1 向量1
+     * @param vector2 向量2
      * @return 夹角的余弦值，double类型。
      * <p>
      * Cosine of the included angle, double type.
      */
-    public double getCos(DoubleVector doubleVector1, DoubleVector doubleVector2) {
-        Double aDouble = doubleVector1.innerProduct(doubleVector2);
-        logger.info(aDouble + " / ( " + doubleVector1 + " * " + doubleVector2 + " )");
-        return aDouble / (doubleVector1.moduleLength() * doubleVector2.moduleLength());
+    public double getCos(Vector<V, Double> vector1, Vector<V, Double> vector2) {
+        Double aDouble = vector1.innerProduct(vector2.expand());
+        logger.info(aDouble + " / ( " + vector1 + " * " + vector2 + " )");
+        return aDouble / (vector1.moduleLength() * vector2.moduleLength());
     }
 
     /**
@@ -73,14 +89,14 @@ public class CosineDistance implements OperationAlgorithm<CosineDistance> {
      * <p>
      * Get the cosine function variable value of the angle between two vectors, "X" in "cosX"
      *
-     * @param doubleVector1 浮点向量1
-     * @param doubleVector2 浮点向量2
+     * @param vector1 浮点向量1
+     * @param vector2 浮点向量2
      * @return 夹角的余弦值，double类型。
      * <p>
      * Cosine of the included angle, double type.
      */
-    public double getCosineFunctionVariable(DoubleVector doubleVector1, DoubleVector doubleVector2) {
-        double cos = getCos(doubleVector1, doubleVector2);
+    public double getCosineFunctionVariable(Vector<V, Double> vector1, Vector<V, Double> vector2) {
+        double cos = getCos(vector1, vector2);
         logger.info("ArcCos(Cos(" + cos + "))");
         return Math.acos(cos);
     }
@@ -90,14 +106,14 @@ public class CosineDistance implements OperationAlgorithm<CosineDistance> {
      * <p>
      * Get the angle between two vectors
      *
-     * @param doubleVector1 浮点向量1
-     * @param doubleVector2 浮点向量2
+     * @param vector1 浮点向量1
+     * @param vector2 浮点向量2
      * @return 夹角的余弦值，double类型。
      * <p>
      * Cosine of the included angle, double type.
      */
-    public double getAngularDegree(DoubleVector doubleVector1, DoubleVector doubleVector2) {
-        double v = Math.toDegrees(getCosineFunctionVariable(doubleVector1, doubleVector2));
+    public double getAngularDegree(Vector<V, Double> vector1, Vector<V, Double> vector2) {
+        double v = Math.toDegrees(getCosineFunctionVariable(vector1, vector2));
         return v >= 180 ? 180 : v;
     }
 
@@ -112,7 +128,7 @@ public class CosineDistance implements OperationAlgorithm<CosineDistance> {
      */
     @Override
     public boolean init() {
-        if (OperationAlgorithmManager.containsAlgorithmName(this.getAlgorithmName())) {
+        if (!OperationAlgorithmManager.containsAlgorithmName(this.getAlgorithmName())) {
             OperationAlgorithmManager.getInstance().register(this);
             return true;
         } else {

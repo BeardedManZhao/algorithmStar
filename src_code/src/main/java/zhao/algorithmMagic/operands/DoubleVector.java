@@ -2,6 +2,7 @@ package zhao.algorithmMagic.operands;
 
 import zhao.algorithmMagic.exception.AlgorithmMagicException;
 import zhao.algorithmMagic.exception.OperatorOperationException;
+import zhao.algorithmMagic.utils.ASMath;
 
 import java.util.Arrays;
 
@@ -13,7 +14,7 @@ import java.util.Arrays;
 public class DoubleVector extends Vector<DoubleVector, Double> {
 
     private final boolean UsePrimitiveType;
-    private double[] doubles;
+    private double[] VectorArrayPrimitive;
 
     /**
      * 使用初始传参的方式构建出来一个向量
@@ -39,23 +40,8 @@ public class DoubleVector extends Vector<DoubleVector, Double> {
      *                    collection of numeric sequences in a vector
      */
     public DoubleVector(double[] vectorArray) {
-        this.doubles = vectorArray;
+        this.VectorArrayPrimitive = vectorArray;
         UsePrimitiveType = true;
-    }
-
-    /**
-     * 创建一个空向量，由您来指定该向量的数据是否使用基元
-     * <p>
-     * Creates an empty vector, and it is up to you to specify whether the data of the vector uses primitives
-     *
-     * @param UsePrimitiveType 是否使用使用基元类型  whether to use primitive types
-     */
-    public DoubleVector(boolean UsePrimitiveType) {
-        this.UsePrimitiveType = UsePrimitiveType;
-    }
-
-    protected DoubleVector() {
-        UsePrimitiveType = false;
     }
 
     /**
@@ -94,6 +80,29 @@ public class DoubleVector extends Vector<DoubleVector, Double> {
     }
 
     /**
+     * 使用坐标构成的线计算出来向量
+     *
+     * @param startDoubleCoordinateThree 向量的起始坐标
+     * @param endDoubleCoordinateThree   向量的终止坐标
+     * @return 向量
+     */
+    public static DoubleVector parse(DoubleCoordinateThree startDoubleCoordinateThree, DoubleCoordinateThree endDoubleCoordinateThree) {
+        return DoubleVector.parse(endDoubleCoordinateThree.getX() - startDoubleCoordinateThree.getX(), endDoubleCoordinateThree.getY() - startDoubleCoordinateThree.getY());
+    }
+
+    /**
+     * 使用坐标构成的线计算出来向量
+     *
+     * @param startFloatingPointCoordinates 向量的起始坐标
+     * @param endFloatingPointCoordinates   向量的终止坐标
+     * @return 向量
+     */
+    public static <T extends FloatingPointCoordinates<?>> DoubleVector parse(FloatingPointCoordinates<T> startFloatingPointCoordinates, FloatingPointCoordinates<T> endFloatingPointCoordinates) {
+        return DoubleVector.parse((endFloatingPointCoordinates.diff(startFloatingPointCoordinates.expand())).toArray());
+    }
+
+
+    /**
      * @return 向量数据容器的数组形式，调用此方法，您可以获取到该向量中的数值。
      * <p>
      * 如果您使用的是基元类型的，那么该方法将会返回null，您可以使用"getVectorPrimitiveArray()"作为代替。
@@ -103,11 +112,11 @@ public class DoubleVector extends Vector<DoubleVector, Double> {
      * If you are using a primitive type then this method will return null, you can use "getVectorPrimitiveArray()" instead.
      */
     @Override
-    public Double[] getVectorArray() {
+    public Double[] getVectorArrayPacking() {
         if (isUsePrimitiveType()) {
             return null;
         } else {
-            return super.getVectorArray();
+            return super.getVectorArrayPacking();
         }
     }
 
@@ -121,21 +130,21 @@ public class DoubleVector extends Vector<DoubleVector, Double> {
      *                    Array form of vector data container
      */
     @Override
-    protected void setVectorArray(Double[] vectorArray) {
+    protected void setVectorArrayPacking(Double[] vectorArray) {
         if (isUsePrimitiveType()) {
-            this.doubles = new double[vectorArray.length];
-            for (int n = 0; n < doubles.length; n++) {
-                doubles[n] = vectorArray[n];
+            this.VectorArrayPrimitive = new double[vectorArray.length];
+            for (int n = 0; n < VectorArrayPrimitive.length; n++) {
+                VectorArrayPrimitive[n] = vectorArray[n];
             }
         } else {
-            super.setVectorArray(vectorArray);
+            super.setVectorArrayPacking(vectorArray);
         }
     }
 
     /**
      * @return 向量数据容器的数组形式，调用此方法，您可以获取到该向量中的数值。
      * <p>
-     * 如果您使用的是包装类型的，那么该方法会返回null，您可以使用"getVectorArray()"作为代替。
+     * 如果您使用的是包装类型的，那么该方法会返回null，您可以使用"getVectorArrayPacking()"作为代替。
      * <p>
      * The array form of the vector data container, you can get the values in the vector by calling this method.
      * <p>
@@ -143,7 +152,7 @@ public class DoubleVector extends Vector<DoubleVector, Double> {
      */
     public double[] getVectorPrimitiveArray() {
         if (isUsePrimitiveType()) {
-            return this.doubles;
+            return this.VectorArrayPrimitive;
         } else {
             return null;
         }
@@ -162,43 +171,20 @@ public class DoubleVector extends Vector<DoubleVector, Double> {
      */
     @Override
     public DoubleVector add(DoubleVector value) {
-        return getDoubleVectorAdd(getVectorArray(), this.doubles, value.getVectorArray(), value.doubles);
-    }
-
-    private DoubleVector getDoubleVectorAdd(Double[] vectorArray1, double[] vectorArray11, Double[] vectorArray2, double[] vectorArray21) {
-        int length1 = vectorArray1 == null ? vectorArray11.length : vectorArray1.length;
-        int length2 = vectorArray2 == null ? vectorArray21.length : vectorArray2.length;
-        if (length1 == length2) {
-            double[] doubles = new double[length1];
-            if (vectorArray11 == null && vectorArray21 == null) {
-                for (int indexNum = 0b0; indexNum < length1; indexNum++) {
-                    doubles[indexNum] = vectorArray1[indexNum] + vectorArray2[indexNum];
-                }
-                return DoubleVector.parse(doubles);
-            } else if (vectorArray1 == null && vectorArray2 == null) {
-                for (int indexNum = 0b0; indexNum < length1; indexNum++) {
-                    doubles[indexNum] = vectorArray11[indexNum] + vectorArray21[indexNum];
-                }
-                return DoubleVector.parse(doubles);
-            } else if (vectorArray11 == null && vectorArray2 == null) {
-                for (int indexNum = 0b0; indexNum < length1; indexNum++) {
-                    doubles[indexNum] = vectorArray1[indexNum] + vectorArray21[indexNum];
-                }
-                return DoubleVector.parse(doubles);
-            } else if (vectorArray1 == null && vectorArray21 == null) {
-                for (int indexNum = 0b0; indexNum < length1; indexNum++) {
-                    doubles[indexNum] = vectorArray11[indexNum] + vectorArray2[indexNum];
-                }
-                return DoubleVector.parse(doubles);
-            } else {
-                throw new OperatorOperationException("'DoubleVector1 diff DoubleVector2' 时，两个向量的序列数值不明确，基元类型与包装类型混乱, isUsePrimitiveType = [" + isUsePrimitiveType() + "]\n" +
-                        "When 'DoubleVector1 diff DoubleVector2', the sequence value of two vectors is ambiguous, and the primitive type and the wrapper type are confused, isUsePrimitiveType = [" + isUsePrimitiveType() + "]"
-                );
+        int numberOfDimensions1 = this.getNumberOfDimensions();
+        int numberOfDimensions2 = value.getNumberOfDimensions();
+        if (numberOfDimensions1 == numberOfDimensions2) {
+            double[] res = new double[numberOfDimensions1];
+            double[] doubles1 = this.toArray();
+            double[] doubles2 = value.toArray();
+            for (int i = 0; i < numberOfDimensions1; i++) {
+                res[i] = doubles1[i] + doubles2[i];
             }
+            return DoubleVector.parse(res);
         } else {
             throw new OperatorOperationException(
-                    "'DoubleVector1 add DoubleVector2' 时，两个'DoubleVector'的向量所包含的数量不同，DoubleVector1=[" + length1 + "]，DoubleVector2=[" + length2 + "]\n" +
-                            "When 'DoubleVector1 add DoubleVector2', the two vectors of 'DoubleVector' contain different quantities, DoubleVector1=[" + length1 + "], DoubleVector2=[" + length2 + "]"
+                    "'DoubleVector1 add DoubleVector2' 时，两个'DoubleVector'的向量所包含的数量不同，DoubleVector1=[" + numberOfDimensions1 + "]，DoubleVector2=[" + numberOfDimensions2 + "]\n" +
+                            "When 'DoubleVector1 add DoubleVector2', the two vectors of 'DoubleVector' contain different quantities, DoubleVector1=[" + numberOfDimensions1 + "], DoubleVector2=[" + numberOfDimensions2 + "]"
             );
         }
     }
@@ -216,43 +202,20 @@ public class DoubleVector extends Vector<DoubleVector, Double> {
      */
     @Override
     public DoubleVector diff(DoubleVector value) {
-        return getDoubleVectorDiff(getVectorArray(), this.doubles, value.getVectorArray(), value.doubles);
-    }
-
-    private DoubleVector getDoubleVectorDiff(Double[] vectorArray1, double[] vectorArray11, Double[] vectorArray2, double[] vectorArray21) {
-        int length1 = vectorArray1 == null ? vectorArray11.length : vectorArray1.length;
-        int length2 = vectorArray2 == null ? vectorArray21.length : vectorArray2.length;
-        if (length1 == length2) {
-            double[] doubles = new double[length1];
-            if (vectorArray11 == null && vectorArray21 == null) {
-                for (int indexNum = 0b0; indexNum < length1; indexNum++) {
-                    doubles[indexNum] = vectorArray1[indexNum] - vectorArray2[indexNum];
-                }
-                return DoubleVector.parse(doubles);
-            } else if (vectorArray1 == null && vectorArray2 == null) {
-                for (int indexNum = 0b0; indexNum < length1; indexNum++) {
-                    doubles[indexNum] = vectorArray11[indexNum] - vectorArray21[indexNum];
-                }
-                return DoubleVector.parse(doubles);
-            } else if (vectorArray11 == null && vectorArray2 == null) {
-                for (int indexNum = 0b0; indexNum < length1; indexNum++) {
-                    doubles[indexNum] = vectorArray1[indexNum] - vectorArray21[indexNum];
-                }
-                return DoubleVector.parse(doubles);
-            } else if (vectorArray1 == null && vectorArray21 == null) {
-                for (int indexNum = 0b0; indexNum < length1; indexNum++) {
-                    doubles[indexNum] = vectorArray11[indexNum] - vectorArray2[indexNum];
-                }
-                return DoubleVector.parse(doubles);
-            } else {
-                throw new OperatorOperationException("'DoubleVector1 diff DoubleVector2' 时，两个向量的序列数值不明确，基元类型与包装类型混乱, isUsePrimitiveType = [" + isUsePrimitiveType() + "]\n" +
-                        "When 'DoubleVector1 diff DoubleVector2', the sequence value of two vectors is ambiguous, and the primitive type and the wrapper type are confused, isUsePrimitiveType = [" + isUsePrimitiveType() + "]"
-                );
+        int numberOfDimensions1 = this.getNumberOfDimensions();
+        int numberOfDimensions2 = value.getNumberOfDimensions();
+        if (numberOfDimensions1 == numberOfDimensions2) {
+            double[] res = new double[numberOfDimensions1];
+            double[] doubles1 = this.toArray();
+            double[] doubles2 = value.toArray();
+            for (int i = 0; i < numberOfDimensions1; i++) {
+                res[i] = doubles1[i] - doubles2[i];
             }
+            return DoubleVector.parse(res);
         } else {
             throw new OperatorOperationException(
-                    "'DoubleVector1 diff DoubleVector2' 时，两个'DoubleVector'的向量所包含的数量不同，DoubleVector1=[" + length1 + "]，DoubleVector2=[" + length2 + "]\n" +
-                            "When 'DoubleVector1 diff DoubleVector2', the two vectors of 'DoubleVector' contain different quantities, DoubleVector1=[" + length1 + "], DoubleVector2=[" + length2 + "]"
+                    "'DoubleVector1 diff DoubleVector2' 时，两个'DoubleVector'的向量所包含的数量不同，DoubleVector1=[" + numberOfDimensions1 + "]，DoubleVector2=[" + numberOfDimensions2 + "]\n" +
+                            "When 'DoubleVector1 diff DoubleVector2', the two vectors of 'DoubleVector' contain different quantities, DoubleVector1=[" + numberOfDimensions1 + "], DoubleVector2=[" + numberOfDimensions2 + "]"
             );
         }
     }
@@ -269,12 +232,12 @@ public class DoubleVector extends Vector<DoubleVector, Double> {
     public Double moduleLength() {
         double res = 0;
         if (isUsePrimitiveType()) {
-            for (Double value : doubles) {
-                res += value * value;
+            for (double value : VectorArrayPrimitive) {
+                res += ASMath.Power2(value);
             }
         } else {
-            for (double value : getVectorArray()) {
-                res += value * value;
+            for (double value : super.getVectorArrayPacking()) {
+                res += ASMath.Power2(value);
             }
         }
         return Math.sqrt(res);
@@ -293,53 +256,12 @@ public class DoubleVector extends Vector<DoubleVector, Double> {
      */
     @Override
     public Vector<DoubleVector, Double> multiply(DoubleVector vector) {
-        int length1 = this.isUsePrimitiveType() ? this.doubles.length : getVectorArray().length;
-        int length2 = this.isUsePrimitiveType() ? vector.doubles.length : getVectorArray().length;
+        double[] vectorArray1 = this.toArray();
+        double[] vectorArray2 = vector.toArray();
+        int length1 = vectorArray1.length;
+        int length2 = vectorArray2.length;
         if (length1 == length2) {
-            int now = 0;
-            double[] multiplyVector = new double[(length1 - 1) * length2];
-            if (this.UsePrimitiveType && vector.isUsePrimitiveType()) {
-                for (int n1 = 0; n1 < length1; n1++) {
-                    for (int n2 = 0; n2 < length1; n2++) {
-                        if (n2 != n1) {
-                            multiplyVector[now] = this.doubles[n1] * vector.doubles[n2];
-                            now++;
-                        }
-                    }
-                }
-            } else if (this.isUsePrimitiveType() && !vector.isUsePrimitiveType()) {
-                for (int n1 = 0; n1 < length1; n1++) {
-                    for (int n2 = 0; n2 < length1; n2++) {
-                        if (n2 != n1) {
-                            multiplyVector[now] = this.doubles[n1] * vector.getVectorArray()[n2];
-                            now++;
-                        }
-                    }
-                }
-            } else if (!this.isUsePrimitiveType() && vector.isUsePrimitiveType()) {
-                for (int n1 = 0; n1 < length1; n1++) {
-                    for (int n2 = 0; n2 < length1; n2++) {
-                        if (n2 != n1) {
-                            multiplyVector[now] = this.getVectorArray()[n1] * vector.doubles[n2];
-                            now++;
-                        }
-                    }
-                }
-            } else if (!this.isUsePrimitiveType() && !vector.isUsePrimitiveType()) {
-                for (int n1 = 0; n1 < length1; n1++) {
-                    for (int n2 = 0; n2 < length1; n2++) {
-                        if (n2 != n1) {
-                            multiplyVector[now] = this.getVectorArray()[n1] * vector.getVectorArray()[n2];
-                            now++;
-                        }
-                    }
-                }
-            } else {
-                throw new OperatorOperationException("'DoubleVector1 multiply DoubleVector2' 时，两个向量的序列数值不明确，基元类型与包装类型混乱, isUsePrimitiveType = [" + isUsePrimitiveType() + "]\n" +
-                        "When 'DoubleVector1 multiply DoubleVector2', the sequence value of two vectors is ambiguous, and the primitive type and the wrapper type are confused, isUsePrimitiveType = [" + isUsePrimitiveType() + "]"
-                );
-            }
-            return DoubleVector.parse(multiplyVector);
+            return DoubleVector.parse(ASMath.CrossMultiplication(vectorArray1, vectorArray2));
         } else {
             throw new OperatorOperationException(
                     "'DoubleVector1 multiply DoubleVector2' 时，两个'DoubleVector'的向量所包含的数量不同，DoubleVector1=[" + length1 + "]，DoubleVector2=[" + length2 + "]\n" +
@@ -377,51 +299,28 @@ public class DoubleVector extends Vector<DoubleVector, Double> {
      */
     @Override
     public Double innerProduct(DoubleVector vector) {
-        int length1 = this.isUsePrimitiveType() ? this.doubles.length : getVectorArray().length;
-        int length2 = this.isUsePrimitiveType() ? vector.doubles.length : getVectorArray().length;
-        if (length1 == length2) {
+        double[] doubles1 = this.toArray();
+        double[] doubles2 = vector.toArray();
+        if (doubles1.length == doubles2.length) {
             double innerProduct = 0b0;
-            if (this.isUsePrimitiveType() && vector.isUsePrimitiveType()) {
-                for (int indexNum = 0b0; indexNum < length1; indexNum++) {
-                    innerProduct += this.doubles[indexNum] * vector.doubles[indexNum];
-                }
-            } else if (this.isUsePrimitiveType() && !vector.isUsePrimitiveType()) {
-                for (int indexNum = 0b0; indexNum < length1; indexNum++) {
-                    innerProduct += this.doubles[indexNum] * vector.getVectorArray()[indexNum];
-                }
-            } else if (!this.isUsePrimitiveType() && vector.isUsePrimitiveType()) {
-                for (int indexNum = 0b0; indexNum < length1; indexNum++) {
-                    innerProduct += this.getVectorArray()[indexNum] * vector.doubles[indexNum];
-                }
-            } else if (!this.isUsePrimitiveType() && !vector.isUsePrimitiveType()) {
-                for (int indexNum = 0b0; indexNum < length1; indexNum++) {
-                    innerProduct += this.getVectorArray()[indexNum] * vector.getVectorArray()[indexNum];
-                }
-            } else {
-                throw new OperatorOperationException("'DoubleVector1 innerProduct DoubleVector2' 时，两个向量的序列数值不明确，基元类型与包装类型混乱, isUsePrimitiveType = [" + isUsePrimitiveType() + "\t" + isUsePrimitiveType() + "]\n" +
-                        "When 'DoubleVector1 innerProduct DoubleVector2', the sequence value of two vectors is ambiguous, and the primitive type and the wrapper type are confused, isUsePrimitiveType = [" + isUsePrimitiveType() + "\t" + isUsePrimitiveType() + "]"
-                );
+            for (int indexNum = 0b0; indexNum < doubles1.length; indexNum++) {
+                innerProduct += doubles1[indexNum] * doubles2[indexNum];
             }
             return innerProduct;
         } else {
             throw new OperatorOperationException(
-                    "'DoubleVector1 innerProduct DoubleVector2' 时，两个'DoubleVector'的向量所包含的数量不同，DoubleVector1=[" + length1 + "]，DoubleVector2=[" + length2 + "]\n" +
-                            "When 'DoubleVector1 innerProduct DoubleVector2', the two vectors of 'DoubleVector' contain different quantities, DoubleVector1=[" + length1 + "], DoubleVector2=[" + length2 + "]"
+                    "'DoubleVector1 innerProduct DoubleVector2' 时，两个'DoubleVector'的向量所包含的数量不同，DoubleVector1=[" + doubles1.length + "]，DoubleVector2=[" + doubles2.length + "]\n" +
+                            "When 'DoubleVector1 innerProduct DoubleVector2', the two vectors of 'DoubleVector' contain different quantities, DoubleVector1=[" + doubles1.length + "], DoubleVector2=[" + doubles2.length + "]"
             );
         }
     }
 
     /**
-     * 向量的数乘运算，将向量延伸/缩短为原来的x倍
-     * <p>
-     * Vector multiplication operation, shortening the vector extension to x times the original
-     *
-     * @param x 倍数 multiple
-     * @apiNote waiting to be realized
+     * @return 该类的实现类对象，用于拓展该接口的子类
      */
     @Override
-    public Double scalarMultiplication(Double x) {
-        return null;
+    public DoubleVector expand() {
+        return this;
     }
 
     /**
@@ -429,8 +328,43 @@ public class DoubleVector extends Vector<DoubleVector, Double> {
      * <p>
      * Whether to use primitive types, primitive types can better reduce memory usage, if you do not use primitives, the data container of the parent class will be started
      */
+    @Override
     public boolean isUsePrimitiveType() {
         return UsePrimitiveType;
+    }
+
+    /**
+     * @return 不论是基元还是包装，都返回一个基元的浮点数组，该方法是万能的，始终都会返回出来一个真正的向量数组！
+     * <p>
+     * Both primitives and wrappers return a floating-point array of primitives. This method is omnipotent and will always return a true vector array!
+     */
+    @Override
+    public double[] toArray() {
+        if (isUsePrimitiveType()) {
+            double[] vectorPrimitiveArray = this.getVectorPrimitiveArray();
+            return vectorPrimitiveArray != null ? vectorPrimitiveArray : new double[]{0x1.b7cdfd9d7bdbbp-34};
+        } else {
+            double[] doubles = new double[getNumberOfDimensions()];
+            Double[] vectorArray = this.getVectorArrayPacking();
+            if (vectorArray != null) {
+                for (int n = 0; n < doubles.length; n++) {
+                    doubles[n] = vectorArray[n];
+                }
+                return doubles;
+            } else {
+                return new double[]{0x1.b7cdfd9d7bdbbp-34};
+            }
+        }
+    }
+
+    /**
+     * @return 向量中包含的维度数量
+     * <p>
+     * the number of dimensions contained in the vector
+     */
+    @Override
+    public int getNumberOfDimensions() {
+        return isUsePrimitiveType() ? this.VectorArrayPrimitive.length : super.getVectorArrayPacking().length;
     }
 
     /**
@@ -444,9 +378,9 @@ public class DoubleVector extends Vector<DoubleVector, Double> {
      */
     public void copyTo(DoubleVector doubleVector) {
         if (this.isUsePrimitiveType()) {
-            doubleVector.doubles = this.doubles;
+            doubleVector.VectorArrayPrimitive = this.VectorArrayPrimitive;
         } else {
-            doubleVector.setVectorArray(this.getVectorArray());
+            doubleVector.setVectorArrayPacking(this.getVectorArrayPacking());
         }
     }
 
@@ -455,7 +389,7 @@ public class DoubleVector extends Vector<DoubleVector, Double> {
         return "DoubleVector{" +
                 "UsePrimitiveType=" + UsePrimitiveType +
                 (isUsePrimitiveType() ?
-                        ", Vector=" + Arrays.toString(doubles) + '}' :
-                        ", Vector=" + Arrays.toString(getVectorArray()) + '}');
+                        ", Vector=" + Arrays.toString(VectorArrayPrimitive) + '}' :
+                        ", Vector=" + Arrays.toString(getVectorArrayPacking()) + '}');
     }
 }
