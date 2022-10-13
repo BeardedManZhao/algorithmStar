@@ -1,10 +1,5 @@
 package zhao.algorithmMagic
 
-import zhao.algorithmMagic.algorithm.{EuclideanMetric, ManhattanDistance}
-import zhao.algorithmMagic.operands.{DoubleCoordinateTwo, IntegerCoordinateMany}
-
-import java.util.Date
-
 /**
  * ScalaObject于 2022/10/9 21:04:13 创建
  *
