@@ -6,6 +6,14 @@ package zhao.algorithmMagic.utils;
  * @author 4
  */
 public final class ASStr {
+
+    /**
+     * 统计某个字符出现的次数
+     *
+     * @param StringToBeCounted 被统计的字符串
+     * @param c                 被计数的字符
+     * @return 统计某个字符出现的次数
+     */
     public static int count(String StringToBeCounted, char c) {
         int res = 0;
         for (char c1 : StringToBeCounted.toCharArray()) {
@@ -14,6 +22,13 @@ public final class ASStr {
         return res;
     }
 
+    /**
+     * 统计某个字符出现的次数
+     *
+     * @param StringToBeCounted 被统计的字符串
+     * @param s                 被计数的字符
+     * @return 统计某个字符出现的次数
+     */
     public static int count(String StringToBeCounted, String s) {
         int res = 0;
         int length2 = s.length();

@@ -82,7 +82,7 @@ public abstract class Vector<ImplementationType, ElementType> implements Operand
      * @return 向量的外积
      * @apiNote waiting to be realized
      */
-    public abstract Vector<ImplementationType, ElementType> multiply(ImplementationType vector);
+    public abstract ImplementationType multiply(ImplementationType vector);
 
     /**
      * 计算两个向量的内积，也称之为数量积，具体实现请参阅api说明

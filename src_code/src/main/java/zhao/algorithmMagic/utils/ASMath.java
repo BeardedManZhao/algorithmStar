@@ -1,5 +1,7 @@
 package zhao.algorithmMagic.utils;
 
+import zhao.algorithmMagic.operands.ComplexNumber;
+
 /**
  * Java类于 2022/10/10 15:30:49 创建
  * <p>
@@ -14,6 +16,69 @@ public final class ASMath {
     public static final String MATHEMATICAL_SYMBOLS_PLUS = "+";
     public static final String MATHEMATICAL_SYMBOLS_SUBTRACT = "-";
 
+    /**
+     * 将一个序列的方差计算出来
+     *
+     * @param doubles 被计算的序列
+     * @return 方差数值
+     */
+    public static double variance(double[] doubles) {
+        // 每个样本值与全体样本值的平均数之差
+        double avg = avg(doubles);
+        double[] temp = new double[doubles.length];
+        for (int i = 0; i < doubles.length; i++) {
+            // 将每一个数值与平均数之差的平方计算出来
+            temp[i] = Power2(doubles[i] - avg);
+        }
+        // 返回平均数
+        return avg(temp);
+    }
+
+    /**
+     * 将一个序列的方差计算出来
+     *
+     * @param ints 被计算的序列
+     * @return 方差数值
+     */
+    public static double variance(int[] ints) {
+        // 每个样本值与全体样本值的平均数之差
+        int avg = avg(ints);
+        double[] temp = new double[ints.length];
+        for (int i = 0; i < ints.length; i++) {
+            // 将每一个数值与平均数之差的平方计算出来
+            temp[i] = Power2(ints[i] - avg);
+        }
+        // 返回平均数
+        return avg(temp);
+    }
+
+    /**
+     * 计算出来一各序列的平均值
+     *
+     * @param doubles 被计算的序列
+     * @return 均值
+     */
+    public static double avg(double... doubles) {
+        double res = 0;
+        for (double aDouble : doubles) {
+            res += aDouble;
+        }
+        return res / doubles.length;
+    }
+
+    /**
+     * 计算出来一各序列的平均值
+     *
+     * @param ints 被计算的序列
+     * @return 均值
+     */
+    public static int avg(int... ints) {
+        int res = 0;
+        for (int aDouble : ints) {
+            res += aDouble;
+        }
+        return res / ints.length;
+    }
 
     /**
      * 对一个整数进行平方计算
@@ -92,16 +157,64 @@ public final class ASMath {
 
     /**
      * 计算两个数组的叉乘，并返回结果
+     * <p>
+     * Calculates the cross product of two arrays and returns the result
      *
      * @param doubles1  叉乘操作数组
+     *                  <p>
+     *                  Array of cross product operations
      * @param doubles2  被叉乘的操作数组
+     *                  <p>
+     *                  Array of operations to be cross-multiplied
      * @param newLength 结果数组的长度，如果您在外界已经将长度计算出来了的话，那么您可以手动指定叉乘结果的长度，这样框架就不会去重复计算了！
+     *                  <p>
+     *                  The length of the result array, if you have calculated the length in the outside world, then you can manually specify the length of the cross-multiplication result, so that the framework will not repeat the calculation!
      * @return 叉乘结果数组
+     * <p>
+     * cross-multiply result array
      */
     public static double[] CrossMultiplication(double[] doubles1, double[] doubles2, int newLength) {
         double[] res = new double[newLength];
         CrossMultiplication(doubles1.length, doubles2.length, res, doubles1, doubles2);
         return res;
+    }
+
+    public static ComplexNumber[] CrossMultiplication(ComplexNumber[] complexNumber1, ComplexNumber[] complexNumber2, int newLength) {
+        return CrossMultiplication(complexNumber1.length, complexNumber2.length, complexNumber1, complexNumber2, newLength);
+    }
+
+    /**
+     * 计算两个数组的叉乘，并返回结果
+     * <p>
+     * Calculates the cross product of two arrays and returns the result
+     *
+     * @param complexNumber1 叉乘操作数组
+     *                       <p>
+     *                       Array of cross product operations
+     * @param complexNumber2 被叉乘的操作数组
+     *                       <p>
+     *                       Array of operations to be cross-multiplied
+     * @param newLength      结果数组的长度，如果您在外界已经将长度计算出来了的话，那么您可以手动指定叉乘结果的长度，这样框架就不会去重复计算了！
+     *                       <p>
+     *                       The length of the result array, if you have calculated the length in the outside world, then you can manually specify the length of the cross-multiplication result, so that the framework will not repeat the calculation!
+     * @return 叉乘结果数组
+     * <p>
+     * cross-multiply result array
+     */
+    private static ComplexNumber[] CrossMultiplication(int colCount1, int colCount2, ComplexNumber[] complexNumber1, ComplexNumber[] complexNumber2, int newLength) {
+        ComplexNumber[] ResultsContainer = new ComplexNumber[newLength];
+        int now = 0; // 结果数组的索引，用于依次添加叉乘结果
+        // 迭代矩阵1该行的每一个元素
+        for (int i = 0; i < colCount1; i++) {
+            // 迭代矩阵2该行的每一个元素
+            for (int ii = 0; ii < colCount2; ii++) {
+                if (ii != i) {
+                    ResultsContainer[now] = complexNumber1[i].multiply(complexNumber2[ii]);
+                    now++;
+                }
+            }
+        }
+        return ResultsContainer;
     }
 
     /**

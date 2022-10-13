@@ -93,12 +93,12 @@ public class DoubleVector extends Vector<DoubleVector, Double> {
     /**
      * 使用坐标构成的线计算出来向量
      *
-     * @param startFloatingPointCoordinates 向量的起始坐标
-     * @param endFloatingPointCoordinates   向量的终止坐标
+     * @param startDoubleCoordinateMany 向量的起始坐标
+     * @param endDoubleCoordinateMany   向量的终止坐标
      * @return 向量
      */
-    public static <T extends FloatingPointCoordinates<?>> DoubleVector parse(FloatingPointCoordinates<T> startFloatingPointCoordinates, FloatingPointCoordinates<T> endFloatingPointCoordinates) {
-        return DoubleVector.parse((endFloatingPointCoordinates.diff(startFloatingPointCoordinates.expand())).toArray());
+    public static DoubleVector parse(DoubleCoordinateMany startDoubleCoordinateMany, DoubleCoordinateMany endDoubleCoordinateMany) {
+        return DoubleVector.parse((endDoubleCoordinateMany.diff(startDoubleCoordinateMany.expand())).toArray());
     }
 
 
@@ -255,7 +255,7 @@ public class DoubleVector extends Vector<DoubleVector, Double> {
      * @apiNote waiting to be realized
      */
     @Override
-    public Vector<DoubleVector, Double> multiply(DoubleVector vector) {
+    public DoubleVector multiply(DoubleVector vector) {
         double[] vectorArray1 = this.toArray();
         double[] vectorArray2 = vector.toArray();
         int length1 = vectorArray1.length;

@@ -2,6 +2,8 @@ package zhao.algorithmMagic.exception;
 
 /**
  * Java类于 2022/10/9 17:15:01 创建
+ * <p>
+ * 转换异常
  *
  * @author 4
  */

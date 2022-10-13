@@ -192,6 +192,7 @@ public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
     public Double moduleLength() {
         double res = 0;
         int rowPointer = this.RowPointer;
+        PointerReset();
         while (this.MovePointerDown()) {
             double[] doubles1 = toArray();
             for (double v : doubles1) {
@@ -212,7 +213,7 @@ public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
      * @apiNote TODO waiting to be realized
      */
     @Override
-    public Vector<DoubleMatrix, Double> multiply(DoubleMatrix matrix) {
+    public DoubleMatrix multiply(DoubleMatrix matrix) {
         int rowCount1 = this.getRowCount();
         int rowCount2 = matrix.getRowCount();
         int colCount1 = this.getColCount();

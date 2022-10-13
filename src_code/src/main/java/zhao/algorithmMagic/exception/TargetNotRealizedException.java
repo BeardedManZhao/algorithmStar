@@ -2,6 +2,8 @@ package zhao.algorithmMagic.exception;
 
 /**
  * Java类于 2022/10/9 17:18:16 创建
+ * <p>
+ * 需要的类未实现，一般是由父类转子类导致的异常
  *
  * @author 4
  */

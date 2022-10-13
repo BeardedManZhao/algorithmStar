@@ -1,7 +1,9 @@
 package zhao.algorithmMagic.algorithm;
 
 import org.apache.log4j.Logger;
+import zhao.algorithmMagic.exception.OperationAlgorithmManagementException;
 import zhao.algorithmMagic.exception.OperationAlgorithmNotFound;
+import zhao.algorithmMagic.utils.DependentAlgorithmNameLibrary;
 
 import java.util.HashMap;
 
@@ -11,7 +13,7 @@ import java.util.HashMap;
  * <p>
  * Algorithm management class, you can get the corresponding algorithm operation object through this class, this class is globally unique static.
  *
- * @author zhao
+ * @author LingYuZhao
  */
 public final class OperationAlgorithmManager implements OperationAlgorithm {
     /**
@@ -65,6 +67,44 @@ public final class OperationAlgorithmManager implements OperationAlgorithm {
     }
 
     /**
+     * 取消一个算法的注册
+     * <p>
+     * unregister an algorithm
+     *
+     * @param algorithmName 需要取注册的算法名称
+     *                      <p>
+     *                      The name of the algorithm that needs to be registered
+     * @return 是否取消注册成功！
+     * <p>
+     * Whether the cancellation of registration is successful!
+     */
+    public boolean unRegister(String algorithmName) {
+        if (DependentAlgorithmNameLibrary.isPrefabricated(algorithmName)) {
+            String s = "您想要取消注册的算法属于其它算法的依赖，因此为了程序的安全不予执行！如果您一定要删除，请使用管理类的'Unloading(algorithmName)'";
+            logger.error(s, new OperationAlgorithmManagementException(s));
+            return false;
+        } else {
+            if (Unloading(algorithmName)) {
+                logger.info("Cancelled the registration of an algorithm, name:" + algorithmName);
+                return true;
+            } else {
+                logger.error("It seems that the algorithm you want to unregister has never been registered in the management class, and cannot be found in the management:" + algorithmName);
+                return false;
+            }
+        }
+    }
+
+    /**
+     * 卸载一个算法，该方法将不会提供依赖检查，不建议在程序中直接调用。
+     *
+     * @param algorithmName 需要被卸载的算法名称
+     * @return 卸载是否成功！如果未成功，那么您要卸载的方法可能没有被注册过！
+     */
+    public boolean Unloading(String algorithmName) {
+        return STRING_OPERATION_ALGORITHM_HASH_MAP.remove(algorithmName) != null;
+    }
+
+    /**
      * 通过算法名称，获取到一个算法对象
      *
      * @param algorithmName 算法的名称，以注册时的为准
@@ -74,7 +114,7 @@ public final class OperationAlgorithmManager implements OperationAlgorithm {
     public OperationAlgorithm get(String algorithmName) {
         OperationAlgorithm operationAlgorithm = STRING_OPERATION_ALGORITHM_HASH_MAP.get(algorithmName);
         if (operationAlgorithm != null) {
-            logger.info("register OperationAlgorithm:" + algorithmName);
+            logger.info("An operation algorithm was obtained:" + algorithmName);
             return operationAlgorithm;
         } else {
             String s = "没有找到名为[" + algorithmName + "]的算法\tNo name was found[" + algorithmName + "]algorithm";

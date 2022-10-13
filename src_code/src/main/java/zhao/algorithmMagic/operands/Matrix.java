@@ -7,7 +7,12 @@ import java.util.Arrays;
  * <p>
  * 矩阵的抽象类，矩阵属于一个向量，也可以理解其是一个向量组
  *
- * @author 4
+ * @param <ImplementationType> 实现类的数据类型  The data type of the implementing class
+ * @param <ElementType>        向量中的元素类型  element type in the vector
+ * @author zhao
+ * @apiNote 该类为抽象，其中包含最基本的定义与类型管控
+ * <p>
+ * This class is abstract and contains the most basic definitions and type controls.
  */
 public abstract class Matrix<ImplementationType, ElementType> extends Vector<ImplementationType, ElementType> {
 
@@ -15,7 +20,7 @@ public abstract class Matrix<ImplementationType, ElementType> extends Vector<Imp
     private final int rowCount;
     private final int colCount;
     private final int MaximumRowPointerCount;
-    protected int RowPointer = -1;
+    protected int RowPointer = 0b11111111111111111111111111111111;
 
     /**
      * 构造一个空的矩阵，指定其矩阵的行列数
@@ -32,7 +37,7 @@ public abstract class Matrix<ImplementationType, ElementType> extends Vector<Imp
     protected Matrix(int rowCount, int colCount, boolean usePrimitiveType) {
         this.rowCount = rowCount;
         this.colCount = colCount;
-        this.MaximumRowPointerCount = rowCount - 2;
+        this.MaximumRowPointerCount = rowCount - 0b10;
         UsePrimitiveType = usePrimitiveType;
     }
 
@@ -94,7 +99,7 @@ public abstract class Matrix<ImplementationType, ElementType> extends Vector<Imp
      */
     boolean MovePointerUp() {
         if (this.RowPointer <= MaximumRowPointerCount) {
-            this.RowPointer++;
+            this.RowPointer--;
             return true;
         } else {
             return false;

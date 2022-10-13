@@ -4,14 +4,12 @@ package zhao.algorithmMagic.algorithm;
  * 运算算法接口，是所有算法的抽象，具体实现请您查阅api node
  * <p>
  * The operation algorithm interface is the abstraction of all algorithms. For the specific implementation, please refer to the api node
- *
- * @param <Algorithm> 实现类的类型，这里用于数据算法获取到之后的转换
  */
 public interface OperationAlgorithm {
     /**
-     * @return 该算法组件的名称，也可有是一个识别码，在获取算法的时候您可以通过该名称获取到算法对象
+     * @return 该算法组件的名称，也是一个识别码，在获取算法的时候您可以通过该名称获取到算法对象
      * <p>
-     * The name of the algorithm component, or an identification code, you can obtain the algorithm object through this name when obtaining the algorithm.
+     * The name of the algorithm component is also an identification code. You can obtain the algorithm object through this name when obtaining the algorithm.
      */
     String getAlgorithmName();
 
