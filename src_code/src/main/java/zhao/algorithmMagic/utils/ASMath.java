@@ -17,6 +17,188 @@ public final class ASMath {
     public static final String MATHEMATICAL_SYMBOLS_SUBTRACT = "-";
 
     /**
+     * 计算一个序列的最大值与最小值
+     *
+     * @param doubles 被计算的序列
+     * @return 计算结果，第一个参数是最大值，第二个参数是最小值
+     */
+    public static double[] MaxAndMin(double[] doubles) {
+        // 计算最大值最小值
+        double max = doubles[0];
+        double min = doubles[0];
+        for (int i = 1; i < doubles.length; i++) {
+            max = Math.max(max, doubles[i]);
+            min = Math.min(min, doubles[i]);
+        }
+        return new double[]{max, min};
+    }
+
+    /**
+     * 计算一个序列的最大值与最小值
+     *
+     * @param doubles 被计算的序列
+     * @return 计算结果，第一个参数是最大值，第二个参数是最小值
+     */
+    public static int[] MaxAndMin(int[] doubles) {
+        // 计算最大值最小值
+        int max = doubles[0];
+        int min = doubles[0];
+        for (int i = 1; i < doubles.length; i++) {
+            max = Math.max(max, doubles[i]);
+            min = Math.min(min, doubles[i]);
+        }
+        return new int[]{max, min};
+    }
+
+    /**
+     * 计算一个数值的阶乘
+     *
+     * @param d 被计算数值
+     * @return 阶乘结果
+     */
+    public static double Factorial(double d) {
+        if (d <= 1) {
+            return d;
+        } else {
+            return d * Factorial(d - 1);
+        }
+    }
+
+    /**
+     * 计算一个数值的阶乘
+     *
+     * @param i 被计算数值
+     * @return 阶乘结果
+     */
+    public static int Factorial(int i) {
+        if (i <= 1) {
+            return i;
+        } else {
+            return i * Factorial(i - 1);
+        }
+    }
+
+    /**
+     * 计算一个数值的阶乘
+     *
+     * @param i               被计算数值
+     * @param FactorialNumber 数值停止阶乘的数值
+     * @return 阶乘结果
+     */
+    public static int Factorial(int i, long FactorialNumber) {
+        int res = i;
+        for (int i1 = i - 1; i1 > 1 && res <= FactorialNumber; i1--) {
+            res *= i;
+        }
+        return res;
+    }
+
+    /**
+     * 在n个元素的集合中，取出m个元素，这种取法的组合数量
+     *
+     * @param n 数据样本的总数
+     * @param m 要提取的数据样本数量，不同数量的组合在样本中有很多方式，可以计算出来，m个数据样本在n个数据样本之内的组合
+     * @return C(n, m) = n!/ m!（n - m）! = 组合方式的数量  如果您的 n < m 那么会直接返回 -1
+     */
+    public static double CombinationNumber(int n, int m) {
+        if (m <= n) {
+            return Factorial(n) / ((double) Factorial(m)) * Factorial(n - m);
+        } else {
+            return 0b11111111111111111111111111111111;
+        }
+    }
+
+    /**
+     * E(X)  = ⁿ∑₁ (probability(Xn) * frequency(Xn in X))
+     *
+     * @param event 期望运算中有，所使用到的事件条件，为true的时候，代表真事件。
+     * @return X序列的期望
+     */
+    public static double Expectation(double[] X, DoubleEvent event) {
+        double res = 0;
+        for (double Xn : X) {
+            // 序列中 Xn 这个数值的出现频率
+            int frequency = frequency(Xn, X);
+            // 计算出 Xn 在所有整个序列中的概率，真假条件由外界传入
+            double probability = probability(X, event) / X.length;
+            System.out.println("E(X)  = ⁿ∑₁ (probability(Xn) * frequency(Xn in X)) = ⁿ∑₁ " + probability + " * " + frequency + ")");
+            res += probability * frequency;
+        }
+        return res;
+    }
+
+    /**
+     * 计算一个数值在一个序列中的概率
+     *
+     * @param v       被计算的数值
+     * @param event   结果为真的条件
+     * @param <value> 数值所在序列
+     * @return value 中 满足 event 条件的 v 的概率
+     */
+    public static <value> double probability(value[] v, Event<value> event) {
+        int ok = 0;
+        for (value value : v) {
+            if (event.isComplianceEvents(value)) {
+                ok += 1;
+            }
+        }
+        return ok / (double) v.length;
+    }
+
+    /**
+     * 计算一个数值在一个序列中的概率
+     *
+     * @param v     被计算的数值
+     * @param event 结果为真的条件
+     * @return value 中 满足 event 条件的 v 的概率
+     */
+    public static double probability(double[] v, DoubleEvent event) {
+        int ok = 0;
+        for (double value : v) {
+            if (event.isComplianceEvents(value)) {
+                ok += 1;
+            }
+        }
+        return ok / (double) v.length;
+    }
+
+    /**
+     * 统计一个数值在序列中出现的次数
+     * <p>
+     * Count the number of times a number appears in a sequence
+     *
+     * @param value 被统计的数值
+     * @param Array 数值所处的序列
+     * @return Count the number of times a number appears in a sequence
+     */
+    public static int frequency(double value, double[] Array) {
+        int res = 0;
+        for (double v : Array) {
+            if (v == value) res++;
+        }
+        return res;
+    }
+
+    /**
+     * 计算一个数值的阶乘
+     * * @param i              被计算数值
+     *
+     * @param factorialCount 阶乘的次数，该参数可以对阶乘进行一个限制，用于概率计算等操作
+     * @return 阶乘结果
+     */
+    public static int Factorial(int i, int factorialCount) {
+        int res = 1;
+        int count = 0;
+        while (count < factorialCount && i > 1) {
+//            System.out.println(i + " " + res);
+            res *= i;
+            i -= 1;
+            count++;
+        }
+        return res;
+    }
+
+    /**
      * 将一个序列的方差计算出来
      *
      * @param doubles 被计算的序列

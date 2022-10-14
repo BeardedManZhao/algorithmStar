@@ -152,8 +152,8 @@ public class MAIN1 {
         int[] doubles1 = IntegerCoordinateMany1.toArray();
         int[] doubles2 = IntegerCoordinateMany2.toArray();
         for (int i = 0; i < doubles1.length; i++) {
-            System.out.println("The " + i + " coordinate of double Coordinate Many 1:" + doubles1[i]);
-            System.out.println("The " + i + " coordinate of double Coordinate Many 2:" + doubles2[i]);
+            System.out.println("The " + i + " coordinate of Integer Coordinate Many 1:" + doubles1[i]);
+            System.out.println("The " + i + " coordinate of Integer Coordinate Many 2:" + doubles2[i]);
         }
         // 计算两个整数三维坐标的和与差
         System.out.println(IntegerCoordinateThree1.add(IntegerCoordinateThree2));

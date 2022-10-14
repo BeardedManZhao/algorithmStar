@@ -64,6 +64,48 @@ public class ManhattanDistance<I extends IntegerCoordinates<?>, D extends Floati
     }
 
     /**
+     * 获取到坐标点到原点的真实曼哈顿距离
+     * <p>
+     * Get the true Manhattan distance from the coordinate point to the origin
+     *
+     * @param iFloatingPointCoordinates 被计算的坐标点
+     *                                  <p>
+     *                                  Calculated coordinates
+     * @return 该坐标点到原点的真实兰氏距离
+     * <p>
+     * Manhattan distance from the coordinate point to the origin
+     */
+    public double getTrueDistance(FloatingPointCoordinates<D> iFloatingPointCoordinates) {
+        logger.info("ⁿ∑₁ (|COORDINATE(n) - 0|)");
+        double res = 0;
+        for (double v : iFloatingPointCoordinates.toArray()) {
+            res += ASMath.absoluteValue(v);
+        }
+        return res;
+    }
+
+    /**
+     * 获取到坐标点到原点的真实曼哈顿距离
+     * <p>
+     * Get the true Manhattan distance from the coordinate point to the origin
+     *
+     * @param integerCoordinates 被计算的坐标点
+     *                           <p>
+     *                           Calculated coordinates
+     * @return 该坐标点到原点的真实兰氏距离
+     * <p>
+     * Manhattan distance from the coordinate point to the origin
+     */
+    public double getTrueDistance(IntegerCoordinates<I> integerCoordinates) {
+        logger.info("ⁿ∑₁ (|COORDINATE(n) - 0|)");
+        double res = 0;
+        for (double v : integerCoordinates.toArray()) {
+            res += ASMath.absoluteValue(v);
+        }
+        return res;
+    }
+
+    /**
      * 在多维空间之内，计算两个点之间的曼哈顿距离。
      * <p>
      * Within a multidimensional space, calculate the Manhattan distance between two points.

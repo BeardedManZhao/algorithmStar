@@ -1,6 +1,5 @@
 package zhao.algorithmMagic.algorithm.normalization;
 
-import zhao.algorithmMagic.algorithm.DataStandardization;
 import zhao.algorithmMagic.operands.*;
 import zhao.algorithmMagic.utils.ASMath;
 
