@@ -22,7 +22,7 @@ Waiting
 package zhao.algorithmMagic;
 
 import zhao.algorithmMagic.Integrator.Route2DDrawingIntegrator;
-import zhao.algorithmMagic.algorithm.LingYuZhaoCoordinateNet;
+import zhao.algorithmMagic.algorithm.ZhaoCoordinateNet;
 import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateMany;
 import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute;
 
@@ -39,13 +39,13 @@ public class MAIN1 {
         DoubleCoordinateMany Z = new DoubleCoordinateMany(1, 21);
 
         // 获取关系网络,该算法是我实现出来,用于推断人员关系网的,这里的名称您可以自定义,需要注意的是下面集成器的实例化需要您将该名称传进去
-        LingYuZhaoCoordinateNet lingYuZhaoCoordinateNet = LingYuZhaoCoordinateNet.getInstance("Z");
+        ZhaoCoordinateNet zhaoCoordinateNet = ZhaoCoordinateNet.getInstance("Z");
         // 将人员的关系添加到关系网络中,请注意,该算法的关系网络已经包含了您的数据,所以您在下面集成其中一定要传入相同名称,以便集成器能获取到您算法中的临时网格数据
-        lingYuZhaoCoordinateNet.addRoute(DoubleConsanguinityRoute.parse("A -> B", A, B));
-        lingYuZhaoCoordinateNet.addRoute(DoubleConsanguinityRoute.parse("A -> C", A, C));
-        lingYuZhaoCoordinateNet.addRoute(DoubleConsanguinityRoute.parse("E -> Z", E, Z));
-        lingYuZhaoCoordinateNet.addRoute(DoubleConsanguinityRoute.parse("A -> Z", A, Z));
-        lingYuZhaoCoordinateNet.addRoute(DoubleConsanguinityRoute.parse("B -> Z", B, Z));
+        zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute.parse("A -> B", A, B));
+        zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute.parse("A -> C", A, C));
+        zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute.parse("E -> Z", E, Z));
+        zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute.parse("A -> Z", A, Z));
+        zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute.parse("B -> Z", B, Z));
 
         // 使用2维路线绘制集成器,输出上面所有人员之间的关系网络图片
         Route2DDrawingIntegrator a = new Route2DDrawingIntegrator("Z", "A");
@@ -59,13 +59,14 @@ public class MAIN1 {
                 .setDiscreteThreshold(4)
                 // 运行集成器!
                 .run();
-        
+
         // 清理关系网络中的数据
-        lingYuZhaoCoordinateNet.clear();
+        zhaoCoordinateNet.clear();
     }
 }
 
 ```
+
 - 运行之后产生的关系网络图片
   ![image](https://user-images.githubusercontent.com/113756063/195981317-e40194a8-474a-4de7-9bfd-84ac40b66d15.png)
 
