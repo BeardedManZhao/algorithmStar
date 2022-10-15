@@ -1,4 +1,6 @@
-package zhao.algorithmMagic.operands;
+package zhao.algorithmMagic.operands.matrix;
+
+import zhao.algorithmMagic.operands.vector.Vector;
 
 import java.util.Arrays;
 

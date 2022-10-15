@@ -1,4 +1,4 @@
-package zhao.algorithmMagic.operands;
+package zhao.algorithmMagic.operands.matrix;
 
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.utils.ASMath;
@@ -186,7 +186,7 @@ public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
      * Calculate the modulo length of the vector, please refer to the api node for the specific implementation
      *
      * @return 矩阵的模长
-     * @apiNote waiting to be realized
+     * @apiNote 矩阵的模长
      */
     @Override
     public Double moduleLength() {
@@ -210,7 +210,7 @@ public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
      *
      * @param matrix 被做乘的矩阵
      * @return 矩阵的外积
-     * @apiNote TODO waiting to be realized
+     * @apiNote 矩阵的外积
      */
     @Override
     public DoubleMatrix multiply(DoubleMatrix matrix) {

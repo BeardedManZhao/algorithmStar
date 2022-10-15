@@ -2,10 +2,10 @@ package zhao.algorithmMagic.algorithm;
 
 import zhao.algorithmMagic.algorithm.normalization.Z_ScoreNormalization;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
-import zhao.algorithmMagic.operands.DoubleCoordinateMany;
-import zhao.algorithmMagic.operands.FloatingPointCoordinates;
-import zhao.algorithmMagic.operands.IntegerCoordinateMany;
-import zhao.algorithmMagic.operands.IntegerCoordinates;
+import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateMany;
+import zhao.algorithmMagic.operands.coordinate.FloatingPointCoordinates;
+import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateMany;
+import zhao.algorithmMagic.operands.coordinate.IntegerCoordinates;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.DependentAlgorithmNameLibrary;
 

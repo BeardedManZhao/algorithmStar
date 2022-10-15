@@ -1,18 +1,18 @@
-package zhao.algorithmMagic.operands;
+package zhao.algorithmMagic.operands.coordinate;
 
 /**
- * Java类于 2022/10/10 11:51:38 创建
+ * Java类于 2022/10/10 09:35:09 创建
  * <p>
- * 整数类型的二维坐标，该坐标点的每一个坐标轴数值都是整数类型，该坐标点是一个final，如果您需要实现一个属于您自己的坐标，您可以实现"IntegerCoordinates"接口。
+ * Double类型的二维坐标，该坐标点的每一个坐标轴数值都是double类型，该坐标点是一个final，如果您需要实现一个属于您自己的坐标，您可以实现"FloatingPointCoordinates"接口。
  * <p>
- * Two-dimensional coordinates of integer type, each axis value of the coordinate point is of integer type, the coordinate point is a final, if you need to implement your own coordinates, you can implement the "Integer Coordinates" interface.
+ * Two-dimensional coordinates of type Double, each axis value of the coordinate point is of type double, the coordinate point is a final, if you need to implement a coordinate of your own, you can implement the "Floating Point Coordinates" interface.
  *
  * @author zhao
  */
-public final class IntegerCoordinateTwo implements IntegerCoordinates<IntegerCoordinateTwo> {
+public final class DoubleCoordinateTwo implements FloatingPointCoordinates<DoubleCoordinateTwo> {
 
-    private final int x;
-    private final int y;
+    private final double x;
+    private final double y;
 
     /**
      * 实例化一个坐标
@@ -20,16 +20,16 @@ public final class IntegerCoordinateTwo implements IntegerCoordinates<IntegerCoo
      * @param x 坐标的横轴
      * @param y 坐标的纵轴
      */
-    public IntegerCoordinateTwo(int x, int y) {
+    public DoubleCoordinateTwo(double x, double y) {
         this.x = x;
         this.y = y;
     }
 
-    public int getX() {
+    public double getX() {
         return x;
     }
 
-    public int getY() {
+    public double getY() {
         return y;
     }
 
@@ -40,11 +40,13 @@ public final class IntegerCoordinateTwo implements IntegerCoordinates<IntegerCoo
      *
      * @param value 被求和的参数  Parameters to be summed
      * @return 求和之后的数值  the value after the sum
-     * @apiNote There is no description for the super interface, please refer to the subclass documentation
+     * @apiNote 两个坐标之间的每一个轴的数据之和
+     * <p>
+     * diff of data for each axis between two coordinates
      */
     @Override
-    public IntegerCoordinateTwo add(IntegerCoordinateTwo value) {
-        return new IntegerCoordinateTwo(this.x + value.x, this.y + value.y);
+    public DoubleCoordinateTwo add(DoubleCoordinateTwo value) {
+        return new DoubleCoordinateTwo(this.x + value.x, this.y + value.y);
     }
 
     /**
@@ -57,8 +59,8 @@ public final class IntegerCoordinateTwo implements IntegerCoordinates<IntegerCoo
      * @apiNote There is no description for the super interface, please refer to the subclass documentation
      */
     @Override
-    public IntegerCoordinateTwo diff(IntegerCoordinateTwo value) {
-        return new IntegerCoordinateTwo(this.x - value.x, this.y - value.y);
+    public DoubleCoordinateTwo diff(DoubleCoordinateTwo value) {
+        return new DoubleCoordinateTwo(this.x - value.x, this.y - value.y);
     }
 
     @Override
@@ -82,17 +84,15 @@ public final class IntegerCoordinateTwo implements IntegerCoordinates<IntegerCoo
      * In the array form of the floating point coordinates, the floating point coordinates are converted into an array and returned. Of course, some implementation classes may directly return the array as a global object, which is beneficial to performance.
      */
     @Override
-    public int[] toArray() {
-        return new int[]{x, y};
+    public double[] toArray() {
+        return new double[]{x, y};
     }
 
     /**
-     * @return 该类的实现类对象，用于拓展该接口成为其子类，这里一般只需要返回实现类对象即可。
-     * <p>
-     * The implementation class object of this class is used to expand the interface to become its subclass. Generally, only the implementation class object needs to be returned here.
+     * @return 该类的实现类对象，用于拓展该接口的子类
      */
     @Override
-    public IntegerCoordinateTwo expand() {
+    public DoubleCoordinateTwo expand() {
         return this;
     }
 }

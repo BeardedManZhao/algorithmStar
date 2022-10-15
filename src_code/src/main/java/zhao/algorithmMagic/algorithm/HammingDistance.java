@@ -3,8 +3,8 @@ package zhao.algorithmMagic.algorithm;
 import org.apache.log4j.Logger;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
-import zhao.algorithmMagic.operands.FloatingPointCoordinates;
-import zhao.algorithmMagic.operands.IntegerCoordinates;
+import zhao.algorithmMagic.operands.coordinate.FloatingPointCoordinates;
+import zhao.algorithmMagic.operands.coordinate.IntegerCoordinates;
 import zhao.algorithmMagic.utils.ASClass;
 
 /**
@@ -16,7 +16,7 @@ import zhao.algorithmMagic.utils.ASClass;
  *
  * @author zhao
  */
-public class HammingDistance<I extends IntegerCoordinates<?>, D extends FloatingPointCoordinates<?>> implements OperationAlgorithm {
+public class HammingDistance<I extends IntegerCoordinates<?>, D extends FloatingPointCoordinates<?>> implements DifferenceAlgorithm {
     protected final Logger logger;
     protected final String AlgorithmName;
 

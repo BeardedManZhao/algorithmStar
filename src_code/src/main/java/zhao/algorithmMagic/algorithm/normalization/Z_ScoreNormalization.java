@@ -1,6 +1,10 @@
 package zhao.algorithmMagic.algorithm.normalization;
 
-import zhao.algorithmMagic.operands.*;
+import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateMany;
+import zhao.algorithmMagic.operands.coordinate.FloatingPointCoordinates;
+import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateMany;
+import zhao.algorithmMagic.operands.coordinate.IntegerCoordinates;
+import zhao.algorithmMagic.operands.vector.DoubleVector;
 import zhao.algorithmMagic.utils.ASMath;
 
 /**

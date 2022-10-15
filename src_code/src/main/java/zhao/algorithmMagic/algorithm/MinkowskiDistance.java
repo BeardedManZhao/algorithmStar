@@ -2,8 +2,9 @@ package zhao.algorithmMagic.algorithm;
 
 import org.apache.log4j.Logger;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
-import zhao.algorithmMagic.operands.FloatingPointCoordinates;
-import zhao.algorithmMagic.operands.IntegerCoordinates;
+import zhao.algorithmMagic.operands.coordinate.FloatingPointCoordinates;
+import zhao.algorithmMagic.operands.coordinate.IntegerCoordinates;
+import zhao.algorithmMagic.operands.vector.DoubleVector;
 import zhao.algorithmMagic.utils.ASClass;
 
 /**
@@ -21,7 +22,7 @@ import zhao.algorithmMagic.utils.ASClass;
  *            The type of floating-point coordinates involved in the operation in this class. You need to specify the floating-point coordinates that this class can operate on.
  * @author LingYuZhao
  */
-public class MinkowskiDistance<I extends IntegerCoordinates<?>, D extends FloatingPointCoordinates<?>> implements OperationAlgorithm {
+public class MinkowskiDistance<I extends IntegerCoordinates<?>, D extends FloatingPointCoordinates<?>> implements DistanceAlgorithm {
 
     protected final Logger logger;
     protected final String AlgorithmName;
@@ -173,6 +174,26 @@ public class MinkowskiDistance<I extends IntegerCoordinates<?>, D extends Floati
     @Override
     public String getAlgorithmName() {
         return this.AlgorithmName;
+    }
+
+    /**
+     * 使用一个向量计算真实距离，具体实现请参阅 api node
+     * <p>
+     * Use a vector to calculate the true distance, see the api node for the specific implementation
+     *
+     * @param doubleVector 被计算的向量
+     *                     <p>
+     *                     Calculated vector
+     * @return 向量中始末坐标的闵可夫斯基距离
+     * @apiNote 闵可夫斯基距离是总结的曼哈顿与欧几里德, 其本身通过一个P变量控制所有算法, 因此本质上也是向量的计算
+     */
+    @Override
+    public double getTrueDistance(DoubleVector doubleVector) {
+        double res = 0;
+        for (double v : doubleVector.toArray()) {
+            res += Math.pow(v, $P);
+        }
+        return ParameterCombination(res);
     }
 
     /**

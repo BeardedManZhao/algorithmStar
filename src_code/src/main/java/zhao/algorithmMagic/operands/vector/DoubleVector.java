@@ -1,15 +1,22 @@
-package zhao.algorithmMagic.operands;
+package zhao.algorithmMagic.operands.vector;
 
 import zhao.algorithmMagic.exception.AlgorithmMagicException;
 import zhao.algorithmMagic.exception.OperatorOperationException;
+import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateMany;
+import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateThree;
+import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo;
 import zhao.algorithmMagic.utils.ASMath;
 
 import java.util.Arrays;
 
 /**
  * Java类于 2022/10/9 18:50:31 创建
+ * <p>
+ * 浮点向量,其中的每一个序列元素都是Double类型的数值
+ * <p>
+ * A floating-point vector, where each sequence element is a value of type Double
  *
- * @author 4
+ * @author zhao
  */
 public class DoubleVector extends Vector<DoubleVector, Double> {
 

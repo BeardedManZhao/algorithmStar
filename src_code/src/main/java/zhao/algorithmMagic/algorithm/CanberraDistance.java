@@ -2,9 +2,9 @@ package zhao.algorithmMagic.algorithm;
 
 import org.apache.log4j.Logger;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
-import zhao.algorithmMagic.operands.DoubleVector;
-import zhao.algorithmMagic.operands.FloatingPointCoordinates;
-import zhao.algorithmMagic.operands.IntegerCoordinates;
+import zhao.algorithmMagic.operands.coordinate.FloatingPointCoordinates;
+import zhao.algorithmMagic.operands.coordinate.IntegerCoordinates;
+import zhao.algorithmMagic.operands.vector.DoubleVector;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASMath;
 
@@ -17,7 +17,7 @@ import zhao.algorithmMagic.utils.ASMath;
  *
  * @author zhao
  */
-public class CanberraDistance<I extends IntegerCoordinates<?>, D extends FloatingPointCoordinates<?>> implements OperationAlgorithm {
+public class CanberraDistance<I extends IntegerCoordinates<?>, D extends FloatingPointCoordinates<?>> implements DistanceAlgorithm {
 
     protected final Logger logger;
     protected final String AlgorithmName;
@@ -157,6 +157,7 @@ public class CanberraDistance<I extends IntegerCoordinates<?>, D extends Floatin
      * <p>
      * The shortest distance between the start point and end point coordinates in the vector
      */
+    @Override
     public double getTrueDistance(DoubleVector doubleVector) {
         logger.info("ⁿ∑₁ (doubleVector(n))");
         double res = 0;

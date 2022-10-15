@@ -1,6 +1,7 @@
-package zhao.algorithmMagic.operands;
+package zhao.algorithmMagic.operands.matrix;
 
 import zhao.algorithmMagic.exception.OperatorOperationException;
+import zhao.algorithmMagic.operands.ComplexNumber;
 import zhao.algorithmMagic.utils.ASMath;
 
 import java.util.Arrays;
@@ -9,8 +10,10 @@ import java.util.Arrays;
  * Java类于 2022/10/12 17:32:56 创建
  * <p>
  * 复数矩阵，该矩阵中的所有序列都是复数，您可以在这里进行有关复数的矩阵运算操作！
+ * <p>
+ * A matrix of complex numbers, where all sequences in this matrix are complex numbers, where you can perform matrix operations on complex numbers!
  *
- * @author 4
+ * @author zhao
  */
 public class ComplexNumberMatrix extends Matrix<ComplexNumberMatrix, ComplexNumber> {
 
@@ -153,12 +156,12 @@ public class ComplexNumberMatrix extends Matrix<ComplexNumberMatrix, ComplexNumb
     }
 
     /**
-     * 计算该向量的模长，具体实现请参阅api说明
+     * 计算该矩阵的模长，具体实现请参阅api说明
      * <p>
      * Calculate the modulo length of the vector, please refer to the api node for the specific implementation
      *
-     * @return 向量的模长
-     * @apiNote waiting to be realized
+     * @return 复数矩阵的模长
+     * @apiNote 矩阵的模长
      */
     @Override
     public ComplexNumber moduleLength() {
@@ -182,7 +185,7 @@ public class ComplexNumberMatrix extends Matrix<ComplexNumberMatrix, ComplexNumb
      *
      * @param matrix 被做乘的向量
      * @return 向量的外积
-     * @apiNote waiting to be realized
+     * @apiNote 矩阵每一个向量的外积
      */
     @Override
     public ComplexNumberMatrix multiply(ComplexNumberMatrix matrix) {
@@ -218,7 +221,7 @@ public class ComplexNumberMatrix extends Matrix<ComplexNumberMatrix, ComplexNumb
      *               <p>
      *               the second computed vector object
      * @return 两个向量的内积
-     * @apiNote waiting to be realized
+     * @apiNote 矩阵每一个向量的内积
      */
     @Override
     public ComplexNumber innerProduct(ComplexNumberMatrix vector) {

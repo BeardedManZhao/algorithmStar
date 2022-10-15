@@ -2,8 +2,9 @@ package zhao.algorithmMagic.algorithm;
 
 import org.apache.log4j.Logger;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
-import zhao.algorithmMagic.operands.FloatingPointCoordinates;
-import zhao.algorithmMagic.operands.IntegerCoordinates;
+import zhao.algorithmMagic.operands.coordinate.FloatingPointCoordinates;
+import zhao.algorithmMagic.operands.coordinate.IntegerCoordinates;
+import zhao.algorithmMagic.operands.vector.DoubleVector;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASMath;
 
@@ -26,7 +27,7 @@ import zhao.algorithmMagic.utils.ASMath;
  *            The type of floating-point coordinates involved in the operation in this class. You need to specify the floating-point coordinates that this class can operate on.
  * @author LingYuZhao
  */
-public class EuclideanMetric<I extends IntegerCoordinates<?>, D extends FloatingPointCoordinates<?>> implements OperationAlgorithm {
+public class EuclideanMetric<I extends IntegerCoordinates<?>, D extends FloatingPointCoordinates<?>> implements DistanceAlgorithm {
     protected final Logger logger;
     protected final String AlgorithmName;
 
@@ -71,6 +72,29 @@ public class EuclideanMetric<I extends IntegerCoordinates<?>, D extends Floating
     @Override
     public String getAlgorithmName() {
         return this.AlgorithmName;
+    }
+
+    /**
+     * 使用一个向量计算真实距离，具体实现请参阅 api node
+     * <p>
+     * Use a vector to calculate the true distance, see the api node for the specific implementation
+     *
+     * @param doubleVector 被计算的向量
+     *                     <p>
+     *                     Calculated vector
+     * @return 该向量始末坐标的欧几里德距离
+     * @apiNote 将函数做了一个变换, 使其能够兼容向量的计算, 欧几里德其本身就是始末坐标的差值进行的计算
+     * <p>
+     * The function is transformed to make it compatible with the calculation of vectors. Euclid itself is the calculation of the difference between the beginning and end coordinates.
+     */
+    @Override
+    public double getTrueDistance(DoubleVector doubleVector) {
+        double res = 0;
+        logger.info("√ ⁿ∑₁( coordinate² )");
+        for (double v : doubleVector.toArray()) {
+            res += ASMath.Power2(v);
+        }
+        return Math.sqrt(res);
     }
 
     /**

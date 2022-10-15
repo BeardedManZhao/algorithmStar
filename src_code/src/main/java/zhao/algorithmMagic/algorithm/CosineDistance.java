@@ -2,7 +2,8 @@ package zhao.algorithmMagic.algorithm;
 
 import org.apache.log4j.Logger;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
-import zhao.algorithmMagic.operands.Vector;
+import zhao.algorithmMagic.operands.vector.DoubleVector;
+import zhao.algorithmMagic.operands.vector.Vector;
 import zhao.algorithmMagic.utils.ASClass;
 
 /**
@@ -20,7 +21,7 @@ import zhao.algorithmMagic.utils.ASClass;
  *            The class object type that participates in the operation of this algorithm
  * @author zhao
  */
-public class CosineDistance<V extends Vector<?, ?>> implements OperationAlgorithm {
+public class CosineDistance<V extends Vector<?, ?>> implements DistanceAlgorithm {
     protected final Logger logger;
     protected final String AlgorithmName;
 
@@ -65,6 +66,25 @@ public class CosineDistance<V extends Vector<?, ?>> implements OperationAlgorith
     @Override
     public String getAlgorithmName() {
         return AlgorithmName;
+    }
+
+    /**
+     * 使用一个向量计算真实距离，具体实现请参阅 api node
+     * <p>
+     * Use a vector to calculate the true distance, see the api node for the specific implementation
+     *
+     * @param doubleVector 被计算的向量
+     *                     <p>
+     *                     Calculated vector
+     * @return 该向量与同等长度0填充向量的夹角余弦值，不推荐使用，您应该使用"getCos"
+     * @deprecated 余弦距离中是两个向量之间的计算，因此该方法的调用会产生一些意外的结果，请您调用"getCos"
+     */
+    @Override
+    @Deprecated
+    public double getTrueDistance(DoubleVector doubleVector) {
+        Double aDouble = doubleVector.innerProduct(DoubleVector.parse(new double[doubleVector.getNumberOfDimensions()]));
+        logger.info(aDouble + " / ( " + doubleVector + " * " + doubleVector + " )");
+        return aDouble / (doubleVector.moduleLength() * 0);
     }
 
     /**

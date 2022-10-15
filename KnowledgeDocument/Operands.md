@@ -217,40 +217,40 @@ import zhao.algorithmMagic.operands.DoubleMatrix;
 
 public class MAIN1 {
     public static void main(String[] args) {
-        // 通过数组构建一个浮点数值矩阵
+        // Build a matrix of floating point values from an array
         DoubleMatrix parse1 = DoubleMatrix.parse(new double[]{1, 2, 3}, new double[]{4, 5, 6});
         DoubleMatrix parse2 = DoubleMatrix.parse(new double[]{7, 8, 9}, new double[]{10, 11, 12});
-        // 计算矩阵
+        // Computational matrix
         DoubleMatrix add = parse1.add(parse2);
         DoubleMatrix diff = parse1.diff(parse2);
         DoubleMatrix multiply = parse1.multiply(parse2);
         Double complexNumber = parse1.innerProduct(parse2);
-        // 通过行列值 获取矩阵数据
+        // Get matrix data by row and column values
         double v = parse1.get(1, 2);
-        // 直接打印矩阵
+        // print matrix directly
         System.out.println(parse1);
 
         //----------------------------------------------------------//
 
-        // 通过复数公式构建一个复数矩阵，其中每一个数组就是矩阵的一行
+        // Construct a matrix of complex numbers by complex formula, where each array is a row of the matrix
         ComplexNumberMatrix parse11 = ComplexNumberMatrix.parse(
                 new String[]{"1 + 2i", "3 + 4i"}, new String[]{"5 - 6i", "7 - 8i"}
         );
-        // 通过复数对象构建一个复数矩阵，其中每一个数组就是矩阵的一行
+        // Constructs a complex matrix from complex objects, where each array is a row of the matrix
         ComplexNumberMatrix parse22 = ComplexNumberMatrix.parse(
                 new ComplexNumber[]{ComplexNumber.parse(1, 2), ComplexNumber.parse(3, 4)},
                 new ComplexNumber[]{ComplexNumber.parse(5, -6), ComplexNumber.parse(7, -8)}
         );
-        // 计算矩阵
+        // Computational matrix
         ComplexNumberMatrix add1 = parse11.add(parse22);
         ComplexNumberMatrix diff1 = parse11.diff(parse22);
         ComplexNumberMatrix multiply1 = parse11.multiply(parse22);
         ComplexNumber complexNumber1 = parse11.innerProduct(parse22);
-        // 复数矩阵的特有运算 共轭
+        // Unique operations on complex matrices Conjugate
         ComplexNumberMatrix conjugate = parse11.conjugate();
-        // 通过行列值 获取矩阵数据
+        // Get matrix data by row and column values
         ComplexNumber complexNumber2 = parse11.get(1, 2);
-        // 直接打印矩阵
+        // print matrix directly
         System.out.println(parse11);
     }
 }
@@ -258,8 +258,7 @@ public class MAIN1 {
 
 ## ComplexNumber
 
-如您所示，矩阵中的共轭运算需要使用到复数矩阵，那么复数矩阵的组成正式由复数组成的，复数的父类继承中同样也包含"Operands",意味着复数也可以支持像操作符那样进行加减等操作，下面就是具体示例！
-
+As you can see, the conjugate operation in the matrix needs to use the complex number matrix, then the composition of the complex number matrix is officially composed of complex numbers, and the parent class inheritance of complex numbers also includes "Operands", which means that complex numbers can also support operators like In that way, operations such as addition and subtraction are performed, and the following is a specific example!
 ```java
 // Java api
 
@@ -288,4 +287,4 @@ public class MAIN1 {
 - 切换到 [中文文档](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Operands-Chinese.md)
 <hr>
 
-#### date:2022-10-13
+#### date: 2022-10-15

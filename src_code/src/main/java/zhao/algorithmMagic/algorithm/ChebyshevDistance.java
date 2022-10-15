@@ -2,9 +2,9 @@ package zhao.algorithmMagic.algorithm;
 
 import org.apache.log4j.Logger;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
-import zhao.algorithmMagic.operands.DoubleVector;
-import zhao.algorithmMagic.operands.FloatingPointCoordinates;
-import zhao.algorithmMagic.operands.IntegerCoordinates;
+import zhao.algorithmMagic.operands.coordinate.FloatingPointCoordinates;
+import zhao.algorithmMagic.operands.coordinate.IntegerCoordinates;
+import zhao.algorithmMagic.operands.vector.DoubleVector;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASMath;
 
@@ -24,7 +24,7 @@ import zhao.algorithmMagic.utils.ASMath;
  *            The type of floating-point coordinates involved in the operation in this class. You need to specify the floating-point coordinates that this class can operate on.
  * @author LingYuZhao
  */
-public class ChebyshevDistance<I extends IntegerCoordinates<?>, D extends FloatingPointCoordinates<?>> implements OperationAlgorithm {
+public class ChebyshevDistance<I extends IntegerCoordinates<?>, D extends FloatingPointCoordinates<?>> implements DistanceAlgorithm {
 
     protected final Logger logger;
     protected final String AlgorithmName;
@@ -182,6 +182,7 @@ public class ChebyshevDistance<I extends IntegerCoordinates<?>, D extends Floati
      * <p>
      * The shortest distance between the start point and end point coordinates in the vector
      */
+    @Override
     public double getTrueDistance(DoubleVector doubleVector) {
         double res = 0;
         for (double d : doubleVector.toArray()) {

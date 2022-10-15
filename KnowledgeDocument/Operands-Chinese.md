@@ -244,7 +244,7 @@ public class MAIN1 {
 
 ## 复数
 
-如您所示，矩阵中的共轭运算需要使用到复数矩阵，那么复数矩阵的组成正式由复数组成的，复数的父类继承中同样也包含"Operands",意味着复数也可以支持像操作符那样进行加减等操作，下面就是具体示例！
+如您所见，矩阵中的共轭运算需要使用到复数矩阵，那么复数矩阵的组成正式由复数组成的，复数的父类继承中同样也包含"Operands",意味着复数也可以支持像操作符那样进行加减等操作，下面就是具体示例！
 
 ```java
 // Java api
@@ -274,4 +274,4 @@ public class MAIN1 {
 - Switch to [English Document](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Operands.md)
 <hr>
 
-#### date:2022-10-13
+#### date: 2022-10-15

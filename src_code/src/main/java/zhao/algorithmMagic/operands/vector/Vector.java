@@ -1,4 +1,6 @@
-package zhao.algorithmMagic.operands;
+package zhao.algorithmMagic.operands.vector;
+
+import zhao.algorithmMagic.operands.Operands;
 
 /**
  * 向量的抽象类，其中包含一个向量的数据容器，以及向量的基本运算函数，这个向量中数值的类型等待实现，具体请参阅API说明。

@@ -1,4 +1,4 @@
-package zhao.algorithmMagic.operands;
+package zhao.algorithmMagic.operands.coordinate;
 
 import zhao.algorithmMagic.exception.OperatorOperationException;
 
@@ -6,20 +6,21 @@ import java.util.Arrays;
 
 /**
  * Java类于 2022/10/10 12:51:29 创建
- * Double类型的多维坐标，该坐标点的每一个坐标轴数值都是double类型，该坐标点是一个final，如果您需要实现一个属于您自己的坐标，您可以实现"FloatingPointCoordinates"接口。
  * <p>
- * Many-dimensional coordinates of type Double, each axis value of the coordinate point is of type double, the coordinate point is a final, if you need to implement a coordinate of your own, you can implement the "Floating Point Coordinates" interface.
+ * 整数类型的多维坐标，该坐标点的每一个坐标轴数值都是整数类型，该坐标点是一个final，如果您需要实现一个属于您自己的坐标，您可以实现"IntegerCoordinates"接口。
+ * <p>
+ * Many-dimensional coordinates of integer type, each axis value of the coordinate point is of integer type, the coordinate point is a final, if you need to implement your own coordinates, you can implement the "Integer Coordinates" interface.
  *
- * @author zhao
+ * @author 4
  */
-public final class DoubleCoordinateMany implements FloatingPointCoordinates<DoubleCoordinateMany> {
+public final class IntegerCoordinateMany implements IntegerCoordinates<IntegerCoordinateMany> {
 
-    private final double[] coordinate;
+    private final int[] coordinate;
 
     /**
      * @param coordinate 一个多维坐标
      */
-    public DoubleCoordinateMany(double... coordinate) {
+    public IntegerCoordinateMany(int... coordinate) {
         this.coordinate = coordinate;
     }
 
@@ -32,15 +33,17 @@ public final class DoubleCoordinateMany implements FloatingPointCoordinates<Doub
     }
 
     @Override
-    public double[] toArray() {
+    public int[] toArray() {
         return coordinate;
     }
 
     /**
-     * @return 该类的实现类对象，用于拓展该接口的子类
+     * @return 该类的实现类对象，用于拓展该接口成为其子类，这里一般只需要返回实现类对象即可。
+     * <p>
+     * The implementation class object of this class is used to expand the interface to become its subclass. Generally, only the implementation class object needs to be returned here.
      */
     @Override
-    public DoubleCoordinateMany expand() {
+    public IntegerCoordinateMany expand() {
         return this;
     }
 
@@ -51,17 +54,19 @@ public final class DoubleCoordinateMany implements FloatingPointCoordinates<Doub
      *
      * @param value 被求和的参数  Parameters to be summed
      * @return 求和之后的数值  the value after the sum
-     * @apiNote There is no description for the super interface, please refer to the subclass documentation
+     * @apiNote 两个坐标之间的每一个轴的数据之和
+     * <p>
+     * Sum of data for each axis between two coordinates
      */
     @Override
-    public DoubleCoordinateMany add(DoubleCoordinateMany value) {
+    public IntegerCoordinateMany add(IntegerCoordinateMany value) {
         if (this.getNumberOfDimensions() == value.getNumberOfDimensions()) {
-            double[] res = new double[this.getNumberOfDimensions()];
-            double[] coordinate = value.toArray();
+            int[] res = new int[this.getNumberOfDimensions()];
+            int[] coordinate = value.toArray();
             for (int n = 0; n < this.coordinate.length; n++) {
                 res[n] = this.coordinate[n] + coordinate[n];
             }
-            return new DoubleCoordinateMany(res);
+            return new IntegerCoordinateMany(res);
         } else {
             throw new OperatorOperationException("'DoubleCoordinateMany1 add DoubleCoordinateMany2' 的时候发生了错误，两个坐标的维度数量不同！\n" +
                     "An error occurred when 'DoubleCoordinateMany1 add DoubleCoordinateMany2', the two coordinates have different number of dimensions!\n" +
@@ -76,17 +81,19 @@ public final class DoubleCoordinateMany implements FloatingPointCoordinates<Doub
      *
      * @param value 被做差的参数（被减数）  The parameter to be subtracted (minuend)
      * @return 差异数值  difference value
-     * @apiNote There is no description for the super interface, please refer to the subclass documentation
+     * @apiNote 两个坐标之间的每一个轴的数据之和
+     * <p>
+     * diff of data for each axis between two coordinates
      */
     @Override
-    public DoubleCoordinateMany diff(DoubleCoordinateMany value) {
+    public IntegerCoordinateMany diff(IntegerCoordinateMany value) {
         if (this.getNumberOfDimensions() == value.getNumberOfDimensions()) {
-            double[] res = new double[this.getNumberOfDimensions()];
-            double[] coordinate = value.toArray();
+            int[] res = new int[this.getNumberOfDimensions()];
+            int[] coordinate = value.toArray();
             for (int n = 0; n < this.coordinate.length; n++) {
                 res[n] = this.coordinate[n] - coordinate[n];
             }
-            return new DoubleCoordinateMany(res);
+            return new IntegerCoordinateMany(res);
         } else {
             throw new OperatorOperationException("'DoubleCoordinateMany1 diff DoubleCoordinateMany2' 的时候发生了错误，两个坐标的维度数量不同！\n" +
                     "An error occurred when 'DoubleCoordinateMany1 add DoubleCoordinateMany2', the two coordinates have different number of dimensions!\n" +
@@ -96,6 +103,6 @@ public final class DoubleCoordinateMany implements FloatingPointCoordinates<Doub
 
     @Override
     public String toString() {
-        return "(DoubleCoordinateMany=" + Arrays.toString(coordinate) + ")";
+        return "(IntegerCoordinateMany=" + Arrays.toString(coordinate) + ")";
     }
 }
