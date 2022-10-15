@@ -18,8 +18,12 @@
   <img src = "https://user-images.githubusercontent.com/113756063/195589177-2f603208-9cb0-45f9-b97e-cec94476abb9.png"/>
   </a>
 
-### API Usage Document
+[//]: # (### API Usage Document)
 
-  <a href="https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/API%20Usage%20Document.md">
-  <img src = "https://user-images.githubusercontent.com/113756063/195578563-109b5535-9bbb-4846-bbeb-7d40637a586d.png"/>
-  </a>
+[//]: # ()
+
+[//]: # (  <a href="https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/API%20Usage%20Document.md">)
+
+[//]: # (  <img src = "https://user-images.githubusercontent.com/113756063/195578563-109b5535-9bbb-4846-bbeb-7d40637a586d.png"/>)
+
+[//]: # (  </a>)

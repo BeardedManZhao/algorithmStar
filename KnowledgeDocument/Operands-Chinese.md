@@ -5,7 +5,7 @@
 操作数就是可以被操作的数，在本框架的设计中，考虑到学习成本等因素，将操作符设计为数学操作符那样，可以进行运算符号的操作，这样更加易于理解，还可以减少您在开发时调用本框架的代码量！
 
 - 操作数模块类图（部分）
-![image](https://user-images.githubusercontent.com/113756063/195615625-880cdabc-ce61-4f90-b27c-0ba71c25a150.png)
+  ![image](https://user-images.githubusercontent.com/113756063/195615625-880cdabc-ce61-4f90-b27c-0ba71c25a150.png)
 
 ## 坐标
 
@@ -272,6 +272,7 @@ public class MAIN1 {
 ```
 
 - Switch to [English Document](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Operands.md)
+
 <hr>
 
 #### date: 2022-10-15

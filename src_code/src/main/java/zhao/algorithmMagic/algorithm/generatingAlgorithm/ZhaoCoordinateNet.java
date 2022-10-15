@@ -105,6 +105,8 @@ public class ZhaoCoordinateNet implements GeneratingAlgorithm {
 
     /**
      * @return 所有和该点有关的血亲坐标
+     *
+     * All blood relative coordinates related to this point
      */
     public List<DoubleConsanguinityRoute> getConsanguinity(DoubleConsanguinityRoute doubleConsanguinityRoute) {
         ArrayList<DoubleConsanguinityRoute> arrayList = new ArrayList<>();

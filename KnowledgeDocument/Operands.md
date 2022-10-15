@@ -7,7 +7,7 @@ learning costs, the operators are designed as mathematical operators, which can 
 understand and reduces your The amount of code that calls this framework during development!
 
 - Operand Module Class Diagram (part)
-![image](https://user-images.githubusercontent.com/113756063/195615625-880cdabc-ce61-4f90-b27c-0ba71c25a150.png)
+  ![image](https://user-images.githubusercontent.com/113756063/195615625-880cdabc-ce61-4f90-b27c-0ba71c25a150.png)
 
 ## coordinate
 
@@ -258,7 +258,11 @@ public class MAIN1 {
 
 ## ComplexNumber
 
-As you can see, the conjugate operation in the matrix needs to use the complex number matrix, then the composition of the complex number matrix is officially composed of complex numbers, and the parent class inheritance of complex numbers also includes "Operands", which means that complex numbers can also support operators like In that way, operations such as addition and subtraction are performed, and the following is a specific example!
+As you can see, the conjugate operation in the matrix needs to use the complex number matrix, then the composition of
+the complex number matrix is officially composed of complex numbers, and the parent class inheritance of complex numbers
+also includes "Operands", which means that complex numbers can also support operators like In that way, operations such
+as addition and subtraction are performed, and the following is a specific example!
+
 ```java
 // Java api
 
@@ -285,6 +289,7 @@ public class MAIN1 {
 ```
 
 - 切换到 [中文文档](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Operands-Chinese.md)
+
 <hr>
 
 #### date: 2022-10-15
