@@ -47,7 +47,7 @@ public class MAIN1 {
 
 ### Difference algorithm
 
-顾名思义就是比较两个值之间的差异，在这里比较具有代表性的就是汉明，它能够将两者之间的差异通过异或计算出来，对于统计不同之处的具体数量的需求，性能优秀！
+As the name implies, it is to compare the differences between two values. Hanming is a typical one here. It can calculate the differences between the two by XOR, and has excellent performance for counting the specific quantity of differences!
 
 ```java
 import zhao.algorithmMagic.algorithm.HammingDistance;
