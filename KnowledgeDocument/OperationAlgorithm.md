@@ -10,15 +10,14 @@ algorithm, etc.
 
 In the example on the homepage of the framework, it is an implementation of a generation algorithm. The coordinates are
 provided to the algorithm, and the algorithm automatically predicts and generates relevant personnel contact data, and
-the integrator processes the results of the algorithm. The general process is as follows.
-![]()
+the integrator processes the results of the algorithm.
 
 ## API usage
 
 There are many algorithms in the framework, and different algorithms have different effects. Several representative
 algorithms are selected for demonstration below. The use of other algorithms is not much different. Some of the
 architecture diagrams in the algorithm module are shown below.
-![]()
+![image](https://user-images.githubusercontent.com/113756063/195986247-5f3c65ec-27f8-4149-8349-ccca0f29766d.png)
 
 ### distance algorithm
 
