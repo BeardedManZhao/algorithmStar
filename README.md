@@ -76,7 +76,7 @@ public class MAIN1 {
 }
 ```
 - The relationship network picture generated after running
-  ![]()
+  ![image](https://user-images.githubusercontent.com/113756063/195981317-e40194a8-474a-4de7-9bfd-84ac40b66d15.png)
 
 # directory structure
 
