@@ -1,4 +1,6 @@
-package zhao.algorithmMagic.algorithm;
+package zhao.algorithmMagic.algorithm.differenceAlgorithm;
+
+import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 
 /**
  * 计算两个非向量等事物的差异的算法

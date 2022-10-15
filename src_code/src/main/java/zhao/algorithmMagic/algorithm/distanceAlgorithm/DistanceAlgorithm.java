@@ -1,5 +1,6 @@
-package zhao.algorithmMagic.algorithm;
+package zhao.algorithmMagic.algorithm.distanceAlgorithm;
 
+import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.operands.vector.DoubleVector;
 
 /**

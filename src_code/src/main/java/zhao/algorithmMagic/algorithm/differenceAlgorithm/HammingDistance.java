@@ -1,6 +1,9 @@
-package zhao.algorithmMagic.algorithm;
+package zhao.algorithmMagic.algorithm.differenceAlgorithm;
 
 import org.apache.log4j.Logger;
+import zhao.algorithmMagic.algorithm.OperationAlgorithm;
+import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
+import zhao.algorithmMagic.algorithm.distanceAlgorithm.EuclideanMetric;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
 import zhao.algorithmMagic.operands.coordinate.FloatingPointCoordinates;

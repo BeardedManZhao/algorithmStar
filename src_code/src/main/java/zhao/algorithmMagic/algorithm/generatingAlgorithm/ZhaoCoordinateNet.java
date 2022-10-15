@@ -1,6 +1,8 @@
-package zhao.algorithmMagic.algorithm;
+package zhao.algorithmMagic.algorithm.generatingAlgorithm;
 
 import org.apache.log4j.Logger;
+import zhao.algorithmMagic.algorithm.OperationAlgorithm;
+import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
 import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute;
 import zhao.algorithmMagic.utils.ASClass;
@@ -18,18 +20,18 @@ import java.util.List;
  *
  * @author zhao
  */
-public class LingYuZhaoCoordinateNet implements GeneratingAlgorithm {
+public class ZhaoCoordinateNet implements GeneratingAlgorithm {
 
     protected final Logger logger;
     protected final String AlgorithmName;
     private final HashMap<String, DoubleConsanguinityRoute> stringDoubleConsanguinityCoordinateHashMap = new HashMap<>();
 
-    protected LingYuZhaoCoordinateNet() {
+    protected ZhaoCoordinateNet() {
         this.AlgorithmName = "CosineDistance";
         this.logger = Logger.getLogger("CosineDistance");
     }
 
-    protected LingYuZhaoCoordinateNet(String AlgorithmName) {
+    protected ZhaoCoordinateNet(String AlgorithmName) {
         this.logger = Logger.getLogger(AlgorithmName);
         this.AlgorithmName = AlgorithmName;
     }
@@ -45,19 +47,19 @@ public class LingYuZhaoCoordinateNet implements GeneratingAlgorithm {
      *                                    <p>
      *                                    An exception will be thrown when the component corresponding to the algorithm name you passed in cannot be successfully extracted
      */
-    public static LingYuZhaoCoordinateNet getInstance(String Name) {
+    public static ZhaoCoordinateNet getInstance(String Name) {
         if (OperationAlgorithmManager.containsAlgorithmName(Name)) {
             OperationAlgorithm operationAlgorithm = OperationAlgorithmManager.getInstance().get(Name);
-            if (operationAlgorithm instanceof LingYuZhaoCoordinateNet) {
+            if (operationAlgorithm instanceof ZhaoCoordinateNet) {
                 return ASClass.transform(operationAlgorithm);
             } else {
-                throw new TargetNotRealizedException("您提取的[" + Name + "]算法被找到了，但是它不属于 LingYuZhaoCoordinateNet 类型，请您为这个算法重新定义一个名称。\n" +
-                        "The [" + Name + "] algorithm you ParameterCombination has been found, but it does not belong to the LingYuZhaoCoordinateNet type. Please redefine a name for this algorithm.");
+                throw new TargetNotRealizedException("您提取的[" + Name + "]算法被找到了，但是它不属于 ZhaoCoordinateNet 类型，请您为这个算法重新定义一个名称。\n" +
+                        "The [" + Name + "] algorithm you ParameterCombination has been found, but it does not belong to the ZhaoCoordinateNet type. Please redefine a name for this algorithm.");
             }
         } else {
-            LingYuZhaoCoordinateNet lingYuZhaoCoordinateNet = new LingYuZhaoCoordinateNet(Name);
-            OperationAlgorithmManager.getInstance().register(lingYuZhaoCoordinateNet);
-            return lingYuZhaoCoordinateNet;
+            ZhaoCoordinateNet zhaoCoordinateNet = new ZhaoCoordinateNet(Name);
+            OperationAlgorithmManager.getInstance().register(zhaoCoordinateNet);
+            return zhaoCoordinateNet;
         }
     }
 

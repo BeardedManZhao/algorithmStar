@@ -1,5 +1,7 @@
-package zhao.algorithmMagic.algorithm;
+package zhao.algorithmMagic.algorithm.distanceAlgorithm;
 
+import zhao.algorithmMagic.algorithm.OperationAlgorithm;
+import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.algorithm.normalization.Z_ScoreNormalization;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
 import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateMany;

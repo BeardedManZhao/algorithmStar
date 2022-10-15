@@ -1,6 +1,8 @@
-package zhao.algorithmMagic.algorithm;
+package zhao.algorithmMagic.algorithm.distanceAlgorithm;
 
 import org.apache.log4j.Logger;
+import zhao.algorithmMagic.algorithm.OperationAlgorithm;
+import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
 import zhao.algorithmMagic.operands.vector.DoubleVector;
 import zhao.algorithmMagic.operands.vector.Vector;

@@ -1,8 +1,8 @@
 package zhao.algorithmMagic.Integrator;
 
-import zhao.algorithmMagic.algorithm.GeneratingAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
+import zhao.algorithmMagic.algorithm.generatingAlgorithm.GeneratingAlgorithm;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
 import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateMany;

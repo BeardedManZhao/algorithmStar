@@ -1,8 +1,8 @@
 package zhao.algorithmMagic.operands.route;
 
-import zhao.algorithmMagic.algorithm.DistanceAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
+import zhao.algorithmMagic.algorithm.distanceAlgorithm.DistanceAlgorithm;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateMany;
 import zhao.algorithmMagic.operands.vector.DoubleVector;

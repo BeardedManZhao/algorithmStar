@@ -1,5 +1,6 @@
-package zhao.algorithmMagic.algorithm;
+package zhao.algorithmMagic.algorithm.generatingAlgorithm;
 
+import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute;
 
 import java.util.HashMap;
