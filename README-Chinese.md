@@ -67,7 +67,7 @@ public class MAIN1 {
 
 ```
 - 运行之后产生的关系网络图片
-  ![]()
+  ![image](https://user-images.githubusercontent.com/113756063/195981317-e40194a8-474a-4de7-9bfd-84ac40b66d15.png)
 
 ### KnowledgeDocument
 
