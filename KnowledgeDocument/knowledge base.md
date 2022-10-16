@@ -20,6 +20,6 @@
 
 ### Integrators and Launcher
 
-  <a href="https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/API%20Usage%20Document.md">
-  <img src = "https://user-images.githubusercontent.com/113756063/195578563-109b5535-9bbb-4846-bbeb-7d40637a586d.png"/>
+  <a href="https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Integrators%20and%20initiators.md">
+  <img src = "https://user-images.githubusercontent.com/113756063/196027481-11adabc3-35e4-44cd-86df-8eb5d70a151f.png"/>
   </a>
