@@ -20,6 +20,6 @@
 
 ### 集成器与启动器
 
-  <a href="https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/API%20Usage%20Document-Chinese.md">
-  <img src = "https://user-images.githubusercontent.com/113756063/195589613-8ed410a8-b90b-4fc5-a296-069a31b69cc5.png"/>
+  <a href="https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Integrators%20and%20initiators-Chinese.md">
+  <img src = "https://user-images.githubusercontent.com/113756063/196027511-91504261-576c-4d6f-8fa1-fd7c61874e86.png"/>
   </a>
