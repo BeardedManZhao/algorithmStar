@@ -1,6 +1,6 @@
 # Integrators and initiators-Chinese
 
-- 切换至 [中文文档]()
+- 切换至 [中文文档](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Integrators%20and%20initiators-Chinese.md)
 
 ## introduce
 
@@ -17,7 +17,7 @@ of each integrator is "Algorithm Integrator", and each Integrators should provid
 for the user to implement the interface, the integrator can be used!
 
 The following is the flow chart of the operation of the integrator!
-![]()
+![image](https://user-images.githubusercontent.com/113756063/196027438-45762036-4fa3-4e7c-89da-08ebb398ff88.png)
 
 ## Launcher
 
@@ -122,4 +122,4 @@ public class MAIN1 {
 
 ```
 
-- 切换至 [中文文档]()
+- 切换至 [中文文档](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Integrators%20and%20initiators-Chinese.md)
