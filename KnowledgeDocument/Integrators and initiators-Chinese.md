@@ -1,6 +1,6 @@
 # 集成器与启动器
 
-- Switch to [English Document]()
+- Switch to [English Document](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Integrators%20and%20initiators.md)
 
 ## 介绍
 
@@ -11,7 +11,7 @@
 集成器中就是针对算法的内部使用，旨在简化用户对于算法的调用过程，也可以帮助用户完全的隔离算法之间的互相搭配，每一个集成器的父类是“AlgorithmIntegrator”，同时每一个集成器都应提供一个启动器接口，等待用户实现该接口之后，就可以使用该集成器！
 
 下面是集成器的运行流程图！
-![]()
+![image](https://user-images.githubusercontent.com/113756063/196027432-47439ec3-622e-4bd9-9524-abe97cde928e.png)
 
 ## 启动器
 
@@ -111,4 +111,4 @@ public class MAIN1 {
 
 ```
 
-- Switch to [English Document]()
+- Switch to [English Document](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Integrators%20and%20initiators.md)
