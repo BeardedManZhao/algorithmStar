@@ -91,9 +91,9 @@ public class MAIN1 {
 是我开发的一种新算法，主要用来自动解析坐标与坐标之间的联系，如果有可能的话，新增一个坐标就会生成一些有关的新联系，主页中使用这个算法进行了一个人与人之间的关系推断！
 
 ```java
-import zhao.algorithmMagic.algorithm.ZhaoCoordinateNet;
-import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateMany;
-import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute;
+import zhao.algorithmMagic.algorithm.generatingAlgorithm.ZhaoCoordinatenet2D;
+import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo;
+import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute2D;
 
 /**
  * 示例代码文件
@@ -101,23 +101,23 @@ import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute;
 public class MAIN1 {
     public static void main(String[] args) {
         // 构建A B C三个人的坐标
-        DoubleCoordinateMany A = new DoubleCoordinateMany(1, 0);
-        DoubleCoordinateMany B = new DoubleCoordinateMany(1, 3);
-        DoubleCoordinateMany C = new DoubleCoordinateMany(2, 5);
+        DoubleCoordinateTwo A = new DoubleCoordinateTwo(1, 0);
+        DoubleCoordinateTwo B = new DoubleCoordinateTwo(1, 3);
+        DoubleCoordinateTwo C = new DoubleCoordinateTwo(2, 5);
         // 获取到坐标网生成算法
-        ZhaoCoordinateNet l = ZhaoCoordinateNet.getInstance("L");
+        ZhaoCoordinatenet2D l = ZhaoCoordinatenet2D.getInstance("L");
         // 将 A 主动认识 B的关系添加到网络中
-        l.addRoute(DoubleConsanguinityRoute.parse("A -> B", A, B));
+        l.addRoute(DoubleConsanguinityRoute2D.parse("A -> B", A, B));
         // 将 A 主动认识 C的关系添加到网络中
-        l.addRoute(DoubleConsanguinityRoute.parse("A -> C", A, C));
+        l.addRoute(DoubleConsanguinityRoute2D.parse("A -> C", A, C));
         // A 主动认识 B 然后主动认识C 所以很有可能 B 认识了 C ，打印一下 B 指向 C的关系是否会生成
         System.out.println(l.get("B -> C"));
         // 打印一下 C 指向 B 的关系
         System.out.println(l.get("C -> B"));
         /*------------------------------------------------------------------------
                                         运行结果
-          B(DoubleCoordinateMany=[1.0, 3.0]) -> C(DoubleCoordinateMany=[2.0, 5.0])
-          null
+            B(1.0,3.0) -> C(2.0,5.0)
+            null
          ------------------------------------------------------------------------*/
     }
 }

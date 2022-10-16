@@ -18,12 +18,8 @@
   <img src = "https://user-images.githubusercontent.com/113756063/195589413-4f7e2bba-850c-49fa-92f0-dce659269156.png"/>
   </a>
 
-[//]: # (### API 使用文档)
+### 集成器与启动器
 
-[//]: # ()
-
-[//]: # (  <a href="https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/API%20Usage%20Document-Chinese.md">)
-
-[//]: # (  <img src = "https://user-images.githubusercontent.com/113756063/195589613-8ed410a8-b90b-4fc5-a296-069a31b69cc5.png"/>)
-
-[//]: # (  </a>)
+  <a href="https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/API%20Usage%20Document-Chinese.md">
+  <img src = "https://user-images.githubusercontent.com/113756063/195589613-8ed410a8-b90b-4fc5-a296-069a31b69cc5.png"/>
+  </a>

@@ -47,7 +47,9 @@ public class MAIN1 {
 
 ### Difference algorithm
 
-As the name implies, it is to compare the differences between two values. Hanming is a typical one here. It can calculate the differences between the two by XOR, and has excellent performance for counting the specific quantity of differences!
+As the name implies, it is to compare the differences between two values. Hanming is a typical one here. It can
+calculate the differences between the two by XOR, and has excellent performance for counting the specific quantity of
+differences!
 
 ```java
 import zhao.algorithmMagic.algorithm.HammingDistance;
@@ -100,9 +102,9 @@ and coordinates. If possible, adding a new coordinate will generate some related
 in the homepage to conduct a personal and Relationship between people inferred!
 
 ```java
-import zhao.algorithmMagic.algorithm.LingYuZhaoCoordinateNet;
-import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateMany;
-import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute;
+import zhao.algorithmMagic.algorithm.generatingAlgorithm.ZhaoCoordinatenet2D;
+import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo;
+import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute2D;
 
 /**
  * 示例代码文件
@@ -110,23 +112,23 @@ import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute;
 public class MAIN1 {
     public static void main(String[] args) {
         // Construct the coordinates of three persons A B C
-        DoubleCoordinateMany A = new DoubleCoordinateMany(1, 0);
-        DoubleCoordinateMany B = new DoubleCoordinateMany(1, 3);
-        DoubleCoordinateMany C = new DoubleCoordinateMany(2, 5);
+        DoubleCoordinateTwo A = new DoubleCoordinateTwo(1, 0);
+        DoubleCoordinateTwo B = new DoubleCoordinateTwo(1, 3);
+        DoubleCoordinateTwo C = new DoubleCoordinateTwo(2, 5);
         // Get the coordinate network generation algorithm
-        LingYuZhaoCoordinateNet l = LingYuZhaoCoordinateNet.getInstance("L");
+        ZhaoCoordinatenet2D l = ZhaoCoordinatenet2D.getInstance("L");
         // Add the relationship that A actively knows B to the network
-        l.addRoute(DoubleConsanguinityRoute.parse("A -> B", A, B));
+        l.addRoute(DoubleConsanguinityRoute2D.parse("A -> B", A, B));
         // Add the relationship that A actively knows C to the network
-        l.addRoute(DoubleConsanguinityRoute.parse("A -> C", A, C));
+        l.addRoute(DoubleConsanguinityRoute2D.parse("A -> C", A, C));
         // A takes the initiative to know B and then takes the initiative to know C, so it is very likely that B knows C, print whether the relationship between B and C will be generated
         System.out.println(l.get("B -> C"));
         // Print the relationship between C and B
         System.out.println(l.get("C -> B"));
         /*------------------------------------------------------------------------
                                         operation result
-          B(DoubleCoordinateMany=[1.0, 3.0]) -> C(DoubleCoordinateMany=[2.0, 5.0])
-          null
+            B(1.0,3.0) -> C(2.0,5.0)
+            null
          ------------------------------------------------------------------------*/
     }
 }

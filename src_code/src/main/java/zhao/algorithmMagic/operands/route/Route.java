@@ -16,7 +16,7 @@ import zhao.algorithmMagic.operands.vector.DoubleVector;
  *                             <p>
  *                             Coordinate type, representing the implementation class of the start and end coordinates.
  */
-public interface Route<ImplementationType, CoordinateType extends Coordinate<CoordinateType>> extends Operands<ImplementationType> {
+public interface Route<ImplementationType, CoordinateType extends Coordinate<?>> extends Operands<ImplementationType> {
 
     /**
      * @return 起始坐标对象
@@ -51,5 +51,5 @@ public interface Route<ImplementationType, CoordinateType extends Coordinate<Coo
      * <p>
      * Subclass implementation, a display function used to convert between parent class and subclass, just return this directly
      */
-    DoubleConsanguinityRoute expand();
+    ImplementationType expand();
 }

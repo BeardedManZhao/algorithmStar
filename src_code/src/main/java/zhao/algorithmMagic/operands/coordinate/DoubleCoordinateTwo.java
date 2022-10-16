@@ -9,7 +9,7 @@ package zhao.algorithmMagic.operands.coordinate;
  *
  * @author zhao
  */
-public final class DoubleCoordinateTwo implements FloatingPointCoordinates<DoubleCoordinateTwo> {
+public final class DoubleCoordinateTwo implements FloatingPointCoordinates<DoubleCoordinateTwo>, Coordinate2D<DoubleCoordinateTwo, Double> {
 
     private final double x;
     private final double y;
@@ -23,14 +23,6 @@ public final class DoubleCoordinateTwo implements FloatingPointCoordinates<Doubl
     public DoubleCoordinateTwo(double x, double y) {
         this.x = x;
         this.y = y;
-    }
-
-    public double getX() {
-        return x;
-    }
-
-    public double getY() {
-        return y;
     }
 
     /**
@@ -94,5 +86,25 @@ public final class DoubleCoordinateTwo implements FloatingPointCoordinates<Doubl
     @Override
     public DoubleCoordinateTwo expand() {
         return this;
+    }
+
+    /**
+     * @return X轴的数值
+     * <p>
+     * The value of the X axis
+     */
+    @Override
+    public Double getX() {
+        return this.x;
+    }
+
+    /**
+     * @return Y轴的数值
+     * <p>
+     * The value of the Y axis
+     */
+    @Override
+    public Double getY() {
+        return this.y;
     }
 }

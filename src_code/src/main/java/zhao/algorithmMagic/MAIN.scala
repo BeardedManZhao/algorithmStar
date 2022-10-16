@@ -1,10 +1,5 @@
 package zhao.algorithmMagic
 
-import zhao.algorithmMagic.Integrator.Route2DDrawingIntegrator
-import zhao.algorithmMagic.algorithm.generatingAlgorithm.ZhaoCoordinateNet
-import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateMany
-import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute
-
 /**
  * 示例代码文件
  */

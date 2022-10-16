@@ -19,12 +19,10 @@ Waiting
 ### API使用示例
 
 ```java
-package zhao.algorithmMagic;
-
 import zhao.algorithmMagic.Integrator.Route2DDrawingIntegrator;
-import zhao.algorithmMagic.algorithm.ZhaoCoordinateNet;
-import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateMany;
-import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute;
+import zhao.algorithmMagic.algorithm.generatingAlgorithm.ZhaoCoordinatenet2D;
+import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo;
+import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute2D;
 
 /**
  * 示例代码文件
@@ -32,23 +30,22 @@ import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute;
 public class MAIN1 {
     public static void main(String[] args) {
         // 构建人员坐标(二维)
-        DoubleCoordinateMany A = new DoubleCoordinateMany(10, 10);
-        DoubleCoordinateMany B = new DoubleCoordinateMany(-10, 4);
-        DoubleCoordinateMany C = new DoubleCoordinateMany(1, 0);
-        DoubleCoordinateMany E = new DoubleCoordinateMany(6, 1);
-        DoubleCoordinateMany Z = new DoubleCoordinateMany(1, 21);
+        DoubleCoordinateTwo A = new DoubleCoordinateTwo(10, 10);
+        DoubleCoordinateTwo B = new DoubleCoordinateTwo(-10, 4);
+        DoubleCoordinateTwo C = new DoubleCoordinateTwo(1, 0);
+        DoubleCoordinateTwo E = new DoubleCoordinateTwo(6, 1);
+        DoubleCoordinateTwo Z = new DoubleCoordinateTwo(1, 21);
 
         // 获取关系网络,该算法是我实现出来,用于推断人员关系网的,这里的名称您可以自定义,需要注意的是下面集成器的实例化需要您将该名称传进去
-        ZhaoCoordinateNet zhaoCoordinateNet = ZhaoCoordinateNet.getInstance("Z");
-        // 将人员的关系添加到关系网络中,请注意,该算法的关系网络已经包含了您的数据,所以您在下面集成其中一定要传入相同名称,以便集成器能获取到您算法中的临时网格数据
-        zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute.parse("A -> B", A, B));
-        zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute.parse("A -> C", A, C));
-        zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute.parse("E -> Z", E, Z));
-        zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute.parse("A -> Z", A, Z));
-        zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute.parse("B -> Z", B, Z));
+        ZhaoCoordinatenet2D zhaoCoordinateNet = ZhaoCoordinatenet2D.getInstance("Z");
+        zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute2D.parse("A -> B", A, B)); // Representing A takes the initiative to know B
+        zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute2D.parse("A -> C", A, C));
+        zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute2D.parse("E -> Z", E, Z));
+        zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute2D.parse("A -> Z", A, Z));
+        zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute2D.parse("B -> Z", B, Z));
 
         // 使用2维路线绘制集成器,输出上面所有人员之间的关系网络图片
-        Route2DDrawingIntegrator a = new Route2DDrawingIntegrator("Z", "A");
+        Route2DDrawingIntegrator a = new Route2DDrawingIntegrator("A", "Z");
         // 设置图片输出路径
         a.setImageOutPath("D:\\out\\image.jpg")
                 // 设置图片宽度
@@ -64,7 +61,6 @@ public class MAIN1 {
         zhaoCoordinateNet.clear();
     }
 }
-
 ```
 
 - 运行之后产生的关系网络图片
