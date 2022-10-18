@@ -8,10 +8,12 @@ import java.io.*;
 
 /**
  * Java类于 2022/10/15 14:43:22 创建
+ * <p>
+ * IO工具包
  *
- * @author 4
+ * @author zhao
  */
-public class ASIO {
+public final class ASIO {
 
     private final static Logger logger = Logger.getLogger("ASIO");
 

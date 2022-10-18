@@ -40,7 +40,7 @@ public final class DoubleCoordinateMany implements FloatingPointCoordinates<Doub
      * @return 该类的实现类对象，用于拓展该接口的子类
      */
     @Override
-    public DoubleCoordinateMany expand() {
+    public DoubleCoordinateMany extend() {
         return this;
     }
 

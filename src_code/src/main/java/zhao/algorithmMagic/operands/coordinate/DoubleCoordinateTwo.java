@@ -84,7 +84,7 @@ public final class DoubleCoordinateTwo implements FloatingPointCoordinates<Doubl
      * @return 该类的实现类对象，用于拓展该接口的子类
      */
     @Override
-    public DoubleCoordinateTwo expand() {
+    public DoubleCoordinateTwo extend() {
         return this;
     }
 

@@ -4,27 +4,27 @@ import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.algorithm.distanceAlgorithm.DistanceAlgorithm;
 import zhao.algorithmMagic.exception.OperatorOperationException;
-import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo;
+import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateMany;
 import zhao.algorithmMagic.operands.vector.DoubleVector;
 
 /**
- * Java类于 2022/10/16 12:56:44 创建
+ * Java类于 2022/10/15 09:49:48 创建
  * <p>
- * 血亲2维坐标路线，相较于多维坐标而言，这种坐标在计算时的性能更好，即使多维坐标也是两个维度的情况。
+ * 血亲坐标，记录了两个坐标之间的始末关系，提供两个坐标之间距离与向量的计算。
  * <p>
- * The 2-dimensional coordinate route of blood relatives has better performance in calculation than multidimensional coordinates, even if multidimensional coordinates are two-dimensional.
+ * The blood relative coordinates, which record the beginning and end relationship between the two coordinates, provide the calculation of the distance and the vector between the two coordinates.
  *
  * @author zhao
  */
-public class DoubleConsanguinityRoute2D implements Route2D<DoubleConsanguinityRoute2D, DoubleCoordinateTwo>, NameRoute<DoubleConsanguinityRoute2D, DoubleCoordinateTwo> {
+public class IntegerConsanguinityRoute implements NameRoute<IntegerConsanguinityRoute, IntegerCoordinateMany> {
 
     private final String StartingCoordinateName;
     private final String EndPointCoordinateName;
-    private final DoubleCoordinateTwo StartingCoordinate;
-    private final DoubleCoordinateTwo EndPointCoordinate;
+    private final IntegerCoordinateMany StartingCoordinate;
+    private final IntegerCoordinateMany EndPointCoordinate;
     private final DoubleVector doubleVector;
 
-    protected DoubleConsanguinityRoute2D(String startingCoordinateName, String endPointCoordinateName, DoubleCoordinateTwo startingCoordinate, DoubleCoordinateTwo endPointCoordinate) {
+    protected IntegerConsanguinityRoute(String startingCoordinateName, String endPointCoordinateName, IntegerCoordinateMany startingCoordinate, IntegerCoordinateMany endPointCoordinate) {
         double numberOfDimensions1 = startingCoordinate.getNumberOfDimensions();
         double numberOfDimensions2 = endPointCoordinate.getNumberOfDimensions();
         if (numberOfDimensions1 == numberOfDimensions2) {
@@ -32,7 +32,13 @@ public class DoubleConsanguinityRoute2D implements Route2D<DoubleConsanguinityRo
             EndPointCoordinate = endPointCoordinate;
             StartingCoordinateName = startingCoordinateName;
             EndPointCoordinateName = endPointCoordinateName;
-            doubleVector = DoubleVector.parse(this.StartingCoordinate, this.EndPointCoordinate);
+            int[] ints1 = startingCoordinate.toArray();
+            int[] ints2 = EndPointCoordinate.toArray();
+            double[] res = new double[ints1.length];
+            for (int i = 0; i < ints1.length; i++) {
+                res[i] = ints2[i] - ints1[i];
+            }
+            doubleVector = DoubleVector.parse(res);
         } else {
             throw new OperatorOperationException("您在构造血亲坐标的时候发生了异常，具有血亲的起始坐标与终止坐标的维度数量不一致！\n" +
                     "An exception occurred when you constructed the blood relative coordinates, the number of dimensions of the starting coordinates with blood relatives and the ending coordinates are inconsistent!\n" +
@@ -48,13 +54,12 @@ public class DoubleConsanguinityRoute2D implements Route2D<DoubleConsanguinityRo
      * @param endPointCoordinate 终止坐标对象
      * @return 血亲坐标
      */
-    public static DoubleConsanguinityRoute2D parse(String CoordinatePath, DoubleCoordinateTwo startingCoordinate, DoubleCoordinateTwo endPointCoordinate) {
+    public static IntegerConsanguinityRoute parse(String CoordinatePath, IntegerCoordinateMany startingCoordinate, IntegerCoordinateMany endPointCoordinate) {
         String[] split = CoordinatePath.split("\\s*->\\s*");
         if (split.length == 2) {
-            return new DoubleConsanguinityRoute2D(split[0].trim(), split[1].trim(), startingCoordinate, endPointCoordinate);
+            return new IntegerConsanguinityRoute(split[0].trim(), split[1].trim(), startingCoordinate, endPointCoordinate);
         } else {
-            throw new OperatorOperationException("您传入的坐标路径无法被成功解析哦！请按照[a -> b]格式进行CoordinatePath的设置！\n" +
-                    "The coordinate path you passed in could not be successfully parsed! Please follow the [a -> b] format to set the CoordinatePath!");
+            throw new OperatorOperationException("您传入的坐标路径无法被成功解析哦！请按照[a -> b]格式进行CoordinatePath的设置！");
         }
     }
 
@@ -75,14 +80,14 @@ public class DoubleConsanguinityRoute2D implements Route2D<DoubleConsanguinityRo
     /**
      * @return 起始坐标对象
      */
-    public DoubleCoordinateTwo getStartingCoordinate() {
+    public IntegerCoordinateMany getStartingCoordinate() {
         return StartingCoordinate;
     }
 
     /**
      * @return 终止坐标对象
      */
-    public DoubleCoordinateTwo getEndPointCoordinate() {
+    public IntegerCoordinateMany getEndPointCoordinate() {
         return EndPointCoordinate;
     }
 
@@ -125,13 +130,11 @@ public class DoubleConsanguinityRoute2D implements Route2D<DoubleConsanguinityRo
     }
 
     /**
-     * @return 子类实现, 用于在父类与子类之间进行转换的一个显示函数, 直接返回this 即可
-     * <p>
-     * Subclass implementation, a display function used to convert between parent class and subclass, just return this directly
+     * @return 该类的实现类对象，用于拓展该接口的子类
      */
     @Override
-    public DoubleConsanguinityRoute2D expand() {
-        return null;
+    public IntegerConsanguinityRoute expand() {
+        return this;
     }
 
     /**
@@ -144,8 +147,8 @@ public class DoubleConsanguinityRoute2D implements Route2D<DoubleConsanguinityRo
      * @apiNote 这里就是将两个血亲坐标的起始坐标进行对应的加法.
      */
     @Override
-    public DoubleConsanguinityRoute2D add(DoubleConsanguinityRoute2D value) {
-        return DoubleConsanguinityRoute2D.parse(
+    public IntegerConsanguinityRoute add(IntegerConsanguinityRoute value) {
+        return IntegerConsanguinityRoute.parse(
                 this.StartingCoordinateName + " + " + value.StartingCoordinateName + " -> " + this.EndPointCoordinateName + " + " + value.EndPointCoordinateName,
                 this.StartingCoordinate.add(value.StartingCoordinate), this.EndPointCoordinate.add(value.EndPointCoordinate)
         );
@@ -161,8 +164,8 @@ public class DoubleConsanguinityRoute2D implements Route2D<DoubleConsanguinityRo
      * @apiNote There is no description for the super interface, please refer to the subclass documentation
      */
     @Override
-    public DoubleConsanguinityRoute2D diff(DoubleConsanguinityRoute2D value) {
-        return DoubleConsanguinityRoute2D.parse(
+    public IntegerConsanguinityRoute diff(IntegerConsanguinityRoute value) {
+        return IntegerConsanguinityRoute.parse(
                 this.StartingCoordinateName + " - " + value.StartingCoordinateName + " -> " + this.EndPointCoordinateName + " - " + value.EndPointCoordinateName,
                 this.StartingCoordinate.diff(value.StartingCoordinate), this.EndPointCoordinate.diff(value.EndPointCoordinate)
         );

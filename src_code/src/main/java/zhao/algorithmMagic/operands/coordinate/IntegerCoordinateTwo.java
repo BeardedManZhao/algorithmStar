@@ -9,7 +9,7 @@ package zhao.algorithmMagic.operands.coordinate;
  *
  * @author zhao
  */
-public final class IntegerCoordinateTwo implements IntegerCoordinates<IntegerCoordinateTwo> {
+public final class IntegerCoordinateTwo implements IntegerCoordinates<IntegerCoordinateTwo>, Coordinate2D<IntegerCoordinateTwo, Integer> {
 
     private final int x;
     private final int y;
@@ -25,11 +25,11 @@ public final class IntegerCoordinateTwo implements IntegerCoordinates<IntegerCoo
         this.y = y;
     }
 
-    public int getX() {
+    public Integer getX() {
         return x;
     }
 
-    public int getY() {
+    public Integer getY() {
         return y;
     }
 
@@ -93,10 +93,10 @@ public final class IntegerCoordinateTwo implements IntegerCoordinates<IntegerCoo
     /**
      * @return 该类的实现类对象，用于拓展该接口成为其子类，这里一般只需要返回实现类对象即可。
      * <p>
-     * The implementation class object of this class is used to expand the interface to become its subclass. Generally, only the implementation class object needs to be returned here.
+     * The implementation class object of this class is used to extend the interface to become its subclass. Generally, only the implementation class object needs to be returned here.
      */
     @Override
-    public IntegerCoordinateTwo expand() {
+    public IntegerCoordinateTwo extend() {
         return this;
     }
 }

@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
+import zhao.algorithmMagic.operands.coordinate.Coordinate;
 import zhao.algorithmMagic.operands.coordinate.FloatingPointCoordinates;
 import zhao.algorithmMagic.operands.coordinate.IntegerCoordinates;
 import zhao.algorithmMagic.operands.vector.DoubleVector;
@@ -29,7 +30,7 @@ import zhao.algorithmMagic.utils.ASMath;
  *            The type of floating-point coordinates involved in the operation in this class. You need to specify the floating-point coordinates that this class can operate on.
  * @author LingYuZhao
  */
-public class EuclideanMetric<I extends IntegerCoordinates<?>, D extends FloatingPointCoordinates<?>> implements DistanceAlgorithm {
+public class EuclideanMetric<I extends IntegerCoordinates<I> & Coordinate<I>, D extends FloatingPointCoordinates<?>> implements DistanceAlgorithm {
     protected final Logger logger;
     protected final String AlgorithmName;
 
@@ -50,7 +51,7 @@ public class EuclideanMetric<I extends IntegerCoordinates<?>, D extends Floating
      * @return 算法类对象
      * @throws TargetNotRealizedException 当您传入的算法名称对应的组件不能被成功提取的时候会抛出异常
      */
-    public static <II extends IntegerCoordinates<?>, DD extends FloatingPointCoordinates<?>> EuclideanMetric<II, DD> getInstance(String Name) {
+    public static <II extends IntegerCoordinates<II> & Coordinate<II>, DD extends FloatingPointCoordinates<?>> EuclideanMetric<II, DD> getInstance(String Name) {
         if (OperationAlgorithmManager.containsAlgorithmName(Name)) {
             OperationAlgorithm operationAlgorithm = OperationAlgorithmManager.getInstance().get(Name);
             if (operationAlgorithm instanceof EuclideanMetric<?, ?>) {
@@ -168,7 +169,7 @@ public class EuclideanMetric<I extends IntegerCoordinates<?>, D extends Floating
     public double getTrueDistance(IntegerCoordinates<I> integerCoordinateMany1, IntegerCoordinates<I> integerCoordinateMany2) {
         logger.info("√ ⁿ∑₁( " + integerCoordinateMany1 + " - " + integerCoordinateMany2 + ").map(d -> d²)");
         int res = 0;
-        for (int i : integerCoordinateMany1.diff(integerCoordinateMany2.expand()).toArray()) {
+        for (int i : integerCoordinateMany1.extend().diff(integerCoordinateMany2.extend()).toArray()) {
             res += ASMath.Power2(i);
         }
         return Math.sqrt(res);
@@ -186,7 +187,7 @@ public class EuclideanMetric<I extends IntegerCoordinates<?>, D extends Floating
     public double getTrueDistance(FloatingPointCoordinates<D> doubleCoordinateMany1, FloatingPointCoordinates<D> doubleCoordinateMany2) {
         logger.info("√ ⁿ∑₁( " + doubleCoordinateMany1 + " - " + doubleCoordinateMany2 + ").map(d -> d²)");
         int res = 0;
-        for (double i : doubleCoordinateMany1.diff(doubleCoordinateMany2.expand()).toArray()) {
+        for (double i : doubleCoordinateMany1.diff(doubleCoordinateMany2.extend()).toArray()) {
             res += ASMath.Power2(i);
         }
         return Math.sqrt(res);

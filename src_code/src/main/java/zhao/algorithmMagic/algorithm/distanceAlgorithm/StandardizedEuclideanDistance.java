@@ -4,10 +4,7 @@ import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.algorithm.normalization.Z_ScoreNormalization;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
-import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateMany;
-import zhao.algorithmMagic.operands.coordinate.FloatingPointCoordinates;
-import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateMany;
-import zhao.algorithmMagic.operands.coordinate.IntegerCoordinates;
+import zhao.algorithmMagic.operands.coordinate.*;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.DependentAlgorithmNameLibrary;
 
@@ -24,7 +21,7 @@ import zhao.algorithmMagic.utils.DependentAlgorithmNameLibrary;
  *            The type of floating-point coordinates involved in the operation in this class. You need to specify the floating-point coordinates that this class can operate on.
  * @author LingYuZhao
  */
-public class StandardizedEuclideanDistance<I extends IntegerCoordinates<?>, D extends FloatingPointCoordinates<?>> extends EuclideanMetric<I, D> {
+public class StandardizedEuclideanDistance<I extends IntegerCoordinates<I> & Coordinate<I>, D extends FloatingPointCoordinates<?>> extends EuclideanMetric<I, D> {
 
     private final EuclideanMetric<IntegerCoordinateMany, DoubleCoordinateMany> euclideanMetric = EuclideanMetric.getInstance(DependentAlgorithmNameLibrary.EUCLIDEAN_METRIC_NAME);
 
@@ -43,7 +40,7 @@ public class StandardizedEuclideanDistance<I extends IntegerCoordinates<?>, D ex
      * @return 算法类对象
      * @throws TargetNotRealizedException 当您传入的算法名称对应的组件不能被成功提取的时候会抛出异常
      */
-    public static <II extends IntegerCoordinates<?>, DD extends FloatingPointCoordinates<?>> StandardizedEuclideanDistance<II, DD> getInstance(String Name) {
+    public static <II extends IntegerCoordinates<II> & Coordinate<II>, DD extends FloatingPointCoordinates<?>> StandardizedEuclideanDistance<II, DD> getInstance2(String Name) {
         if (OperationAlgorithmManager.containsAlgorithmName(Name)) {
             OperationAlgorithm operationAlgorithm = OperationAlgorithmManager.getInstance().get(Name);
             if (operationAlgorithm instanceof StandardizedEuclideanDistance<?, ?>) {
@@ -149,7 +146,7 @@ public class StandardizedEuclideanDistance<I extends IntegerCoordinates<?>, D ex
     @Override
     public double getTrueDistance(IntegerCoordinates<I> integerCoordinateMany1, IntegerCoordinates<I> integerCoordinateMany2) {
         logger.info("√ ⁿ∑₁( " + integerCoordinateMany1 + " - " + integerCoordinateMany2 + ").map(i -> (i / StandardSequence)²)");
-        int[] doubles1 = integerCoordinateMany1.diff(integerCoordinateMany2.expand()).toArray();
+        int[] doubles1 = integerCoordinateMany1.extend().diff(integerCoordinateMany2.extend()).toArray();
         int[] doublesZ = Z_ScoreNormalization.StandardizedSequence(doubles1);
         return this.euclideanMetric.getTrueDistance(new IntegerCoordinateMany(DivideByNormalization(doubles1, doublesZ)));
     }
@@ -166,7 +163,7 @@ public class StandardizedEuclideanDistance<I extends IntegerCoordinates<?>, D ex
     @Override
     public double getTrueDistance(FloatingPointCoordinates<D> doubleCoordinateMany1, FloatingPointCoordinates<D> doubleCoordinateMany2) {
         logger.info("√ ⁿ∑₁( " + doubleCoordinateMany1 + " - " + doubleCoordinateMany2 + ").map(d -> (d / StandardSequence)²)");
-        double[] doubles1 = doubleCoordinateMany1.diff(doubleCoordinateMany2.expand()).toArray();
+        double[] doubles1 = doubleCoordinateMany1.diff(doubleCoordinateMany2.extend()).toArray();
         double[] doublesZ = Z_ScoreNormalization.StandardizedSequence(doubles1);
         return this.euclideanMetric.getTrueDistance(new DoubleCoordinateMany(DivideByNormalization(doubles1, doublesZ)));
     }

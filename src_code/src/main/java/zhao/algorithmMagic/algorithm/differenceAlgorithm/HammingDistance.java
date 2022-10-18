@@ -3,11 +3,8 @@ package zhao.algorithmMagic.algorithm.differenceAlgorithm;
 import org.apache.log4j.Logger;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
-import zhao.algorithmMagic.algorithm.distanceAlgorithm.EuclideanMetric;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
-import zhao.algorithmMagic.operands.coordinate.FloatingPointCoordinates;
-import zhao.algorithmMagic.operands.coordinate.IntegerCoordinates;
 import zhao.algorithmMagic.utils.ASClass;
 
 /**
@@ -19,13 +16,13 @@ import zhao.algorithmMagic.utils.ASClass;
  *
  * @author zhao
  */
-public class HammingDistance<I extends IntegerCoordinates<?>, D extends FloatingPointCoordinates<?>> implements DifferenceAlgorithm {
+public class HammingDistance implements DifferenceAlgorithm {
     protected final Logger logger;
     protected final String AlgorithmName;
 
     protected HammingDistance() {
-        this.AlgorithmName = "EuclideanMetric";
-        this.logger = Logger.getLogger("EuclideanMetric");
+        this.AlgorithmName = "HammingDistance";
+        this.logger = Logger.getLogger("HammingDistance");
     }
 
     protected HammingDistance(String algorithmName) {
@@ -40,19 +37,19 @@ public class HammingDistance<I extends IntegerCoordinates<?>, D extends Floating
      * @return 算法类对象
      * @throws TargetNotRealizedException 当您传入的算法名称对应的组件不能被成功提取的时候会抛出异常
      */
-    public static <II extends IntegerCoordinates<?>, DD extends FloatingPointCoordinates<?>> HammingDistance<II, DD> getInstance(String Name) {
+    public static HammingDistance getInstance(String Name) {
         if (OperationAlgorithmManager.containsAlgorithmName(Name)) {
             OperationAlgorithm operationAlgorithm = OperationAlgorithmManager.getInstance().get(Name);
-            if (operationAlgorithm instanceof EuclideanMetric<?, ?>) {
+            if (operationAlgorithm instanceof HammingDistance) {
                 return ASClass.transform(operationAlgorithm);
             } else {
-                throw new TargetNotRealizedException("您提取的[" + Name + "]算法被找到了，但是它不属于EuclideanMetric类型，请您为这个算法重新定义一个名称。\n" +
+                throw new TargetNotRealizedException("您提取的[" + Name + "]算法被找到了，但是它不属于HammingDistance类型，请您为这个算法重新定义一个名称。\n" +
                         "The [" + Name + "] algorithm you extracted has been found, but it does not belong to the Cosine Distance type. Please redefine a name for this algorithm.");
             }
         } else {
-            HammingDistance<II, DD> euclideanMetric = new HammingDistance<>(Name);
-            OperationAlgorithmManager.getInstance().register(euclideanMetric);
-            return euclideanMetric;
+            HammingDistance HammingDistance = new HammingDistance(Name);
+            OperationAlgorithmManager.getInstance().register(HammingDistance);
+            return HammingDistance;
 
         }
     }
@@ -105,6 +102,11 @@ public class HammingDistance<I extends IntegerCoordinates<?>, D extends Floating
      */
     @Override
     public boolean init() {
-        return false;
+        if (!OperationAlgorithmManager.containsAlgorithmName(this.getAlgorithmName())) {
+            OperationAlgorithmManager.getInstance().register(this);
+            return true;
+        } else {
+            return false;
+        }
     }
 }

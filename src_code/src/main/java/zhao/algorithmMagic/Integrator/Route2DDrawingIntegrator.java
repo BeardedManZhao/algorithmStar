@@ -1,12 +1,14 @@
 package zhao.algorithmMagic.Integrator;
 
+import org.apache.log4j.Logger;
 import zhao.algorithmMagic.Integrator.launcher.Route2DDrawingLauncher;
+import zhao.algorithmMagic.Integrator.launcher.Route2DDrawingLauncher2;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
-import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo;
-import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute2D;
+import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
+import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute2D;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASIO;
 
@@ -28,6 +30,7 @@ import java.awt.image.BufferedImage;
  */
 public class Route2DDrawingIntegrator implements AlgorithmIntegrator<Route2DDrawingIntegrator> {
 
+    private final Logger logger;
     private final String IntegratorName;
     private final Route2DDrawingLauncher route2DDrawingStarter;
     private String imageOutPath = "image.jpg";
@@ -49,6 +52,9 @@ public class Route2DDrawingIntegrator implements AlgorithmIntegrator<Route2DDraw
      */
     public Route2DDrawingIntegrator(String integratorName, String AlgorithmLauncherName) {
         IntegratorName = integratorName;
+        logger = Logger.getLogger(integratorName);
+        logger.info("+======================================= << " + this.IntegratorName + " >> started =============================================+");
+        logger.info("+--------------------------------------- << Extract the algorithm required by the integrator >> ---------------------------------------+");
         OperationAlgorithm operationAlgorithm = OperationAlgorithmManager.getInstance().get(AlgorithmLauncherName);
         if (operationAlgorithm instanceof Route2DDrawingLauncher) {
             this.route2DDrawingStarter = ASClass.transform(operationAlgorithm);
@@ -65,6 +71,7 @@ public class Route2DDrawingIntegrator implements AlgorithmIntegrator<Route2DDraw
     public Route2DDrawingIntegrator(String integratorName, Route2DDrawingLauncher route2DDrawingLauncher) {
         this.IntegratorName = integratorName;
         this.route2DDrawingStarter = route2DDrawingLauncher;
+        logger = Logger.getLogger(integratorName);
     }
 
     /**
@@ -117,7 +124,7 @@ public class Route2DDrawingIntegrator implements AlgorithmIntegrator<Route2DDraw
     /**
      * 设置离散阈值,该阈值越大,路线显示越清晰,该阈值可以扩大整个2维空间的显示,默认是 1
      * <p>
-     * Set the discrete threshold, the larger the threshold, the clearer the route display, the threshold can expand the display of the entire 2-dimensional space, the default is 1
+     * Set the discrete threshold, the larger the threshold, the clearer the route display, the threshold can extend the display of the entire 2-dimensional space, the default is 1
      *
      * @param discreteThreshold 新的离散阈值
      * @return 链式
@@ -145,6 +152,7 @@ public class Route2DDrawingIntegrator implements AlgorithmIntegrator<Route2DDraw
 
     @Override
     public boolean run() {
+        logger.info("+--------------------------------------- << Build Picture >> ---------------------------------------+");
         // 创建一个图片
         BufferedImage image = new BufferedImage(this.imageWidth, this.imageHeight, BufferedImage.TYPE_INT_RGB);
         // 准备绘图工具
@@ -153,14 +161,48 @@ public class Route2DDrawingIntegrator implements AlgorithmIntegrator<Route2DDraw
         g.setBackground(backColor);
         g.clearRect(0, 0, this.imageWidth, this.imageHeight);
         g.translate(this.imageWidth >> 1, this.imageHeight >> 1);
+        // 集成第二版接口
+        run1(g);
         // 迭代每一个坐标点
-        for (DoubleConsanguinityRoute2D value : this.route2DDrawingStarter.AcquireImageDataSet().values()) {
+        for (IntegerConsanguinityRoute2D value : this.route2DDrawingStarter.AcquireImageDataSet().values()) {
             // 获取一个路线的起始坐标与终止坐标对象
             drawARoute(g, value.getStartingCoordinateName(), value.getEndPointCoordinateName(), value.getStartingCoordinate(), value.getEndPointCoordinate());
         }
+        // 集成第二版接口
+        run2(g);
         // 将图片对象输出到指定的路径下!
         ASIO.outImage(image, this.imageOutPath);
+        logger.info("+--------------------------------------- << output Picture >> ---------------------------------------+");
+        logger.info("+======================================= << " + this.IntegratorName + " >> stopped =============================================+");
         return true;
+    }
+
+    /**
+     * 附加任务函数执行题,为了弥补绘图器不够灵活的缺陷,2022年10月16日新增了一个附加任务接口,该接口将会在旧接口的任务执行之前调用
+     *
+     * @param graphics2D 画笔对象
+     */
+    private void run1(Graphics2D graphics2D) {
+        // 第二版接口的附加任务启动
+        if (this.route2DDrawingStarter instanceof Route2DDrawingLauncher2) {
+            logger.info("+ >>> Start the first task (unique to the second version interface)");
+            Route2DDrawingLauncher2 dDrawingStarter = (Route2DDrawingLauncher2) this.route2DDrawingStarter;
+            dDrawingStarter.AdditionalTasks1(graphics2D, this);
+        }
+    }
+
+    /**
+     * 附加任务函数执行题,为了弥补绘图器不够灵活的缺陷,2022年10月16日新增了一个附加任务接口,该接口将会在旧接口的任务执行之后调用
+     *
+     * @param graphics2D 画笔对象
+     */
+    private void run2(Graphics2D graphics2D) {
+        // 第二版接口的附加任务启动
+        if (this.route2DDrawingStarter instanceof Route2DDrawingLauncher2) {
+            logger.info("+ >>> Start the second task (unique to the second version interface)");
+            Route2DDrawingLauncher2 dDrawingStarter = (Route2DDrawingLauncher2) this.route2DDrawingStarter;
+            dDrawingStarter.AdditionalTasks2(graphics2D, this);
+        }
     }
 
     /**
@@ -172,12 +214,13 @@ public class Route2DDrawingIntegrator implements AlgorithmIntegrator<Route2DDraw
      * @param startingCoordinate 起始坐标对象
      * @param endPointCoordinate 终止坐标对象
      */
-    private void drawARoute(Graphics2D graphics2D, String startName, String endName, DoubleCoordinateTwo startingCoordinate, DoubleCoordinateTwo endPointCoordinate) {
+    public void drawARoute(Graphics2D graphics2D, String startName, String endName, IntegerCoordinateTwo startingCoordinate, IntegerCoordinateTwo endPointCoordinate) {
+        logger.info("+ Draw a circuit " + startName + " -> " + endName);
         // 开始绘制
-        int startX = startingCoordinate.getX().intValue() << this.discreteThreshold;
-        int startY = -startingCoordinate.getY().intValue() << this.discreteThreshold;
-        int endX = endPointCoordinate.getX().intValue() << this.discreteThreshold;
-        int endY = -endPointCoordinate.getY().intValue() << this.discreteThreshold;
+        int startX = startingCoordinate.getX() << this.discreteThreshold;
+        int startY = -startingCoordinate.getY() << this.discreteThreshold;
+        int endX = endPointCoordinate.getX() << this.discreteThreshold;
+        int endY = -endPointCoordinate.getY() << this.discreteThreshold;
         graphics2D.drawLine(startX, startY, endX, endY);
         graphics2D.drawString(startName, startX + 1, startY + 1);
         graphics2D.drawString(endName, endX + 1, endY + 1);

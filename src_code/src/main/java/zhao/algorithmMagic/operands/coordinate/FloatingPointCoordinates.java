@@ -25,5 +25,5 @@ public interface FloatingPointCoordinates<ImplementationType> extends Coordinate
     /**
      * @return 该类的实现类对象，用于拓展该接口的子类
      */
-    ImplementationType expand();
+    ImplementationType extend();
 }

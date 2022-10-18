@@ -301,6 +301,16 @@ public final class ASMath {
     }
 
     /**
+     * 对一个数值进行绝对值运算
+     *
+     * @param num 需要被取绝对值的数值
+     * @return num的绝对值
+     */
+    public static int absoluteValue(int num) {
+        return num > 0 ? num : -num;
+    }
+
+    /**
      * 对一个数值进行取反
      *
      * @param num 被取反的数值

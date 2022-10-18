@@ -10,7 +10,7 @@ import zhao.algorithmMagic.utils.ASMath;
  * <p>
  * A floating-point matrix containing primitives and wrapper types. This matrix is slightly more powerful, but less functional, the support matrix transposition.
  *
- * @author 4
+ * @author zhao
  */
 public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
 

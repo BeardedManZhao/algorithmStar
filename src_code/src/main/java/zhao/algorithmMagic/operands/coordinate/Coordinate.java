@@ -17,4 +17,6 @@ public interface Coordinate<ImplementationType> extends Operands<ImplementationT
      * @return 该坐标的维度
      */
     int getNumberOfDimensions();
+
+    ImplementationType extend();
 }

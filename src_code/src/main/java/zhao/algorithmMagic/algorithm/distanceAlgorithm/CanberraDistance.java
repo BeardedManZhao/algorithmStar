@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
+import zhao.algorithmMagic.operands.coordinate.Coordinate;
 import zhao.algorithmMagic.operands.coordinate.FloatingPointCoordinates;
 import zhao.algorithmMagic.operands.coordinate.IntegerCoordinates;
 import zhao.algorithmMagic.operands.vector.DoubleVector;
@@ -19,7 +20,7 @@ import zhao.algorithmMagic.utils.ASMath;
  *
  * @author zhao
  */
-public class CanberraDistance<I extends IntegerCoordinates<?>, D extends FloatingPointCoordinates<?>> implements DistanceAlgorithm {
+public class CanberraDistance<I extends IntegerCoordinates<I> & Coordinate<I>, D extends FloatingPointCoordinates<?>> implements DistanceAlgorithm {
 
     protected final Logger logger;
     protected final String AlgorithmName;
@@ -45,7 +46,7 @@ public class CanberraDistance<I extends IntegerCoordinates<?>, D extends Floatin
      *                                    <p>
      *                                    An exception will be thrown when the component corresponding to the algorithm name you passed in cannot be successfully extracted
      */
-    public static <II extends IntegerCoordinates<?>, DD extends FloatingPointCoordinates<?>> CanberraDistance<II, DD> getInstance(String Name) {
+    public static <II extends IntegerCoordinates<II> & Coordinate<II>, DD extends FloatingPointCoordinates<?>> CanberraDistance<II, DD> getInstance(String Name) {
         if (OperationAlgorithmManager.containsAlgorithmName(Name)) {
             OperationAlgorithm operationAlgorithm = OperationAlgorithmManager.getInstance().get(Name);
             if (operationAlgorithm instanceof CanberraDistance<?, ?>) {
@@ -112,8 +113,8 @@ public class CanberraDistance<I extends IntegerCoordinates<?>, D extends Floatin
      */
     public double getTrueDistance(IntegerCoordinates<I> integerCoordinate1, IntegerCoordinates<I> integerCoordinate2) {
         logger.info("ⁿ∑₁ ((|COORDINATE1(n) - COORDINATE2(n)|) / (|COORDINATE1(n)| + |COORDINATE2(n)|))");
-        int[] ints1 = integerCoordinate1.diff(integerCoordinate2.expand()).toArray();
-        int[] ints2 = integerCoordinate1.add(integerCoordinate2.expand()).toArray();
+        int[] ints1 = integerCoordinate1.extend().diff(integerCoordinate2.extend()).toArray();
+        int[] ints2 = integerCoordinate1.extend().add(integerCoordinate2.extend()).toArray();
         double res = 0;
         for (int i = 0; i < ints1.length; i++) {
             res += ASMath.absoluteValue(ints1[i] - ints2[i]) / ASMath.absoluteValue(ints1[i] + ints2[i]);
@@ -138,8 +139,8 @@ public class CanberraDistance<I extends IntegerCoordinates<?>, D extends Floatin
      */
     public double getTrueDistance(FloatingPointCoordinates<D> iFloatingPointCoordinates1, FloatingPointCoordinates<D> iFloatingPointCoordinates2) {
         logger.info("ⁿ∑₁ ((|COORDINATE1(n) - COORDINATE2(n)|) / (|COORDINATE1(n)| + |COORDINATE2(n)|))");
-        double[] doubles1 = iFloatingPointCoordinates1.diff(iFloatingPointCoordinates2.expand()).toArray();
-        double[] doubles2 = iFloatingPointCoordinates1.add(iFloatingPointCoordinates2.expand()).toArray();
+        double[] doubles1 = iFloatingPointCoordinates1.diff(iFloatingPointCoordinates2.extend()).toArray();
+        double[] doubles2 = iFloatingPointCoordinates1.add(iFloatingPointCoordinates2.extend()).toArray();
         double res = 0;
         for (int i = 0; i < doubles1.length; i++) {
             res += ASMath.absoluteValue(doubles1[i] - doubles2[i]) / (ASMath.absoluteValue(doubles1[i]) + ASMath.absoluteValue(doubles2[i]));

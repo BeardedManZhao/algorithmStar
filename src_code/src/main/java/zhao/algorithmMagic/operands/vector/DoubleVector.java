@@ -105,7 +105,7 @@ public class DoubleVector extends Vector<DoubleVector, Double> {
      * @return 向量
      */
     public static DoubleVector parse(DoubleCoordinateMany startDoubleCoordinateMany, DoubleCoordinateMany endDoubleCoordinateMany) {
-        return DoubleVector.parse((endDoubleCoordinateMany.diff(startDoubleCoordinateMany.expand())).toArray());
+        return DoubleVector.parse((endDoubleCoordinateMany.diff(startDoubleCoordinateMany.extend())).toArray());
     }
 
 

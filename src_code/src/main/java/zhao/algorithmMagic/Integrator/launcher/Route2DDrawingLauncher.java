@@ -1,6 +1,6 @@
 package zhao.algorithmMagic.Integrator.launcher;
 
-import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute2D;
+import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute2D;
 
 import java.util.HashMap;
 
@@ -22,7 +22,7 @@ public interface Route2DDrawingLauncher extends Launcher<Route2DDrawingLauncher>
      *
      * @return 图像数据集  image dataset
      */
-    HashMap<String, DoubleConsanguinityRoute2D> AcquireImageDataSet();
+    HashMap<String, IntegerConsanguinityRoute2D> AcquireImageDataSet();
 
     /**
      * 如果您在这里设置支持绘图,那么请您在"AcquireImageDataSet"中进行数据集的返回,如果您设置的是false,那么您的"AcquireImageDataSet"只需要返回一个null即可.

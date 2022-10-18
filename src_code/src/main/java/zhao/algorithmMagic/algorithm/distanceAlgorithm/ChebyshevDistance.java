@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
+import zhao.algorithmMagic.operands.coordinate.Coordinate;
 import zhao.algorithmMagic.operands.coordinate.FloatingPointCoordinates;
 import zhao.algorithmMagic.operands.coordinate.IntegerCoordinates;
 import zhao.algorithmMagic.operands.vector.DoubleVector;
@@ -26,7 +27,7 @@ import zhao.algorithmMagic.utils.ASMath;
  *            The type of floating-point coordinates involved in the operation in this class. You need to specify the floating-point coordinates that this class can operate on.
  * @author LingYuZhao
  */
-public class ChebyshevDistance<I extends IntegerCoordinates<?>, D extends FloatingPointCoordinates<?>> implements DistanceAlgorithm {
+public class ChebyshevDistance<I extends IntegerCoordinates<I> & Coordinate<I>, D extends FloatingPointCoordinates<?>> implements DistanceAlgorithm {
 
     protected final Logger logger;
     protected final String AlgorithmName;
@@ -52,7 +53,7 @@ public class ChebyshevDistance<I extends IntegerCoordinates<?>, D extends Floati
      *                                    <p>
      *                                    An exception will be thrown when the component corresponding to the algorithm name you passed in cannot be successfully extracted
      */
-    public static <II extends IntegerCoordinates<?>, DD extends FloatingPointCoordinates<?>> ChebyshevDistance<II, DD> getInstance(String Name) {
+    public static <II extends IntegerCoordinates<II> & Coordinate<II>, DD extends FloatingPointCoordinates<?>> ChebyshevDistance<II, DD> getInstance(String Name) {
         if (OperationAlgorithmManager.containsAlgorithmName(Name)) {
             OperationAlgorithm operationAlgorithm = OperationAlgorithmManager.getInstance().get(Name);
             if (operationAlgorithm instanceof ChebyshevDistance<?, ?>) {
@@ -140,7 +141,7 @@ public class ChebyshevDistance<I extends IntegerCoordinates<?>, D extends Floati
     public double getTrueDistance(IntegerCoordinates<I> integerCoordinate1, IntegerCoordinates<I> integerCoordinate2) {
         int res = 0;
         logger.info("MAX(|coordinate1 - coordinate2|)");
-        for (int i : integerCoordinate1.diff(integerCoordinate2.expand()).toArray()) {
+        for (int i : integerCoordinate1.extend().diff(integerCoordinate2.extend()).toArray()) {
             int v = (int) ASMath.absoluteValue(i);
             if (v > res) res = v;
         }
@@ -165,7 +166,7 @@ public class ChebyshevDistance<I extends IntegerCoordinates<?>, D extends Floati
     public double getTrueDistance(FloatingPointCoordinates<D> iFloatingPointCoordinates1, FloatingPointCoordinates<D> iFloatingPointCoordinates2) {
         double res = 0;
         logger.info("MAX(|coordinate1 - coordinate2|)");
-        for (double i : iFloatingPointCoordinates1.diff(iFloatingPointCoordinates2.expand()).toArray()) {
+        for (double i : iFloatingPointCoordinates1.diff(iFloatingPointCoordinates2.extend()).toArray()) {
             double v = ASMath.absoluteValue(i);
             if (v > res) res = v;
         }

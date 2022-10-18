@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
+import zhao.algorithmMagic.operands.coordinate.Coordinate;
 import zhao.algorithmMagic.operands.coordinate.FloatingPointCoordinates;
 import zhao.algorithmMagic.operands.coordinate.IntegerCoordinates;
 import zhao.algorithmMagic.operands.vector.DoubleVector;
@@ -28,7 +29,7 @@ import zhao.algorithmMagic.utils.ASMath;
  *            The type of floating-point coordinates involved in the operation in this class. You need to specify the floating-point coordinates that this class can operate on.
  * @author LingYuZhao
  */
-public class ManhattanDistance<I extends IntegerCoordinates<?>, D extends FloatingPointCoordinates<?>> implements DistanceAlgorithm {
+public class ManhattanDistance<I extends IntegerCoordinates<I> & Coordinate<I>, D extends FloatingPointCoordinates<?>> implements DistanceAlgorithm {
 
     protected final Logger logger;
     protected final String AlgorithmName;
@@ -50,7 +51,7 @@ public class ManhattanDistance<I extends IntegerCoordinates<?>, D extends Floati
      * @return 算法类对象
      * @throws TargetNotRealizedException 当您传入的算法名称对应的组件不能被成功提取的时候会抛出异常
      */
-    public static <II extends IntegerCoordinates<?>, DD extends FloatingPointCoordinates<?>> ManhattanDistance<II, DD> getInstance(String Name) {
+    public static <II extends IntegerCoordinates<II> & Coordinate<II>, DD extends FloatingPointCoordinates<?>> ManhattanDistance<II, DD> getInstance(String Name) {
         if (OperationAlgorithmManager.containsAlgorithmName(Name)) {
             OperationAlgorithm operationAlgorithm = OperationAlgorithmManager.getInstance().get(Name);
             if (operationAlgorithm instanceof ManhattanDistance<?, ?>) {
@@ -126,7 +127,7 @@ public class ManhattanDistance<I extends IntegerCoordinates<?>, D extends Floati
     public double getTrueDistance(FloatingPointCoordinates<D> floatingPointCoordinate1, FloatingPointCoordinates<D> floatingPointCoordinate2) {
         double res = 0;
         logger.info("√ ⁿ∑₁( " + floatingPointCoordinate1 + " - " + floatingPointCoordinate2 + ").map(d -> |d|)");
-        for (double d : floatingPointCoordinate1.diff(floatingPointCoordinate2.expand()).toArray()) {
+        for (double d : floatingPointCoordinate1.diff(floatingPointCoordinate2.extend()).toArray()) {
             res += ASMath.absoluteValue(d);
         }
         return res;
@@ -150,7 +151,7 @@ public class ManhattanDistance<I extends IntegerCoordinates<?>, D extends Floati
     public double getTrueDistance(IntegerCoordinates<I> integerCoordinate1, IntegerCoordinates<I> integerCoordinate2) {
         int res = 0;
         logger.info("√ ⁿ∑₁( " + integerCoordinate1 + " - " + integerCoordinate2 + ").map(d -> |d|)");
-        for (int d : (integerCoordinate1.diff(integerCoordinate2.expand())).toArray()) {
+        for (int d : (integerCoordinate1.extend().diff(integerCoordinate2.extend())).toArray()) {
             res += ASMath.absoluteValue(d);
         }
         return res;

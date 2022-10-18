@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
+import zhao.algorithmMagic.operands.coordinate.Coordinate;
 import zhao.algorithmMagic.operands.coordinate.FloatingPointCoordinates;
 import zhao.algorithmMagic.operands.coordinate.IntegerCoordinates;
 import zhao.algorithmMagic.operands.vector.DoubleVector;
@@ -24,7 +25,7 @@ import zhao.algorithmMagic.utils.ASClass;
  *            The type of floating-point coordinates involved in the operation in this class. You need to specify the floating-point coordinates that this class can operate on.
  * @author LingYuZhao
  */
-public class MinkowskiDistance<I extends IntegerCoordinates<?>, D extends FloatingPointCoordinates<?>> implements DistanceAlgorithm {
+public class MinkowskiDistance<I extends IntegerCoordinates<I> & Coordinate<I>, D extends FloatingPointCoordinates<?>> implements DistanceAlgorithm {
 
     protected final Logger logger;
     protected final String AlgorithmName;
@@ -51,7 +52,7 @@ public class MinkowskiDistance<I extends IntegerCoordinates<?>, D extends Floati
      *                                    <p>
      *                                    An exception will be thrown when the component corresponding to the algorithm name you passed in cannot be successfully extracted
      */
-    public static <II extends IntegerCoordinates<?>, DD extends FloatingPointCoordinates<?>> MinkowskiDistance<II, DD> getInstance(String Name) {
+    public static <II extends IntegerCoordinates<II> & Coordinate<II>, DD extends FloatingPointCoordinates<?>> MinkowskiDistance<II, DD> getInstance(String Name) {
         if (OperationAlgorithmManager.containsAlgorithmName(Name)) {
             OperationAlgorithm operationAlgorithm = OperationAlgorithmManager.getInstance().get(Name);
             if (operationAlgorithm instanceof MinkowskiDistance<?, ?>) {
@@ -136,7 +137,7 @@ public class MinkowskiDistance<I extends IntegerCoordinates<?>, D extends Floati
     public double getTrueDistance(IntegerCoordinates<I> integerCoordinateMany1, IntegerCoordinates<I> integerCoordinateMany2) {
         logger.info("(ⁿ∑₁( " + integerCoordinateMany1 + " - " + integerCoordinateMany2 + ").map(d -> d²)) ^ 1/" + $P);
         int res = 0;
-        for (int i : integerCoordinateMany1.diff(integerCoordinateMany2.expand()).toArray()) {
+        for (int i : integerCoordinateMany1.extend().diff(integerCoordinateMany2.extend()).toArray()) {
             res += Math.pow(i, $P);
         }
         return ParameterCombination(res);
@@ -154,7 +155,7 @@ public class MinkowskiDistance<I extends IntegerCoordinates<?>, D extends Floati
     public double getTrueDistance(FloatingPointCoordinates<D> floatingPointCoordinate1, FloatingPointCoordinates<D> floatingPointCoordinate2) {
         logger.info("(ⁿ∑₁( " + floatingPointCoordinate1 + " - " + floatingPointCoordinate2 + ").map(d -> d²)) ^ 1/" + $P);
         int res = 0;
-        for (double i : floatingPointCoordinate1.diff(floatingPointCoordinate2.expand()).toArray()) {
+        for (double i : floatingPointCoordinate1.diff(floatingPointCoordinate2.extend()).toArray()) {
             res += Math.pow(i, $P);
         }
         return ParameterCombination(res);

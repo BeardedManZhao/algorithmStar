@@ -8,7 +8,7 @@ package zhao.algorithmMagic.operands.coordinate;
  *
  * @author zhao
  */
-public final class DoubleCoordinateThree implements FloatingPointCoordinates<DoubleCoordinateThree> {
+public final class DoubleCoordinateThree implements FloatingPointCoordinates<DoubleCoordinateThree>, Coordinate3D<DoubleCoordinateThree, Double> {
 
     private final double x;
     private final double y;
@@ -20,15 +20,15 @@ public final class DoubleCoordinateThree implements FloatingPointCoordinates<Dou
         this.z = z;
     }
 
-    public double getX() {
+    public Double getX() {
         return x;
     }
 
-    public double getY() {
+    public Double getY() {
         return y;
     }
 
-    public double getZ() {
+    public Double getZ() {
         return z;
     }
 
@@ -93,7 +93,7 @@ public final class DoubleCoordinateThree implements FloatingPointCoordinates<Dou
      * @return 该类的实现类对象，用于拓展该接口的子类
      */
     @Override
-    public DoubleCoordinateThree expand() {
+    public DoubleCoordinateThree extend() {
         return this;
     }
 }
