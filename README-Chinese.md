@@ -19,8 +19,9 @@ Waiting
 ### API使用示例
 
 ```java
+package zhao.algorithmMagic;
 import zhao.algorithmMagic.Integrator.Route2DDrawingIntegrator;
-import zhao.algorithmMagic.algorithm.generatingAlgorithm.ZhaoCoordinatenet2D;
+import zhao.algorithmMagic.algorithm.generatingAlgorithm.ZhaoCoordinateNet2D;
 import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo;
 import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute2D;
 
@@ -37,7 +38,7 @@ public class MAIN1 {
         DoubleCoordinateTwo Z = new DoubleCoordinateTwo(1, 21);
 
         // 获取关系网络,该算法是我实现出来,用于推断人员关系网的,这里的名称您可以自定义,需要注意的是下面集成器的实例化需要您将该名称传进去
-        ZhaoCoordinatenet2D zhaoCoordinateNet = ZhaoCoordinatenet2D.getInstance("Z");
+        ZhaoCoordinateNet2D zhaoCoordinateNet = ZhaoCoordinateNet2D.getInstance("Z");
         zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute2D.parse("A -> B", A, B)); // Representing A takes the initiative to know B
         zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute2D.parse("A -> C", A, C));
         zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute2D.parse("E -> Z", E, Z));
@@ -64,7 +65,7 @@ public class MAIN1 {
 ```
 
 - 运行之后产生的关系网络图片
-  ![image](https://user-images.githubusercontent.com/113756063/195981317-e40194a8-474a-4de7-9bfd-84ac40b66d15.png)
+  ![image]((https://user-images.githubusercontent.com/113756063/196412140-8b81979d-ecc1-4774-9cbe-df8a89c19c1c.png)
 
 ### KnowledgeDocument
 
