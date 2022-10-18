@@ -27,7 +27,7 @@ Waiting
 package zhao.algorithmMagic;
 
 import zhao.algorithmMagic.Integrator.Route2DDrawingIntegrator;
-import zhao.algorithmMagic.algorithm.generatingAlgorithm.ZhaoCoordinatenet2D;
+import zhao.algorithmMagic.algorithm.generatingAlgorithm.ZhaoCoordinateNet2D;
 import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo;
 import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute2D;
 
@@ -44,14 +44,14 @@ public class MAIN1 {
         DoubleCoordinateTwo Z = new DoubleCoordinateTwo(1, 21);
 
         /*
-         Get the relationship network. This algorithm is implemented by me to infer the relationship network of people. 
-         You can customize the name here. It should be noted that the instantiation of the integrator below requires you to pass the name in. 
+         Get the relationship network. This algorithm is implemented by me to infer the relationship network of people.
+         You can customize the name here. It should be noted that the instantiation of the integrator below requires you to pass the name in.
          */
-        ZhaoCoordinatenet2D zhaoCoordinateNet = ZhaoCoordinatenet2D.getInstance("Z");
-        
+        ZhaoCoordinateNet2D zhaoCoordinateNet = ZhaoCoordinateNet2D.getInstance("Z");
+
         /*
-         Add the relationship of people to the relationship network, please note that the relationship network of the algorithm already contains your data, 
-         so you must pass the same name in the integration below, so that the integrator can get the temporary network in your algorithm grid data 
+         Add the relationship of people to the relationship network, please note that the relationship network of the algorithm already contains your data,
+         so you must pass the same name in the integration below, so that the integrator can get the temporary network in your algorithm grid data
          */
         zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute2D.parse("A -> B", A, B)); // Representing A takes the initiative to know B
         zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute2D.parse("A -> C", A, C));
@@ -60,7 +60,7 @@ public class MAIN1 {
         zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute2D.parse("B -> Z", B, Z));
 
         // Use a 2-dimensional route drawing integrator to output a picture of the relationship network between all the people above
-        Route2DDrawingIntegrator a = new Route2DDrawingIntegrator("Z", "A");
+        Route2DDrawingIntegrator a = new Route2DDrawingIntegrator("A", "Z");
         // Set image output path
         a.setImageOutPath("D:\\out\\image.jpg")
                 // set image width
@@ -71,15 +71,15 @@ public class MAIN1 {
                 .setDiscreteThreshold(4)
                 // Run the integrator!
                 .run();
-        
-      // Clean data in relational network
-      zhaoCoordinateNet.clear();
+
+        // Clean data in relational network
+        zhaoCoordinateNet.clear();
     }
 }
 ```
 
 - The relationship network picture generated after running
-  ![image](https://user-images.githubusercontent.com/113756063/195981317-e40194a8-474a-4de7-9bfd-84ac40b66d15.png)
+  ![image](https://user-images.githubusercontent.com/113756063/196412140-8b81979d-ecc1-4774-9cbe-df8a89c19c1c.png)
 
 # directory structure
 
