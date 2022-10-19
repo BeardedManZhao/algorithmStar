@@ -35,7 +35,7 @@ can add it to your maven project, or you can download it from Releases and manua
 
 ### Use API examples
 
-这里是""的使用示例,展示的是人与人之间的关系分析与预测,在"ZhaoCoordinateNet"算法中, 人的关系网络被分析了出来, 同时
+Here is an example of the use of "ZhaoCoordinateNet2D", which shows the analysis and prediction of the relationship between people. In the "ZhaoCoordinateNet" algorithm, the relationship network of people is analyzed, and at the same time, the network analysis and mapping can be performed.
 
 ```java
 package zhao.algorithmMagic;
