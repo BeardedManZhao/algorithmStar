@@ -74,7 +74,8 @@ public class ComplexNumber implements Operands<ComplexNumber> {
      *
      * @param value 被求和的参数  Parameters to be summed
      * @return 求和之后的数值  the value after the sum
-     * @apiNote 两个复数的实部之和作为新复数的实部，两个复数的虚部之和作为新复数的虚部。
+     * <p>
+     * 两个复数的实部之和作为新复数的实部，两个复数的虚部之和作为新复数的虚部。
      * <p>
      * The sum of the real parts of two complex numbers is used as the real part of the new complex number, and the sum of the imaginary parts of the two complex numbers is used as the imaginary part of the new complex number.
      */
@@ -90,7 +91,8 @@ public class ComplexNumber implements Operands<ComplexNumber> {
      *
      * @param value 被做差的参数（被减数）  The parameter to be subtracted (minuend)
      * @return 差异数值  difference value
-     * @apiNote 两个复数的实部之差作为新复数的实部，两个复数的虚部之差作为新复数的虚部。
+     * <p>
+     * 两个复数的实部之差作为新复数的实部，两个复数的虚部之差作为新复数的虚部。
      */
     @Override
     public ComplexNumber diff(ComplexNumber value) {
@@ -104,7 +106,8 @@ public class ComplexNumber implements Operands<ComplexNumber> {
      *
      * @param value 乘积的参数（被乘数） Argument of the product (multiplicand)
      * @return 两个复数的积  difference value
-     * @apiNote (a + bi)(c + di) = (ac-bd)+(bc+ad)i = ac+adi+bci+bdi²
+     * <p>
+     * (a + bi)(c + di) = (ac-bd)+(bc+ad)i = ac+adi+bci+bdi²
      */
     public ComplexNumber multiply(ComplexNumber value) {
         int a = this.getReal();
@@ -121,7 +124,8 @@ public class ComplexNumber implements Operands<ComplexNumber> {
      *
      * @param value 被除的参数（被除数）坟墓  Parameter to be divided (dividend)
      * @return 结果数值  result value
-     * @apiNote (ac + bd) / (c² + d²) + (bc - ad) / (c² + d²) i
+     * <p>
+     * (ac + bd) / (c² + d²) + (bc - ad) / (c² + d²) i
      */
     public ComplexNumber divide(ComplexNumber value) {
         int a = this.getReal();

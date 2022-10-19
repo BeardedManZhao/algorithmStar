@@ -36,8 +36,8 @@ public class Dijkstra implements GeneratingAlgorithmMany {
     protected DistanceAlgorithm distanceAlgorithm = EuclideanMetric.getInstance(DependentAlgorithmNameLibrary.EUCLIDEAN_METRIC_NAME);
 
     protected Dijkstra() {
-        this.AlgorithmName = "Dijkstra2D";
-        this.logger = Logger.getLogger("Dijkstra2D");
+        this.AlgorithmName = "Dijkstra";
+        this.logger = Logger.getLogger("Dijkstra");
     }
 
     protected Dijkstra(String AlgorithmName) {
@@ -62,8 +62,8 @@ public class Dijkstra implements GeneratingAlgorithmMany {
             if (operationAlgorithm instanceof Dijkstra) {
                 return ASClass.transform(operationAlgorithm);
             } else {
-                throw new TargetNotRealizedException("您提取的[" + Name + "]算法被找到了，但是它不属于 Dijkstra2D 类型，请您为这个算法重新定义一个名称。\n" +
-                        "The [" + Name + "] algorithm you ParameterCombination has been found, but it does not belong to the Dijkstra2D type. Please redefine a name for this algorithm.");
+                throw new TargetNotRealizedException("您提取的[" + Name + "]算法被找到了，但是它不属于 Dijkstra 类型，请您为这个算法重新定义一个名称。\n" +
+                        "The [" + Name + "] algorithm you ParameterCombination has been found, but it does not belong to the Dijkstra type. Please redefine a name for this algorithm.");
             }
         } else {
             Dijkstra zhaoCoordinateNet = new Dijkstra(Name);

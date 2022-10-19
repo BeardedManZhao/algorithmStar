@@ -19,7 +19,6 @@ public interface DistanceAlgorithm extends OperationAlgorithm {
      *                     <p>
      *                     Calculated vector
      * @return ...
-     * @apiNote ...
      */
     double getTrueDistance(DoubleVector doubleVector);
 

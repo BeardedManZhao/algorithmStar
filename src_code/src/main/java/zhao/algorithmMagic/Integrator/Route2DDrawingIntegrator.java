@@ -239,6 +239,7 @@ public class Route2DDrawingIntegrator implements AlgorithmIntegrator<Route2DDraw
      * Set the image output path.
      *
      * @param imageOutPath Set the image output path.
+     * @return chain call
      */
     public Route2DDrawingIntegrator setImageOutPath(String imageOutPath) {
         this.imageOutPath = imageOutPath;

@@ -42,7 +42,10 @@ public final class ASStr {
     /**
      * 将一个字符串映射为一个数值数组
      *
-     * @param str 被转化的字符串
+     * @param str    被转化的字符串
+     * @param mapper 转化的时候，字符串的映射逻辑实现。
+     *               <p>
+     *               When converting, the mapping logic of strings is implemented.
      * @return 字符串映射之后的数组
      */
     public static double[] toDoubleArray(String str, Mapper<DataPackage, Double> mapper) {

@@ -144,7 +144,7 @@ public class IntegerConsanguinityRoute implements NameRoute<IntegerConsanguinity
      *
      * @param value 被求和的参数  Parameters to be summed
      * @return 求和之后的数值  the value after the sum
-     * @apiNote 这里就是将两个血亲坐标的起始坐标进行对应的加法.
+     * 这里就是将两个血亲坐标的起始坐标进行对应的加法.
      */
     @Override
     public IntegerConsanguinityRoute add(IntegerConsanguinityRoute value) {
@@ -161,7 +161,7 @@ public class IntegerConsanguinityRoute implements NameRoute<IntegerConsanguinity
      *
      * @param value 被做差的参数（被减数）  The parameter to be subtracted (minuend)
      * @return 差异数值  difference value
-     * @apiNote There is no description for the super interface, please refer to the subclass documentation
+     * There is no description for the super interface, please refer to the subclass documentation
      */
     @Override
     public IntegerConsanguinityRoute diff(IntegerConsanguinityRoute value) {

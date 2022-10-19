@@ -50,6 +50,9 @@ public final class ASClass {
      * <p>
      * 2D line of type Double, converted to 2D line of type
      *
+     * @param NewName                    转换之后的线路名称，如果您在调用该函数之前已经计算出来了该名称，那么您可以直接将数据传入进来，避免冗余计算。
+     *                                   <p>
+     *                                   The converted line name, if you have calculated the name before calling the function, you can pass in the data directly to avoid redundant calculation.
      * @param doubleConsanguinityRoute2D 需要被转换的Double线路
      *                                   <p>
      *                                   Double line that needs to be converted

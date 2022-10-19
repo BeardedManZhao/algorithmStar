@@ -71,7 +71,7 @@ public class IntegerRouteNet implements RouteNet<IntegerCoordinateMany, IntegerC
      *
      * @param value 被求和的参数  Parameters to be summed
      * @return 求和之后的数值  the value after the sum
-     * @apiNote 将两个网络中的每一个线路进行求和（不保证线路之间的顺序）
+     * 将两个网络中的每一个线路进行求和（不保证线路之间的顺序）
      */
     @Override
     public RouteNet<IntegerCoordinateMany, IntegerConsanguinityRoute> add(RouteNet<IntegerCoordinateMany, IntegerConsanguinityRoute> value) {
@@ -99,7 +99,7 @@ public class IntegerRouteNet implements RouteNet<IntegerCoordinateMany, IntegerC
      *
      * @param value 被做差的参数（被减数）  The parameter to be subtracted (minuend)
      * @return 差异数值  difference value
-     * @apiNote 将两个网络中的每一个线路进行做差（不保证线路之间的顺序）
+     * 将两个网络中的每一个线路进行做差（不保证线路之间的顺序）
      */
     @Override
     public RouteNet<IntegerCoordinateMany, IntegerConsanguinityRoute> diff(RouteNet<IntegerCoordinateMany, IntegerConsanguinityRoute> value) {
@@ -170,9 +170,9 @@ public class IntegerRouteNet implements RouteNet<IntegerCoordinateMany, IntegerC
      *
      * @param integerConsanguinityRoute 被标记的二维路线对象,该对象可以在绘图器中以特殊颜色绘制出来!
      *                                  A marked 2D route object that can be drawn in a special color in the plotter!
-     * @apiNote 有关标记颜色的设置与获取, 请您调用"setSignColor"用于设置!默认是紫色
-     * <p>
-     * For the setting and obtaining of the sign color, please call "set Sign Color" for viewing!
+     *                                  有关标记颜色的设置与获取, 请您调用"setSignColor"用于设置!默认是紫色
+     *                                  <p>
+     *                                  For the setting and obtaining of the sign color, please call "set Sign Color" for viewing!
      */
     public void addMasterTagRoute(IntegerConsanguinityRoute integerConsanguinityRoute) {
         String s = integerConsanguinityRoute.getStartingCoordinateName() + " -> " + integerConsanguinityRoute.getEndPointCoordinateName();
@@ -188,9 +188,9 @@ public class IntegerRouteNet implements RouteNet<IntegerCoordinateMany, IntegerC
      *
      * @param integerConsanguinityRoute 被标记的二维路线对象,该对象可以在绘图器中以特殊颜色绘制出来!
      *                                  A marked 2D route object that can be drawn in a special color in the plotter!
-     * @apiNote 有关标记颜色的设置与获取, 请您调用"setSignColor"用于设置!默认是紫色
-     * <p>
-     * For the setting and obtaining of the sign color, please call "set Sign Color" for viewing!
+     *                                  有关标记颜色的设置与获取, 请您调用"setSignColor"用于设置!默认是紫色
+     *                                  <p>
+     *                                  For the setting and obtaining of the sign color, please call "set Sign Color" for viewing!
      */
     public void addSubMarkRoute(IntegerConsanguinityRoute integerConsanguinityRoute) {
         String s = integerConsanguinityRoute.getStartingCoordinateName() + " -> " + integerConsanguinityRoute.getEndPointCoordinateName();

@@ -45,8 +45,8 @@ public class DirectionalDijkstra2D extends Dijkstra2D {
             if (operationAlgorithm instanceof DirectionalDijkstra2D) {
                 return ASClass.transform(operationAlgorithm);
             } else {
-                throw new TargetNotRealizedException("您提取的[" + Name + "]算法被找到了，但是它不属于 Dijkstra2D 类型，请您为这个算法重新定义一个名称。\n" +
-                        "The [" + Name + "] algorithm you ParameterCombination has been found, but it does not belong to the Dijkstra2D type. Please redefine a name for this algorithm.");
+                throw new TargetNotRealizedException("您提取的[" + Name + "]算法被找到了，但是它不属于 DirectionalDijkstra2D 类型，请您为这个算法重新定义一个名称。\n" +
+                        "The [" + Name + "] algorithm you ParameterCombination has been found, but it does not belong to the DirectionalDijkstra2D type. Please redefine a name for this algorithm.");
             }
         } else {
             DirectionalDijkstra2D zhaoCoordinateNet = new DirectionalDijkstra2D(Name);
@@ -63,6 +63,7 @@ public class DirectionalDijkstra2D extends Dijkstra2D {
      * 设置是否要使用正方向来进行路径的构造与查找，如果设置为true，那么在调用""的时候会从起始点开始查找终止点，反之就是从终止点开始查找起始点。
      *
      * @param forward true代表使用正方向
+     * @return chain call
      */
     public DirectionalDijkstra2D setForward(boolean forward) {
         this.forward = forward;

@@ -48,6 +48,10 @@ public class EuclideanMetric<I extends IntegerCoordinates<I> & Coordinate<I>, D 
      * 获取到该算法的类对象，
      *
      * @param Name 该算法的名称
+     * @param <II> 该算法用来处理的整形坐标是什么数据类型
+     *             <p>
+     *             What data type is the integer coordinate used by this algorithm?
+     * @param <DD> 该算法用来处理的浮点坐标是什么数据类型
      * @return 算法类对象
      * @throws TargetNotRealizedException 当您传入的算法名称对应的组件不能被成功提取的时候会抛出异常
      */
@@ -86,7 +90,8 @@ public class EuclideanMetric<I extends IntegerCoordinates<I> & Coordinate<I>, D 
      *                     <p>
      *                     Calculated vector
      * @return 该向量始末坐标的欧几里德距离
-     * @apiNote 将函数做了一个变换, 使其能够兼容向量的计算, 欧几里德其本身就是始末坐标的差值进行的计算
+     * <p>
+     * 将函数做了一个变换, 使其能够兼容向量的计算, 欧几里德其本身就是始末坐标的差值进行的计算
      * <p>
      * The function is transformed to make it compatible with the calculation of vectors. Euclid itself is the calculation of the difference between the beginning and end coordinates.
      */

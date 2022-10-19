@@ -3,6 +3,11 @@ package zhao.algorithmMagic.exception;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 
+/**
+ * 框架中所有已知异常的父类
+ * <p>
+ * The parent class of all known exceptions in the framework
+ */
 public abstract class AlgorithmMagicException extends RuntimeException {
     public AlgorithmMagicException() {
         super();

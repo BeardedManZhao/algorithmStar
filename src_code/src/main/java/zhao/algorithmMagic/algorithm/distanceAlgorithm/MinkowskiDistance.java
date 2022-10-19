@@ -47,6 +47,10 @@ public class MinkowskiDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
      * Get the class object of the algorithm.
      *
      * @param Name 该算法的名称
+     * @param <II> 该算法用来处理的整形坐标是什么数据类型
+     *             <p>
+     *             What data type is the integer coordinate used by this algorithm?
+     * @param <DD> 该算法用来处理的浮点坐标是什么数据类型
      * @return 算法类对象
      * @throws TargetNotRealizedException 当您传入的算法名称对应的组件不能被成功提取的时候会抛出异常
      *                                    <p>
@@ -188,7 +192,8 @@ public class MinkowskiDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
      *                     <p>
      *                     Calculated vector
      * @return 向量中始末坐标的闵可夫斯基距离
-     * @apiNote 闵可夫斯基距离是总结的曼哈顿与欧几里德, 其本身通过一个P变量控制所有算法, 因此本质上也是向量的计算
+     * <p>
+     * 闵可夫斯基距离是总结的曼哈顿与欧几里德, 其本身通过一个P变量控制所有算法, 因此本质上也是向量的计算
      */
     @Override
     public double getTrueDistance(DoubleVector doubleVector) {

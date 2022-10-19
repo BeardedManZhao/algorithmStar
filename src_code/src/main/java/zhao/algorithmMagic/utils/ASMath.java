@@ -98,7 +98,7 @@ public final class ASMath {
      *
      * @param n 数据样本的总数
      * @param m 要提取的数据样本数量，不同数量的组合在样本中有很多方式，可以计算出来，m个数据样本在n个数据样本之内的组合
-     * @return C(n, m) = n!/ m!（n - m）! = 组合方式的数量  如果您的 n < m 那么会直接返回 -1
+     * @return 排列组合中的具体组合数量。
      */
     public static double CombinationNumber(int n, int m) {
         if (m <= n) {
@@ -112,6 +112,7 @@ public final class ASMath {
      * E(X)  = ⁿ∑₁ (probability(Xn) * frequency(Xn in X))
      *
      * @param event 期望运算中有，所使用到的事件条件，为true的时候，代表真事件。
+     * @param X     需要计算期望的数列。
      * @return X序列的期望
      */
     public static double Expectation(double[] X, DoubleEvent event) {
@@ -181,8 +182,8 @@ public final class ASMath {
 
     /**
      * 计算一个数值的阶乘
-     * * @param i              被计算数值
      *
+     * @param i              被计算的数值
      * @param factorialCount 阶乘的次数，该参数可以对阶乘进行一个限制，用于概率计算等操作
      * @return 阶乘结果
      */
@@ -190,7 +191,6 @@ public final class ASMath {
         int res = 1;
         int count = 0;
         while (count < factorialCount && i > 1) {
-//            System.out.println(i + " " + res);
             res *= i;
             i -= 1;
             count++;

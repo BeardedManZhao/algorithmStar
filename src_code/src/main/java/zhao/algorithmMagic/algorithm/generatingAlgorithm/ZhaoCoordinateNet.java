@@ -14,9 +14,9 @@ import java.util.List;
 /**
  * Java类于 2022/10/15 09:31:48 创建
  * <p>
- * 坐标网生成算法,是我自己的实现,该算法会将所有有关联的坐标进行连接,快速生成一张网,例如 A -> B , B -> C 这个时候就会自动的将 A -> C 构建出来,非常适用于人与人之间的关系推导.
+ * 坐标网生成算法,是我自己的实现,该算法会将所有有关联的坐标进行连接,快速生成一张网,非常适用于人与人之间的关系推导.
  * <p>
- * The coordinate network generation algorithm is my own implementation. This algorithm will connect all related coordinates to quickly generate a network, such as A -> B , B -> C At this time, A -> C will be automatically generated build out
+ * The coordinate network generation algorithm is my own implementation. This algorithm will connect all related coordinates to quickly generate a network。
  *
  * @author zhao
  */
@@ -104,6 +104,7 @@ public class ZhaoCoordinateNet implements GeneratingAlgorithm {
     }
 
     /**
+     * @param doubleConsanguinityRoute 需要被运算的中心点
      * @return 所有和该点有关的血亲坐标
      * <p>
      * All blood relative coordinates related to this point

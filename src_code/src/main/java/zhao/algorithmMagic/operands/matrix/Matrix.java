@@ -12,7 +12,7 @@ import java.util.Arrays;
  * @param <ImplementationType> 实现类的数据类型  The data type of the implementing class
  * @param <ElementType>        向量中的元素类型  element type in the vector
  * @author zhao
- * @apiNote 该类为抽象，其中包含最基本的定义与类型管控
+ * 该类为抽象，其中包含最基本的定义与类型管控
  * <p>
  * This class is abstract and contains the most basic definitions and type controls.
  */

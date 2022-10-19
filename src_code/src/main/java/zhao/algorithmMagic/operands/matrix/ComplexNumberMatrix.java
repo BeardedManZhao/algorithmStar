@@ -82,7 +82,7 @@ public class ComplexNumberMatrix extends Matrix<ComplexNumberMatrix, ComplexNumb
      *
      * @param value 被求和的参数  Parameters to be summed
      * @return 求和之后的数值  the value after the sum
-     * @apiNote 将两个复数矩阵进行求和
+     * 将两个复数矩阵进行求和
      * <p>
      * sum two complex matrices
      */
@@ -122,7 +122,7 @@ public class ComplexNumberMatrix extends Matrix<ComplexNumberMatrix, ComplexNumb
      *
      * @param value 被做差的参数（被减数）  The parameter to be subtracted (minuend)
      * @return 差异数值  difference value
-     * @apiNote 将两个复数矩阵进行做差
+     * 将两个复数矩阵进行做差
      * <p>
      * difference between two complex matrices
      */
@@ -161,7 +161,9 @@ public class ComplexNumberMatrix extends Matrix<ComplexNumberMatrix, ComplexNumb
      * Calculate the modulo length of the vector, please refer to the api node for the specific implementation
      *
      * @return 复数矩阵的模长
-     * @apiNote 矩阵的模长
+     * 计算出来该矩阵的模长，可以理解为该矩阵本身也是一个向量。
+     * <p>
+     * After calculating the modulus length of the matrix, it can be understood that the matrix itself is also a vector.
      */
     @Override
     public ComplexNumber moduleLength() {
@@ -185,7 +187,7 @@ public class ComplexNumberMatrix extends Matrix<ComplexNumberMatrix, ComplexNumb
      *
      * @param matrix 被做乘的向量
      * @return 向量的外积
-     * @apiNote 矩阵每一个向量的外积
+     * 矩阵每一个向量的外积
      */
     @Override
     public ComplexNumberMatrix multiply(ComplexNumberMatrix matrix) {
@@ -221,7 +223,7 @@ public class ComplexNumberMatrix extends Matrix<ComplexNumberMatrix, ComplexNumb
      *               <p>
      *               the second computed vector object
      * @return 两个向量的内积
-     * @apiNote 矩阵每一个向量的内积
+     * 矩阵每一个向量的内积
      */
     @Override
     public ComplexNumber innerProduct(ComplexNumberMatrix vector) {
@@ -246,7 +248,8 @@ public class ComplexNumberMatrix extends Matrix<ComplexNumberMatrix, ComplexNumb
      * @return 是否使用基元类型，基元类型能更好地降低内存占用，如果您不使用基元，将会启动父类的数据容器
      * <p>
      * Whether to use primitive types, primitive types can better reduce memory usage, if you do not use primitives, the data container of the parent class will be started
-     * @implNote 本复数矩阵中，不存在基元类型！因此本发放返回为false
+     * <p>
+     * 本复数矩阵中，不存在基元类型！因此本发放返回为false
      * <p>
      * In this complex matrix, there is no primitive type! So this release returns false
      */
@@ -259,7 +262,7 @@ public class ComplexNumberMatrix extends Matrix<ComplexNumberMatrix, ComplexNumb
      * @return 不论是基元还是包装，都返回一个基元的浮点数组，该方法是万能的，始终都会返回出来一个真正的数组！
      * <p>
      * Both primitives and wrappers return a floating-point array of primitives. This method is omnipotent and will always return a true vector array!
-     * @apiNote 请注意这里返回的数值是所有复数的实部 虚部，格式为：a.b1(结尾处的1可能是近似值)，如果您需要使用指针获取到复数数组，请使用"toComplexNumberArray"。
+     * 请注意这里返回的数值是所有复数的实部 虚部，格式为：a.b1(结尾处的1可能是近似值)，如果您需要使用指针获取到复数数组，请使用"toComplexNumberArray"。
      * <p>
      * Please note that the values returned here are the real and imaginary parts of all complex numbers in the format: a.b1 (the 1 at the end may be an approximation), if you need to use a pointer to get an array of complex numbers, please use "toComplexNumberArray".
      */

@@ -9,9 +9,9 @@ import zhao.algorithmMagic.operands.Operands;
  *
  * @param <ImplementationType> 实现类的数据类型  The data type of the implementing class
  * @param <ElementType>        向量中的元素类型  element type in the vector
- * @apiNote 该类为抽象，其中包含最基本的定义与类型管控
- * <p>
- * This class is abstract and contains the most basic definitions and type controls.
+ *                             该类为抽象，其中包含最基本的定义与类型管控
+ *                             <p>
+ *                             This class is abstract and contains the most basic definitions and type controls.
  */
 public abstract class Vector<ImplementationType, ElementType> implements Operands<ImplementationType> {
 
@@ -71,7 +71,7 @@ public abstract class Vector<ImplementationType, ElementType> implements Operand
      * Calculate the modulo length of the vector, please refer to the api node for the specific implementation
      *
      * @return 向量的模长
-     * @apiNote waiting to be realized
+     * waiting to be realized
      */
     public abstract ElementType moduleLength();
 
@@ -82,7 +82,7 @@ public abstract class Vector<ImplementationType, ElementType> implements Operand
      *
      * @param vector 被做乘的向量
      * @return 向量的外积
-     * @apiNote waiting to be realized
+     * waiting to be realized
      */
     public abstract ImplementationType multiply(ImplementationType vector);
 
@@ -95,7 +95,7 @@ public abstract class Vector<ImplementationType, ElementType> implements Operand
      *               <p>
      *               the second computed vector object
      * @return 两个向量的内积
-     * @apiNote waiting to be realized
+     * waiting to be realized
      */
     public abstract ElementType innerProduct(ImplementationType vector);
 

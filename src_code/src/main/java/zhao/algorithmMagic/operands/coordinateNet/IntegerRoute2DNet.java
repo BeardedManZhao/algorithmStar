@@ -112,9 +112,9 @@ public class IntegerRoute2DNet implements RouteNet<IntegerCoordinateTwo, Integer
      *
      * @param integerConsanguinityRoute2D 被标记的二维路线对象,该对象可以在绘图器中以特殊颜色绘制出来!
      *                                    A marked 2D route object that can be drawn in a special color in the plotter!
-     * @apiNote 有关标记颜色的设置与获取, 请您调用"setSignColor"用于设置!默认是紫色
-     * <p>
-     * For the setting and obtaining of the sign color, please call "set Sign Color" for viewing!
+     *                                    有关标记颜色的设置与获取, 请您调用"setSignColor"用于设置!默认是紫色
+     *                                    <p>
+     *                                    For the setting and obtaining of the sign color, please call "set Sign Color" for viewing!
      */
     public void addMasterTagRoute(IntegerConsanguinityRoute2D integerConsanguinityRoute2D) {
         String s = integerConsanguinityRoute2D.getStartingCoordinateName() + " -> " + integerConsanguinityRoute2D.getEndPointCoordinateName();
@@ -130,9 +130,9 @@ public class IntegerRoute2DNet implements RouteNet<IntegerCoordinateTwo, Integer
      *
      * @param integerConsanguinityRoute2D 被标记的二维路线对象,该对象可以在绘图器中以特殊颜色绘制出来!
      *                                    A marked 2D route object that can be drawn in a special color in the plotter!
-     * @apiNote 有关标记颜色的设置与获取, 请您调用"setSignColor"用于设置!默认是紫色
-     * <p>
-     * For the setting and obtaining of the sign color, please call "set Sign Color" for viewing!
+     *                                    有关标记颜色的设置与获取, 请您调用"setSignColor"用于设置!默认是紫色
+     *                                    <p>
+     *                                    For the setting and obtaining of the sign color, please call "set Sign Color" for viewing!
      */
     public void addSubMarkRoute(IntegerConsanguinityRoute2D integerConsanguinityRoute2D) {
         String s = integerConsanguinityRoute2D.getStartingCoordinateName() + " -> " + integerConsanguinityRoute2D.getEndPointCoordinateName();
@@ -148,7 +148,9 @@ public class IntegerRoute2DNet implements RouteNet<IntegerCoordinateTwo, Integer
      *
      * @param value 被求和的参数  Parameters to be summed
      * @return 求和之后的数值  the value after the sum
-     * @apiNote There is no description for the super interface, please refer to the subclass documentation
+     * 将两个路线网中的所有路线按照序列索引位置进行求和，不建议使用，因为索引位置不等于图像中的坐标位置，后面会进行优化与重构
+     * <p>
+     * Summing all the routes in the two route networks according to the sequence index position is not recommended, because the index position is not equal to the coordinate position in the image, and optimization and reconstruction will be carried out later
      */
     @Override
     public RouteNet<IntegerCoordinateTwo, IntegerConsanguinityRoute2D> add(RouteNet<IntegerCoordinateTwo, IntegerConsanguinityRoute2D> value) {
@@ -176,7 +178,9 @@ public class IntegerRoute2DNet implements RouteNet<IntegerCoordinateTwo, Integer
      *
      * @param value 被做差的参数（被减数）  The parameter to be subtracted (minuend)
      * @return 差异数值  difference value
-     * @apiNote There is no description for the super interface, please refer to the subclass documentation
+     * 将两个路线网中的所有路线按照序列索引位置进行相减，不建议使用，因为索引位置不等于图像中的坐标位置，后面会进行优化与重构
+     * <p>
+     * Subtract all routes in the two route networks according to the sequence index position, which is not recommended because the index position is not equal to the coordinate position in the image, and optimization and reconstruction will be carried out later
      */
     @Override
     public RouteNet<IntegerCoordinateTwo, IntegerConsanguinityRoute2D> diff(RouteNet<IntegerCoordinateTwo, IntegerConsanguinityRoute2D> value) {
@@ -283,9 +287,9 @@ public class IntegerRoute2DNet implements RouteNet<IntegerCoordinateTwo, Integer
      * @param route2DDrawingIntegrator 绘图集成器对象,您可以再附加任务中对集成器进行灵活操作!
      *                                 <p>
      *                                 Drawing integrator object, you can flexibly operate the integrator in additional tasks!
-     * @apiNote 第二版启动器接口中的特有函数, 允许用户在实现2维绘图接口的时候获取到绘图笔对象, 用户将此接口当作父类去使用, 绘图器会自动分析您的接口版本.
-     * <p>
-     * The unique function in the second version of the launcher interface allows the user to obtain the drawing pen object when implementing the 2D drawing interface. The user uses this interface as a parent class, and the drawer will automatically analyze your interface version.
+     *                                 第二版启动器接口中的特有函数, 允许用户在实现2维绘图接口的时候获取到绘图笔对象, 用户将此接口当作父类去使用, 绘图器会自动分析您的接口版本.
+     *                                 <p>
+     *                                 The unique function in the second version of the launcher interface allows the user to obtain the drawing pen object when implementing the 2D drawing interface. The user uses this interface as a parent class, and the drawer will automatically analyze your interface version.
      */
     @Override
     public void AdditionalTasks1(Graphics2D graphics2D, Route2DDrawingIntegrator route2DDrawingIntegrator) {
@@ -301,9 +305,9 @@ public class IntegerRoute2DNet implements RouteNet<IntegerCoordinateTwo, Integer
      * @param route2DDrawingIntegrator 绘图集成器对象,您可以再附加任务中对集成器进行灵活操作!
      *                                 <p>
      *                                 Drawing integrator object, you can flexibly operate the integrator in additional tasks!
-     * @apiNote 第二版启动器接口中的特有函数, 允许用户在实现2维绘图接口的时候获取到绘图笔对象, 用户将此接口当作父类去使用, 绘图器会自动分析您的接口版本.
-     * <p>
-     * The unique function in the second version of the launcher interface allows the user to obtain the drawing pen object when implementing the 2D drawing interface. The user uses this interface as a parent class, and the drawer will automatically analyze your interface version.
+     *                                 第二版启动器接口中的特有函数, 允许用户在实现2维绘图接口的时候获取到绘图笔对象, 用户将此接口当作父类去使用, 绘图器会自动分析您的接口版本.
+     *                                 <p>
+     *                                 The unique function in the second version of the launcher interface allows the user to obtain the drawing pen object when implementing the 2D drawing interface. The user uses this interface as a parent class, and the drawer will automatically analyze your interface version.
      */
     @Override
     public void AdditionalTasks2(Graphics2D graphics2D, Route2DDrawingIntegrator route2DDrawingIntegrator) {

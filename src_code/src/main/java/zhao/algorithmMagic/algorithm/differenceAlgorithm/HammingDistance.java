@@ -44,7 +44,7 @@ public class HammingDistance implements DifferenceAlgorithm<String> {
                 return ASClass.transform(operationAlgorithm);
             } else {
                 throw new TargetNotRealizedException("您提取的[" + Name + "]算法被找到了，但是它不属于HammingDistance类型，请您为这个算法重新定义一个名称。\n" +
-                        "The [" + Name + "] algorithm you extracted has been found, but it does not belong to the Cosine Distance type. Please redefine a name for this algorithm.");
+                        "The [" + Name + "] algorithm you extracted has been found, but it does not belong to the HammingDistance type. Please redefine a name for this algorithm.");
             }
         } else {
             HammingDistance HammingDistance = new HammingDistance(Name);
@@ -118,7 +118,10 @@ public class HammingDistance implements DifferenceAlgorithm<String> {
      * @param value1 差异参数1
      * @param value2 差异参数2
      * @return 差异系数 数值越小，差异越小
-     * @apiNote 这里的实现就是将两个字符串之间的不同处的数量 / 两个字符串的总数量
+     * <p>
+     * 这里的实现就是将两个字符串之间的不同处的数量 / 两个字符串的总数量
+     * <p>
+     * The implementation here is to convert the number of differences between the two strings divide by total number of the two strings
      */
     @Override
     public double getDifferenceRatio(String value1, String value2) {

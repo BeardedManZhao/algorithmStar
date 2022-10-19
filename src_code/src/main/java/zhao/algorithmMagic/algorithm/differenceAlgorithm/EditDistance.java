@@ -45,7 +45,7 @@ public class EditDistance implements DifferenceAlgorithm<String> {
                 return ASClass.transform(operationAlgorithm);
             } else {
                 throw new TargetNotRealizedException("您提取的[" + Name + "]算法被找到了，但是它不属于EditDistance类型，请您为这个算法重新定义一个名称。\n" +
-                        "The [" + Name + "] algorithm you extracted has been found, but it does not belong to the Cosine Distance type. Please redefine a name for this algorithm.");
+                        "The [" + Name + "] algorithm you extracted has been found, but it does not belong to the EditDistance type. Please redefine a name for this algorithm.");
             }
         } else {
             EditDistance EditDistance = new EditDistance(Name);
@@ -119,7 +119,10 @@ public class EditDistance implements DifferenceAlgorithm<String> {
      * @param value1 差异参数1
      * @param value2 差异参数2
      * @return 差异系数
-     * @apiNote 这里是将两个字符串之间的最小编辑次数。除以两个字符串长度的乘积
+     * <p>
+     * 这里是将两个字符串之间的最小编辑次数。除以两个字符串长度的乘积
+     * <p>
+     * Here is the minimum number of edits to place between two strings. Divide by the product of the lengths of the two strings
      */
     @Override
     public double getDifferenceRatio(String value1, String value2) {

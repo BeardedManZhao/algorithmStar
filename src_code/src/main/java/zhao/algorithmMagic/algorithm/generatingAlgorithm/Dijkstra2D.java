@@ -147,9 +147,10 @@ public class Dijkstra2D implements GeneratingAlgorithm2D {
      * @param startingCoordinateName 起始点名称
      * @param endPointCoordinateName 终止点名称
      * @param trueDistance           两点之间的距离
-     * @apiNote 会自动的在线路集合中查找两点之间的线路对象，并建立联系！
-     * <p>
-     * It will automatically find the line object between two points in the line collection and establish a connection!
+     *                               <p>
+     *                               会自动的在线路集合中查找两点之间的线路对象，并建立联系！
+     *                               <p>
+     *                               It will automatically find the line object between two points in the line collection and establish a connection!
      */
     protected void extracted(String startingCoordinateName, String endPointCoordinateName, double trueDistance) {
         Dijkstra.EstablishTwoPointConnection(startingCoordinateName, endPointCoordinateName, trueDistance, this.hashMap);

@@ -27,7 +27,8 @@ import java.util.List;
  * A 2D Coordinate Network Generation Algorithm that supports the drawing of images in the Route 2 D Drawing Integrator because the algorithm already implements its launcher!
  *
  * @author zhao
- * @apiNote 推荐使用IntegerConsanguinityRoute2D类型，因为在生成联系的时候，重要的不是数值，而是两者之间的关系，所以两者之间的精度不需要太高，最终考虑到性能，会使用整形进行数据保存！
+ * <p>
+ * 推荐使用IntegerConsanguinityRoute2D类型，因为在生成联系的时候，重要的不是数值，而是两者之间的关系，所以两者之间的精度不需要太高，最终考虑到性能，会使用整形进行数据保存！
  * <p>
  * It is recommended to use the Integer Consanguinity Route 2 D type, because when generating a connection, the important thing is not the value, but the relationship between the two, so the precision between the two does not need to be too high. In the end, considering the performance, an integer will be used. Carry out data saving!
  */
@@ -89,6 +90,7 @@ public class ZhaoCoordinateNet2D implements GeneratingAlgorithm2D, Route2DDrawin
      * @param addLineColor 您添加的线路在图中的颜色
      *                     <p>
      *                     The color of the lines you added in the diagram
+     * @return chain call
      */
     public ZhaoCoordinateNet2D setAddLineColor(Color addLineColor) {
         AddLineColor = addLineColor;
@@ -107,6 +109,7 @@ public class ZhaoCoordinateNet2D implements GeneratingAlgorithm2D, Route2DDrawin
      * @param generateLineColor 您添加的线路在图中的颜色
      *                          <p>
      *                          The color of the lines you added in the diagram
+     * @return chain call
      */
     public ZhaoCoordinateNet2D setGenerateLineColor(Color generateLineColor) {
         GenerateLineColor = generateLineColor;
@@ -204,14 +207,17 @@ public class ZhaoCoordinateNet2D implements GeneratingAlgorithm2D, Route2DDrawin
     }
 
     /**
+     * @param integerConsanguinityRoute2D 需要被分析的中心路线，所有与该路线相关的其它路线将会被查找与分析！
+     *                                    <p>
+     *                                    The central route that needs to be analyzed, all other routes related to this route will be searched and analyzed!
      * @return 所有和该点有关的血亲坐标
      * <p>
      * All blood relative coordinates related to this point
      */
-    public List<IntegerConsanguinityRoute2D> getConsanguinity(IntegerConsanguinityRoute2D IntegerConsanguinityRoute2D2D) {
+    public List<IntegerConsanguinityRoute2D> getConsanguinity(IntegerConsanguinityRoute2D integerConsanguinityRoute2D) {
         ArrayList<IntegerConsanguinityRoute2D> arrayList = new ArrayList<>();
         for (IntegerConsanguinityRoute2D value : stringDoubleConsanguinityCoordinateHashMap.values()) {
-            if (value.getStartingCoordinateName().equals(IntegerConsanguinityRoute2D2D.getStartingCoordinateName()) || value.getEndPointCoordinateName().equals(IntegerConsanguinityRoute2D2D.getEndPointCoordinateName())) {
+            if (value.getStartingCoordinateName().equals(integerConsanguinityRoute2D.getStartingCoordinateName()) || value.getEndPointCoordinateName().equals(integerConsanguinityRoute2D.getEndPointCoordinateName())) {
                 arrayList.add(value);
             }
         }
@@ -304,9 +310,10 @@ public class ZhaoCoordinateNet2D implements GeneratingAlgorithm2D, Route2DDrawin
      * @param route2DDrawingIntegrator 绘图集成器对象,您可以再附加任务中对集成器进行灵活操作!
      *                                 <p>
      *                                 Drawing integrator object, you can flexibly operate the integrator in additional tasks!
-     * @apiNote 第二版启动器接口中的特有函数, 允许用户在实现2维绘图接口的时候获取到绘图笔对象, 用户将此接口当作父类去使用, 绘图器会自动分析您的接口版本.
-     * <p>
-     * The unique function in the second version of the launcher interface allows the user to obtain the drawing pen object when implementing the 2D drawing interface. The user uses this interface as a parent class, and the drawer will automatically analyze your interface version.
+     *                                 <p>
+     *                                 第二版启动器接口中的特有函数, 允许用户在实现2维绘图接口的时候获取到绘图笔对象, 用户将此接口当作父类去使用, 绘图器会自动分析您的接口版本.
+     *                                 <p>
+     *                                 The unique function in the second version of the launcher interface allows the user to obtain the drawing pen object when implementing the 2D drawing interface. The user uses this interface as a parent class, and the drawer will automatically analyze your interface version.
      */
     @Override
     public void AdditionalTasks1(Graphics2D graphics2D, Route2DDrawingIntegrator route2DDrawingIntegrator) {
@@ -326,9 +333,9 @@ public class ZhaoCoordinateNet2D implements GeneratingAlgorithm2D, Route2DDrawin
      * @param route2DDrawingIntegrator 绘图集成器对象,您可以再附加任务中对集成器进行灵活操作!
      *                                 <p>
      *                                 Drawing integrator object, you can flexibly operate the integrator in additional tasks!
-     * @apiNote 第二版启动器接口中的特有函数, 允许用户在实现2维绘图接口的时候获取到绘图笔对象, 用户将此接口当作父类去使用, 绘图器会自动分析您的接口版本.
-     * <p>
-     * The unique function in the second version of the launcher interface allows the user to obtain the drawing pen object when implementing the 2D drawing interface. The user uses this interface as a parent class, and the drawer will automatically analyze your interface version.
+     *                                 第二版启动器接口中的特有函数, 允许用户在实现2维绘图接口的时候获取到绘图笔对象, 用户将此接口当作父类去使用, 绘图器会自动分析您的接口版本.
+     *                                 <p>
+     *                                 The unique function in the second version of the launcher interface allows the user to obtain the drawing pen object when implementing the 2D drawing interface. The user uses this interface as a parent class, and the drawer will automatically analyze your interface version.
      */
     @Override
     public void AdditionalTasks2(Graphics2D graphics2D, Route2DDrawingIntegrator route2DDrawingIntegrator) {

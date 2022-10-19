@@ -172,7 +172,7 @@ public class DoubleVector extends Vector<DoubleVector, Double> {
      *
      * @param value 被求和的参数  Parameters to be summed
      * @return 求和之后的数值  the value after the sum
-     * @apiNote 这里按照向量的坐标将每一项进行了求和，实现了向量的相加。
+     * 这里按照向量的坐标将每一项进行了求和，实现了向量的相加。
      * <p>
      * Here, each item is summed according to the coordinates of the vector, and the addition of the vector is realized.
      */
@@ -203,7 +203,7 @@ public class DoubleVector extends Vector<DoubleVector, Double> {
      *
      * @param value 被做差的参数（被减数）  The parameter to be subtracted (minuend)
      * @return 差异数值  difference value
-     * @apiNote 这里按照向量的坐标将每一项进行了做差，实现了向量的相减法。
+     * 这里按照向量的坐标将每一项进行了做差，实现了向量的相减法。
      * <p>
      * Here, each item is subtracted according to the coordinates of the vector, and the subtraction method of the vector is realized.
      */
@@ -233,7 +233,7 @@ public class DoubleVector extends Vector<DoubleVector, Double> {
      * Calculate the modulo length of the vector, please refer to the api node for the specific implementation
      *
      * @return 向量的模长
-     * @apiNote waiting to be realized
+     * 向量的模长计算函数。
      */
     @Override
     public Double moduleLength() {
@@ -259,7 +259,7 @@ public class DoubleVector extends Vector<DoubleVector, Double> {
      * @return 向量的外积（除去方向）
      * <p>
      * Outer product of vectors (minus direction)
-     * @apiNote waiting to be realized
+     * 向量的外积计算函数。
      */
     @Override
     public DoubleVector multiply(DoubleVector vector) {
@@ -302,7 +302,7 @@ public class DoubleVector extends Vector<DoubleVector, Double> {
      *               <p>
      *               the second computed vector object
      * @return 两个向量的内积
-     * @apiNote waiting to be realized
+     * 向量的内积计算函数。
      */
     @Override
     public Double innerProduct(DoubleVector vector) {

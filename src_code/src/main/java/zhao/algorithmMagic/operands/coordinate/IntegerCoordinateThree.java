@@ -47,7 +47,8 @@ public final class IntegerCoordinateThree implements IntegerCoordinates<IntegerC
      *
      * @param value 被求和的参数  Parameters to be summed
      * @return 求和之后的数值  the value after the sum
-     * @apiNote 两个坐标之间的每一个轴的数据之和
+     * <p>
+     * 两个坐标之间的每一个轴的数据之和
      * <p>
      * Sum of data for each axis between two coordinates
      */
@@ -63,7 +64,8 @@ public final class IntegerCoordinateThree implements IntegerCoordinates<IntegerC
      *
      * @param value 被做差的参数（被减数）  The parameter to be subtracted (minuend)
      * @return 差异数值  difference value
-     * @apiNote 两个坐标之间的每一个轴的数据之差
+     * <p>
+     * 两个坐标之间的每一个轴的数据之差
      * <p>
      * diff of data for each axis between two coordinates
      */

@@ -146,7 +146,7 @@ public class DoubleConsanguinityRoute2D implements Route2D<DoubleConsanguinityRo
      *
      * @param value 被求和的参数  Parameters to be summed
      * @return 求和之后的数值  the value after the sum
-     * @apiNote 这里就是将两个血亲坐标的起始坐标进行对应的加法.
+     * 这里就是将两个血亲坐标的起始坐标进行对应的加法.
      */
     @Override
     public DoubleConsanguinityRoute2D add(DoubleConsanguinityRoute2D value) {
@@ -163,7 +163,7 @@ public class DoubleConsanguinityRoute2D implements Route2D<DoubleConsanguinityRo
      *
      * @param value 被做差的参数（被减数）  The parameter to be subtracted (minuend)
      * @return 差异数值  difference value
-     * @apiNote There is no description for the super interface, please refer to the subclass documentation
+     * 将两个二维的路线对象进行做差。
      */
     @Override
     public DoubleConsanguinityRoute2D diff(DoubleConsanguinityRoute2D value) {

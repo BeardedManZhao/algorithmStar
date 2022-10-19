@@ -48,6 +48,10 @@ public class ManhattanDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
      * 获取到该算法的类对象，
      *
      * @param Name 该算法的名称
+     * @param <II> 该算法用来处理的整形坐标是什么数据类型
+     *             <p>
+     *             What data type is the integer coordinate used by this algorithm?
+     * @param <DD> 该算法用来处理的浮点坐标是什么数据类型
      * @return 算法类对象
      * @throws TargetNotRealizedException 当您传入的算法名称对应的组件不能被成功提取的时候会抛出异常
      */
@@ -57,8 +61,8 @@ public class ManhattanDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
             if (operationAlgorithm instanceof ManhattanDistance<?, ?>) {
                 return ASClass.transform(operationAlgorithm);
             } else {
-                throw new TargetNotRealizedException("您提取的[" + Name + "]算法被找到了，但是它不属于EuclideanMetric类型，请您为这个算法重新定义一个名称。\n" +
-                        "The [" + Name + "] algorithm you extracted has been found, but it does not belong to the EuclideanMetric type. Please redefine a name for this algorithm.");
+                throw new TargetNotRealizedException("您提取的[" + Name + "]算法被找到了，但是它不属于ManhattanDistance类型，请您为这个算法重新定义一个名称。\n" +
+                        "The [" + Name + "] algorithm you extracted has been found, but it does not belong to the ManhattanDistance type. Please redefine a name for this algorithm.");
             }
         } else {
             ManhattanDistance<II, DD> manhattanDistance = new ManhattanDistance<>(Name);
@@ -176,7 +180,8 @@ public class ManhattanDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
      *                     <p>
      *                     Calculated vector
      * @return 该向量中始末坐标的曼哈顿距离
-     * @apiNote 将函数做了一个变换, 使其能够兼容向量的计算, 曼哈顿度量其本身就是始末坐标的差值进行的计算
+     * <p>
+     * 将函数做了一个变换, 使其能够兼容向量的计算, 曼哈顿度量其本身就是始末坐标的差值进行的计算
      * The function is transformed to make it compatible with the calculation of vectors. The Manhattan metric itself is the calculation of the difference between the start and end coordinates.
      */
     @Override

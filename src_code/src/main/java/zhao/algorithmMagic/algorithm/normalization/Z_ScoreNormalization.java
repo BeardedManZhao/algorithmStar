@@ -1,18 +1,57 @@
 package zhao.algorithmMagic.algorithm.normalization;
 
+import zhao.algorithmMagic.algorithm.OperationAlgorithm;
+import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
+import zhao.algorithmMagic.exception.TargetNotRealizedException;
 import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateMany;
 import zhao.algorithmMagic.operands.coordinate.FloatingPointCoordinates;
 import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateMany;
 import zhao.algorithmMagic.operands.coordinate.IntegerCoordinates;
 import zhao.algorithmMagic.operands.vector.DoubleVector;
+import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASMath;
 
 /**
  * Java类于 2022/10/13 12:39:17 创建
+ * <p>
+ * Z_ScoreNormalization,针对序列的标准化有着巨大的效果，能够将数值按照正负均匀分配。
+ * <p>
+ * Z Score Normalization, which has a huge effect on the normalization of sequences, can evenly distribute the values according to positive and negative.
  *
- * @author 4
+ * @author zhao
  */
 public class Z_ScoreNormalization extends DataStandardization {
+
+    protected Z_ScoreNormalization(String algorithmName) {
+        super(algorithmName);
+    }
+
+    /**
+     * 获取到该算法的类对象。
+     * <p>
+     * Get the class object of the algorithm.
+     *
+     * @param Name 该算法的名称
+     * @return 算法类对象
+     * @throws TargetNotRealizedException 当您传入的算法名称对应的组件不能被成功提取的时候会抛出异常
+     *                                    <p>
+     *                                    An exception will be thrown when the component corresponding to the algorithm name you passed in cannot be successfully extracted
+     */
+    public static Z_ScoreNormalization getInstance(String Name) {
+        if (OperationAlgorithmManager.containsAlgorithmName(Name)) {
+            OperationAlgorithm operationAlgorithm = OperationAlgorithmManager.getInstance().get(Name);
+            if (operationAlgorithm instanceof LinearNormalization) {
+                return ASClass.transform(operationAlgorithm);
+            } else {
+                throw new TargetNotRealizedException("您提取的[" + Name + "]算法被找到了，但是它不属于LinearNormalization类型，请您为这个算法重新定义一个名称。\n" +
+                        "The [" + Name + "] algorithm you ParameterCombination has been found, but it does not belong to the LinearNormalization type. Please redefine a name for this algorithm.");
+            }
+        } else {
+            Z_ScoreNormalization z_scoreNormalization = new Z_ScoreNormalization(Name);
+            OperationAlgorithmManager.getInstance().register(z_scoreNormalization);
+            return z_scoreNormalization;
+        }
+    }
 
     /**
      * 将一个多维序列标准化，标准化手段就是序列v中的每一个数值进行运算：x = （x - v的均值）/ 标准差
@@ -83,9 +122,12 @@ public class Z_ScoreNormalization extends DataStandardization {
     /**
      * 将一个序列进行标准化，具体的标准化有不同的实现
      *
-     * @param doubleVector@return v的标准化样式
-     *                            <p>
-     *                            Normalized style of v
+     * @param doubleVector 需要被标准化的向量序列
+     *                     <p>
+     *                     sequence of vectors to be normalized
+     * @return v的标准化样式
+     * <p>
+     * Normalized style of v
      */
     @Override
     public DoubleVector NormalizedSequence(DoubleVector doubleVector) {

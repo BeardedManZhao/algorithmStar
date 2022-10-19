@@ -109,7 +109,7 @@ public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
      *
      * @param value 被求和的参数  Parameters to be summed
      * @return 求和之后的数值  the value after the sum
-     * @apiNote 将两个不同的矩阵对象进行求和，如果是相同的矩阵对象，请先调用"clone"进行克隆！
+     * 将两个不同的矩阵对象进行求和，如果是相同的矩阵对象，请先调用"clone"进行克隆！
      * <p>
      * Sum two different matrix objects, if it is the same matrix object, please call "clone" first to clone!
      */
@@ -149,7 +149,9 @@ public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
      *
      * @param value 被做差的参数（被减数）  The parameter to be subtracted (minuend)
      * @return 差异数值  difference value
-     * @apiNote 将两个不同的矩阵对象进行做差，如果是相同的矩阵对象，请先调用"clone"进行克隆！
+     * 将两个不同的矩阵对象进行做差，如果是相同的矩阵对象，请先调用"clone"进行克隆！因为同一个矩阵中进行运算的时候会使用到行指针，该指针如果被同时操纵，会导致数据混乱。
+     * <p>
+     * Differentiate two different matrix objects. If they are the same matrix object, please call "clone" first to clone! Because the row pointer is used when performing operations in the same matrix, if the pointer is manipulated at the same time, it will cause data confusion.
      */
     @Override
     public DoubleMatrix diff(DoubleMatrix value) {
@@ -186,7 +188,7 @@ public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
      * Calculate the modulo length of the vector, please refer to the api node for the specific implementation
      *
      * @return 矩阵的模长
-     * @apiNote 矩阵的模长
+     * 矩阵的模长
      */
     @Override
     public Double moduleLength() {
@@ -210,7 +212,7 @@ public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
      *
      * @param matrix 被做乘的矩阵
      * @return 矩阵的外积
-     * @apiNote 矩阵的外积
+     * 矩阵的外积
      */
     @Override
     public DoubleMatrix multiply(DoubleMatrix matrix) {
@@ -246,7 +248,9 @@ public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
      *               <p>
      *               the second computed vector object
      * @return 两个矩阵的内积
-     * @apiNote TODO waiting to be realized
+     * 两个矩阵的内积运算函数。
+     * <p>
+     * The inner product operator function for two matrices.
      */
     @Override
     public Double innerProduct(DoubleMatrix matrix) {

@@ -41,6 +41,9 @@ public class CosineDistance<V extends Vector<?, ?>> implements DistanceAlgorithm
      * 获取到该算法的类对象
      *
      * @param Name 该算法的名称
+     * @param <V>  您希望使用这个算法进行哪一种向量的计算
+     *             <p>
+     *             What kind of vector calculation do you want to use this algorithm for
      * @return 算法类对象
      * @throws TargetNotRealizedException 当您传入的算法名称对应的组件不能被成功提取的时候会抛出异常
      */

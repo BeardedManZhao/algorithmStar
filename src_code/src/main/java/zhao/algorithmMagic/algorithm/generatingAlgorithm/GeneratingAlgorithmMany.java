@@ -9,7 +9,8 @@ import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute;
  * To generate an algorithm interface, the main thing is to analyze a coordinate network and get the required results!
  *
  * @author zhao
- * @apiNote 多维生成算法的接口
+ * <p>
+ * 多维生成算法的接口
  */
 public interface GeneratingAlgorithmMany extends GeneratingAlgorithm {
     /**
@@ -17,7 +18,7 @@ public interface GeneratingAlgorithmMany extends GeneratingAlgorithm {
      * <p>
      * Add a route that needs to be processed by the algorithm.
      *
-     * @param integerConsanguinityRoute2D 需要被算法处理的线路
+     * @param integerConsanguinityRoute 需要被算法处理的线路
      */
     void addRoute(IntegerConsanguinityRoute integerConsanguinityRoute);
 
@@ -26,7 +27,7 @@ public interface GeneratingAlgorithmMany extends GeneratingAlgorithm {
      * <p>
      * Add a route that needs to be processed by the algorithm.
      *
-     * @param doubleConsanguinityRoute2D 需要被算法处理的线路
+     * @param doubleConsanguinityRoute 需要被算法处理的线路
      */
     void addRoute(DoubleConsanguinityRoute doubleConsanguinityRoute);
 }

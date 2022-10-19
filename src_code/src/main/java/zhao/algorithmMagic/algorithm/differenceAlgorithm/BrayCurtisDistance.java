@@ -40,7 +40,13 @@ public class BrayCurtisDistance<I extends IntegerCoordinates<I> & Coordinate<I>,
      * Get the class object of the algorithm.
      *
      * @param Name 该算法的名称
-     * @return 算法类对象
+     * @param <II> 该算法用来处理的整形坐标是什么数据类型
+     *             <p>
+     *             What data type is the integer coordinate used by this algorithm?
+     * @param <DD> 该算法用来处理的浮点坐标是什么数据类型
+     *             <p>
+     *             What data type is the floating point coordinate used by this algorithm
+     * @return 您需要的算法类对象
      * @throws TargetNotRealizedException 当您传入的算法名称对应的组件不能被成功提取的时候会抛出异常
      *                                    <p>
      *                                    An exception will be thrown when the component corresponding to the algorithm name you passed in cannot be successfully extracted
@@ -51,8 +57,8 @@ public class BrayCurtisDistance<I extends IntegerCoordinates<I> & Coordinate<I>,
             if (operationAlgorithm instanceof BrayCurtisDistance<?, ?>) {
                 return ASClass.transform(operationAlgorithm);
             } else {
-                throw new TargetNotRealizedException("您提取的[" + Name + "]算法被找到了，但是它不属于ChebyshevDistance类型，请您为这个算法重新定义一个名称。\n" +
-                        "The [" + Name + "] algorithm you ParameterCombination has been found, but it does not belong to the ChebyshevDistance type. Please redefine a name for this algorithm.");
+                throw new TargetNotRealizedException("您提取的[" + Name + "]算法被找到了，但是它不属于BrayCurtisDistance类型，请您为这个算法重新定义一个名称。\n" +
+                        "The [" + Name + "] algorithm you ParameterCombination has been found, but it does not belong to the BrayCurtisDistance type. Please redefine a name for this algorithm.");
             }
         } else {
             BrayCurtisDistance<II, DD> brayCurtisDistance = new BrayCurtisDistance<>(Name);

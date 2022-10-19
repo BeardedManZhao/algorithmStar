@@ -37,6 +37,10 @@ public class StandardizedEuclideanDistance<I extends IntegerCoordinates<I> & Coo
      * 获取到该算法的类对象，
      *
      * @param Name 该算法的名称
+     * @param <II> 该算法用来处理的整形坐标是什么数据类型
+     *             <p>
+     *             What data type is the integer coordinate used by this algorithm?
+     * @param <DD> 该算法用来处理的浮点坐标是什么数据类型
      * @return 算法类对象
      * @throws TargetNotRealizedException 当您传入的算法名称对应的组件不能被成功提取的时候会抛出异常
      */
@@ -46,8 +50,8 @@ public class StandardizedEuclideanDistance<I extends IntegerCoordinates<I> & Coo
             if (operationAlgorithm instanceof StandardizedEuclideanDistance<?, ?>) {
                 return ASClass.transform(operationAlgorithm);
             } else {
-                throw new TargetNotRealizedException("您提取的[" + Name + "]算法被找到了，但是它不属于EuclideanMetric类型，请您为这个算法重新定义一个名称。\n" +
-                        "The [" + Name + "] algorithm you extracted has been found, but it does not belong to the EuclideanMetric type. Please redefine a name for this algorithm.");
+                throw new TargetNotRealizedException("您提取的[" + Name + "]算法被找到了，但是它不属于StandardizedEuclideanDistance类型，请您为这个算法重新定义一个名称。\n" +
+                        "The [" + Name + "] algorithm you extracted has been found, but it does not belong to the StandardizedEuclideanDistance type. Please redefine a name for this algorithm.");
             }
         } else {
             StandardizedEuclideanDistance<II, DD> standardizedEuclideanDistance = new StandardizedEuclideanDistance<>(Name);
