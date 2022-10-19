@@ -32,6 +32,8 @@
 
 ### API使用示例
 
+这里是"ZhaoCoordinateNet2D"的使用示例,展示的是人与人之间的关系分析与预测,在"ZhaoCoordinateNet"算法中, 人的关系网络被分析了出来, 同时还可以进行该网络分析绘图的操作。
+
 ```java
 package zhao.algorithmMagic;
 import zhao.algorithmMagic.Integrator.Route2DDrawingIntegrator;
