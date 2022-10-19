@@ -59,7 +59,7 @@ public class MinkowskiDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
                 return ASClass.transform(operationAlgorithm);
             } else {
                 throw new TargetNotRealizedException("您提取的[" + Name + "]算法被找到了，但是它不属于MinkowskiDistance类型，请您为这个算法重新定义一个名称。\n" +
-                        "The [" + Name + "] algorithm you ParameterCombination has been found, but it does not belong to the Cosine Distance type. Please redefine a name for this algorithm.");
+                        "The [" + Name + "] algorithm you ParameterCombination has been found, but it does not belong to the MinkowskiDistance type. Please redefine a name for this algorithm.");
             }
         } else {
             MinkowskiDistance<II, DD> minkowskiDistance = new MinkowskiDistance<>(Name);

@@ -65,6 +65,7 @@ public class MAIN1 {
 ```
 
 - 运行之后产生的关系网络图片
+
   ![image]((https://user-images.githubusercontent.com/113756063/196412140-8b81979d-ecc1-4774-9cbe-df8a89c19c1c.png)
 
 ### KnowledgeDocument
@@ -73,7 +74,7 @@ public class MAIN1 {
 
 ### src_code
 
-ASMB的源码存放目录，在这里可以查看ASMBr的相关源码。当然这里是最新的源代码，你可以用它来编译，这样你就可以获得最新的版本。注意：最新版本往往不稳定，建议您使用已经发布很久的版本！
+ASMB的源码存放目录，在这里可以查看ASMB的相关源码。当然这里是最新的源代码，你可以用它来编译，这样你就可以获得最新的版本。注意：最新版本往往不稳定，建议您使用已经发布很久的版本！
 
 ### README-Chinese.md
 

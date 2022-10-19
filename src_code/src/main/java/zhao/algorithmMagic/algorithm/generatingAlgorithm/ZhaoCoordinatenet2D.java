@@ -31,7 +31,7 @@ import java.util.List;
  * <p>
  * It is recommended to use the Integer Consanguinity Route 2 D type, because when generating a connection, the important thing is not the value, but the relationship between the two, so the precision between the two does not need to be too high. In the end, considering the performance, an integer will be used. Carry out data saving!
  */
-public class ZhaoCoordinateNet2D implements GeneratingAlgorithm, Route2DDrawingLauncher2 {
+public class ZhaoCoordinateNet2D implements GeneratingAlgorithm2D, Route2DDrawingLauncher2 {
 
     protected final Logger logger;
     protected final String AlgorithmName;
@@ -41,8 +41,8 @@ public class ZhaoCoordinateNet2D implements GeneratingAlgorithm, Route2DDrawingL
     private Color GenerateLineColor = new Color(0xD0A708);
 
     protected ZhaoCoordinateNet2D() {
-        this.AlgorithmName = "CosineDistance";
-        this.logger = Logger.getLogger("CosineDistance");
+        this.AlgorithmName = "ZhaoCoordinateNet2D";
+        this.logger = Logger.getLogger("ZhaoCoordinateNet2D");
     }
 
     protected ZhaoCoordinateNet2D(String AlgorithmName) {
@@ -164,6 +164,7 @@ public class ZhaoCoordinateNet2D implements GeneratingAlgorithm, Route2DDrawingL
      *
      * @param integerConsanguinityRoute2D 血亲路线对象
      */
+    @Override
     public void addRoute(IntegerConsanguinityRoute2D integerConsanguinityRoute2D) {
         final String startingCoordinateName = integerConsanguinityRoute2D.getStartingCoordinateName();
         final String endPointCoordinateName = integerConsanguinityRoute2D.getEndPointCoordinateName();
@@ -197,6 +198,7 @@ public class ZhaoCoordinateNet2D implements GeneratingAlgorithm, Route2DDrawingL
      *
      * @param doubleConsanguinityRoute2D 血亲路线对象
      */
+    @Override
     public void addRoute(DoubleConsanguinityRoute2D doubleConsanguinityRoute2D) {
         addRoute(ASClass.DoubleConsanguinityRoute2D_To_IntegerConsanguinityRoute2D(doubleConsanguinityRoute2D));
     }
@@ -223,7 +225,12 @@ public class ZhaoCoordinateNet2D implements GeneratingAlgorithm, Route2DDrawingL
      * @return 两点的血亲坐标, 如果没有返回null
      */
     public IntegerConsanguinityRoute2D get(String CoordinatePath) {
-        return this.stringDoubleConsanguinityCoordinateHashMap.get(CoordinatePath);
+        IntegerConsanguinityRoute2D integerConsanguinityRoute2D = this.stringDoubleConsanguinityCoordinateHashMap.get(CoordinatePath);
+        if (integerConsanguinityRoute2D != null) {
+            return integerConsanguinityRoute2D;
+        } else {
+            return this.GenerateLineRoute2DHashMap.get(CoordinatePath);
+        }
     }
 
     /**

@@ -5,6 +5,7 @@ import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.algorithm.distanceAlgorithm.DistanceAlgorithm;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo;
+import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
 import zhao.algorithmMagic.operands.vector.DoubleVector;
 
 /**
@@ -56,6 +57,10 @@ public class DoubleConsanguinityRoute2D implements Route2D<DoubleConsanguinityRo
             throw new OperatorOperationException("您传入的坐标路径无法被成功解析哦！请按照[a -> b]格式进行CoordinatePath的设置！\n" +
                     "The coordinate path you passed in could not be successfully parsed! Please follow the [a -> b] format to set the CoordinatePath!");
         }
+    }
+
+    public static DoubleConsanguinityRoute2D parse(String CoordinatePath, IntegerCoordinateTwo startingCoordinate, IntegerCoordinateTwo endPointCoordinate) {
+        return parse(CoordinatePath, new DoubleCoordinateTwo(startingCoordinate.getX(), startingCoordinate.getY()), new DoubleCoordinateTwo(endPointCoordinate.getX(), endPointCoordinate.getY()));
     }
 
     /**

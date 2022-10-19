@@ -98,11 +98,11 @@ public class DoubleRoute2DNet implements RouteNet<DoubleCoordinateTwo, DoubleCon
      *
      * @param value 被求和的参数  Parameters to be summed
      * @return 求和之后的数值  the value after the sum
-     * @apiNote There is no description for the super interface, please refer to the subclass documentation
+     * @apiNote 将两个网络中的每一个线路进行求和（不保证线路之间的顺序）
      */
     @Override
     public RouteNet<DoubleCoordinateTwo, DoubleConsanguinityRoute2D> add(RouteNet<DoubleCoordinateTwo, DoubleConsanguinityRoute2D> value) {
-        final int size1 = this.doubleConsanguinityRoute2DHashMap.size();
+        final int size1 = this.getRouteCount();
         final int size2 = value.getRouteCount();
         if (size1 == size2) {
             final Iterator<DoubleConsanguinityRoute2D> iterator1 = this.doubleConsanguinityRoute2DHashMap.values().iterator();
@@ -126,11 +126,11 @@ public class DoubleRoute2DNet implements RouteNet<DoubleCoordinateTwo, DoubleCon
      *
      * @param value 被做差的参数（被减数）  The parameter to be subtracted (minuend)
      * @return 差异数值  difference value
-     * @apiNote There is no description for the super interface, please refer to the subclass documentation
+     * @apiNote 将两个网络中的每一个线路进行做差（不保证线路之间的顺序）
      */
     @Override
     public RouteNet<DoubleCoordinateTwo, DoubleConsanguinityRoute2D> diff(RouteNet<DoubleCoordinateTwo, DoubleConsanguinityRoute2D> value) {
-        final int size1 = this.doubleConsanguinityRoute2DHashMap.size();
+        final int size1 = this.getRouteCount();
         final int size2 = value.getRouteCount();
         if (size1 == size2) {
             final Iterator<DoubleConsanguinityRoute2D> iterator1 = this.doubleConsanguinityRoute2DHashMap.values().iterator();
@@ -179,7 +179,6 @@ public class DoubleRoute2DNet implements RouteNet<DoubleCoordinateTwo, DoubleCon
         this.doubleConsanguinityRoute2DHashMap_SubMark.put(s, doubleConsanguinityRoute2D);
         this.doubleConsanguinityRoute2DHashMap.remove(s);
         this.doubleConsanguinityRoute2DHashMap_MasterTag.remove(s);
-//        this.doubleConsanguinityRoute2DHashMap_SubMark.put(doubleConsanguinityRoute2D.getStartingCoordinateName() + " -> " + doubleConsanguinityRoute2D.getEndPointCoordinateName(), doubleConsanguinityRoute2D);
     }
 
     /**
@@ -198,7 +197,6 @@ public class DoubleRoute2DNet implements RouteNet<DoubleCoordinateTwo, DoubleCon
         this.doubleConsanguinityRoute2DHashMap_MasterTag.put(s, doubleConsanguinityRoute2D);
         this.doubleConsanguinityRoute2DHashMap_SubMark.remove(s);
         this.doubleConsanguinityRoute2DHashMap.remove(s);
-//        this.doubleConsanguinityRoute2DHashMap_MasterTag.put(s, doubleConsanguinityRoute2D);
     }
 
     /**
@@ -224,7 +222,7 @@ public class DoubleRoute2DNet implements RouteNet<DoubleCoordinateTwo, DoubleCon
 
     @Override
     public int getRouteCount() {
-        return this.doubleConsanguinityRoute2DHashMap.size();
+        return this.doubleConsanguinityRoute2DHashMap.size() + this.doubleConsanguinityRoute2DHashMap_SubMark.size() + this.doubleConsanguinityRoute2DHashMap_MasterTag.size();
     }
 
     /**
@@ -325,5 +323,60 @@ public class DoubleRoute2DNet implements RouteNet<DoubleCoordinateTwo, DoubleCon
 
     public HashMap<String, DoubleConsanguinityRoute2D> getDoubleConsanguinityRoute2DHashMap_MasterTag() {
         return doubleConsanguinityRoute2DHashMap_MasterTag;
+    }
+
+
+    /**
+     * 从普通集合中获取到一个路线对象。
+     * <p>
+     * Get a route object from the normal collection.
+     *
+     * @param RouteName 路线对象的名称
+     *                  <p>
+     *                  the name of the route object
+     * @return 路线对象
+     * <p>
+     * route object
+     */
+    public DoubleConsanguinityRoute2D getRouteFromHashMap(String RouteName) {
+        return this.doubleConsanguinityRoute2DHashMap.get(RouteName);
+    }
+
+    /**
+     * 从SubMark集合中获取到一个路线对象。
+     * <p>
+     * Get a route object from the Sub Mark collection.
+     *
+     * @param RouteName 路线对象的名称
+     *                  <p>
+     *                  the name of the route object
+     * @return 路线对象
+     * <p>
+     * route object
+     */
+    public DoubleConsanguinityRoute2D getRouteFromSubMark(String RouteName) {
+        return this.doubleConsanguinityRoute2DHashMap_SubMark.get(RouteName);
+    }
+
+    /**
+     * 从MasterTag集合中获取到一个路线对象。
+     * <p>
+     * Get a route object from the Master Tag collection.
+     * <p>
+     * Get a route object from the normal collection.
+     *
+     * @param RouteName 路线对象的名称
+     *                  <p>
+     *                  the name of the route object
+     * @return 路线对象
+     * <p>
+     * route object
+     */
+    public DoubleConsanguinityRoute2D getRouteFromMasterTag(String RouteName) {
+        return this.doubleConsanguinityRoute2DHashMap_MasterTag.get(RouteName);
+    }
+
+    public HashMap<String, DoubleConsanguinityRoute2D> getDoubleConsanguinityRoute2DHashMap() {
+        return doubleConsanguinityRoute2DHashMap;
     }
 }

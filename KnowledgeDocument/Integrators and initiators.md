@@ -34,7 +34,7 @@ integrator
 
 ```java
 import zhao.algorithmMagic.Integrator.Route2DDrawingIntegrator;
-import zhao.algorithmMagic.algorithm.generatingAlgorithm.ZhaoCoordinatenet2D;
+import zhao.algorithmMagic.algorithm.generatingAlgorithm.ZhaoCoordinateNet2D;
 import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo;
 import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute2D;
 
@@ -53,7 +53,7 @@ public class MAIN1 {
         DoubleConsanguinityRoute2D doubleConsanguinityRoute2D2 = DoubleConsanguinityRoute2D.parse("A -> C", A, C);
 
         // Get the coordinate network generation algorithm. This object is the class that implements the starter interface, and it is also an algorithm itself.法
-        ZhaoCoordinatenet2D zhaoCoordinatenet2D = ZhaoCoordinatenet2D.getInstance("Z");
+        ZhaoCoordinateNet2D zhaoCoordinatenet2D = ZhaoCoordinateNet2D.getInstance("Z");
         zhaoCoordinatenet2D.addRoute(doubleConsanguinityRoute2D1);
         zhaoCoordinatenet2D.addRoute(doubleConsanguinityRoute2D2);
 

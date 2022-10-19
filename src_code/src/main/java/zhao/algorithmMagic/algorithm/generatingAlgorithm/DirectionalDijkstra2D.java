@@ -4,25 +4,27 @@ import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
-import zhao.algorithmMagic.operands.coordinate.Coordinate;
 import zhao.algorithmMagic.operands.coordinateNet.DoubleRoute2DNet;
 import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute2D;
-import zhao.algorithmMagic.operands.route.NameRoute;
 import zhao.algorithmMagic.utils.ASClass;
 
 /**
  * Java类于 2022/10/18 10:17:45 创建
+ * <p>
+ * 有方向的迪杰斯特拉距离，是定向迪杰斯特拉的子类实现，在这个里面，所有的路线方向都将成为计算变量之一，您可以通过setForward来设置方向的正与反。
+ * <p>
+ * The directional Dijkstra distance is a subclass of directional Dijkstra. In this, all the route directions will become one of the calculation variables. You can set the forward and reverse of the direction through set Forward .
  *
- * @author 4
+ * @author zhao
  */
-public class DirectionalDijkstra<RouteType extends NameRoute<?, ?>, CoordinateType extends Coordinate<?>> extends Dijkstra<RouteType, CoordinateType> {
+public class DirectionalDijkstra2D extends Dijkstra2D {
 
     private boolean forward = true;
 
-    public DirectionalDijkstra() {
+    public DirectionalDijkstra2D() {
     }
 
-    public DirectionalDijkstra(String AlgorithmName) {
+    public DirectionalDijkstra2D(String AlgorithmName) {
         super(AlgorithmName);
     }
 
@@ -37,17 +39,17 @@ public class DirectionalDijkstra<RouteType extends NameRoute<?, ?>, CoordinateTy
      *                                    <p>
      *                                    An exception will be thrown when the component corresponding to the algorithm name you passed in cannot be successfully extracted
      */
-    public static <RouteType extends NameRoute<?, ?>, CoordinateType extends Coordinate<?>> DirectionalDijkstra<RouteType, CoordinateType> getInstance(String Name) {
+    public static DirectionalDijkstra2D getInstance(String Name) {
         if (OperationAlgorithmManager.containsAlgorithmName(Name)) {
             OperationAlgorithm operationAlgorithm = OperationAlgorithmManager.getInstance().get(Name);
-            if (operationAlgorithm instanceof DirectionalDijkstra<?, ?>) {
+            if (operationAlgorithm instanceof DirectionalDijkstra2D) {
                 return ASClass.transform(operationAlgorithm);
             } else {
-                throw new TargetNotRealizedException("您提取的[" + Name + "]算法被找到了，但是它不属于 Dijkstra 类型，请您为这个算法重新定义一个名称。\n" +
-                        "The [" + Name + "] algorithm you ParameterCombination has been found, but it does not belong to the Dijkstra type. Please redefine a name for this algorithm.");
+                throw new TargetNotRealizedException("您提取的[" + Name + "]算法被找到了，但是它不属于 Dijkstra2D 类型，请您为这个算法重新定义一个名称。\n" +
+                        "The [" + Name + "] algorithm you ParameterCombination has been found, but it does not belong to the Dijkstra2D type. Please redefine a name for this algorithm.");
             }
         } else {
-            DirectionalDijkstra<RouteType, CoordinateType> zhaoCoordinateNet = new DirectionalDijkstra<>(Name);
+            DirectionalDijkstra2D zhaoCoordinateNet = new DirectionalDijkstra2D(Name);
             OperationAlgorithmManager.getInstance().register(zhaoCoordinateNet);
             return zhaoCoordinateNet;
         }
@@ -62,7 +64,7 @@ public class DirectionalDijkstra<RouteType extends NameRoute<?, ?>, CoordinateTy
      *
      * @param forward true代表使用正方向
      */
-    public DirectionalDijkstra<RouteType, CoordinateType> setForward(boolean forward) {
+    public DirectionalDijkstra2D setForward(boolean forward) {
         this.forward = forward;
         return this;
     }

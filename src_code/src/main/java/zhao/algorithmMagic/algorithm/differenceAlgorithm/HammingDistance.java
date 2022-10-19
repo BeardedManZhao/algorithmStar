@@ -16,7 +16,7 @@ import zhao.algorithmMagic.utils.ASClass;
  *
  * @author zhao
  */
-public class HammingDistance implements DifferenceAlgorithm {
+public class HammingDistance implements DifferenceAlgorithm<String> {
     protected final Logger logger;
     protected final String AlgorithmName;
 
@@ -108,5 +108,20 @@ public class HammingDistance implements DifferenceAlgorithm {
         } else {
             return false;
         }
+    }
+
+    /**
+     * 计算两个事物之间从差异系数百分比
+     * <p>
+     * Calculate the percentage difference from the coefficient of difference between two things
+     *
+     * @param value1 差异参数1
+     * @param value2 差异参数2
+     * @return 差异系数 数值越小，差异越小
+     * @apiNote 这里的实现就是将两个字符串之间的不同处的数量 / 两个字符串的总数量
+     */
+    @Override
+    public double getDifferenceRatio(String value1, String value2) {
+        return 1 - (getMinimumNumberOfReplacements(value1, value2) / (double) (value1.length() + value2.length()));
     }
 }

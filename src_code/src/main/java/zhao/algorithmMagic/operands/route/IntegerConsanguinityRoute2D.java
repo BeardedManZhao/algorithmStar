@@ -4,6 +4,7 @@ import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.algorithm.distanceAlgorithm.DistanceAlgorithm;
 import zhao.algorithmMagic.exception.OperatorOperationException;
+import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo;
 import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
 import zhao.algorithmMagic.operands.vector.DoubleVector;
 
@@ -55,6 +56,11 @@ public class IntegerConsanguinityRoute2D implements Route2D<IntegerConsanguinity
         } else {
             throw new OperatorOperationException("您传入的坐标路径无法被成功解析哦！请按照[a -> b]格式进行CoordinatePath的设置！");
         }
+    }
+
+    public static IntegerConsanguinityRoute2D parse(String CoordinatePath, DoubleCoordinateTwo startingCoordinate, DoubleCoordinateTwo endPointCoordinate) {
+        return parse(CoordinatePath, new IntegerCoordinateTwo(startingCoordinate.getX().intValue(), startingCoordinate.getY().intValue()),
+                new IntegerCoordinateTwo(endPointCoordinate.getX().intValue(), endPointCoordinate.getY().intValue()));
     }
 
     /**

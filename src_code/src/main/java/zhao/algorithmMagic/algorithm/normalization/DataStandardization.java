@@ -24,8 +24,8 @@ public abstract class DataStandardization implements OperationAlgorithm {
     protected final String AlgorithmName;
 
     protected DataStandardization() {
-        this.AlgorithmName = "EuclideanMetric";
-        this.logger = Logger.getLogger("EuclideanMetric");
+        this.AlgorithmName = "DataStandardization";
+        this.logger = Logger.getLogger("DataStandardization");
     }
 
     protected DataStandardization(String algorithmName) {

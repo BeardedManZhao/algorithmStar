@@ -23,6 +23,21 @@ public final class DoubleCoordinateMany implements FloatingPointCoordinates<Doub
         this.coordinate = coordinate;
     }
 
+    public DoubleCoordinateMany(int[] coordinate) {
+        this.coordinate = new double[coordinate.length];
+        for (int i = 0; i < coordinate.length; i++) {
+            this.coordinate[i] = coordinate[i];
+        }
+    }
+
+    public DoubleCoordinateMany(IntegerCoordinateMany integerCoordinateMany) {
+        int[] ints = integerCoordinateMany.toArray();
+        this.coordinate = new double[ints.length];
+        for (int i = 0; i < ints.length; i++) {
+            this.coordinate[i] = ints[i];
+        }
+    }
+
     /**
      * @return 该坐标点的维度数量，一般情况下，只有相同维度数量的两个坐标才能进行加减运算！
      */

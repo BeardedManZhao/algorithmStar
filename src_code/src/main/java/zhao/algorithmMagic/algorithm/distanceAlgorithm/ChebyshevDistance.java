@@ -33,8 +33,8 @@ public class ChebyshevDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
     protected final String AlgorithmName;
 
     protected ChebyshevDistance() {
-        this.AlgorithmName = "CosineDistance";
-        this.logger = Logger.getLogger("CosineDistance");
+        this.AlgorithmName = "ChebyshevDistance";
+        this.logger = Logger.getLogger("ChebyshevDistance");
     }
 
     protected ChebyshevDistance(String AlgorithmName) {
@@ -60,7 +60,7 @@ public class ChebyshevDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
                 return ASClass.transform(operationAlgorithm);
             } else {
                 throw new TargetNotRealizedException("您提取的[" + Name + "]算法被找到了，但是它不属于ChebyshevDistance类型，请您为这个算法重新定义一个名称。\n" +
-                        "The [" + Name + "] algorithm you ParameterCombination has been found, but it does not belong to the Cosine Distance type. Please redefine a name for this algorithm.");
+                        "The [" + Name + "] algorithm you ParameterCombination has been found, but it does not belong to the ChebyshevDistance type. Please redefine a name for this algorithm.");
             }
         } else {
             ChebyshevDistance<II, DD> ChebyshevDistance = new ChebyshevDistance<>(Name);

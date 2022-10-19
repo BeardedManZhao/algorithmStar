@@ -47,7 +47,7 @@ public class StandardizedEuclideanDistance<I extends IntegerCoordinates<I> & Coo
                 return ASClass.transform(operationAlgorithm);
             } else {
                 throw new TargetNotRealizedException("您提取的[" + Name + "]算法被找到了，但是它不属于EuclideanMetric类型，请您为这个算法重新定义一个名称。\n" +
-                        "The [" + Name + "] algorithm you extracted has been found, but it does not belong to the Cosine Distance type. Please redefine a name for this algorithm.");
+                        "The [" + Name + "] algorithm you extracted has been found, but it does not belong to the EuclideanMetric type. Please redefine a name for this algorithm.");
             }
         } else {
             StandardizedEuclideanDistance<II, DD> standardizedEuclideanDistance = new StandardizedEuclideanDistance<>(Name);

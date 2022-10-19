@@ -23,7 +23,7 @@
 
 ```java
 import zhao.algorithmMagic.Integrator.Route2DDrawingIntegrator;
-import zhao.algorithmMagic.algorithm.generatingAlgorithm.ZhaoCoordinatenet2D;
+import zhao.algorithmMagic.algorithm.generatingAlgorithm.ZhaoCoordinateNet2D;
 import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo;
 import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute2D;
 
@@ -42,7 +42,7 @@ public class MAIN1 {
         DoubleConsanguinityRoute2D doubleConsanguinityRoute2D2 = DoubleConsanguinityRoute2D.parse("A -> C", A, C);
 
         // 获取坐标网生成算法，这个对象就是实现了启动器接口的类，同时它本身还是一个算法
-        ZhaoCoordinatenet2D zhaoCoordinatenet2D = ZhaoCoordinatenet2D.getInstance("Z");
+        ZhaoCoordinateNet2D zhaoCoordinatenet2D = ZhaoCoordinateNet2D.getInstance("Z");
         zhaoCoordinatenet2D.addRoute(doubleConsanguinityRoute2D1);
         zhaoCoordinatenet2D.addRoute(doubleConsanguinityRoute2D2);
 

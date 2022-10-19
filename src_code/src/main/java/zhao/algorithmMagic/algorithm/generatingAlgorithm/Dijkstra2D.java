@@ -7,9 +7,9 @@ import zhao.algorithmMagic.algorithm.distanceAlgorithm.DistanceAlgorithm;
 import zhao.algorithmMagic.algorithm.distanceAlgorithm.EuclideanMetric;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
-import zhao.algorithmMagic.operands.coordinateNet.DoubleRouteNet;
-import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute;
-import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute;
+import zhao.algorithmMagic.operands.coordinateNet.DoubleRoute2DNet;
+import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute2D;
+import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute2D;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.DependentAlgorithmNameLibrary;
 
@@ -25,22 +25,22 @@ import java.util.LinkedHashMap;
  *
  * @author zhao
  */
-public class Dijkstra implements GeneratingAlgorithmMany {
+public class Dijkstra2D implements GeneratingAlgorithm2D {
 
     protected final Logger logger;
     protected final String AlgorithmName;
     // 线路记载容器
-    protected final HashMap<String, DoubleConsanguinityRoute> stringDoubleConsanguinityRouteHashMap = new HashMap<>();
+    protected final HashMap<String, DoubleConsanguinityRoute2D> doubleConsanguinityRoute2DHashMap = new HashMap<>();
     // 相对关系记载容器，key代表一个坐标，value代表与该坐标相连接的所有坐标名称以及两坐标之间的距离
     protected final LinkedHashMap<String, HashMap<String, Double>> hashMap = new LinkedHashMap<>();
     protected DistanceAlgorithm distanceAlgorithm = EuclideanMetric.getInstance(DependentAlgorithmNameLibrary.EUCLIDEAN_METRIC_NAME);
 
-    protected Dijkstra() {
+    protected Dijkstra2D() {
         this.AlgorithmName = "Dijkstra2D";
         this.logger = Logger.getLogger("Dijkstra2D");
     }
 
-    protected Dijkstra(String AlgorithmName) {
+    protected Dijkstra2D(String AlgorithmName) {
         this.logger = Logger.getLogger(AlgorithmName);
         this.AlgorithmName = AlgorithmName;
     }
@@ -56,30 +56,19 @@ public class Dijkstra implements GeneratingAlgorithmMany {
      *                                    <p>
      *                                    An exception will be thrown when the component corresponding to the algorithm name you passed in cannot be successfully extracted
      */
-    public static Dijkstra getInstance(String Name) {
+    public static Dijkstra2D getInstance(String Name) {
         if (OperationAlgorithmManager.containsAlgorithmName(Name)) {
             OperationAlgorithm operationAlgorithm = OperationAlgorithmManager.getInstance().get(Name);
-            if (operationAlgorithm instanceof Dijkstra) {
+            if (operationAlgorithm instanceof Dijkstra2D) {
                 return ASClass.transform(operationAlgorithm);
             } else {
                 throw new TargetNotRealizedException("您提取的[" + Name + "]算法被找到了，但是它不属于 Dijkstra2D 类型，请您为这个算法重新定义一个名称。\n" +
                         "The [" + Name + "] algorithm you ParameterCombination has been found, but it does not belong to the Dijkstra2D type. Please redefine a name for this algorithm.");
             }
         } else {
-            Dijkstra zhaoCoordinateNet = new Dijkstra(Name);
+            Dijkstra2D zhaoCoordinateNet = new Dijkstra2D(Name);
             OperationAlgorithmManager.getInstance().register(zhaoCoordinateNet);
             return zhaoCoordinateNet;
-        }
-    }
-
-    protected static void EstablishTwoPointConnection(String startingCoordinateName, String endPointCoordinateName, double trueDistance, LinkedHashMap<String, HashMap<String, Double>> hashMap) {
-        HashMap<String, Double> startDoubleHashMap = hashMap.get(startingCoordinateName);
-        if (startDoubleHashMap != null) {
-            startDoubleHashMap.put(endPointCoordinateName, trueDistance);
-        } else {
-            HashMap<String, Double> hashMap1 = new HashMap<>();
-            hashMap1.put(endPointCoordinateName, trueDistance);
-            hashMap.put(startingCoordinateName, hashMap1);
         }
     }
 
@@ -87,12 +76,12 @@ public class Dijkstra implements GeneratingAlgorithmMany {
         return distanceAlgorithm;
     }
 
-    public Dijkstra setDistanceAlgorithm(DistanceAlgorithm distanceAlgorithm) {
+    public Dijkstra2D setDistanceAlgorithm(DistanceAlgorithm distanceAlgorithm) {
         this.distanceAlgorithm = distanceAlgorithm;
         return this;
     }
 
-    public Dijkstra setDistanceAlgorithm(String distanceAlgorithmName) {
+    public Dijkstra2D setDistanceAlgorithm(String distanceAlgorithmName) {
         OperationAlgorithm operationAlgorithm = OperationAlgorithmManager.getInstance().get(distanceAlgorithmName);
         if (operationAlgorithm instanceof DistanceAlgorithm) {
             return this.setDistanceAlgorithm((DistanceAlgorithm) operationAlgorithm);
@@ -107,10 +96,63 @@ public class Dijkstra implements GeneratingAlgorithmMany {
      *
      * @param routes 需要被计算的所有路线
      */
-    public void addRoutes(DoubleConsanguinityRoute... routes) {
-        for (DoubleConsanguinityRoute route : routes) {
+    public void addRoutes(DoubleConsanguinityRoute2D... routes) {
+        for (DoubleConsanguinityRoute2D route : routes) {
             addRoute(route);
         }
+    }
+
+    /**
+     * 添加一个需要被算法处理的线路。
+     * <p>
+     * Add a route that needs to be processed by the algorithm.
+     *
+     * @param integerConsanguinityRoute2D 需要被算法处理的线路
+     */
+    @Override
+    public void addRoute(IntegerConsanguinityRoute2D integerConsanguinityRoute2D) {
+        addRoute(ASClass.IntegerConsanguinityRoute2D_To_DoubleConsanguinityRoute2D(integerConsanguinityRoute2D));
+    }
+
+    /**
+     * 添加一个路线到计算网络中
+     *
+     * @param route 需要被计算的一个路线，请注意，在无方向的测地中，您添加的线路方向将不再生效！而是在两者之间连接一条线路。
+     */
+    public void addRoute(DoubleConsanguinityRoute2D route) {
+        // 获取该线路的起始点名称
+        String startingCoordinateName = route.getStartingCoordinateName();
+        // 获取该线路的终止点名称
+        String endPointCoordinateName = route.getEndPointCoordinateName();
+        // 获取起始点到终止点的名称
+        String SEName = startingCoordinateName + " -> " + endPointCoordinateName;
+        // 获取终止点到起始点的名称
+        String ESName = endPointCoordinateName + " -> " + startingCoordinateName;
+        // 计算该线路的始末坐标距离
+        double trueDistance = this.distanceAlgorithm.getTrueDistance(route.toDoubleVector());
+        logger.info("Insert " + SEName + " AND " + ESName + "=> " + trueDistance);
+        // 第一轮分配起始点的周边
+        extracted(startingCoordinateName, endPointCoordinateName, trueDistance);
+        // 第二轮分配终止点的周边，因为该起始点属于终止点的周边
+        extracted(endPointCoordinateName, startingCoordinateName, trueDistance);
+        this.doubleConsanguinityRoute2DHashMap.put(SEName, route);
+        this.doubleConsanguinityRoute2DHashMap.put(ESName, route);
+    }
+
+    /**
+     * 将终止点添加到起始点的周边集合中，在线路网对这两点进行一个连接。
+     * <p>
+     * Add the end point to the perimeter set of the start point, and make a connection between the two points in the line network.
+     *
+     * @param startingCoordinateName 起始点名称
+     * @param endPointCoordinateName 终止点名称
+     * @param trueDistance           两点之间的距离
+     * @apiNote 会自动的在线路集合中查找两点之间的线路对象，并建立联系！
+     * <p>
+     * It will automatically find the line object between two points in the line collection and establish a connection!
+     */
+    protected void extracted(String startingCoordinateName, String endPointCoordinateName, double trueDistance) {
+        Dijkstra.EstablishTwoPointConnection(startingCoordinateName, endPointCoordinateName, trueDistance, this.hashMap);
     }
 
     /**
@@ -125,11 +167,11 @@ public class Dijkstra implements GeneratingAlgorithmMany {
      * <p>
      * This is a marked route, all adjacent routes will be marked as secondary labels, the nearest route will be marked as primary label, and the remaining routes will be marked as normal routes.
      */
-    public DoubleRouteNet getShortestPath(String CentralCoordinateName) {
-        DoubleRouteNet doubleRouteNet = DoubleRouteNet.parse();
+    public DoubleRoute2DNet getShortestPath(String CentralCoordinateName) {
+        DoubleRoute2DNet doubleRoute2DNet = DoubleRoute2DNet.parse();
         // 先将所有的线路添加到网络中
-        for (DoubleConsanguinityRoute value : this.stringDoubleConsanguinityRouteHashMap.values()) {
-            doubleRouteNet.addRoute(value);
+        for (DoubleConsanguinityRoute2D value : this.doubleConsanguinityRoute2DHashMap.values()) {
+            doubleRoute2DNet.addRoute(value);
         }
         HashMap<String, Double> hashMap = this.hashMap.get(CentralCoordinateName);
         if (hashMap != null) {
@@ -138,7 +180,7 @@ public class Dijkstra implements GeneratingAlgorithmMany {
             for (String end : hashMap.keySet()) {
                 String routeName = CentralCoordinateName + " -> " + end;
                 // 将所有路线添加到线路网的副标记中
-                doubleRouteNet.addSubMarkRoute(this.stringDoubleConsanguinityRouteHashMap.get(routeName));
+                doubleRoute2DNet.addSubMarkRoute(this.doubleConsanguinityRoute2DHashMap.get(routeName));
                 // 将当前路线的距离获取到
                 Double aDouble = hashMap.get(end);
                 // 进行比较,最后会晒选出来最小的距离
@@ -149,11 +191,11 @@ public class Dijkstra implements GeneratingAlgorithmMany {
             // 找到最小距离对应的结束点是谁, 如果找到了就将该路线添加到网的主标记中，并将线路返回出去
             for (String end : hashMap.keySet()) {
                 if (hashMap.get(end) == dis) {
-                    doubleRouteNet.addMasterTagRoute(stringDoubleConsanguinityRouteHashMap.get(CentralCoordinateName + " -> " + end));
-                    return doubleRouteNet;
+                    doubleRoute2DNet.addMasterTagRoute(doubleConsanguinityRoute2DHashMap.get(CentralCoordinateName + " -> " + end));
+                    return doubleRoute2DNet;
                 }
             }
-            return doubleRouteNet;
+            return doubleRoute2DNet;
         } else {
             throw new OperatorOperationException("无法获取到以[" + CentralCoordinateName + "]坐标为中心的空间，该坐标似乎并没有以合适的条件存在于您提供的所有线路中！！！\n" +
                     "Could not get the space centered on the [" + CentralCoordinateName + "] coordinate, That coordinate doesn't seem to exist in the right conditions for all the lines you've provided! ! !");
@@ -192,50 +234,6 @@ public class Dijkstra implements GeneratingAlgorithmMany {
     @Override
     public void clear() {
         this.hashMap.clear();
-        this.stringDoubleConsanguinityRouteHashMap.clear();
-    }
-
-    /**
-     * 添加一个需要被算法处理的线路。
-     * <p>
-     * Add a route that needs to be processed by the algorithm.
-     *
-     * @param integerConsanguinityRoute 需要被计算的新路线对象。
-     *                                  <p>
-     *                                  The new route object that needs to be calculated.
-     */
-    @Override
-    public void addRoute(IntegerConsanguinityRoute integerConsanguinityRoute) {
-        addRoute(ASClass.IntegerConsanguinityRoute_To_DoubleConsanguinityRoute(integerConsanguinityRoute));
-    }
-
-    /**
-     * 添加一个需要被算法处理的线路。
-     * <p>
-     * Add a route that needs to be processed by the algorithm.
-     *
-     * @param doubleConsanguinityRoute 需要被计算的新路线对象
-     *                                 <p>
-     *                                 The new route object that needs to be calculated.
-     */
-    @Override
-    public void addRoute(DoubleConsanguinityRoute doubleConsanguinityRoute) {
-        // 获取该线路的起始点名称
-        String startingCoordinateName = doubleConsanguinityRoute.getStartingCoordinateName();
-        // 获取该线路的终止点名称
-        String endPointCoordinateName = doubleConsanguinityRoute.getEndPointCoordinateName();
-        // 计算该线路的始末坐标距离
-        double trueDistance = this.distanceAlgorithm.getTrueDistance(doubleConsanguinityRoute.toDoubleVector());
-        // 获取起始点到终止点的名称
-        String SEName = startingCoordinateName + " -> " + endPointCoordinateName;
-        // 获取终止点到起始点的名称
-        String ESName = endPointCoordinateName + " -> " + startingCoordinateName;
-        logger.info("Insert " + SEName + " AND " + ESName + "=> " + trueDistance);
-        // 第一轮分配起始点的周边
-        EstablishTwoPointConnection(startingCoordinateName, endPointCoordinateName, trueDistance, this.hashMap);
-        // 第二轮分配终止点的周边，因为该起始点属于终止点的周边
-        EstablishTwoPointConnection(endPointCoordinateName, startingCoordinateName, trueDistance, this.hashMap);
-        this.stringDoubleConsanguinityRouteHashMap.put(SEName, doubleConsanguinityRoute);
-        this.stringDoubleConsanguinityRouteHashMap.put(ESName, doubleConsanguinityRoute);
+        this.doubleConsanguinityRoute2DHashMap.clear();
     }
 }

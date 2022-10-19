@@ -27,8 +27,8 @@ public class ZhaoCoordinateNet implements GeneratingAlgorithm {
     private final HashMap<String, DoubleConsanguinityRoute> stringDoubleConsanguinityCoordinateHashMap = new HashMap<>();
 
     protected ZhaoCoordinateNet() {
-        this.AlgorithmName = "CosineDistance";
-        this.logger = Logger.getLogger("CosineDistance");
+        this.AlgorithmName = "ZhaoCoordinateNet";
+        this.logger = Logger.getLogger("ZhaoCoordinateNet");
     }
 
     protected ZhaoCoordinateNet(String AlgorithmName) {

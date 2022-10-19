@@ -1,12 +1,15 @@
 package zhao.algorithmMagic.operands.coordinateNet;
 
+import zhao.algorithmMagic.Integrator.Route2DDrawingIntegrator;
 import zhao.algorithmMagic.Integrator.launcher.Route2DDrawingLauncher;
+import zhao.algorithmMagic.Integrator.launcher.Route2DDrawingLauncher2;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
 import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute2D;
 import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute2D;
 import zhao.algorithmMagic.utils.ASClass;
 
+import java.awt.*;
 import java.util.*;
 
 /**
@@ -18,9 +21,13 @@ import java.util.*;
  *
  * @author zhao
  */
-public class IntegerRoute2DNet implements RouteNet<IntegerCoordinateTwo, IntegerConsanguinityRoute2D>, Route2DDrawingLauncher {
+public class IntegerRoute2DNet implements RouteNet<IntegerCoordinateTwo, IntegerConsanguinityRoute2D>, Route2DDrawingLauncher2 {
 
     private final LinkedHashMap<String, IntegerConsanguinityRoute2D> integerConsanguinityRoute2DHashMap = new LinkedHashMap<>(0b1010);
+    private final HashMap<String, IntegerConsanguinityRoute2D> integerConsanguinityRoute2DHashMap_SubMark = new HashMap<>(0b1010);
+    private final HashMap<String, IntegerConsanguinityRoute2D> integerConsanguinityRoute2DHashMap_MasterTag = new HashMap<>();
+    private Color MasterTagColor = new Color(0xC97CFD);
+    private Color SubMarkColor = new Color(0xE8CF67);
 
     /**
      * 构造出来一张线路网
@@ -82,6 +89,58 @@ public class IntegerRoute2DNet implements RouteNet<IntegerCoordinateTwo, Integer
         return new IntegerRoute2DNet(linkedHashMap);
     }
 
+    public Color getMasterTagColor() {
+        return MasterTagColor;
+    }
+
+    public void setMasterTagColor(Color masterTagColor) {
+        this.MasterTagColor = masterTagColor;
+    }
+
+    public Color getSubMarkColor() {
+        return SubMarkColor;
+    }
+
+    public void setSubMarkColor(Color subMarkColor) {
+        SubMarkColor = subMarkColor;
+    }
+
+    /**
+     * 添加一条被标记的路线对象,该类实现了绘图集成器的第二般接口,因此该方法拓展出来了一个新功能就是标记路线,您可以在这个方法中添加标记路线.
+     * <p>
+     * Add a marked route object, this class implements the second general interface of the drawing integrator, so this method extends a new function to mark the route, you can add the marked route in this method.
+     *
+     * @param integerConsanguinityRoute2D 被标记的二维路线对象,该对象可以在绘图器中以特殊颜色绘制出来!
+     *                                    A marked 2D route object that can be drawn in a special color in the plotter!
+     * @apiNote 有关标记颜色的设置与获取, 请您调用"setSignColor"用于设置!默认是紫色
+     * <p>
+     * For the setting and obtaining of the sign color, please call "set Sign Color" for viewing!
+     */
+    public void addMasterTagRoute(IntegerConsanguinityRoute2D integerConsanguinityRoute2D) {
+        String s = integerConsanguinityRoute2D.getStartingCoordinateName() + " -> " + integerConsanguinityRoute2D.getEndPointCoordinateName();
+        this.integerConsanguinityRoute2DHashMap_MasterTag.put(s, integerConsanguinityRoute2D);
+        this.integerConsanguinityRoute2DHashMap_SubMark.remove(s);
+        this.integerConsanguinityRoute2DHashMap.remove(s);
+    }
+
+    /**
+     * 添加一条被标记的路线对象,该类实现了绘图集成器的第二般接口,因此该方法拓展出来了一个新功能就是标记路线,您可以在这个方法中添加标记路线.
+     * <p>
+     * Add a marked route object, this class implements the second general interface of the drawing integrator, so this method extends a new function to mark the route, you can add the marked route in this method.
+     *
+     * @param integerConsanguinityRoute2D 被标记的二维路线对象,该对象可以在绘图器中以特殊颜色绘制出来!
+     *                                    A marked 2D route object that can be drawn in a special color in the plotter!
+     * @apiNote 有关标记颜色的设置与获取, 请您调用"setSignColor"用于设置!默认是紫色
+     * <p>
+     * For the setting and obtaining of the sign color, please call "set Sign Color" for viewing!
+     */
+    public void addSubMarkRoute(IntegerConsanguinityRoute2D integerConsanguinityRoute2D) {
+        String s = integerConsanguinityRoute2D.getStartingCoordinateName() + " -> " + integerConsanguinityRoute2D.getEndPointCoordinateName();
+        this.integerConsanguinityRoute2DHashMap_SubMark.put(s, integerConsanguinityRoute2D);
+        this.integerConsanguinityRoute2DHashMap.remove(s);
+        this.integerConsanguinityRoute2DHashMap_MasterTag.remove(s);
+    }
+
     /**
      * 将两个操作数进行求和的方法，具体用法请参阅API说明。
      * <p>
@@ -126,7 +185,7 @@ public class IntegerRoute2DNet implements RouteNet<IntegerCoordinateTwo, Integer
         if (size1 == size2) {
             final Iterator<IntegerConsanguinityRoute2D> iterator1 = this.integerConsanguinityRoute2DHashMap.values().iterator();
             final Iterator<IntegerConsanguinityRoute2D> iterator2 = value.getNetDataSet().iterator();
-            final ArrayList<IntegerConsanguinityRoute2D> res = new ArrayList<>();
+            final ArrayList<IntegerConsanguinityRoute2D> res = new ArrayList<>(size2);
             while (iterator1.hasNext() && iterator2.hasNext()) {
                 res.add(iterator1.next().diff(iterator2.next()));
             }
@@ -140,7 +199,7 @@ public class IntegerRoute2DNet implements RouteNet<IntegerCoordinateTwo, Integer
 
     @Override
     public boolean containsKeyFromRoute2DHashMap(String RouteName) {
-        return this.integerConsanguinityRoute2DHashMap.containsKey(RouteName);
+        return this.integerConsanguinityRoute2DHashMap.containsKey(RouteName) || this.integerConsanguinityRoute2DHashMap_SubMark.containsKey(RouteName) || this.integerConsanguinityRoute2DHashMap_MasterTag.containsKey(RouteName);
     }
 
     /**
@@ -148,7 +207,10 @@ public class IntegerRoute2DNet implements RouteNet<IntegerCoordinateTwo, Integer
      */
     @Override
     public HashSet<IntegerConsanguinityRoute2D> getNetDataSet() {
-        return new LinkedHashSet<>(this.integerConsanguinityRoute2DHashMap.values());
+        ArrayList<IntegerConsanguinityRoute2D> values = new ArrayList<>(this.integerConsanguinityRoute2DHashMap.values());
+        values.addAll(this.integerConsanguinityRoute2DHashMap_MasterTag.values());
+        values.addAll(this.integerConsanguinityRoute2DHashMap_SubMark.values());
+        return new HashSet<>(values);
     }
 
     /**
@@ -173,7 +235,7 @@ public class IntegerRoute2DNet implements RouteNet<IntegerCoordinateTwo, Integer
 
     @Override
     public int getRouteCount() {
-        return this.integerConsanguinityRoute2DHashMap.size();
+        return this.integerConsanguinityRoute2DHashMap.size() + this.integerConsanguinityRoute2DHashMap_SubMark.size() + this.integerConsanguinityRoute2DHashMap_MasterTag.size();
     }
 
     /**
@@ -210,5 +272,103 @@ public class IntegerRoute2DNet implements RouteNet<IntegerCoordinateTwo, Integer
     @Override
     public boolean isSupportDrawing() {
         return true;
+    }
+
+    /**
+     * 附加任务函数执行题,为了弥补绘图器不够灵活的缺陷,2022年10月16日新增了一个附加任务接口,该接口将会在旧接口的任务执行之前调用
+     * <p>
+     * Additional task function execution question, in order to make up for the inflexibility of the plotter, an additional task interface was added on October 16, 2022, which will be called before the task execution of the old interface
+     *
+     * @param graphics2D               绘图时的画笔对象,由绘图器传递,您可以在这里准备绘图器的更多设置与操作.
+     * @param route2DDrawingIntegrator 绘图集成器对象,您可以再附加任务中对集成器进行灵活操作!
+     *                                 <p>
+     *                                 Drawing integrator object, you can flexibly operate the integrator in additional tasks!
+     * @apiNote 第二版启动器接口中的特有函数, 允许用户在实现2维绘图接口的时候获取到绘图笔对象, 用户将此接口当作父类去使用, 绘图器会自动分析您的接口版本.
+     * <p>
+     * The unique function in the second version of the launcher interface allows the user to obtain the drawing pen object when implementing the 2D drawing interface. The user uses this interface as a parent class, and the drawer will automatically analyze your interface version.
+     */
+    @Override
+    public void AdditionalTasks1(Graphics2D graphics2D, Route2DDrawingIntegrator route2DDrawingIntegrator) {
+
+    }
+
+    /**
+     * 附加任务函数执行题,为了弥补绘图器不够灵活的缺陷,2022年10月16日新增了一个附加任务接口,该接口将会在旧接口的任务执行完调用.
+     * <p>
+     * Additional task function execution question, in order to make up for the inflexibility of the plotter, an additional task interface was added on October 16, 2022, which will be called after the task execution of the old interface.
+     *
+     * @param graphics2D               绘图时的画笔对象,由绘图器传递,您可以在这里准备绘图器的更多设置与操作.
+     * @param route2DDrawingIntegrator 绘图集成器对象,您可以再附加任务中对集成器进行灵活操作!
+     *                                 <p>
+     *                                 Drawing integrator object, you can flexibly operate the integrator in additional tasks!
+     * @apiNote 第二版启动器接口中的特有函数, 允许用户在实现2维绘图接口的时候获取到绘图笔对象, 用户将此接口当作父类去使用, 绘图器会自动分析您的接口版本.
+     * <p>
+     * The unique function in the second version of the launcher interface allows the user to obtain the drawing pen object when implementing the 2D drawing interface. The user uses this interface as a parent class, and the drawer will automatically analyze your interface version.
+     */
+    @Override
+    public void AdditionalTasks2(Graphics2D graphics2D, Route2DDrawingIntegrator route2DDrawingIntegrator) {
+
+    }
+
+    /**
+     * 从普通集合中获取到一个路线对象。
+     * <p>
+     * Get a route object from the normal collection.
+     *
+     * @param RouteName 路线对象的名称
+     *                  <p>
+     *                  the name of the route object
+     * @return 路线对象
+     * <p>
+     * route object
+     */
+    public IntegerConsanguinityRoute2D getRouteFromHashMap(String RouteName) {
+        return this.integerConsanguinityRoute2DHashMap.get(RouteName);
+    }
+
+    /**
+     * 从SubMark集合中获取到一个路线对象。
+     * <p>
+     * Get a route object from the Sub Mark collection.
+     *
+     * @param RouteName 路线对象的名称
+     *                  <p>
+     *                  the name of the route object
+     * @return 路线对象
+     * <p>
+     * route object
+     */
+    public IntegerConsanguinityRoute2D getRouteFromSubMark(String RouteName) {
+        return this.integerConsanguinityRoute2DHashMap_SubMark.get(RouteName);
+    }
+
+    /**
+     * 从MasterTag集合中获取到一个路线对象。
+     * <p>
+     * Get a route object from the Master Tag collection.
+     * <p>
+     * Get a route object from the normal collection.
+     *
+     * @param RouteName 路线对象的名称
+     *                  <p>
+     *                  the name of the route object
+     * @return 路线对象
+     * <p>
+     * route object
+     */
+    public IntegerConsanguinityRoute2D getRouteFromMasterTag(String RouteName) {
+        return this.integerConsanguinityRoute2DHashMap_MasterTag.get(RouteName);
+    }
+
+    public LinkedHashMap<String, IntegerConsanguinityRoute2D> getIntegerConsanguinityRoute2DHashMap() {
+        return integerConsanguinityRoute2DHashMap;
+    }
+
+    public HashMap<String, IntegerConsanguinityRoute2D> getIntegerConsanguinityRoute2DHashMap_SubMark() {
+        return integerConsanguinityRoute2DHashMap_SubMark;
+    }
+
+    public HashMap<String, IntegerConsanguinityRoute2D> getIntegerConsanguinityRoute2DHashMap_MasterTag() {
+        return integerConsanguinityRoute2DHashMap_MasterTag;
     }
 }

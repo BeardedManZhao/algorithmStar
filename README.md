@@ -79,6 +79,7 @@ public class MAIN1 {
 ```
 
 - The relationship network picture generated after running
+
   ![image](https://user-images.githubusercontent.com/113756063/196412140-8b81979d-ecc1-4774-9cbe-df8a89c19c1c.png)
 
 # directory structure
@@ -90,7 +91,7 @@ directly through the documents on the home page. There is no need to enter here 
 
 ### src_code
 
-The source code storage directory of ASMB, where you can view the relevant source code of ASMBr. Of course, here is the
+The source code storage directory of ASMB, where you can view the relevant source code of ASMB. Of course, here is the
 latest source code, which you can use to compile, so that you can obtain the latest version.
 
 Note: The latest version is often unstable, so we recommend you to use the version that has been released for a long

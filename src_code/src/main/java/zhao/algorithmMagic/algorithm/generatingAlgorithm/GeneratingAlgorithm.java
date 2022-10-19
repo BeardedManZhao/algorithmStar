@@ -3,9 +3,9 @@ package zhao.algorithmMagic.algorithm.generatingAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 
 /**
- * 生成算法接口,一般生成算法都应该配置一个图数据返回器,可以从该方法中获取到生成的图像数据集合,能够被外界去绘制
+ * 生成算法接口,该算法中更多的都是针对一个路线网的计算。
  * <p>
- * Generation algorithm interface. Generally, the generation algorithm should be configured with a graph data returner. The generated image data set can be obtained from this method and can be drawn by the outside world.
+ * Generate algorithm interface, the algorithm is more for the calculation of a route network.
  *
  * @author zhao
  */

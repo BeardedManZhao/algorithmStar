@@ -26,8 +26,8 @@ public class CanberraDistance<I extends IntegerCoordinates<I> & Coordinate<I>, D
     protected final String AlgorithmName;
 
     protected CanberraDistance() {
-        this.AlgorithmName = "CosineDistance";
-        this.logger = Logger.getLogger("CosineDistance");
+        this.AlgorithmName = "CanberraDistance";
+        this.logger = Logger.getLogger("CanberraDistance");
     }
 
     protected CanberraDistance(String AlgorithmName) {
@@ -53,7 +53,7 @@ public class CanberraDistance<I extends IntegerCoordinates<I> & Coordinate<I>, D
                 return ASClass.transform(operationAlgorithm);
             } else {
                 throw new TargetNotRealizedException("您提取的[" + Name + "]算法被找到了，但是它不属于CanberraDistance类型，请您为这个算法重新定义一个名称。\n" +
-                        "The [" + Name + "] algorithm you ParameterCombination has been found, but it does not belong to the Cosine Distance type. Please redefine a name for this algorithm.");
+                        "The [" + Name + "] algorithm you ParameterCombination has been found, but it does not belong to the CanberraDistance type. Please redefine a name for this algorithm.");
             }
         } else {
             CanberraDistance<II, DD> canberraDistance = new CanberraDistance<>(Name);
@@ -117,7 +117,7 @@ public class CanberraDistance<I extends IntegerCoordinates<I> & Coordinate<I>, D
         int[] ints2 = integerCoordinate1.extend().add(integerCoordinate2.extend()).toArray();
         double res = 0;
         for (int i = 0; i < ints1.length; i++) {
-            res += ASMath.absoluteValue(ints1[i] - ints2[i]) / ASMath.absoluteValue(ints1[i] + ints2[i]);
+            res += (double) ASMath.absoluteValue(ints1[i] - ints2[i]) / ASMath.absoluteValue(ints1[i] + ints2[i]);
         }
         return res;
     }

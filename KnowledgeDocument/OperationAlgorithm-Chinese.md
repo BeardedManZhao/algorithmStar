@@ -91,7 +91,7 @@ public class MAIN1 {
 是我开发的一种新算法，主要用来自动解析坐标与坐标之间的联系，如果有可能的话，新增一个坐标就会生成一些有关的新联系，主页中使用这个算法进行了一个人与人之间的关系推断！
 
 ```java
-import zhao.algorithmMagic.algorithm.generatingAlgorithm.ZhaoCoordinatenet2D;
+import zhao.algorithmMagic.algorithm.generatingAlgorithm.ZhaoCoordinateNet2D;
 import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo;
 import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute2D;
 
@@ -105,7 +105,7 @@ public class MAIN1 {
         DoubleCoordinateTwo B = new DoubleCoordinateTwo(1, 3);
         DoubleCoordinateTwo C = new DoubleCoordinateTwo(2, 5);
         // 获取到坐标网生成算法
-        ZhaoCoordinatenet2D l = ZhaoCoordinatenet2D.getInstance("L");
+        ZhaoCoordinateNet2D l = ZhaoCoordinateNet2D.getInstance("L");
         // 将 A 主动认识 B的关系添加到网络中
         l.addRoute(DoubleConsanguinityRoute2D.parse("A -> B", A, B));
         // 将 A 主动认识 C的关系添加到网络中

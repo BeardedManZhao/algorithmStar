@@ -102,7 +102,7 @@ and coordinates. If possible, adding a new coordinate will generate some related
 in the homepage to conduct a personal and Relationship between people inferred!
 
 ```java
-import zhao.algorithmMagic.algorithm.generatingAlgorithm.ZhaoCoordinatenet2D;
+import zhao.algorithmMagic.algorithm.generatingAlgorithm.ZhaoCoordinateNet2D;
 import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo;
 import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute2D;
 
@@ -116,7 +116,7 @@ public class MAIN1 {
         DoubleCoordinateTwo B = new DoubleCoordinateTwo(1, 3);
         DoubleCoordinateTwo C = new DoubleCoordinateTwo(2, 5);
         // Get the coordinate network generation algorithm
-        ZhaoCoordinatenet2D l = ZhaoCoordinatenet2D.getInstance("L");
+        ZhaoCoordinateNet2D l = ZhaoCoordinateNet2D.getInstance("L");
         // Add the relationship that A actively knows B to the network
         l.addRoute(DoubleConsanguinityRoute2D.parse("A -> B", A, B));
         // Add the relationship that A actively knows C to the network

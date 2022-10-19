@@ -15,7 +15,7 @@ import zhao.algorithmMagic.utils.ASClass;
  *
  * @author zhao
  */
-public class EditDistance implements DifferenceAlgorithm {
+public class EditDistance implements DifferenceAlgorithm<String> {
 
 
     protected final Logger logger;
@@ -109,5 +109,20 @@ public class EditDistance implements DifferenceAlgorithm {
         } else {
             return false;
         }
+    }
+
+    /**
+     * 计算两个事物之间从差异系数百分比
+     * <p>
+     * Calculate the percentage difference from the coefficient of difference between two things
+     *
+     * @param value1 差异参数1
+     * @param value2 差异参数2
+     * @return 差异系数
+     * @apiNote 这里是将两个字符串之间的最小编辑次数。除以两个字符串长度的乘积
+     */
+    @Override
+    public double getDifferenceRatio(String value1, String value2) {
+        return 1 - (getMinimumNumberOfEdits(value1, value2) / (double) value1.length() * value2.length());
     }
 }

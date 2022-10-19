@@ -171,8 +171,11 @@ public class Route2DDrawingIntegrator implements AlgorithmIntegrator<Route2DDraw
         // 集成第二版接口
         run2(g);
         // 将图片对象输出到指定的路径下!
-        ASIO.outImage(image, this.imageOutPath);
-        logger.info("+--------------------------------------- << output Picture >> ---------------------------------------+");
+        if (!ASIO.outImage(image, this.imageOutPath)) {
+            logger.error("+ Error in image output!");
+        } else {
+            logger.info("+--------------------------------------- << output Picture >> ---------------------------------------+");
+        }
         logger.info("+======================================= << " + this.IntegratorName + " >> stopped =============================================+");
         return true;
     }
