@@ -2,6 +2,9 @@ package zhao.algorithmMagic.utils;
 
 import zhao.algorithmMagic.operands.ComplexNumber;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Java类于 2022/10/10 15:30:49 创建
  * <p>
@@ -430,5 +433,59 @@ public final class ASMath {
                 }
             }
         }
+    }
+
+    /**
+     * 取得两个集合的并集
+     * <p>
+     * get the union of two sets
+     *
+     * @param set1          集合1
+     * @param set2          集合2
+     * @param <ElementType> 集合中的元素类型
+     *                      <p>
+     *                      the type of elements in the collection
+     * @return 两个集合的并集。
+     * <p>
+     * get the union of two sets
+     */
+    public static <ElementType> Set<ElementType> Union(Set<ElementType> set1, Set<ElementType> set2) {
+        HashSet<ElementType> hashSet = new HashSet<>(set1.size() + set2.size());
+        hashSet.addAll(set1);
+        hashSet.addAll(set2);
+        return hashSet;
+    }
+
+    /**
+     * 取得两个集合的交集
+     * <p>
+     * get the intersection of two sets
+     *
+     * @param set1          集合1
+     * @param set2          集合2
+     * @param <ElementType> 集合中的元素类型
+     * @return 两个集合的交集。
+     * <p>
+     * get the intersection of two sets
+     */
+    public static <ElementType> Set<ElementType> intersection(Set<ElementType> set1, Set<ElementType> set2) {
+        final HashSet<ElementType> hashSet = (HashSet<ElementType>) Union(set1, set2);
+        hashSet.removeIf(elementType -> !set1.contains(elementType) || !set2.contains(elementType));
+        return hashSet;
+    }
+
+    /**
+     * 减少内部计算的获取交集集合
+     *
+     * @param set1          集合1
+     * @param set2          集合2
+     * @param hashSet       提前计算好的两个集合的并集
+     * @param <ElementType> 集合中的元素类型
+     * @return 两个集合的交集
+     */
+    public static <ElementType> Set<ElementType> intersection(Set<ElementType> set1, Set<ElementType> set2, Set<ElementType> hashSet) {
+        final HashSet<ElementType> hashSet1 = new HashSet<>(hashSet);
+        hashSet1.removeIf(elementType -> !set1.contains(elementType) || !set2.contains(elementType));
+        return hashSet1;
     }
 }

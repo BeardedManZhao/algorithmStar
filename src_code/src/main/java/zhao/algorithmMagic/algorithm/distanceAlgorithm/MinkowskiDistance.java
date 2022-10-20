@@ -4,9 +4,11 @@ import org.apache.log4j.Logger;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
-import zhao.algorithmMagic.operands.coordinate.Coordinate;
-import zhao.algorithmMagic.operands.coordinate.FloatingPointCoordinates;
-import zhao.algorithmMagic.operands.coordinate.IntegerCoordinates;
+import zhao.algorithmMagic.operands.coordinate.*;
+import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute;
+import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute2D;
+import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute;
+import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute2D;
 import zhao.algorithmMagic.operands.vector.DoubleVector;
 import zhao.algorithmMagic.utils.ASClass;
 
@@ -195,7 +197,6 @@ public class MinkowskiDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
      * <p>
      * 闵可夫斯基距离是总结的曼哈顿与欧几里德, 其本身通过一个P变量控制所有算法, 因此本质上也是向量的计算
      */
-    @Override
     public double getTrueDistance(DoubleVector doubleVector) {
         double res = 0;
         for (double v : doubleVector.toArray()) {
@@ -226,5 +227,103 @@ public class MinkowskiDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
     @Override
     public String toString() {
         return "(ⁿ∑₁|x1-x2 |^" + this.$P + ")^1/" + $P;
+    }
+
+    /**
+     * 计算一个路线的起始点与终止点的真实距离。具体的距离实现，需要您查阅算法实现的文档。
+     * <p>
+     * Calculates the true distance between the start and end points of a route.
+     *
+     * @param doubleConsanguinityRoute 需要被计算的路线对象
+     *                                 <p>
+     *                                 The route object that needs to be calculated
+     * @return ...
+     */
+    @Override
+    public double getTrueDistance(DoubleConsanguinityRoute doubleConsanguinityRoute) {
+        return getTrueDistance(doubleConsanguinityRoute.getStartingCoordinate().toArray(), doubleConsanguinityRoute.getEndPointCoordinate().toArray());
+    }
+
+    /**
+     * 获取两个序列之间的距离
+     * <p>
+     * Get the Canberra distance between two sequences (note that there is no length check function here, if you need to use this method, please configure the array length check outside)
+     *
+     * @param doubles1 数组序列1
+     * @param doubles2 数组序列2
+     * @return ...
+     */
+    @Override
+    public double getTrueDistance(double[] doubles1, double[] doubles2) {
+        double[] doubles = new DoubleCoordinateMany(doubles1).diff(new DoubleCoordinateMany(doubles2)).toArray();
+        double res = 0;
+        for (double aDouble : doubles) {
+            res += aDouble;
+        }
+        return ParameterCombination(res);
+    }
+
+    /**
+     * 获取两个序列之间的距离
+     * <p>
+     * Get the Canberra distance between two sequences (note that there is no length check function here, if you need to use this method, please configure the array length check outside)
+     *
+     * @param ints1 数组序列1
+     * @param ints2 数组序列2
+     * @return ...
+     */
+    @Override
+    public double getTrueDistance(int[] ints1, int[] ints2) {
+        int[] ints = new IntegerCoordinateMany(ints1).diff(new IntegerCoordinateMany(ints2)).toArray();
+        int res = 0;
+        for (int anInt : ints) {
+            res += anInt;
+        }
+        return ParameterCombination(res);
+    }
+
+    /**
+     * 计算一个路线的起始点与终止点的真实距离。具体的距离实现，需要您查阅算法实现的文档。
+     * <p>
+     * Calculates the true distance between the start and end points of a route.
+     *
+     * @param doubleConsanguinityRoute2D 需要被计算的路线对象
+     *                                   <p>
+     *                                   The route object that needs to be calculated
+     * @return ...
+     */
+    @Override
+    public double getTrueDistance(DoubleConsanguinityRoute2D doubleConsanguinityRoute2D) {
+        return getTrueDistance(doubleConsanguinityRoute2D.getStartingCoordinate().toArray(), doubleConsanguinityRoute2D.getEndPointCoordinate().toArray());
+    }
+
+    /**
+     * 计算一个路线的起始点与终止点的真实距离。具体的距离实现，需要您查阅算法实现的文档。
+     * <p>
+     * Calculates the true distance between the start and end points of a route.
+     *
+     * @param integerConsanguinityRoute 需要被计算的路线对象
+     *                                  <p>
+     *                                  The route object that needs to be calculated
+     * @return ...
+     */
+    @Override
+    public double getTrueDistance(IntegerConsanguinityRoute integerConsanguinityRoute) {
+        return getTrueDistance(integerConsanguinityRoute.getStartingCoordinate().toArray(), integerConsanguinityRoute.getEndPointCoordinate().toArray());
+    }
+
+    /**
+     * 计算一个路线的起始点与终止点的真实距离。具体的距离实现，需要您查阅算法实现的文档。
+     * <p>
+     * Calculates the true distance between the start and end points of a route.
+     *
+     * @param integerConsanguinityRoute2D 需要被计算的路线对象
+     *                                    <p>
+     *                                    The route object that needs to be calculated
+     * @return ...
+     */
+    @Override
+    public double getTrueDistance(IntegerConsanguinityRoute2D integerConsanguinityRoute2D) {
+        return getTrueDistance(integerConsanguinityRoute2D.getStartingCoordinate().toArray(), integerConsanguinityRoute2D.getEndPointCoordinate().toArray());
     }
 }

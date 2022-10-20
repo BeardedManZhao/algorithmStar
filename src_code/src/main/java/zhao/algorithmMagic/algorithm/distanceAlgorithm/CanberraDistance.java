@@ -3,11 +3,13 @@ package zhao.algorithmMagic.algorithm.distanceAlgorithm;
 import org.apache.log4j.Logger;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
+import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
-import zhao.algorithmMagic.operands.coordinate.Coordinate;
-import zhao.algorithmMagic.operands.coordinate.FloatingPointCoordinates;
-import zhao.algorithmMagic.operands.coordinate.IntegerCoordinates;
-import zhao.algorithmMagic.operands.vector.DoubleVector;
+import zhao.algorithmMagic.operands.coordinate.*;
+import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute;
+import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute2D;
+import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute;
+import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute2D;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASMath;
 
@@ -119,13 +121,7 @@ public class CanberraDistance<I extends IntegerCoordinates<I> & Coordinate<I>, D
      */
     public double getTrueDistance(IntegerCoordinates<I> integerCoordinate1, IntegerCoordinates<I> integerCoordinate2) {
         logger.info("ⁿ∑₁ ((|COORDINATE1(n) - COORDINATE2(n)|) / (|COORDINATE1(n)| + |COORDINATE2(n)|))");
-        int[] ints1 = integerCoordinate1.extend().diff(integerCoordinate2.extend()).toArray();
-        int[] ints2 = integerCoordinate1.extend().add(integerCoordinate2.extend()).toArray();
-        double res = 0;
-        for (int i = 0; i < ints1.length; i++) {
-            res += (double) ASMath.absoluteValue(ints1[i] - ints2[i]) / ASMath.absoluteValue(ints1[i] + ints2[i]);
-        }
-        return res;
+        return getTrueDistance(integerCoordinate1.toArray(), integerCoordinate2.toArray());
     }
 
     /**
@@ -145,35 +141,7 @@ public class CanberraDistance<I extends IntegerCoordinates<I> & Coordinate<I>, D
      */
     public double getTrueDistance(FloatingPointCoordinates<D> iFloatingPointCoordinates1, FloatingPointCoordinates<D> iFloatingPointCoordinates2) {
         logger.info("ⁿ∑₁ ((|COORDINATE1(n) - COORDINATE2(n)|) / (|COORDINATE1(n)| + |COORDINATE2(n)|))");
-        double[] doubles1 = iFloatingPointCoordinates1.diff(iFloatingPointCoordinates2.extend()).toArray();
-        double[] doubles2 = iFloatingPointCoordinates1.add(iFloatingPointCoordinates2.extend()).toArray();
-        double res = 0;
-        for (int i = 0; i < doubles1.length; i++) {
-            res += ASMath.absoluteValue(doubles1[i] - doubles2[i]) / (ASMath.absoluteValue(doubles1[i]) + ASMath.absoluteValue(doubles2[i]));
-        }
-        return res;
-    }
-
-    /**
-     * 提取向量中起始点与终止点坐标的最短距离
-     * <p>
-     * Extract the shortest distance between the start point and end point coordinates in a vector
-     *
-     * @param doubleVector 被计算的向量
-     *                     <p>
-     *                     Calculated vector
-     * @return 向量中起始点与终止点坐标的最短距离
-     * <p>
-     * The shortest distance between the start point and end point coordinates in the vector
-     */
-    @Override
-    public double getTrueDistance(DoubleVector doubleVector) {
-        logger.info("ⁿ∑₁ (doubleVector(n))");
-        double res = 0;
-        for (double v : doubleVector.toArray()) {
-            res += ASMath.absoluteValue(v);
-        }
-        return res;
+        return getTrueDistance(iFloatingPointCoordinates1.toArray(), iFloatingPointCoordinates2.toArray());
     }
 
     /**
@@ -203,5 +171,120 @@ public class CanberraDistance<I extends IntegerCoordinates<I> & Coordinate<I>, D
         } else {
             return false;
         }
+    }
+
+    /**
+     * 计算一个路线的起始点与终止点的真实距离。具体的距离实现，需要您查阅算法实现的文档。
+     * <p>
+     * Calculates the true distance between the start and end points of a route.
+     *
+     * @param doubleConsanguinityRoute 需要被计算的路线对象
+     *                                 <p>
+     *                                 The route object that needs to be calculated
+     * @return The distance between the start and end coordinates of a route.
+     */
+    @Override
+    public double getTrueDistance(DoubleConsanguinityRoute doubleConsanguinityRoute) {
+        logger.info("ⁿ∑₁ ((|COORDINATE1(n) - COORDINATE2(n)|) / (|COORDINATE1(n)| + |COORDINATE2(n)|))");
+        return getTrueDistance(doubleConsanguinityRoute.getStartingCoordinate().toArray(), doubleConsanguinityRoute.getEndPointCoordinate().toArray());
+    }
+
+    /**
+     * 获取两个序列之间的堪培拉距离
+     * <p>
+     * Get the Canberra distance between two sequences (note that there is no length check function here, if you need to use this method, please configure the array length check outside)
+     *
+     * @param doubles1 数组序列1
+     * @param doubles2 数组序列2
+     * @return 两个序列之间的堪培拉距离
+     */
+    @Override
+    public double getTrueDistance(double[] doubles1, double[] doubles2) {
+        if (doubles1.length == doubles2.length) {
+            double res = 0;
+            for (int i = 0; i < doubles1.length; i++) {
+                res += ASMath.absoluteValue(doubles1[i] - doubles2[i]) / (ASMath.absoluteValue(doubles1[i]) + ASMath.absoluteValue(doubles2[i]));
+            }
+            return res;
+        } else {
+            throw new OperatorOperationException("您在Canberra Distance中的计算发生了错误，原因是您传入的两个序列/坐标的维度数量不一致！！！\n" +
+                    "Your calculation in Canberra Distance went wrong because the two sequence coordinates you passed in did not have the same number of dimensions! ! !" +
+                    "number of dimensions => value1[" + doubles1.length + "]   value2[" + doubles2.length + "]");
+        }
+    }
+
+    /**
+     * 获取两个序列之间的堪培拉距离
+     * <p>
+     * Get the Canberra distance between two sequences (note that there is no length check function here, if you need to use this method, please configure the array length check outside)
+     *
+     * @param ints1 数组序列1
+     * @param ints2 数组序列2
+     * @return 两个序列之间的堪培拉距离
+     */
+    @Override
+    public double getTrueDistance(int[] ints1, int[] ints2) {
+        if (ints1.length == ints2.length) {
+            double res = 0;
+            for (int i = 0; i < ints1.length; i++) {
+                res += ASMath.absoluteValue(ints1[i] - ints2[i]) / (double) (ASMath.absoluteValue(ints1[i]) + ASMath.absoluteValue(ints2[i]));
+            }
+            return res;
+        } else {
+            throw new OperatorOperationException("您在Canberra Distance中的计算发生了错误，原因是您传入的两个序列/坐标的维度数量不一致！！！\n" +
+                    "Your calculation in Canberra Distance went wrong because the two sequence coordinates you passed in did not have the same number of dimensions! ! !" +
+                    "number of dimensions => value1[" + ints1.length + "]   value2[" + ints2.length + "]");
+        }
+    }
+
+    /**
+     * 计算一个路线的起始点与终止点的真实距离。具体的距离实现，需要您查阅算法实现的文档。
+     * <p>
+     * Calculates the true distance between the start and end points of a route.
+     *
+     * @param doubleConsanguinityRoute2D 需要被计算的路线对象
+     *                                   <p>
+     *                                   The route object that needs to be calculated
+     * @return The distance between the start and end coordinates of a route.
+     */
+    @Override
+    public double getTrueDistance(DoubleConsanguinityRoute2D doubleConsanguinityRoute2D) {
+        DoubleCoordinateTwo startingCoordinate = doubleConsanguinityRoute2D.getStartingCoordinate();
+        DoubleCoordinateTwo endPointCoordinate = doubleConsanguinityRoute2D.getEndPointCoordinate();
+        return getTrueDistance(startingCoordinate.toArray(), endPointCoordinate.toArray());
+    }
+
+    /**
+     * 计算一个路线的起始点与终止点的真实距离。具体的距离实现，需要您查阅算法实现的文档。
+     * <p>
+     * Calculates the true distance between the start and end points of a route.
+     *
+     * @param integerConsanguinityRoute 需要被计算的路线对象
+     *                                  <p>
+     *                                  The route object that needs to be calculated
+     * @return The distance between the start and end coordinates of a route.
+     */
+    @Override
+    public double getTrueDistance(IntegerConsanguinityRoute integerConsanguinityRoute) {
+        IntegerCoordinateMany startingCoordinate = integerConsanguinityRoute.getStartingCoordinate();
+        IntegerCoordinateMany endPointCoordinate = integerConsanguinityRoute.getEndPointCoordinate();
+        return getTrueDistance(startingCoordinate.toArray(), endPointCoordinate.toArray());
+    }
+
+    /**
+     * 计算一个路线的起始点与终止点的真实距离。具体的距离实现，需要您查阅算法实现的文档。
+     * <p>
+     * Calculates the true distance between the start and end points of a route.
+     *
+     * @param integerConsanguinityRoute2D 需要被计算的路线对象
+     *                                    <p>
+     *                                    The route object that needs to be calculated
+     * @return The distance between the start and end coordinates of a route.
+     */
+    @Override
+    public double getTrueDistance(IntegerConsanguinityRoute2D integerConsanguinityRoute2D) {
+        IntegerCoordinateTwo startingCoordinate = integerConsanguinityRoute2D.getStartingCoordinate();
+        IntegerCoordinateTwo endPointCoordinate = integerConsanguinityRoute2D.getEndPointCoordinate();
+        return getTrueDistance(startingCoordinate.toArray(), endPointCoordinate.toArray());
     }
 }

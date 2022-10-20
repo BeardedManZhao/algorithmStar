@@ -82,7 +82,7 @@ public class DirectionalDijkstra2D extends Dijkstra2D {
         // 获取该线路的终止点名称
         String endPointCoordinateName = route.getEndPointCoordinateName();
         // 计算该线路的始末坐标距离
-        double trueDistance = this.distanceAlgorithm.getTrueDistance(route.toDoubleVector());
+        double trueDistance = this.distanceAlgorithm.getTrueDistance(route);
         if (isForward()) {
             // 获取起始点到终止点的名称
             String SEName = startingCoordinateName + " -> " + endPointCoordinateName;

@@ -201,4 +201,38 @@ public class StandardizedEuclideanDistance<I extends IntegerCoordinates<I> & Coo
             return false;
         }
     }
+
+    /**
+     * 获取两个序列之间的距离
+     * <p>
+     * Get the Canberra distance between two sequences (note that there is no length check function here, if you need to use this method, please configure the array length check outside)
+     *
+     * @param doubles1 数组序列1
+     * @param doubles2 数组序列2
+     * @return ...
+     */
+    @Override
+    public double getTrueDistance(double[] doubles1, double[] doubles2) {
+        double[] doubles11 = new DoubleCoordinateMany(doubles1).diff(new DoubleCoordinateMany(doubles2)).toArray();
+        double[] doubles22 = Z_ScoreNormalization.StandardizedSequence(doubles11);
+        return this.euclideanMetric.getTrueDistance(new DoubleCoordinateMany(DivideByNormalization(doubles11, doubles22)));
+    }
+
+    /**
+     * 获取两个序列之间的距离
+     * <p>
+     * Get the Canberra distance between two sequences (note that there is no length check function here, if you need to use this method, please configure the array length check outside)
+     *
+     * @param ints1 数组序列1
+     * @param ints2 数组序列2
+     * @return 两个序列之间的欧几里德距离
+     * <p>
+     * Euclidean distance between two sequences
+     */
+    @Override
+    public double getTrueDistance(int[] ints1, int[] ints2) {
+        double[] doubles11 = new DoubleCoordinateMany(ints1).diff(new DoubleCoordinateMany(ints2)).toArray();
+        double[] doubles22 = Z_ScoreNormalization.StandardizedSequence(doubles11);
+        return this.euclideanMetric.getTrueDistance(new DoubleCoordinateMany(DivideByNormalization(doubles11, doubles22)));
+    }
 }

@@ -4,7 +4,12 @@ import org.apache.log4j.Logger;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
+import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute;
+import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute2D;
+import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute;
+import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute2D;
 import zhao.algorithmMagic.operands.vector.DoubleVector;
+import zhao.algorithmMagic.operands.vector.IntegerVector;
 import zhao.algorithmMagic.operands.vector.Vector;
 import zhao.algorithmMagic.utils.ASClass;
 
@@ -74,25 +79,6 @@ public class CosineDistance<V extends Vector<?, ?>> implements DistanceAlgorithm
     }
 
     /**
-     * 使用一个向量计算真实距离，具体实现请参阅 api node
-     * <p>
-     * Use a vector to calculate the true distance, see the api node for the specific implementation
-     *
-     * @param doubleVector 被计算的向量
-     *                     <p>
-     *                     Calculated vector
-     * @return 该向量与同等长度0填充向量的夹角余弦值，不推荐使用，您应该使用"getCos"
-     * @deprecated 余弦距离中是两个向量之间的计算，因此该方法的调用会产生一些意外的结果，请您调用"getCos"
-     */
-    @Override
-    @Deprecated
-    public double getTrueDistance(DoubleVector doubleVector) {
-        Double aDouble = doubleVector.innerProduct(DoubleVector.parse(new double[doubleVector.getNumberOfDimensions()]));
-        logger.info(aDouble + " / ( " + doubleVector + " * " + doubleVector + " )");
-        return aDouble / (doubleVector.moduleLength() * 0);
-    }
-
-    /**
      * 获取到两个向量夹角的余弦值
      * <p>
      * Get the cosine of the angle between two vectors
@@ -159,5 +145,101 @@ public class CosineDistance<V extends Vector<?, ?>> implements DistanceAlgorithm
         } else {
             return false;
         }
+    }
+
+    /**
+     * 计算一个路线的起始点到0点的向量与终止点到0点的向量。具体的距离实现，需要您查阅算法实现的文档。
+     * <p>
+     * Calculates the true distance between the start and end points of a route.
+     *
+     * @param doubleConsanguinityRoute 需要被计算的路线对象
+     *                                 <p>
+     *                                 The route object that needs to be calculated
+     * @return 始末到0点所构成的向量的夹角余弦值
+     */
+    @Override
+    public double getTrueDistance(DoubleConsanguinityRoute doubleConsanguinityRoute) {
+        return getTrueDistance(doubleConsanguinityRoute.getStartingCoordinate().toArray(), doubleConsanguinityRoute.getEndPointCoordinate().toArray());
+    }
+
+    /**
+     * 获取两个序列之间的距离
+     * <p>
+     * Get the Canberra distance between two sequences (note that there is no length check function here, if you need to use this method, please configure the array length check outside)
+     *
+     * @param doubles1 数组序列1
+     * @param doubles2 数组序列2
+     * @return 这里的两个数组会被作为两个向量拿去计算。
+     */
+    @Override
+    public double getTrueDistance(double[] doubles1, double[] doubles2) {
+        DoubleVector vector1 = DoubleVector.parse(doubles1);
+        DoubleVector vector2 = DoubleVector.parse(doubles2);
+        Double aDouble = vector1.innerProduct(vector2.expand());
+        logger.info(aDouble + " / ( " + vector1 + " * " + vector2 + " )");
+        return aDouble / (vector1.moduleLength() * vector2.moduleLength());
+    }
+
+    /**
+     * 获取两个序列之间的距离
+     * <p>
+     * Get the Canberra distance between two sequences (note that there is no length check function here, if you need to use this method, please configure the array length check outside)
+     *
+     * @param ints1 数组序列1
+     * @param ints2 数组序列2
+     * @return ...
+     */
+    @Override
+    public double getTrueDistance(int[] ints1, int[] ints2) {
+        IntegerVector vector1 = IntegerVector.parse(ints1);
+        IntegerVector vector2 = IntegerVector.parse(ints2);
+        int integer = vector1.innerProduct(vector2.expand());
+        logger.info(integer + " / ( " + vector1 + " * " + vector2 + " )");
+        return integer / (double) (vector1.moduleLength() * vector2.moduleLength());
+    }
+
+    /**
+     * 计算一个路线的起始点与终止点的真实距离。具体的距离实现，需要您查阅算法实现的文档。
+     * <p>
+     * Calculates the true distance between the start and end points of a route.
+     *
+     * @param doubleConsanguinityRoute2D 需要被计算的路线对象
+     *                                   <p>
+     *                                   The route object that needs to be calculated
+     * @return ...
+     */
+    @Override
+    public double getTrueDistance(DoubleConsanguinityRoute2D doubleConsanguinityRoute2D) {
+        return getTrueDistance(doubleConsanguinityRoute2D.getStartingCoordinate().toArray(), doubleConsanguinityRoute2D.getEndPointCoordinate().toArray());
+    }
+
+    /**
+     * 计算一个路线的起始点与终止点的真实距离。具体的距离实现，需要您查阅算法实现的文档。
+     * <p>
+     * Calculates the true distance between the start and end points of a route.
+     *
+     * @param integerConsanguinityRoute 需要被计算的路线对象
+     *                                  <p>
+     *                                  The route object that needs to be calculated
+     * @return ...
+     */
+    @Override
+    public double getTrueDistance(IntegerConsanguinityRoute integerConsanguinityRoute) {
+        return getTrueDistance(integerConsanguinityRoute.getStartingCoordinate().toArray(), integerConsanguinityRoute.getEndPointCoordinate().toArray());
+    }
+
+    /**
+     * 计算一个路线的起始点与终止点的真实距离。具体的距离实现，需要您查阅算法实现的文档。
+     * <p>
+     * Calculates the true distance between the start and end points of a route.
+     *
+     * @param integerConsanguinityRoute2D 需要被计算的路线对象
+     *                                    <p>
+     *                                    The route object that needs to be calculated
+     * @return ...
+     */
+    @Override
+    public double getTrueDistance(IntegerConsanguinityRoute2D integerConsanguinityRoute2D) {
+        return getTrueDistance(integerConsanguinityRoute2D.getStartingCoordinate().toArray(), integerConsanguinityRoute2D.getEndPointCoordinate().toArray());
     }
 }

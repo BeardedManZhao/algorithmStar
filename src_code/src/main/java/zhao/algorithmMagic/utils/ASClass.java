@@ -212,4 +212,32 @@ public final class ASClass {
         }
         return DoubleRouteNet.parse(arrayList);
     }
+
+    /**
+     * 将一个int型数组 转换为 double型的数组
+     *
+     * @param ints 需要被转换的数组
+     * @return 转换之后的double数组
+     */
+    public static double[] IntArray_To_DoubleArray(int... ints) {
+        double[] res = new double[ints.length];
+        for (int i = 0; i < res.length; i++) {
+            res[i] = ints[i];
+        }
+        return res;
+    }
+
+    /**
+     * 将一个double型数组 转换为 int型的数组
+     *
+     * @param doubles 需要被转换的数组
+     * @return 转换之后的double数组
+     */
+    public static int[] DoubleArray_To_IntArray(double... doubles) {
+        int[] res = new int[doubles.length];
+        for (int i = 0; i < res.length; i++) {
+            res[i] = (int) doubles[i];
+        }
+        return res;
+    }
 }

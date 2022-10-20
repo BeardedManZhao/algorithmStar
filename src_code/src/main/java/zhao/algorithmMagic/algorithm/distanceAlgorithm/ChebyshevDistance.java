@@ -3,11 +3,15 @@ package zhao.algorithmMagic.algorithm.distanceAlgorithm;
 import org.apache.log4j.Logger;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
+import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
 import zhao.algorithmMagic.operands.coordinate.Coordinate;
 import zhao.algorithmMagic.operands.coordinate.FloatingPointCoordinates;
 import zhao.algorithmMagic.operands.coordinate.IntegerCoordinates;
-import zhao.algorithmMagic.operands.vector.DoubleVector;
+import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute;
+import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute2D;
+import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute;
+import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute2D;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASMath;
 
@@ -178,28 +182,6 @@ public class ChebyshevDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
     }
 
     /**
-     * 提取向量中起始点与终止点坐标的最短距离
-     * <p>
-     * Extract the shortest distance between the start point and end point coordinates in a vector
-     *
-     * @param doubleVector 被计算的向量
-     *                     <p>
-     *                     Calculated vector
-     * @return 向量中起始点与终止点坐标的最短距离
-     * <p>
-     * The shortest distance between the start point and end point coordinates in the vector
-     */
-    @Override
-    public double getTrueDistance(DoubleVector doubleVector) {
-        double res = 0;
-        for (double d : doubleVector.toArray()) {
-            double v = ASMath.absoluteValue(d);
-            if (res < v) res = v;
-        }
-        return res;
-    }
-
-    /**
      * 算法模块的初始化方法，在这里您可以进行组件的初始化方法，当初始化成功之后，该算法就可以处于就绪的状态，一般这里就是将自己添加到算法管理类中
      * <p>
      * The initialization method of the algorithm module, here you can perform the initialization method of the component, when the initialization is successful, the algorithm can be in a ready state, generally here is to add yourself to the algorithm management class
@@ -216,5 +198,119 @@ public class ChebyshevDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
         } else {
             return false;
         }
+    }
+
+    /**
+     * 计算一个路线的起始点与终止点的真实距离。具体的距离实现，需要您查阅算法实现的文档。
+     * <p>
+     * Calculates the true distance between the start and end points of a route.
+     *
+     * @param doubleConsanguinityRoute 需要被计算的路线对象
+     *                                 <p>
+     *                                 The route object that needs to be calculated
+     * @return 两个序列之间的切比雪夫距离
+     */
+    @Override
+    public double getTrueDistance(DoubleConsanguinityRoute doubleConsanguinityRoute) {
+        return getTrueDistance(doubleConsanguinityRoute.getStartingCoordinate().toArray(), doubleConsanguinityRoute.getEndPointCoordinate().toArray());
+    }
+
+    /**
+     * 获取两个序列之间的距离
+     * <p>
+     * Get the Canberra distance between two sequences
+     *
+     * @param doubles1 数组序列1
+     * @param doubles2 数组序列2
+     * @return 两个序列之间的切比雪夫距离
+     */
+    @Override
+    public double getTrueDistance(double[] doubles1, double[] doubles2) {
+        if (doubles1.length == doubles2.length) {
+            double res = 0;
+            for (int i = 0; i < doubles1.length; i++) {
+                double v = ASMath.absoluteValue(doubles1[i] - doubles2[i]);
+                if (res < v) {
+                    res = v;
+                }
+            }
+            return res;
+        } else {
+            throw new OperatorOperationException("您在Chebyshev Distance中的计算发生了错误，原因是您传入的两个序列/坐标的维度数量不一致！！！\n" +
+                    "Your calculation in Chebyshev Distance went wrong because the two sequence coordinates you passed in did not have the same number of dimensions! ! !" +
+                    "number of dimensions => value1[" + doubles1.length + "]   value2[" + doubles2.length + "]");
+        }
+    }
+
+    /**
+     * 获取两个序列之间的距离
+     * <p>
+     * Get the Canberra distance between two sequences (note that there is no length check function here, if you need to use this method, please configure the array length check outside)
+     *
+     * @param ints1 数组序列1
+     * @param ints2 数组序列2
+     * @return 该路线始末坐标点之间的切比雪夫距离
+     */
+    @Override
+    public double getTrueDistance(int[] ints1, int[] ints2) {
+        if (ints1.length == ints2.length) {
+            int res = 0;
+            for (int i = 0; i < ints1.length; i++) {
+                int v = ASMath.absoluteValue(ints1[i] - ints2[i]);
+                if (res < v) {
+                    res = v;
+                }
+            }
+            return res;
+        } else {
+            throw new OperatorOperationException("您在Chebyshev Distance中的计算发生了错误，原因是您传入的两个序列/坐标的维度数量不一致！！！\n" +
+                    "Your calculation in Chebyshev Distance went wrong because the two sequence coordinates you passed in did not have the same number of dimensions! ! !" +
+                    "number of dimensions => value1[" + ints1.length + "]   value2[" + ints2.length + "]");
+        }
+    }
+
+    /**
+     * 计算一个路线的起始点与终止点的真实距离。具体的距离实现，需要您查阅算法实现的文档。
+     * <p>
+     * Calculates the true distance between the start and end points of a route.
+     *
+     * @param doubleConsanguinityRoute2D 需要被计算的路线对象
+     *                                   <p>
+     *                                   The route object that needs to be calculated
+     * @return 该路线始末坐标点之间的切比雪夫距离
+     */
+    @Override
+    public double getTrueDistance(DoubleConsanguinityRoute2D doubleConsanguinityRoute2D) {
+        return getTrueDistance(doubleConsanguinityRoute2D.getStartingCoordinate().toArray(), doubleConsanguinityRoute2D.getEndPointCoordinate().toArray());
+    }
+
+    /**
+     * 计算一个路线的起始点与终止点的真实距离。具体的距离实现，需要您查阅算法实现的文档。
+     * <p>
+     * Calculates the true distance between the start and end points of a route.
+     *
+     * @param integerConsanguinityRoute 需要被计算的路线对象
+     *                                  <p>
+     *                                  The route object that needs to be calculated
+     * @return 该路线始末坐标点之间的切比雪夫距离
+     */
+    @Override
+    public double getTrueDistance(IntegerConsanguinityRoute integerConsanguinityRoute) {
+        return getTrueDistance(integerConsanguinityRoute.getStartingCoordinate().toArray(), integerConsanguinityRoute.getEndPointCoordinate().toArray());
+    }
+
+    /**
+     * 计算一个路线的起始点与终止点的真实距离。具体的距离实现，需要您查阅算法实现的文档。
+     * <p>
+     * Calculates the true distance between the start and end points of a route.
+     *
+     * @param integerConsanguinityRoute2D 需要被计算的路线对象
+     *                                    <p>
+     *                                    The route object that needs to be calculated
+     * @return 该路线始末坐标点之间的切比雪夫距离
+     */
+    @Override
+    public double getTrueDistance(IntegerConsanguinityRoute2D integerConsanguinityRoute2D) {
+        return getTrueDistance(integerConsanguinityRoute2D.getStartingCoordinate().toArray(), integerConsanguinityRoute2D.getEndPointCoordinate().toArray());
     }
 }

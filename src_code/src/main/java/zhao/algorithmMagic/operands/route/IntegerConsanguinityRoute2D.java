@@ -112,7 +112,8 @@ public class IntegerConsanguinityRoute2D implements Route2D<IntegerConsanguinity
     public double getAlgorithmDistance(String algorithmName) {
         OperationAlgorithm operationAlgorithm = OperationAlgorithmManager.getInstance().get(algorithmName);
         if (operationAlgorithm instanceof DistanceAlgorithm) {
-            return ((DistanceAlgorithm) operationAlgorithm).getTrueDistance(doubleVector);
+//            return ((DistanceAlgorithm) operationAlgorithm).getTrueDistance(doubleVector);
+            return ((DistanceAlgorithm) operationAlgorithm).getTrueDistance(this);
         } else {
             throw new OperatorOperationException("您在血亲坐标中使用算法[" + algorithmName + "]的时候发生了异常，您提取的不属于距离算法！或者该算法没有注册!\n" +
                     "An exception occurred when you used the algorithm [" + algorithmName + "] in the blood relative coordinates, and what you extracted does not belong to the distance algorithm! Or the algorithm is not registered!");

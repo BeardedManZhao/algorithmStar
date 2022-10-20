@@ -225,7 +225,7 @@ public class Dijkstra implements GeneratingAlgorithmMany {
         // 获取该线路的终止点名称
         String endPointCoordinateName = doubleConsanguinityRoute.getEndPointCoordinateName();
         // 计算该线路的始末坐标距离
-        double trueDistance = this.distanceAlgorithm.getTrueDistance(doubleConsanguinityRoute.toDoubleVector());
+        double trueDistance = this.distanceAlgorithm.getTrueDistance(doubleConsanguinityRoute);
         // 获取起始点到终止点的名称
         String SEName = startingCoordinateName + " -> " + endPointCoordinateName;
         // 获取终止点到起始点的名称
