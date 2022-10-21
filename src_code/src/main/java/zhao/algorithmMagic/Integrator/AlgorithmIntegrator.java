@@ -27,4 +27,11 @@ public interface AlgorithmIntegrator<AlgorithmType> {
      * Run the integrator and return the result
      */
     boolean run();
+
+    /**
+     * @return 运行该集成器, 并返回运行结果，该函数是带参数的运行，当运行成功之后会返回一个double类型的参数。
+     * <p>
+     * Run the integrator and return the result of the operation. The function is run with parameters. When the operation is successful, it will return a double type parameter.
+     */
+    double runAndReturnValue();
 }

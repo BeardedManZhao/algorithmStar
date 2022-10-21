@@ -72,6 +72,8 @@ public class Route2DDrawingIntegrator implements AlgorithmIntegrator<Route2DDraw
         this.IntegratorName = integratorName;
         this.route2DDrawingStarter = route2DDrawingLauncher;
         logger = Logger.getLogger(integratorName);
+        logger.info("+======================================= << " + this.IntegratorName + " >> started =============================================+");
+        logger.info("+--------------------------------------- << Extract the algorithm required by the integrator >> ---------------------------------------+");
     }
 
     /**
@@ -178,6 +180,20 @@ public class Route2DDrawingIntegrator implements AlgorithmIntegrator<Route2DDraw
         }
         logger.info("+======================================= << " + this.IntegratorName + " >> stopped =============================================+");
         return true;
+    }
+
+    /**
+     * @return 运行该集成器, 并返回运行结果，该函数是带参数的运行，当运行成功之后会返回一个double类型的参数。参数大于0，代表运行成功！
+     * <p>
+     * Run the integrator and return the result of the operation. The function is run with parameters. When the operation is successful, it will return a double type parameter. If the parameter is greater than 0, it means the operation is successful!
+     */
+    @Override
+    public double runAndReturnValue() {
+        if (run()) {
+            return 0b1;
+        } else {
+            return 0b11111111111111111111111111111111;
+        }
     }
 
     /**
