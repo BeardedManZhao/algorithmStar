@@ -127,4 +127,5 @@ public class MAIN1 {
   to [English Document](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/OperationAlgorithm.md)
 
 <hr>
+
 ### warning：在1.0版本中，请您尽量避免“getTrueDistance(DoubleVector doubleVector)”的调用，因为该函数是不合理的存在，在后面的版本中，该函数被删除！！！！会使用更加合适的函数作为替代。
