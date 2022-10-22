@@ -82,7 +82,7 @@ public class MAIN1 {
 
 - 运行之后产生的关系网络图片
 
-  ![image]((https://user-images.githubusercontent.com/113756063/196412140-8b81979d-ecc1-4774-9cbe-df8a89c19c1c.png)
+  ![image](https://user-images.githubusercontent.com/113756063/196412140-8b81979d-ecc1-4774-9cbe-df8a89c19c1c.png)
 
 ### KnowledgeDocument
 
