@@ -1,12 +1,12 @@
 package zhao.algorithmMagic.algorithm.generatingAlgorithm;
 
 import org.apache.log4j.Logger;
-import zhao.algorithmMagic.Integrator.Route2DDrawingIntegrator;
-import zhao.algorithmMagic.Integrator.launcher.Route2DDrawingLauncher;
-import zhao.algorithmMagic.Integrator.launcher.Route2DDrawingLauncher2;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
+import zhao.algorithmMagic.integrator.Route2DDrawingIntegrator;
+import zhao.algorithmMagic.integrator.launcher.Route2DDrawingLauncher;
+import zhao.algorithmMagic.integrator.launcher.Route2DDrawingLauncher2;
 import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
 import zhao.algorithmMagic.operands.coordinateNet.RouteNet;
 import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute2D;
@@ -24,7 +24,7 @@ import java.util.List;
  * <p>
  * 2维坐标关系网络生成算法，该算法支持在Route2DDrawingIntegrator中进行图像的绘制，因为该算法已经实现了它的启动器！
  * <p>
- * A 2D Coordinate Network Generation Algorithm that supports the drawing of images in the Route 2 D Drawing Integrator because the algorithm already implements its launcher!
+ * A 2D Coordinate Network Generation Algorithm that supports the drawing of images in the Route 2 D Drawing integrator because the algorithm already implements its launcher!
  *
  * @author zhao
  * <p>

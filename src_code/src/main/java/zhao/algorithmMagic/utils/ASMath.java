@@ -488,4 +488,82 @@ public final class ASMath {
         hashSet1.removeIf(elementType -> !set1.contains(elementType) || !set2.contains(elementType));
         return hashSet1;
     }
+
+    /**
+     * 将一个数组排序
+     *
+     * @param doubles 需要排序的数组
+     * @param des     排序之后的数组
+     * @return 排序之后的数组，注意这里的数组就是传入的数组
+     */
+    public static double[] sort(boolean des, double... doubles) {
+        if (des) {
+            for (int i = 0; i < doubles.length; i++) {
+                for (int i1 = 0; i1 < doubles.length - i - 1; i1++) {
+                    if (doubles[i1] > doubles[i1 + 1]) {
+                        double temp = doubles[i1 + 1];
+                        doubles[i1 + 1] = doubles[i1];
+                        doubles[i1] = temp;
+                    }
+                }
+            }
+        } else {
+            for (int i = 0; i < doubles.length; i++) {
+                for (int i1 = 0; i1 < doubles.length - i - 1; i1++) {
+                    if (doubles[i1] < doubles[i1 + 1]) {
+                        double temp = doubles[i1 + 1];
+                        doubles[i1 + 1] = doubles[i1];
+                        doubles[i1] = temp;
+                    }
+                }
+            }
+        }
+        return doubles;
+    }
+
+    /**
+     * 计算出两个字符串的并集
+     *
+     * @param value1 被计算的字符串1
+     * @param value2 被计算的字符串2
+     * @return 两个字符串的并集
+     */
+    public static String Union(String value1, String value2) {
+        final StringBuilder stringBuilder = new StringBuilder(value1);
+        for (char c : value2.toCharArray()) {
+            if (!ASStr.contains(value1, c)) {
+                stringBuilder.append(c);
+            }
+        }
+        return stringBuilder.toString();
+    }
+
+    /**
+     * 计算两个字符串的交集
+     *
+     * @param value1 被计算字符串1
+     * @param value2 被计算字符串2
+     * @return 两个字符串之间的交集
+     */
+    public static String intersection(String value1, String value2) {
+        return intersection(value1, value2, Union(value1, value2));
+    }
+
+    /**
+     * 计算两个字符串的交集，节省了并集的计算，交集运算中，使用了并集计算
+     *
+     * @param value1 被计算字符串1
+     * @param value2 被计算字符串2
+     * @param v1Uv2  两个字符串的并集
+     * @return 两个字符串之间的交集
+     */
+    public static String intersection(String value1, String value2, String v1Uv2) {
+        final StringBuilder stringBuilder = new StringBuilder();
+        for (char c : v1Uv2.toCharArray()) {
+            if (ASStr.contains(value1, c) && ASStr.contains(value2, c)) {
+                stringBuilder.append(c);
+            }
+        }
+        return stringBuilder.toString();
+    }
 }

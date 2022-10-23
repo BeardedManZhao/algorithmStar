@@ -67,9 +67,37 @@ public final class ASStr {
         return toDoubleArray(str, dataPackage -> (double) count(dataPackage.string, dataPackage.aCharFromString));
     }
 
+    /**
+     * 判断一个字符中是否包含某个字符，或某些字符
+     *
+     * @param str1 被判断的字符串
+     * @param c    判断包含的所有字符串
+     * @return 是否包含该字符
+     */
+    public static boolean contains(String str1, char... c) {
+        if (c.length < 1) {
+            return false;
+        } else if (c.length == 1) {
+            for (char c1 : str1.toCharArray()) {
+                if (c1 == c[0]) {
+                    return true;
+                }
+            }
+        } else {
+            for (char c1 : str1.toCharArray()) {
+                for (char c2 : c) {
+                    if (c1 == c2) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     public static final class DataPackage {
-        char aCharFromString;
-        String string;
+        final char aCharFromString;
+        final String string;
 
         public DataPackage(String string, char aCharFromString) {
             this.aCharFromString = aCharFromString;

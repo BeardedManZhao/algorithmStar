@@ -6,8 +6,8 @@ package zhao.algorithmMagic.utils.dataContainer;
  * @author 4
  */
 public class NameAndValue {
-    public String Name;
-    public double value;
+    public final String Name;
+    public final double value;
 
     public NameAndValue(String name, double value) {
         Name = name;

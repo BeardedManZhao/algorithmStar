@@ -13,8 +13,8 @@ import java.util.Arrays;
  * @author 4
  */
 public class IntegerVector extends Vector<IntegerVector, Integer> {
+    final boolean UsePrimitiveType;
     int[] VectorArrayPrimitive;
-    boolean UsePrimitiveType;
 
     /**
      * 使用初始传参的方式构建出来一个向量

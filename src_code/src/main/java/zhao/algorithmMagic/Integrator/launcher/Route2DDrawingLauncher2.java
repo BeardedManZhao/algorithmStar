@@ -1,6 +1,6 @@
-package zhao.algorithmMagic.Integrator.launcher;
+package zhao.algorithmMagic.integrator.launcher;
 
-import zhao.algorithmMagic.Integrator.Route2DDrawingIntegrator;
+import zhao.algorithmMagic.integrator.Route2DDrawingIntegrator;
 
 import java.awt.*;
 

@@ -83,7 +83,7 @@ public class ManhattanDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
      *                                  Calculated coordinates
      * @return 该坐标点到原点的真实兰氏距离
      * <p>
-     * Manhattan distance from the coordinate point to the origin
+     * Manhattan distances from the coordinate point to the origin
      */
     public double getTrueDistance(FloatingPointCoordinates<D> iFloatingPointCoordinates) {
         logger.info("ⁿ∑₁ (|COORDINATE(n) - 0|)");
@@ -104,7 +104,7 @@ public class ManhattanDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
      *                           Calculated coordinates
      * @return 该坐标点到原点的真实兰氏距离
      * <p>
-     * Manhattan distance from the coordinate point to the origin
+     * Manhattan distances from the coordinate point to the origin
      */
     public double getTrueDistance(IntegerCoordinates<I> integerCoordinates) {
         logger.info("ⁿ∑₁ (|COORDINATE(n) - 0|)");

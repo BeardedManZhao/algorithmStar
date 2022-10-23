@@ -1,8 +1,8 @@
 package zhao.algorithmMagic;
 
-import zhao.algorithmMagic.Integrator.IncrementalLearning;
-import zhao.algorithmMagic.Integrator.launcher.IncrementalLearningLauncher;
-import zhao.algorithmMagic.Integrator.launcher.Launcher;
+import zhao.algorithmMagic.integrator.IncrementalLearning;
+import zhao.algorithmMagic.integrator.launcher.IncrementalLearningLauncher;
+import zhao.algorithmMagic.integrator.launcher.Launcher;
 import zhao.algorithmMagic.operands.vector.DoubleVector;
 
 /**
@@ -26,6 +26,7 @@ public class MAIN1 {
                 return this;
             }
         });
+
         // 设置集成器的θ回归区间
         a.setStartingValue(1).setTerminationValue(100);
 

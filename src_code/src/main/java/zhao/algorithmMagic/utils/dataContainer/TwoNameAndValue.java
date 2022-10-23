@@ -6,7 +6,7 @@ package zhao.algorithmMagic.utils.dataContainer;
  * @author 4
  */
 public class TwoNameAndValue extends NameAndValue {
-    public String Name2;
+    public final String Name2;
 
     public TwoNameAndValue(String name, String name2, double value) {
         super(name, value);

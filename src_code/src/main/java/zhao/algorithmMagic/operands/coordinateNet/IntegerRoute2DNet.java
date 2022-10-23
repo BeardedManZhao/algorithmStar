@@ -1,9 +1,9 @@
 package zhao.algorithmMagic.operands.coordinateNet;
 
-import zhao.algorithmMagic.Integrator.Route2DDrawingIntegrator;
-import zhao.algorithmMagic.Integrator.launcher.Route2DDrawingLauncher;
-import zhao.algorithmMagic.Integrator.launcher.Route2DDrawingLauncher2;
 import zhao.algorithmMagic.exception.OperatorOperationException;
+import zhao.algorithmMagic.integrator.Route2DDrawingIntegrator;
+import zhao.algorithmMagic.integrator.launcher.Route2DDrawingLauncher;
+import zhao.algorithmMagic.integrator.launcher.Route2DDrawingLauncher2;
 import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
 import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute2D;
 import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute2D;
@@ -17,7 +17,7 @@ import java.util.*;
  * <p>
  * 整形二维坐标路线网，其中的所有路线网皆是2D的，该类已经实现了2D绘图的启动器，您可以将该类直接提供给Route2DDrawingIntegrator进行计算绘图。
  * <p>
- * Reshape the 2D coordinate route network, in which all route networks are 2D, this class has implemented a 2D drawing starter, you can directly provide this class to the Route 2D Drawing Integrator for computational drawing.
+ * Reshape the 2D coordinate route network, in which all route networks are 2D, this class has implemented a 2D drawing starter, you can directly provide this class to the Route 2D Drawing integrator for computational drawing.
  *
  * @author zhao
  */

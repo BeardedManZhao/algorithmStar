@@ -1,12 +1,12 @@
-package zhao.algorithmMagic.Integrator;
+package zhao.algorithmMagic.integrator;
 
 import org.apache.log4j.Logger;
-import zhao.algorithmMagic.Integrator.launcher.Route2DDrawingLauncher;
-import zhao.algorithmMagic.Integrator.launcher.Route2DDrawingLauncher2;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
+import zhao.algorithmMagic.integrator.launcher.Route2DDrawingLauncher;
+import zhao.algorithmMagic.integrator.launcher.Route2DDrawingLauncher2;
 import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
 import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute2D;
 import zhao.algorithmMagic.utils.ASClass;

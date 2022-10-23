@@ -125,7 +125,7 @@ public class ChebyshevDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
         int res = 0;
         logger.info("MAX(|0 - coordinate|)");
         for (int d : integerCoordinates.toArray()) {
-            int v = (int) ASMath.absoluteValue(d);
+            int v = ASMath.absoluteValue(d);
             if (v > res) res = v;
         }
         return res;
@@ -150,7 +150,7 @@ public class ChebyshevDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
         int res = 0;
         logger.info("MAX(|coordinate1 - coordinate2|)");
         for (int i : integerCoordinate1.extend().diff(integerCoordinate2.extend()).toArray()) {
-            int v = (int) ASMath.absoluteValue(i);
+            int v = ASMath.absoluteValue(i);
             if (v > res) res = v;
         }
         return res;
