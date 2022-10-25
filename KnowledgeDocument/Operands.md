@@ -9,6 +9,9 @@ understand and reduces your The amount of code that calls this framework during 
 - Operand Module Class Diagram (part)
   ![image](https://user-images.githubusercontent.com/113756063/195615625-880cdabc-ce61-4f90-b27c-0ba71c25a150.png)
 
+- Version 1.1 Operand Structure Diagram
+![image](https://user-images.githubusercontent.com/113756063/197778711-e496d7d3-17b9-4788-9427-2e6ec655b5e2.png)
+
 ## coordinate
 
 - introduce
