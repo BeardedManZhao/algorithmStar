@@ -25,6 +25,6 @@
   </a>
 
 ### 集成器-单调学习
-  <a href="https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Integrators%20and%20initiators-Chinese.md">
-  <img src = "https://user-images.githubusercontent.com/113756063/196027511-91504261-576c-4d6f-8fa1-fd7c61874e86.png"/>
+  <a href="https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Integrator%20Monotonic%20Learning-Chinese.md">
+  <img src = "https://user-images.githubusercontent.com/113756063/198195941-612cc1fc-62e0-4a3c-960f-387c149c2f6a.png"/>
   </a>
