@@ -23,3 +23,8 @@
   <a href="https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Integrators%20and%20initiators.md">
   <img src = "https://user-images.githubusercontent.com/113756063/196027481-11adabc3-35e4-44cd-86df-8eb5d70a151f.png"/>
   </a>
+
+### Integrator-Monotonic Learning
+  <a href="https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Integrators%20and%20initiators-Chinese.md">
+  <img src = "https://user-images.githubusercontent.com/113756063/196027511-91504261-576c-4d6f-8fa1-fd7c61874e86.png"/>
+  </a>

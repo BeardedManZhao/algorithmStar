@@ -23,3 +23,8 @@
   <a href="https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Integrators%20and%20initiators-Chinese.md">
   <img src = "https://user-images.githubusercontent.com/113756063/196027511-91504261-576c-4d6f-8fa1-fd7c61874e86.png"/>
   </a>
+
+### 集成器-单调学习
+  <a href="https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Integrators%20and%20initiators-Chinese.md">
+  <img src = "https://user-images.githubusercontent.com/113756063/196027511-91504261-576c-4d6f-8fa1-fd7c61874e86.png"/>
+  </a>

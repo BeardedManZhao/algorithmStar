@@ -31,6 +31,8 @@ public class IncrementalLearning implements AlgorithmIntegrator<IncrementalLearn
     private final IncrementalLearningLauncher incrementalLearning;
     private double StartingValue = -10;
     private double TerminationValue = 10;
+    private double EqualDifferenceOrEquivalentRatio = 1;
+    private boolean useEquivalentRatio = false;
     private DoubleVector doubleVector1;
     private DoubleVector doubleVector2;
     private double tempRes = 0b11111111111111111111111111111111;
@@ -104,13 +106,56 @@ public class IncrementalLearning implements AlgorithmIntegrator<IncrementalLearn
         return this;
     }
 
+    /**
+     * 设置结果集向量，该向量中的每一个元素都是 doubleVector2的对应位置的结果
+     *
+     * @param doubleVector1 结果集向量
+     * @return 链式编程
+     */
     public IncrementalLearning setDoubleVector1(DoubleVector doubleVector1) {
         this.doubleVector1 = doubleVector1;
         return this;
     }
 
+    /**
+     * 设置模型数据集向量，该向量中的每一个元素都是 doubleVector2的对应位置的自变量
+     *
+     * @param doubleVector2 变量集向量
+     * @return 链式编程
+     */
     public IncrementalLearning setDoubleVector2(DoubleVector doubleVector2) {
         this.doubleVector2 = doubleVector2;
+        return this;
+    }
+
+    /**
+     * @return 单调递增的等差或等比
+     */
+    public double getEqualDifferenceOrEquivalentRatio() {
+        return EqualDifferenceOrEquivalentRatio;
+    }
+
+    /**
+     * @return 使用的递增模式是等差递增还是等比递增，true代表使用等比递增。
+     * <p>
+     * Whether the increment mode used is equal difference increment or equal ratio increment, true means equal ratio increment.
+     */
+    public boolean isUseEquivalentRatio() {
+        return useEquivalentRatio;
+    }
+
+    /**
+     * @param useEquivalentRatio               设置您要使用的递增模式是等差递增还是等比递增，true代表使用等比递增。
+     *                                         <p>
+     *                                         Whether the increment mode used is equal difference increment or equal ratio increment, true means equal ratio increment.
+     * @param equalDifferenceOrEquivalentRatio 设置您的递增等差/等比数值是多少，请注意，如果您设置的是等比递增，最好不要使用1作为等比数值，因为这样的话无意义，最终的数值很可能还是 1。
+     *                                         <p>
+     *                                         Set your incremental difference/ratio value. Note that if you are setting an equal ratio increment, it is best not to use 1 as the equiratio value, because it does not make sense, and the final value is probably 1.
+     * @return 链式
+     */
+    public IncrementalLearning setIncrementalParameter(boolean useEquivalentRatio, double equalDifferenceOrEquivalentRatio) {
+        this.useEquivalentRatio = useEquivalentRatio;
+        this.EqualDifferenceOrEquivalentRatio = equalDifferenceOrEquivalentRatio;
         return this;
     }
 
@@ -198,8 +243,16 @@ public class IncrementalLearning implements AlgorithmIntegrator<IncrementalLearn
         // 创建出来一个机器学习结果数据集容器，key为θ的数值，value 为θXn的结果值
         final HashMap<Double, Double> resHash = new HashMap<>($D);
         // 开始使用不同的θ参数进行数据的结果值计算
-        for (double $ = this.StartingValue; $ <= this.TerminationValue; $++) {
-            resHash.put($, this.incrementalLearning.run(Yn, Xn, $));
+        if (!this.useEquivalentRatio) {
+            // 如果是使用的等差序列递增
+            for (double $ = this.StartingValue; $ <= this.TerminationValue; $ += this.EqualDifferenceOrEquivalentRatio) {
+                resHash.put($, this.incrementalLearning.run(Yn, Xn, $));
+            }
+        } else {
+            // 如果是使用的等比序列递增
+            for (double $ = this.StartingValue; $ <= this.TerminationValue; $ *= this.EqualDifferenceOrEquivalentRatio) {
+                resHash.put($, this.incrementalLearning.run(Yn, Xn, $));
+            }
         }
         return resHash;
     }
