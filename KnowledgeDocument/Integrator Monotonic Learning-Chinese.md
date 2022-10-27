@@ -1,6 +1,6 @@
 # 集成器-单调学习
 
-- Switch to [English document]()
+- Switch to [English document](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Integrator%20Monotonic%20Learning.md)
 
 ## 介绍
 
@@ -51,4 +51,4 @@ public class MAIN1 {
 
 <hr>
 
-- Switch to [English document]()
+- Switch to [English document](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Integrator%20Monotonic%20Learning.md)
