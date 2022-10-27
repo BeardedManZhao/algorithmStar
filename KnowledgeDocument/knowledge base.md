@@ -25,6 +25,6 @@
   </a>
 
 ### Integrator-Monotonic Learning
-  <a href="https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Integrators%20and%20initiators-Chinese.md">
-  <img src = "https://user-images.githubusercontent.com/113756063/196027511-91504261-576c-4d6f-8fa1-fd7c61874e86.png"/>
+  <a href="https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Integrator%20Monotonic%20Learning.md">
+  <img src = "https://user-images.githubusercontent.com/113756063/198195755-ace841f2-5582-498e-ac13-cba6d1b0e98d.png"/>
   </a>
