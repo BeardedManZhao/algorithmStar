@@ -1,6 +1,6 @@
 # Integrator-Monotonic Learning
 
-- 切换至 [中文文档]()
+- 切换至 [中文文档](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Integrator%20Monotonic%20Learning-Chinese.md)
 
 ## introduce
 
@@ -59,4 +59,4 @@ public class MAIN1 {
 
 <hr>
 
-- 切换至 [中文文档]()
+- 切换至 [中文文档](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Integrator%20Monotonic%20Learning-Chinese.md)
