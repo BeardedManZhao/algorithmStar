@@ -30,8 +30,8 @@ public class MAIN1 {
                 // 设置集成器的θ回归区间
                 .setStartingValue(1).setTerminationValue(10000)
                 // 设置集成器的单调递增参数 第一个参数是递增模式（使用等差递增(false)还是等比递增(true)）第二个参数是递增步长。
-                // 单调学习中会将 θ 加或乘 递增步长数值，来进行递增学习
-                .setIncrementalParameter(true, 10);
+                // 这里是使用的递增求和，等差为10的方式进行数据集的训练与模型的计算
+                .setIncrementalParameter(false, 10);
 
         // 计算出来工资与年龄的关系
         System.out.println("工资 约为 年龄 * " + incrementalLearning.run(money, age));
