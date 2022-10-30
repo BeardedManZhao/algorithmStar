@@ -7,7 +7,9 @@
   </a>
 
 ### Update log:
+
 * Framework version: 1.1
+
 - New monotone interval model prediction integrator "IncrementalLearning"
 - The function "runAndReturnValue()" is added to the interface of the integrator. Like the run function, this function
   can return a value. Some integrators may use the operation result return of related values.

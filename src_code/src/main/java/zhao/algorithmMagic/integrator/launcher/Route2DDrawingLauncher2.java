@@ -1,4 +1,4 @@
-package zhao.algorithmMagic.integrator.iauncher;
+package zhao.algorithmMagic.integrator.launcher;
 
 import zhao.algorithmMagic.integrator.Route2DDrawingIntegrator;
 

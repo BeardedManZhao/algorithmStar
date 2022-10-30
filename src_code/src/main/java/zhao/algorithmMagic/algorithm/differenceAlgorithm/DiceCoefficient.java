@@ -40,7 +40,7 @@ public class DiceCoefficient<ElementType> implements DifferenceAlgorithm<Set<Ele
      * Get the class object of the algorithm.
      *
      * @param Name 该算法的名称
-     * @param <E>> 该算法计算集合中的元素类型。
+     * @param <E>  该算法计算集合中的元素类型。
      *             <p>
      *             The algorithm computes the type of elements in a collection.
      * @return 您需要的算法类对象

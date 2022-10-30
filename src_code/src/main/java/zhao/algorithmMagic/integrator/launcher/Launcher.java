@@ -1,4 +1,4 @@
-package zhao.algorithmMagic.integrator.iauncher;
+package zhao.algorithmMagic.integrator.launcher;
 
 /**
  * 启动器是集成器需要的类型，集成器运行的就是一个启动器，实现了该启动器的类都可以集成到不同的集成器中，集成器需要的启动器类型可能不同，具体需要查阅集成器的文档！

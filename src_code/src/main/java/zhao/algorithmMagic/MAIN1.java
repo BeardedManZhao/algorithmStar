@@ -1,39 +1,57 @@
 package zhao.algorithmMagic;
 
-import zhao.algorithmMagic.integrator.IncrementalLearning;
-import zhao.algorithmMagic.integrator.iauncher.IncrementalLearningLauncher;
-import zhao.algorithmMagic.integrator.iauncher.Launcher;
-import zhao.algorithmMagic.operands.vector.DoubleVector;
+import zhao.algorithmMagic.integrator.HashClassificationIntegrator;
+import zhao.algorithmMagic.integrator.launcher.HashClassificationLauncher;
+import zhao.algorithmMagic.utils.dataContainer.SetAndValue;
+
+import java.util.*;
 
 public class MAIN1 {
     public static void main(String[] args) {
-        // TODO 预测一个模型
-        // 配置工资和年龄的向量序列，本次我们要找到 money 和 age之间的关系
-        DoubleVector age = DoubleVector.parse(18, 19, 20, 30, 50);
-        DoubleVector money = DoubleVector.parse(18000, 19000, 20000, 30000, 50000);
+        // 定义三份数据，有不同的数据特征
+        SetAndValue<String> stringSetAndValue1 = new SetAndValue<>("兔子", "会动", "有毛");
+        SetAndValue<String> stringSetAndValue2 = new SetAndValue<>("仓鼠", "会动", "有毛");
+        SetAndValue<String> stringSetAndValue3 = new SetAndValue<>("赵", "会动", "有毛", "会玩手机");
+        SetAndValue<String> stringSetAndValue4 = new SetAndValue<>("杨", "会动", "有毛", "会玩手机", "是高中生");
+        // 定义三个类别
+        HashMap<String, HashSet<String>> hashMap = new HashMap<>();
+        hashMap.put("人类", new HashSet<>(Arrays.asList("会动", "有毛", "会玩手机")));
+        hashMap.put("奴隶", new HashSet<>(Arrays.asList("有毛", "会玩手机", "是高中生")));
+        hashMap.put("动物", new HashSet<>(Arrays.asList("会动", "有毛")));
 
-        // 获取到集成器
-        IncrementalLearning incrementalLearning = new IncrementalLearning("A", new IncrementalLearningLauncher() {
-            // 设置初始模型 这里的模型是 money(Yn) = θ($) * age(Xn) 其中的 θ 就是单调计算的主角
+        // 实现分类启动器
+        HashClassificationLauncher<String> hashClassificationLauncher = new HashClassificationLauncher<String>() {
             @Override
-            public double run(double Yn, double Xn, double $) {
-                return $ * Xn;
-            }
-
-            @Override
-            public Launcher<?> expand() {
+            public HashClassificationLauncher<String> expand() {
                 return this;
             }
-        });
 
-        incrementalLearning
-                // 设置集成器的θ回归区间
-                .setStartingValue(1).setTerminationValue(10000)
-                // 设置集成器的单调递增参数 第一个参数是递增模式（使用等差递增(false)还是等比递增(true)）第二个参数是递增步长。
-                // 这里是使用的递增求和，等差为10的方式进行数据集的训练与模型的计算
-                .setIncrementalParameter(false, 10);
+            // 配置类别特征数据集
+            @Override
+            public HashMap<String, HashSet<String>> LoadCategoryLabels() {
+                return hashMap;
+            }
 
-        // 计算出来工资与年龄的关系
-        System.out.println("工资 约为 年龄 * " + incrementalLearning.run(money, age));
+            // 是否使用多分类模式 如果为true 代表允许某一个数据属于多个类别
+            @Override
+            public boolean MultiClassificationMode() {
+                return true;
+            }
+
+            // 配置需要被分类的数据集
+            @Override
+            public List<SetAndValue<String>> CategorizedData() {
+                return Arrays.asList(stringSetAndValue1, stringSetAndValue2, stringSetAndValue3, stringSetAndValue4);
+            }
+        };
+
+        // 将启动器装载到集成器中
+        HashClassificationIntegrator<String> stringHashClassificationIntegrator = new HashClassificationIntegrator<>("H", hashClassificationLauncher);
+        // 开始进行分类
+        HashMap<String, List<String>> stringListHashMap = stringHashClassificationIntegrator.runAndReturnValueSet();
+        // 打印所有的类别的数据
+        for (String s : hashMap.keySet()) {
+            System.out.println(s + " 类别  ->  " + stringListHashMap.get(s));
+        }
     }
 }
