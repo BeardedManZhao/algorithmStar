@@ -152,6 +152,13 @@ public class Route2DDrawingIntegrator implements AlgorithmIntegrator<Route2DDraw
         this.backColor = backColor;
     }
 
+    /**
+     * 运行绘图集成器
+     *
+     * @return 运行如果没有发生错误 这里将会返回true
+     * <p>
+     * If no error occurs when running, true will be returned here
+     */
     @Override
     public boolean run() {
         logger.info("+--------------------------------------- << Build Picture >> ---------------------------------------+");

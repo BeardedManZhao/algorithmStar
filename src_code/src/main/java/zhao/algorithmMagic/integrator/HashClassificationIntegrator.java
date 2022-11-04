@@ -13,12 +13,27 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
+/**
+ * 分类集合集成器 ，采用特征匹配的方式进行数据的分类运算，需要实现启动器”HashClassificationLauncher<VALUE>“，在启动器中您可以设置类别的特征集合 与 不同数据的特征集合。
+ * <p>
+ * The classification set integrator uses feature matching to perform data classification operations. The initiator "HashClassificationLauncher<VALUE>" needs to be implemented. In the initiator, you can set the feature sets of categories and different data.
+ *
+ * @param <VALUE> 您需要分类的数据每一个元素的数据类型。
+ *                <p>
+ *                You need to classify the data type of each element of the data.
+ */
 public class HashClassificationIntegrator<VALUE> implements AlgorithmIntegrator<HashClassificationIntegrator<VALUE>> {
 
     private final Logger logger;
     private final String IntegratorName;
     private final HashClassificationLauncher<VALUE> hashClassificationLauncher;
 
+    /**
+     * 将启动器实现类直接配置到集成器中
+     *
+     * @param integratorName             该集成器的名称
+     * @param HashClassificationLauncher 实现了启动器的对象。
+     */
     public HashClassificationIntegrator(String integratorName, HashClassificationLauncher<VALUE> HashClassificationLauncher) {
         IntegratorName = integratorName;
         this.logger = Logger.getLogger(integratorName);
@@ -59,11 +74,21 @@ public class HashClassificationIntegrator<VALUE> implements AlgorithmIntegrator<
         return this.IntegratorName;
     }
 
+    /**
+     * @return 运行集成器之后产生的数据是否为null
+     * <p>
+     * Whether the data generated after running the integrator is null
+     */
     @Override
     public boolean run() {
         return runAndReturnValueSet() != null;
     }
 
+    /**
+     * 运行该集成器 同时返回一个分类的数据集，该方法是分类集成器特有的方法。
+     *
+     * @return 返回一个集成器分类之后的数据集合。
+     */
     public HashMap<String, List<VALUE>> runAndReturnValueSet() {
         // 获取到所有的待分类数据集
         List<SetAndValue<VALUE>> setAndValues = this.hashClassificationLauncher.CategorizedData();
@@ -117,6 +142,11 @@ public class HashClassificationIntegrator<VALUE> implements AlgorithmIntegrator<
         return res;
     }
 
+    /**
+     * @return 运行分类算法之后产生的数据集的数量。
+     * <p>
+     * The number of data sets generated after running the classification algorithm.
+     */
     @Override
     public double runAndReturnValue() {
         return runAndReturnValueSet().size();

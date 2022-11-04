@@ -4,6 +4,8 @@
 
 ## introduce
 
+Created in version 1.1
+
 The integrator is applicable to model calculation. Through a large number of data samples, it can automatically perform
 monotonic incremental operation with the set initial model and incremental interval. In version 1.1, when the integrator
 is put into use, it needs to first implement the initiator interface corresponding to the integrator. The main thing in
