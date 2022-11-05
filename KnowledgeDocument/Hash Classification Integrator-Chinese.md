@@ -1,6 +1,6 @@
 # 哈希集合分类集成器
 
-- 切换至 [English document](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Hash%20Classification%20Launcher.md)
+- 切换至 [English document](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Hash%20Classification%20Integrator.md)
 
 ## 介绍
 
@@ -175,4 +175,4 @@ public class MAIN1 {
 
 <hr>
 
-- 切换至 [English document](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Hash%20Classification%20Launcher.md)
+- 切换至 [English document](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Hash%20Classification%20Integrator.md)
