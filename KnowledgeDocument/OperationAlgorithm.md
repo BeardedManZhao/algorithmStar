@@ -135,6 +135,7 @@ public class MAIN1 {
 ```
 
 - 切换到 [中文文档](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/OperationAlgorithm-Chinese.md)
+
 <hr>
 
 ### warning：In version 1.0, please avoid calling "getTrueDistance (DoubleVector doubleVector)" as far as possible, because this function is unreasonable. In later versions, this function is deleted!!!! A more appropriate function will be used instead.

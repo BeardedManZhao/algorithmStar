@@ -1,6 +1,7 @@
 # 集成器与启动器
 
-- Switch to [English Document](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Integrators%20and%20initiators.md)
+- Switch
+  to [English Document](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Integrators%20and%20initiators.md)
 
 ## 介绍
 
@@ -111,4 +112,5 @@ public class MAIN1 {
 
 ```
 
-- Switch to [English Document](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Integrators%20and%20initiators.md)
+- Switch
+  to [English Document](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Integrators%20and%20initiators.md)

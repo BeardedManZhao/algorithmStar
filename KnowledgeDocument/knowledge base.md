@@ -25,6 +25,7 @@
   </a>
 
 ### Integrator-Monotonic Learning
+
   <a href="https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Integrator%20Monotonic%20Learning.md">
   <img src = "https://user-images.githubusercontent.com/113756063/198195848-fe97faa3-c6c9-42bb-b630-ff57bf0f6dbb.png"/>
   </a>

@@ -35,7 +35,9 @@ can add it to your maven project, or you can download it from Releases and manua
 
 ### Use API examples
 
-Here is an example of the use of "ZhaoCoordinateNet2D", which shows the analysis and prediction of the relationship between people. In the "ZhaoCoordinateNet" algorithm, the relationship network of people is analyzed, and at the same time, the network analysis and mapping can be performed.
+Here is an example of the use of "ZhaoCoordinateNet2D", which shows the analysis and prediction of the relationship
+between people. In the "ZhaoCoordinateNet" algorithm, the relationship network of people is analyzed, and at the same
+time, the network analysis and mapping can be performed.
 
 ```java
 package zhao.algorithmMagic;
