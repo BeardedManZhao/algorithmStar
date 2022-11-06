@@ -29,3 +29,9 @@
   <a href="https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Integrator%20Monotonic%20Learning-Chinese.md">
   <img src = "https://user-images.githubusercontent.com/113756063/198195941-612cc1fc-62e0-4a3c-960f-387c149c2f6a.png"/>
   </a>
+
+### 集成器-哈希集合分类
+
+  <a href="https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Hash%20Classification%20Integrator-Chinese.md">
+  <img src = "https://user-images.githubusercontent.com/113756063/200151462-8d283021-0f93-459d-b335-a25b0208823e.png"/>
+  </a>
