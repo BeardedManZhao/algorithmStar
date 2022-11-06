@@ -29,3 +29,9 @@
   <a href="https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Integrator%20Monotonic%20Learning.md">
   <img src = "https://user-images.githubusercontent.com/113756063/198195848-fe97faa3-c6c9-42bb-b630-ff57bf0f6dbb.png"/>
   </a>
+
+### Integrator-Hash Classification 
+
+  <a href="https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Hash%20Classification%20Integrator.md">
+  <img src = "https://user-images.githubusercontent.com/113756063/200151421-3a19b6d6-7382-46c1-b700-579d97d960a0.png"/>
+  </a>
