@@ -566,4 +566,39 @@ public final class ASMath {
         }
         return stringBuilder.toString();
     }
+
+    /**
+     * 将一个数值的十倍计算出来
+     *
+     * @param number 需要被计算的数值
+     * @return 数值的十倍数值
+     */
+    public static int tenfold(int number) {
+        return ((number << 2) << 1) + (number << 1);
+    }
+
+    /**
+     * 将一个数值的 1/10 倍计算出来
+     *
+     * @param number 需要被计算的数值
+     * @return 数值的 1/10倍
+     */
+    public static int DividebyTen(int number) {
+        return (number >> 1) / 5;
+    }
+
+    /**
+     * 将一个数值 乘 10 的 n次方
+     *
+     * @param number 需要被乘方的数值
+     * @param n      次方数
+     * @return number * 10 ^ n
+     */
+    public static int PowerOfTen(int number, int n) {
+        int res = number;
+        for (int i = 1; i < n; i++) {
+            res = tenfold(res);
+        }
+        return res;
+    }
 }
