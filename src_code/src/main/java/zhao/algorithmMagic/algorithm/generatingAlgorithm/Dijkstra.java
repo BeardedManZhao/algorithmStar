@@ -1,6 +1,7 @@
 package zhao.algorithmMagic.algorithm.generatingAlgorithm;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.algorithm.distanceAlgorithm.DistanceAlgorithm;
@@ -37,11 +38,11 @@ public class Dijkstra implements GeneratingAlgorithmMany {
 
     protected Dijkstra() {
         this.AlgorithmName = "Dijkstra";
-        this.logger = Logger.getLogger("Dijkstra");
+        this.logger = LoggerFactory.getLogger("Dijkstra");
     }
 
     protected Dijkstra(String AlgorithmName) {
-        this.logger = Logger.getLogger(AlgorithmName);
+        this.logger = LoggerFactory.getLogger(AlgorithmName);
         this.AlgorithmName = AlgorithmName;
     }
 

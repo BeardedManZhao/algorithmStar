@@ -1,6 +1,7 @@
 package zhao.algorithmMagic.algorithm.distanceAlgorithm;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.exception.OperatorOperationException;
@@ -12,6 +13,8 @@ import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute;
 import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute2D;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASMath;
+
+;
 
 /**
  * Java类于 2022/10/14 12:47:02 创建
@@ -29,11 +32,11 @@ public class CanberraDistance<I extends IntegerCoordinates<I> & Coordinate<I>, D
 
     protected CanberraDistance() {
         this.AlgorithmName = "CanberraDistance";
-        this.logger = Logger.getLogger("CanberraDistance");
+        this.logger = LoggerFactory.getLogger("CanberraDistance");
     }
 
     protected CanberraDistance(String AlgorithmName) {
-        this.logger = Logger.getLogger(AlgorithmName);
+        this.logger = LoggerFactory.getLogger(AlgorithmName);
         this.AlgorithmName = AlgorithmName;
     }
 

@@ -1,6 +1,7 @@
 package zhao.algorithmMagic.algorithm.generatingAlgorithm;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
@@ -28,11 +29,11 @@ public class ZhaoCoordinateNet implements GeneratingAlgorithm {
 
     protected ZhaoCoordinateNet() {
         this.AlgorithmName = "ZhaoCoordinateNet";
-        this.logger = Logger.getLogger("ZhaoCoordinateNet");
+        this.logger = LoggerFactory.getLogger("ZhaoCoordinateNet");
     }
 
     protected ZhaoCoordinateNet(String AlgorithmName) {
-        this.logger = Logger.getLogger(AlgorithmName);
+        this.logger = LoggerFactory.getLogger(AlgorithmName);
         this.AlgorithmName = AlgorithmName;
     }
 

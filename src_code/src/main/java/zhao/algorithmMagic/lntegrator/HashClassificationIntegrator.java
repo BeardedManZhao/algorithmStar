@@ -1,10 +1,11 @@
-package zhao.algorithmMagic.integrator;
+package zhao.algorithmMagic.lntegrator;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
-import zhao.algorithmMagic.integrator.launcher.HashClassificationLauncher;
+import zhao.algorithmMagic.lntegrator.launcher.HashClassificationLauncher;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.dataContainer.SetAndValue;
 
@@ -36,7 +37,7 @@ public class HashClassificationIntegrator<VALUE> implements AlgorithmIntegrator<
      */
     public HashClassificationIntegrator(String integratorName, HashClassificationLauncher<VALUE> HashClassificationLauncher) {
         IntegratorName = integratorName;
-        this.logger = Logger.getLogger(integratorName);
+        this.logger = LoggerFactory.getLogger(integratorName);
         this.hashClassificationLauncher = HashClassificationLauncher;
     }
 
@@ -52,7 +53,7 @@ public class HashClassificationIntegrator<VALUE> implements AlgorithmIntegrator<
      */
     public HashClassificationIntegrator(String integratorName, String AlgorithmLauncherName) {
         IntegratorName = integratorName;
-        logger = Logger.getLogger(integratorName);
+        logger = LoggerFactory.getLogger(integratorName);
         logger.info("+======================================= << " + this.IntegratorName + " >> started =============================================+");
         logger.info("+--------------------------------------- << Extract the algorithm required by the integrator >> ---------------------------------------+");
         OperationAlgorithm operationAlgorithm = OperationAlgorithmManager.getInstance().get(AlgorithmLauncherName);

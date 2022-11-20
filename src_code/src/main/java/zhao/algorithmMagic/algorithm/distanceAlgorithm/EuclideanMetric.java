@@ -1,6 +1,7 @@
 package zhao.algorithmMagic.algorithm.distanceAlgorithm;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
@@ -38,12 +39,12 @@ public class EuclideanMetric<I extends IntegerCoordinates<I> & Coordinate<I>, D 
 
     protected EuclideanMetric() {
         this.AlgorithmName = "EuclideanMetric";
-        this.logger = Logger.getLogger("EuclideanMetric");
+        this.logger = LoggerFactory.getLogger("EuclideanMetric");
     }
 
     protected EuclideanMetric(String algorithmName) {
         this.AlgorithmName = algorithmName;
-        this.logger = Logger.getLogger(algorithmName);
+        this.logger = LoggerFactory.getLogger(algorithmName);
     }
 
     /**

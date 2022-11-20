@@ -36,8 +36,8 @@ integrator.
 ```java
 package zhao.algorithmMagic;
 
-import zhao.algorithmMagic.integrator.HashClassificationIntegrator;
-import zhao.algorithmMagic.integrator.launcher.HashClassificationLauncher;
+import zhao.algorithmMagic.lntegrator.HashClassificationIntegrator;
+import zhao.algorithmMagic.lntegrator.launcher.HashClassificationLauncher;
 import zhao.algorithmMagic.utils.dataContainer.SetAndValue;
 
 import java.util.Arrays;
@@ -114,8 +114,8 @@ The implementation of multiCategory initiators and the use example of hash class
 ```java
 package zhao.algorithmMagic;
 
-import zhao.algorithmMagic.integrator.HashClassificationIntegrator;
-import zhao.algorithmMagic.integrator.launcher.HashClassificationLauncher;
+import zhao.algorithmMagic.lntegrator.HashClassificationIntegrator;
+import zhao.algorithmMagic.lntegrator.launcher.HashClassificationLauncher;
 import zhao.algorithmMagic.utils.dataContainer.SetAndValue;
 
 import java.util.Arrays;

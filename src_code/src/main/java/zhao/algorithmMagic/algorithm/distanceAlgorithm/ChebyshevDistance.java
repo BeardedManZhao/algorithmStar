@@ -1,6 +1,7 @@
 package zhao.algorithmMagic.algorithm.distanceAlgorithm;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.exception.OperatorOperationException;
@@ -38,11 +39,11 @@ public class ChebyshevDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
 
     protected ChebyshevDistance() {
         this.AlgorithmName = "ChebyshevDistance";
-        this.logger = Logger.getLogger("ChebyshevDistance");
+        this.logger = LoggerFactory.getLogger("ChebyshevDistance");
     }
 
     protected ChebyshevDistance(String AlgorithmName) {
-        this.logger = Logger.getLogger(AlgorithmName);
+        this.logger = LoggerFactory.getLogger(AlgorithmName);
         this.AlgorithmName = AlgorithmName;
     }
 

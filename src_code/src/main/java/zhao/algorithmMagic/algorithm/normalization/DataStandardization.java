@@ -1,6 +1,7 @@
 package zhao.algorithmMagic.algorithm.normalization;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateMany;
@@ -25,12 +26,12 @@ public abstract class DataStandardization implements OperationAlgorithm {
 
     protected DataStandardization() {
         this.AlgorithmName = "DataStandardization";
-        this.logger = Logger.getLogger("DataStandardization");
+        this.logger = LoggerFactory.getLogger("DataStandardization");
     }
 
     protected DataStandardization(String algorithmName) {
         this.AlgorithmName = algorithmName;
-        this.logger = Logger.getLogger(algorithmName);
+        this.logger = LoggerFactory.getLogger(algorithmName);
     }
 
     /**

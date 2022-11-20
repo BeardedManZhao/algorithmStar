@@ -1,6 +1,7 @@
 package zhao.algorithmMagic.algorithm.differenceAlgorithm;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
@@ -25,11 +26,11 @@ public class JaccardSimilarityCoefficient<ElementType> implements DifferenceAlgo
 
     protected JaccardSimilarityCoefficient() {
         this.AlgorithmName = "JaccardSimilarityCoefficient";
-        this.logger = Logger.getLogger("JaccardSimilarityCoefficient");
+        this.logger = LoggerFactory.getLogger("JaccardSimilarityCoefficient");
     }
 
     protected JaccardSimilarityCoefficient(String AlgorithmName) {
-        this.logger = Logger.getLogger(AlgorithmName);
+        this.logger = LoggerFactory.getLogger(AlgorithmName);
         this.AlgorithmName = AlgorithmName;
     }
 

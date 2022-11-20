@@ -1,6 +1,7 @@
 package zhao.algorithmMagic.algorithm.distanceAlgorithm;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
@@ -34,11 +35,11 @@ public class CosineDistance<V extends Vector<?, ?>> implements DistanceAlgorithm
 
     protected CosineDistance() {
         this.AlgorithmName = "CosineDistance";
-        this.logger = Logger.getLogger("CosineDistance");
+        this.logger = LoggerFactory.getLogger("CosineDistance");
     }
 
     protected CosineDistance(String AlgorithmName) {
-        this.logger = Logger.getLogger(AlgorithmName);
+        this.logger = LoggerFactory.getLogger(AlgorithmName);
         this.AlgorithmName = AlgorithmName;
     }
 

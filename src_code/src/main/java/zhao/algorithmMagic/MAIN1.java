@@ -1,7 +1,7 @@
 package zhao.algorithmMagic;
 
-import zhao.algorithmMagic.integrator.HashClassificationIntegrator;
-import zhao.algorithmMagic.integrator.launcher.HashClassificationLauncher;
+import zhao.algorithmMagic.lntegrator.HashClassificationIntegrator;
+import zhao.algorithmMagic.lntegrator.launcher.HashClassificationLauncher;
 import zhao.algorithmMagic.utils.dataContainer.SetAndValue;
 
 import java.util.Arrays;
@@ -14,7 +14,7 @@ public class MAIN1 {
         // 定义三份数据，有不同的数据特征
         SetAndValue<String> stringSetAndValue1 = new SetAndValue<>("兔子", "会动", "有毛");
         SetAndValue<String> stringSetAndValue2 = new SetAndValue<>("仓鼠", "会动", "有毛");
-        SetAndValue<String> stringSetAndValue3 = new SetAndValue<>("赵", "会动", "有毛", "会玩手机");
+        SetAndValue<String> stringSetAndValue3 = new SetAndValue<>("Tom", "会动", "有毛", "会玩手机");
         // 定义三个类别
         HashMap<String, HashSet<String>> hashMap = new HashMap<>();
         hashMap.put("人类", new HashSet<>(Arrays.asList("会动", "有毛", "会玩手机")));

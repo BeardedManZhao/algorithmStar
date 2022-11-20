@@ -1,4 +1,4 @@
-package zhao.algorithmMagic.integrator.launcher;
+package zhao.algorithmMagic.lntegrator.launcher;
 
 import zhao.algorithmMagic.utils.dataContainer.SetAndValue;
 
@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @param <VALUE> 数据本身是什么类型的数据
  */
-public interface HashClassificationLauncher<VALUE> extends Launcher<HashClassificationLauncher<VALUE>> {
+public interface HashClassificationLauncher<VALUE> extends zhao.algorithmMagic.lntegrator.launcher.Launcher<HashClassificationLauncher<VALUE>> {
 
     /**
      * 将标签与类别提供给分类集成器，在这里您应该返回一个 key为类别名称  value 为类别包含特征的集合

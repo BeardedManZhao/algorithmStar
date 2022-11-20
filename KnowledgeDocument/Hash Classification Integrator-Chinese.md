@@ -27,8 +27,8 @@
 ```java
 package zhao.algorithmMagic;
 
-import zhao.algorithmMagic.integrator.HashClassificationIntegrator;
-import zhao.algorithmMagic.integrator.launcher.HashClassificationLauncher;
+import zhao.algorithmMagic.lntegrator.HashClassificationIntegrator;
+import zhao.algorithmMagic.lntegrator.launcher.HashClassificationLauncher;
 import zhao.algorithmMagic.utils.dataContainer.SetAndValue;
 
 import java.util.Arrays;
@@ -104,8 +104,8 @@ public class MAIN1 {
 ```java
 package zhao.algorithmMagic;
 
-import zhao.algorithmMagic.integrator.HashClassificationIntegrator;
-import zhao.algorithmMagic.integrator.launcher.HashClassificationLauncher;
+import zhao.algorithmMagic.lntegrator.HashClassificationIntegrator;
+import zhao.algorithmMagic.lntegrator.launcher.HashClassificationLauncher;
 import zhao.algorithmMagic.utils.dataContainer.SetAndValue;
 
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package zhao.algorithmMagic.integrator;
+package zhao.algorithmMagic.lntegrator;
 
 /**
  * 算法继承器,是针对每一个算法的实际应用模块,这里有着针对算法的调用逻辑封装,您不需要去自己实现算法的应用.

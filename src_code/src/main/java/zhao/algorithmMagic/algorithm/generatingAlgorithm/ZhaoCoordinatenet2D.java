@@ -1,12 +1,13 @@
 package zhao.algorithmMagic.algorithm.generatingAlgorithm;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
-import zhao.algorithmMagic.integrator.Route2DDrawingIntegrator;
-import zhao.algorithmMagic.integrator.launcher.Route2DDrawingLauncher;
-import zhao.algorithmMagic.integrator.launcher.Route2DDrawingLauncher2;
+import zhao.algorithmMagic.lntegrator.Route2DDrawingIntegrator;
+import zhao.algorithmMagic.lntegrator.launcher.Route2DDrawingLauncher;
+import zhao.algorithmMagic.lntegrator.launcher.Route2DDrawingLauncher2;
 import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
 import zhao.algorithmMagic.operands.coordinateNet.RouteNet;
 import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute2D;
@@ -32,7 +33,7 @@ import java.util.List;
  * <p>
  * It is recommended to use the Integer Consanguinity Route 2 D type, because when generating a connection, the important thing is not the value, but the relationship between the two, so the precision between the two does not need to be too high. In the end, considering the performance, an integer will be used. Carry out data saving!
  */
-public class ZhaoCoordinateNet2D implements GeneratingAlgorithm2D, Route2DDrawingLauncher2 {
+public class ZhaoCoordinatenet2D implements GeneratingAlgorithm2D, Route2DDrawingLauncher2 {
 
     protected final Logger logger;
     protected final String AlgorithmName;
@@ -41,13 +42,13 @@ public class ZhaoCoordinateNet2D implements GeneratingAlgorithm2D, Route2DDrawin
     private Color AddLineColor = new Color(0xfffff);
     private Color GenerateLineColor = new Color(0xD0A708);
 
-    protected ZhaoCoordinateNet2D() {
+    protected ZhaoCoordinatenet2D() {
         this.AlgorithmName = "ZhaoCoordinateNet2D";
-        this.logger = Logger.getLogger("ZhaoCoordinateNet2D");
+        this.logger = LoggerFactory.getLogger("ZhaoCoordinateNet2D");
     }
 
-    protected ZhaoCoordinateNet2D(String AlgorithmName) {
-        this.logger = Logger.getLogger(AlgorithmName);
+    protected ZhaoCoordinatenet2D(String AlgorithmName) {
+        this.logger = LoggerFactory.getLogger(AlgorithmName);
         this.AlgorithmName = AlgorithmName;
     }
 
@@ -62,17 +63,17 @@ public class ZhaoCoordinateNet2D implements GeneratingAlgorithm2D, Route2DDrawin
      *                                    <p>
      *                                    An exception will be thrown when the component corresponding to the algorithm name you passed in cannot be successfully extracted
      */
-    public static ZhaoCoordinateNet2D getInstance(String Name) {
+    public static ZhaoCoordinatenet2D getInstance(String Name) {
         if (OperationAlgorithmManager.containsAlgorithmName(Name)) {
             OperationAlgorithm operationAlgorithm = OperationAlgorithmManager.getInstance().get(Name);
-            if (operationAlgorithm instanceof ZhaoCoordinateNet2D) {
+            if (operationAlgorithm instanceof ZhaoCoordinatenet2D) {
                 return ASClass.transform(operationAlgorithm);
             } else {
                 throw new TargetNotRealizedException("您提取的[" + Name + "]算法被找到了，但是它不属于 ZhaoCoordinateNet2D 类型，请您为这个算法重新定义一个名称。\n" +
                         "The [" + Name + "] algorithm you ParameterCombination has been found, but it does not belong to the ZhaoCoordinateNet type. Please redefine a name for this algorithm.");
             }
         } else {
-            ZhaoCoordinateNet2D zhaoCoordinateNet = new ZhaoCoordinateNet2D(Name);
+            ZhaoCoordinatenet2D zhaoCoordinateNet = new ZhaoCoordinatenet2D(Name);
             OperationAlgorithmManager.getInstance().register(zhaoCoordinateNet);
             return zhaoCoordinateNet;
         }
@@ -92,7 +93,7 @@ public class ZhaoCoordinateNet2D implements GeneratingAlgorithm2D, Route2DDrawin
      *                     The color of the lines you added in the diagram
      * @return chain call
      */
-    public ZhaoCoordinateNet2D setAddLineColor(Color addLineColor) {
+    public ZhaoCoordinatenet2D setAddLineColor(Color addLineColor) {
         AddLineColor = addLineColor;
         return this;
     }
@@ -111,7 +112,7 @@ public class ZhaoCoordinateNet2D implements GeneratingAlgorithm2D, Route2DDrawin
      *                          The color of the lines you added in the diagram
      * @return chain call
      */
-    public ZhaoCoordinateNet2D setGenerateLineColor(Color generateLineColor) {
+    public ZhaoCoordinatenet2D setGenerateLineColor(Color generateLineColor) {
         GenerateLineColor = generateLineColor;
         return this;
     }

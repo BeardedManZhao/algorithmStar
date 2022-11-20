@@ -1,11 +1,11 @@
-package zhao.algorithmMagic.integrator.launcher;
+package zhao.algorithmMagic.lntegrator.launcher;
 
 /**
  * 递增学习启动器，您可以在其中配置您的数据基础模型，集成器会使用您的这个模型进行数据的训练。
  * <p>
  * Incremental learning initiator, where you can configure your data basic model, and the integrator will use your model for data training.
  */
-public interface IncrementalLearningLauncher extends Launcher<Launcher<?>> {
+public interface IncrementalLearningLauncher extends zhao.algorithmMagic.lntegrator.launcher.Launcher<zhao.algorithmMagic.lntegrator.launcher.Launcher<?>> {
 
     /**
      * 模型中的计算逻辑，您在这里需要对结果与其中的公式传入一个计算逻辑，这个逻辑也就是您的模型

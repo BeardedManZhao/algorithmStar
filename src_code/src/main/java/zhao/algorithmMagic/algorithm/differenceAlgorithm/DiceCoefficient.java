@@ -1,6 +1,7 @@
 package zhao.algorithmMagic.algorithm.differenceAlgorithm;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
@@ -26,11 +27,11 @@ public class DiceCoefficient<ElementType> implements DifferenceAlgorithm<Set<Ele
 
     protected DiceCoefficient() {
         this.AlgorithmName = "DiceCoefficient";
-        this.logger = Logger.getLogger("DiceCoefficient");
+        this.logger = LoggerFactory.getLogger("DiceCoefficient");
     }
 
     protected DiceCoefficient(String AlgorithmName) {
-        this.logger = Logger.getLogger(AlgorithmName);
+        this.logger = LoggerFactory.getLogger(AlgorithmName);
         this.AlgorithmName = AlgorithmName;
     }
 

@@ -1,4 +1,4 @@
-package zhao.algorithmMagic.integrator.launcher;
+package zhao.algorithmMagic.lntegrator.launcher;
 
 import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute2D;
 

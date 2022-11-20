@@ -1,6 +1,7 @@
 package zhao.algorithmMagic.algorithm.differenceAlgorithm;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.exception.OperatorOperationException;
@@ -22,12 +23,12 @@ public class HammingDistance implements DifferenceAlgorithm<String> {
 
     protected HammingDistance() {
         this.AlgorithmName = "HammingDistance";
-        this.logger = Logger.getLogger("HammingDistance");
+        this.logger = LoggerFactory.getLogger("HammingDistance");
     }
 
     protected HammingDistance(String algorithmName) {
         this.AlgorithmName = algorithmName;
-        this.logger = Logger.getLogger(algorithmName);
+        this.logger = LoggerFactory.getLogger(algorithmName);
     }
 
     /**

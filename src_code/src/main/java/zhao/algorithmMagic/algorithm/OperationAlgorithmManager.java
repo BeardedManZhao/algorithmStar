@@ -1,10 +1,12 @@
 package zhao.algorithmMagic.algorithm;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import zhao.algorithmMagic.exception.OperationAlgorithmManagementException;
 import zhao.algorithmMagic.exception.OperationAlgorithmNotFound;
 import zhao.algorithmMagic.utils.DependentAlgorithmNameLibrary;
 
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -22,8 +24,19 @@ public final class OperationAlgorithmManager implements OperationAlgorithm {
      * An archive collection of algorithm objects into which you can store algorithm objects
      */
     private final static HashMap<String, OperationAlgorithm> STRING_OPERATION_ALGORITHM_HASH_MAP = new HashMap<>();
-    private final static Logger logger = Logger.getLogger("OperationAlgorithmManager");
+    private final static Logger LOGGER = LoggerFactory.getLogger("OperationAlgorithmManager");
     private final static OperationAlgorithmManager OPERATION_ALGORITHM_MANAGER = new OperationAlgorithmManager();
+
+
+    static {
+        LOGGER.info("+============================== Welcome to [mathematical expression] ==============================+");
+        LOGGER.info("+ \tStart time " + new Date());
+        LOGGER.info("+ \tversion: 1.1");
+        LOGGER.info("+ \tCalculation component manager initialized successfully");
+        LOGGER.info("+ \tFor more information, see: https://github.com/BeardedManZhao/mathematical-expression.git");
+        LOGGER.info("+--------------------------------------------------------------------------------------------------+");
+    }
+
 
     private OperationAlgorithmManager() {
     }
@@ -62,7 +75,7 @@ public final class OperationAlgorithmManager implements OperationAlgorithm {
      *                           The algorithm object that needs to be registered
      */
     public void register(OperationAlgorithm operationAlgorithm) {
-        logger.info("register OperationAlgorithm:" + operationAlgorithm.getAlgorithmName());
+        LOGGER.info("register OperationAlgorithm:" + operationAlgorithm.getAlgorithmName());
         STRING_OPERATION_ALGORITHM_HASH_MAP.put(operationAlgorithm.getAlgorithmName(), operationAlgorithm);
     }
 
@@ -81,14 +94,14 @@ public final class OperationAlgorithmManager implements OperationAlgorithm {
     public boolean unRegister(String algorithmName) {
         if (DependentAlgorithmNameLibrary.isPrefabricated(algorithmName)) {
             String s = "您想要取消注册的算法属于其它算法的依赖，因此为了程序的安全不予执行！如果您一定要删除，请使用管理类的'Unloading(algorithmName)'";
-            logger.error(s, new OperationAlgorithmManagementException(s));
+            LOGGER.error(s, new OperationAlgorithmManagementException(s));
             return false;
         } else {
             if (Unloading(algorithmName)) {
-                logger.info("Cancelled the registration of an algorithm, name:" + algorithmName);
+                LOGGER.info("Cancelled the registration of an algorithm, name:" + algorithmName);
                 return true;
             } else {
-                logger.error("It seems that the algorithm you want to unregister has never been registered in the management class, and cannot be found in the management:" + algorithmName);
+                LOGGER.error("It seems that the algorithm you want to unregister has never been registered in the management class, and cannot be found in the management:" + algorithmName);
                 return false;
             }
         }
@@ -114,12 +127,12 @@ public final class OperationAlgorithmManager implements OperationAlgorithm {
     public OperationAlgorithm get(String algorithmName) {
         OperationAlgorithm operationAlgorithm = STRING_OPERATION_ALGORITHM_HASH_MAP.get(algorithmName);
         if (operationAlgorithm != null) {
-            logger.info("An operation algorithm was obtained:" + algorithmName);
+            LOGGER.info("An operation algorithm was obtained:" + algorithmName);
             return operationAlgorithm;
         } else {
             String s = "没有找到名为[" + algorithmName + "]的算法\tNo name was found[" + algorithmName + "]algorithm";
             OperationAlgorithmNotFound operationAlgorithmNotFound = new OperationAlgorithmNotFound(s);
-            logger.error(s, operationAlgorithmNotFound);
+            LOGGER.error(s, operationAlgorithmNotFound);
             throw operationAlgorithmNotFound;
         }
     }

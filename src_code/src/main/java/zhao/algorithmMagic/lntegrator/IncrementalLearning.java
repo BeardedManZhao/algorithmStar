@@ -1,11 +1,11 @@
-package zhao.algorithmMagic.integrator;
+package zhao.algorithmMagic.lntegrator;
 
 import org.apache.log4j.Logger;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
-import zhao.algorithmMagic.integrator.launcher.IncrementalLearningLauncher;
+import zhao.algorithmMagic.lntegrator.launcher.IncrementalLearningLauncher;
 import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateMany;
 import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateMany;
 import zhao.algorithmMagic.operands.vector.DoubleVector;
