@@ -15,9 +15,9 @@ import java.util.HashSet;
 import java.util.List;
 
 /**
- * 分类集合集成器 ，采用特征匹配的方式进行数据的分类运算，需要实现启动器”HashClassificationLauncher<VALUE>“，在启动器中您可以设置类别的特征集合 与 不同数据的特征集合。
+ * 分类集合集成器 ，采用特征匹配的方式进行数据的分类运算，需要实现启动器”HashClassificationLauncher“，在启动器中您可以设置类别的特征集合 与 不同数据的特征集合。
  * <p>
- * The classification set integrator uses feature matching to perform data classification operations. The initiator "HashClassificationLauncher<VALUE>" needs to be implemented. In the initiator, you can set the feature sets of categories and different data.
+ * The classification set integrator uses feature matching to perform data classification operations. The initiator "HashClassificationLauncher" needs to be implemented. In the initiator, you can set the feature sets of categories and different data.
  *
  * @param <VALUE> 您需要分类的数据每一个元素的数据类型。
  *                <p>

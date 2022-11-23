@@ -13,19 +13,11 @@
 您可以通过maven将算术之星（ASMB）集成到您的项目中，maven的配置如下所示。您可以将其添加到maven项目中，也可以从Releases下载并手动将其集成到项目中。
 
 ```
-    <repositories>
-        <repository>
-            <id>a</id>
-            <name>sonatype</name>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-        </repository>
-    </repositories>
-
     <dependencies>
         <dependency>
             <groupId>io.github.BeardedManZhao</groupId>
             <artifactId>algorithmStar</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>1.12</version>
         </dependency>
     </dependencies>
 ```

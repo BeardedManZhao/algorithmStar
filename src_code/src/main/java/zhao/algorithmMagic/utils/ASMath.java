@@ -274,9 +274,7 @@ public final class ASMath {
      * @return d的二次方
      */
     public static int Power2(int d) {
-        int nd = (d < 0 ? -d : d);
-        int i = nd >> 1;
-        return d - (i << 1) == 0 ? nd << i : d * d;
+        return d * d;
     }
 
     /**

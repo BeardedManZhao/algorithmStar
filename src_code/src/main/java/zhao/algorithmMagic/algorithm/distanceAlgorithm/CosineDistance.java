@@ -188,7 +188,7 @@ public class CosineDistance<V extends Vector<?, ?>> implements DistanceAlgorithm
      *
      * @param ints1 数组序列1
      * @param ints2 数组序列2
-     * @return ...
+     * @return 整数计算的余弦距离精度不如浮点向量，如有精度需求，建议使用浮点向量哦！
      */
     @Override
     public double getTrueDistance(int[] ints1, int[] ints2) {

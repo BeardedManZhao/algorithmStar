@@ -31,9 +31,9 @@ public final class OperationAlgorithmManager implements OperationAlgorithm {
     static {
         LOGGER.info("+============================== Welcome to [mathematical expression] ==============================+");
         LOGGER.info("+ \tStart time " + new Date());
-        LOGGER.info("+ \tversion: 1.1");
+        LOGGER.info("+ \tversion: 1.12");
         LOGGER.info("+ \tCalculation component manager initialized successfully");
-        LOGGER.info("+ \tFor more information, see: https://github.com/BeardedManZhao/mathematical-expression.git");
+        LOGGER.info("+ \tFor more information, see: https://github.com/BeardedManZhao/algorithmStar.git");
         LOGGER.info("+--------------------------------------------------------------------------------------------------+");
     }
 

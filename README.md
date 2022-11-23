@@ -16,19 +16,11 @@ You can integrate Arithmetic Star into your project through maven, and the confi
 can add it to your maven project, or you can download it from Releases and manually integrate it into your project.
 
 ```
-    <repositories>
-        <repository>
-            <id>a</id>
-            <name>sonatype</name>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-        </repository>
-    </repositories>
-
     <dependencies>
         <dependency>
             <groupId>io.github.BeardedManZhao</groupId>
             <artifactId>algorithmStar</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>1.12</version>
         </dependency>
     </dependencies>
 ```

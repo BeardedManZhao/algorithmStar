@@ -240,11 +240,11 @@ public class DoubleVector extends Vector<DoubleVector, Double> {
         double res = 0;
         if (isUsePrimitiveType()) {
             for (double value : VectorArrayPrimitive) {
-                res += ASMath.Power2(value);
+                res += value * value;
             }
         } else {
             for (double value : super.getVectorArrayPacking()) {
-                res += ASMath.Power2(value);
+                res += value * value;
             }
         }
         return Math.sqrt(res);
