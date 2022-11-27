@@ -164,9 +164,9 @@ public class CosineDistance<V extends Vector<?, ?>> implements DistanceAlgorithm
     }
 
     /**
-     * 获取两个序列之间的距离
+     * 获取两个序列之间的向量夹角余弦距离
      * <p>
-     * Get the Canberra distance between two sequences (note that there is no length check function here, if you need to use this method, please configure the array length check outside)
+     * Obtain the cosine distance of the vector angle between two sequences
      *
      * @param doubles1 数组序列1
      * @param doubles2 数组序列2
@@ -182,9 +182,9 @@ public class CosineDistance<V extends Vector<?, ?>> implements DistanceAlgorithm
     }
 
     /**
-     * 获取两个序列之间的距离
+     * 获取两个序列之间的向量夹角余弦距离
      * <p>
-     * Get the Canberra distance between two sequences (note that there is no length check function here, if you need to use this method, please configure the array length check outside)
+     * Obtain the cosine distance of the vector angle between two sequences
      *
      * @param ints1 数组序列1
      * @param ints2 数组序列2

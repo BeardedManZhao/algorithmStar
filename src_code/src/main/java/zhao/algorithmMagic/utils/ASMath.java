@@ -495,28 +495,37 @@ public final class ASMath {
      * @return 排序之后的数组，注意这里的数组就是传入的数组
      */
     public static double[] sort(boolean des, double... doubles) {
-        if (des) {
-            for (int i = 0; i < doubles.length; i++) {
-                for (int i1 = 0; i1 < doubles.length - i - 1; i1++) {
-                    if (doubles[i1] > doubles[i1 + 1]) {
-                        double temp = doubles[i1 + 1];
-                        doubles[i1 + 1] = doubles[i1];
-                        doubles[i1] = temp;
-                    }
+        return qSort(des, doubles, 0, doubles.length - 1);
+    }
+
+
+    public static double[] qSort(boolean des, double[] arr, int s, int e) {
+        int l = s, r = e;
+        if (l < r) {
+            double temp = arr[l];
+            if (des) {
+                while (l < r) {
+                    while (l < r && arr[r] >= temp) r--;
+                    if (l < r) arr[l] = arr[r];
+                    while (l < r && arr[l] < temp) l++;
+                    if (l < r) arr[r] = arr[l];
                 }
-            }
-        } else {
-            for (int i = 0; i < doubles.length; i++) {
-                for (int i1 = 0; i1 < doubles.length - i - 1; i1++) {
-                    if (doubles[i1] < doubles[i1 + 1]) {
-                        double temp = doubles[i1 + 1];
-                        doubles[i1 + 1] = doubles[i1];
-                        doubles[i1] = temp;
-                    }
+                arr[l] = temp;
+                qSort(true, arr, s, l);
+                qSort(true, arr, l + 1, e);
+            } else {
+                while (l < r) {
+                    while (l < r && arr[r] <= temp) r--;
+                    if (l < r) arr[l] = arr[r];
+                    while (l < r && arr[l] > temp) l++;
+                    if (l < r) arr[r] = arr[l];
                 }
+                arr[l] = temp;
+                qSort(false, arr, s, l);
+                qSort(false, arr, l + 1, e);
             }
         }
-        return doubles;
+        return arr;
     }
 
     /**
