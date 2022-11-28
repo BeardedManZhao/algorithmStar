@@ -68,6 +68,15 @@ class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mllib.lin
   }
 
   /**
+   * @return 不论是基元还是包装，都返回一个基元的浮点数组，该方法是万能的，始终都会返回出来一个真正的向量数组！
+   *         <p>
+   *         Both primitives and wrappers return a floating-point array of primitives. This method is omnipotent and will always return a true vector array!
+   */
+  override def toArray: Array[Double] = {
+    vector.toArray
+  }
+
+  /**
    * @return 该类的实现类对象，用于拓展该接口的子类
    */
   override def expand(): SparkVector = this
@@ -102,15 +111,6 @@ class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mllib.lin
       SparkVector.parse(sparkContext, res)
     }
     else throw new OperatorOperationException("'DoubleVector1 add DoubleVector2' 时，两个'DoubleVector'的向量所包含的数量不同，DoubleVector1=[" + numberOfDimensions1 + "]，DoubleVector2=[" + numberOfDimensions2 + "]\n" + "When 'DoubleVector1 add DoubleVector2', the two vectors of 'DoubleVector' contain different quantities, DoubleVector1=[" + numberOfDimensions1 + "], DoubleVector2=[" + numberOfDimensions2 + "]")
-  }
-
-  /**
-   * @return 不论是基元还是包装，都返回一个基元的浮点数组，该方法是万能的，始终都会返回出来一个真正的向量数组！
-   *         <p>
-   *         Both primitives and wrappers return a floating-point array of primitives. This method is omnipotent and will always return a true vector array!
-   */
-  override def toArray: Array[Double] = {
-    vector.toArray
   }
 
   /**

@@ -198,6 +198,23 @@ public final class ASStr {
         }
     }
 
+    /**
+     * 将一个数组直接反转
+     *
+     * @param doubles 需要被反转的数组
+     * @return 反转之后的数组的结果
+     */
+    public static double[] ArrayReverse(double... doubles) {
+        int back = doubles.length - 1;
+        int length = doubles.length >> 1;
+        for (int i = 0; i < length; ++i) {
+            double aDouble2 = doubles[back];
+            doubles[back--] = doubles[i];
+            doubles[i] = aDouble2;
+        }
+        return doubles;
+    }
+
     public static final class DataPackage {
         final char aCharFromString;
         final String string;

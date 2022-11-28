@@ -2,6 +2,7 @@ package zhao.algorithmMagic.utils;
 
 import zhao.algorithmMagic.operands.ComplexNumber;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -495,37 +496,11 @@ public final class ASMath {
      * @return 排序之后的数组，注意这里的数组就是传入的数组
      */
     public static double[] sort(boolean des, double... doubles) {
-        return qSort(des, doubles, 0, doubles.length - 1);
-    }
-
-
-    public static double[] qSort(boolean des, double[] arr, int s, int e) {
-        int l = s, r = e;
-        if (l < r) {
-            double temp = arr[l];
-            if (des) {
-                while (l < r) {
-                    while (l < r && arr[r] >= temp) r--;
-                    if (l < r) arr[l] = arr[r];
-                    while (l < r && arr[l] < temp) l++;
-                    if (l < r) arr[r] = arr[l];
-                }
-                arr[l] = temp;
-                qSort(true, arr, s, l);
-                qSort(true, arr, l + 1, e);
-            } else {
-                while (l < r) {
-                    while (l < r && arr[r] <= temp) r--;
-                    if (l < r) arr[l] = arr[r];
-                    while (l < r && arr[l] > temp) l++;
-                    if (l < r) arr[r] = arr[l];
-                }
-                arr[l] = temp;
-                qSort(false, arr, s, l);
-                qSort(false, arr, l + 1, e);
-            }
+        Arrays.sort(doubles);
+        if (!des) {
+            ASStr.ArrayReverse(doubles);
         }
-        return arr;
+        return doubles;
     }
 
     /**
@@ -536,7 +511,8 @@ public final class ASMath {
      * @return 两个字符串的并集
      */
     public static String Union(String value1, String value2) {
-        final StringBuilder stringBuilder = new StringBuilder(value1);
+        final StringBuilder stringBuilder = new StringBuilder(value1.length() + value2.length() + 16);
+        stringBuilder.append(value1);
         for (char c : value2.toCharArray()) {
             if (!ASStr.contains(value1, c)) {
                 stringBuilder.append(c);
@@ -607,5 +583,19 @@ public final class ASMath {
             res = tenfold(res);
         }
         return res;
+    }
+
+    /**
+     * 将区间内的所有数值进行累加
+     *
+     * @param start 区间起始数值
+     * @param end   区间终止数值
+     * @return 区间内所有数值的累加结果
+     */
+    public int sumOfRange(int start, int end) {
+        if (start == end) {
+            return start;
+        }
+        return ((start + end) * ((end - start) + 1)) >> 1;
     }
 }
