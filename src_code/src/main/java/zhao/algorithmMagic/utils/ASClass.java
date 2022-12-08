@@ -221,8 +221,13 @@ public final class ASClass {
      */
     public static double[] IntArray_To_DoubleArray(int... ints) {
         double[] res = new double[ints.length];
-        for (int i = 0; i < res.length; i++) {
-            res[i] = ints[i];
+        int i = 0, j = res.length - 1;
+        while (i < j) {
+            res[i] = ints[i++];
+            res[j] = ints[j--];
+        }
+        if (ints.length - (ints.length >> 1 << 1) != 0) {
+            res[i] = ints[j];
         }
         return res;
     }
@@ -235,8 +240,13 @@ public final class ASClass {
      */
     public static int[] DoubleArray_To_IntArray(double... doubles) {
         int[] res = new int[doubles.length];
-        for (int i = 0; i < res.length; i++) {
-            res[i] = (int) doubles[i];
+        int i = 0, j = res.length - 1;
+        while (i < j) {
+            res[i] = (int) doubles[i++];
+            res[j] = (int) doubles[j--];
+        }
+        if (doubles.length - (doubles.length >> 1 << 1) != 0) {
+            res[i] = (int) doubles[j];
         }
         return res;
     }

@@ -138,7 +138,7 @@ public abstract class Matrix<ImplementationType, ElementType> extends Vector<Imp
         int rowPointer = this.RowPointer;
         PointerReset();
         while (MovePointerDown()) {
-            stringBuilder.append(Arrays.toString(toArray())).append("\n");
+            stringBuilder.append(Arrays.toString(this.toArray())).append("\n");
         }
         PointerReset(rowPointer);
         return "------------MatrixStart-----------\n" +

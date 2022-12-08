@@ -313,6 +313,22 @@ public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
     }
 
     /**
+     * @return 该对象的向量数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改
+     * <p>
+     * The vector array form of the object is copied, which does not generate any dependency, so it supports modification
+     */
+    @Override
+    public double[] CopyToNewArray() {
+        if (isUsePrimitiveType()) {
+            final double[] res = new double[this.getColCount()];
+            System.arraycopy(this.toArray(), 0, res, 0, res.length);
+            return res;
+        } else {
+            return this.toArray();
+        }
+    }
+
+    /**
      * @return 矩阵中包含的维度数量，这里是矩阵的行列之积
      * <p>
      * the number of dimensions contained in the vector

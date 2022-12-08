@@ -284,6 +284,16 @@ public class ComplexNumberMatrix extends Matrix<ComplexNumberMatrix, ComplexNumb
     }
 
     /**
+     * @return 该对象的向量数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改
+     * <p>
+     * The vector array form of the object is copied, which does not generate any dependency, so it supports modification
+     */
+    @Override
+    public double[] CopyToNewArray() {
+        return toArray();
+    }
+
+    /**
      * @return 返回矩阵种当前指针的复数数组
      */
     public ComplexNumber[] toComplexNumberArray() {

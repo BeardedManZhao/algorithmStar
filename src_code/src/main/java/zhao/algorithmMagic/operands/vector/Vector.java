@@ -115,8 +115,17 @@ public abstract class Vector<ImplementationType, ElementType> implements Operand
      * @return 不论是基元还是包装，都返回一个基元的浮点数组，该方法是万能的，始终都会返回出来一个真正的向量数组！
      * <p>
      * Both primitives and wrappers return a floating-point array of primitives. This method is omnipotent and will always return a true vector array!
+     * <p>
+     * 注意 该方法在大部分情况下返回的通常都是源数组，不允许更改，只能作为只读变量。
      */
     public abstract double[] toArray();
+
+    /**
+     * @return 该对象的向量数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改
+     * <p>
+     * The vector array form of the object is copied, which does not generate any dependency, so it supports modification
+     */
+    public abstract double[] CopyToNewArray();
 
     /**
      * @return 向量中包含的维度数量
