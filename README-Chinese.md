@@ -1,7 +1,7 @@
 # ![image](https://user-images.githubusercontent.com/113756063/194830221-abe24fcc-484b-4769-b3b7-ec6d8138f436.png) 算法之星-机器大脑
 
 - Switch to [English Document](https://github.com/BeardedManZhao/algorithmStar/blob/main/README.md)
-- knowledge base
+- 知识库
   <a href="https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/knowledge%20base-Chinese.md">
   <img src = "https://user-images.githubusercontent.com/113756063/194838003-7ad14dac-b38c-4b57-a942-ba58f00baaf7.png"/>
   </a>
@@ -12,7 +12,7 @@
 
 您可以通过maven将算术之星（ASMB）集成到您的项目中，maven的配置如下所示。您可以将其添加到maven项目中，也可以从Releases下载并手动将其集成到项目中。
 
-```
+```xml
     <dependencies>
         <dependency>
             <groupId>io.github.BeardedManZhao</groupId>
