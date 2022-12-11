@@ -18,10 +18,19 @@ import java.util.Arrays;
 public class ComplexNumberMatrix extends Matrix<ComplexNumberMatrix, ComplexNumber> {
 
     private final ComplexNumber[][] complexNumbers;
+    private final String matrixStr;
 
     protected ComplexNumberMatrix(ComplexNumber[][] complexNumbers) {
         super(complexNumbers.length, complexNumbers[0].length, false);
         this.complexNumbers = complexNumbers;
+        final StringBuilder stringBuilder = new StringBuilder();
+        int rowPointer = this.RowPointer;
+        PointerReset();
+        while (MovePointerDown()) {
+            stringBuilder.append(Arrays.toString(toComplexNumberArray())).append("\n");
+        }
+        PointerReset(rowPointer);
+        this.matrixStr = "------------ComplexNumberMatrixStart-----------\n" + stringBuilder + "------------ComplexNumberMatrixEnd------------\n";
     }
 
     public static ComplexNumberMatrix parse(ComplexNumber[]... complexNumbers) {
@@ -128,10 +137,10 @@ public class ComplexNumberMatrix extends Matrix<ComplexNumberMatrix, ComplexNumb
      */
     @Override
     public ComplexNumberMatrix diff(ComplexNumberMatrix value) {
-        int rowCount1 = this.getRowCount();
-        int rowCount2 = value.getRowCount();
-        int colCount1 = this.getColCount();
-        int colCount2 = value.getColCount();
+        final int rowCount1 = this.getRowCount();
+        final int rowCount2 = value.getRowCount();
+        final int colCount1 = this.getColCount();
+        final int colCount2 = value.getColCount();
         if (rowCount1 == rowCount2 && colCount1 == colCount2) {
             ComplexNumber[][] complexNumbers = new ComplexNumber[rowCount1][colCount1];
             int rowPointer = this.RowPointer;
@@ -316,16 +325,7 @@ public class ComplexNumberMatrix extends Matrix<ComplexNumberMatrix, ComplexNumb
 
     @Override
     public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        int rowPointer = this.RowPointer;
-        PointerReset();
-        while (MovePointerDown()) {
-            stringBuilder.append(Arrays.toString(toComplexNumberArray())).append("\n");
-        }
-        PointerReset(rowPointer);
-        return "------------ComplexNumberMatrixStart-----------\n" +
-                stringBuilder +
-                "------------ComplexNumberMatrixEnd------------\n";
+        return this.matrixStr;
     }
 
     /**

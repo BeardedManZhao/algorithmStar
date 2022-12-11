@@ -17,6 +17,7 @@ public class ComplexNumber implements Operands<ComplexNumber> {
 
     private final int real;
     private final int imaginary;
+    private final String expression;
 
     /**
      * 构建出来一个复数
@@ -27,6 +28,7 @@ public class ComplexNumber implements Operands<ComplexNumber> {
     public ComplexNumber(int real, int imaginary) {
         this.real = real;
         this.imaginary = imaginary;
+        this.expression = real + (imaginary >= 0 ? " + " + imaginary : " - " + -imaginary) + "i";
     }
 
     public static ComplexNumber parse(int real, int imaginary) {
@@ -145,6 +147,6 @@ public class ComplexNumber implements Operands<ComplexNumber> {
 
     @Override
     public String toString() {
-        return real + (imaginary >= 0 ? " + " + imaginary : " - " + -imaginary) + "i";
+        return this.expression;
     }
 }

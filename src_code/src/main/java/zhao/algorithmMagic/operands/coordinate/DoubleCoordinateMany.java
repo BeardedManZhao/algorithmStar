@@ -1,8 +1,7 @@
 package zhao.algorithmMagic.operands.coordinate;
 
 import zhao.algorithmMagic.exception.OperatorOperationException;
-
-import java.util.Arrays;
+import zhao.algorithmMagic.utils.ASClass;
 
 /**
  * Java类于 2022/10/10 12:51:29 创建
@@ -24,18 +23,13 @@ public final class DoubleCoordinateMany implements FloatingPointCoordinates<Doub
     }
 
     public DoubleCoordinateMany(int[] coordinate) {
-        this.coordinate = new double[coordinate.length];
-        for (int i = 0; i < coordinate.length; i++) {
-            this.coordinate[i] = coordinate[i];
-        }
+        this.coordinate = ASClass.IntArray_To_DoubleArray(coordinate);
     }
 
     public DoubleCoordinateMany(IntegerCoordinateMany integerCoordinateMany) {
         int[] ints = integerCoordinateMany.toArray();
         this.coordinate = new double[ints.length];
-        for (int i = 0; i < ints.length; i++) {
-            this.coordinate[i] = ints[i];
-        }
+        System.arraycopy(coordinate, 0, this.coordinate, 0, coordinate.length);
     }
 
     /**
@@ -117,6 +111,6 @@ public final class DoubleCoordinateMany implements FloatingPointCoordinates<Doub
 
     @Override
     public String toString() {
-        return "(DoubleCoordinateMany=" + Arrays.toString(coordinate) + ")";
+        return "(" + this.coordinate[0] + ",...," + this.coordinate[this.coordinate.length - 1] + ')';
     }
 }

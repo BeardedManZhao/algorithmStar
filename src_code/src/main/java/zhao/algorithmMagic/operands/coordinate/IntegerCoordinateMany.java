@@ -2,8 +2,6 @@ package zhao.algorithmMagic.operands.coordinate;
 
 import zhao.algorithmMagic.exception.OperatorOperationException;
 
-import java.util.Arrays;
-
 /**
  * Java类于 2022/10/10 12:51:29 创建
  * <p>
@@ -105,6 +103,6 @@ public final class IntegerCoordinateMany implements IntegerCoordinates<IntegerCo
 
     @Override
     public String toString() {
-        return "(IntegerCoordinateMany=" + Arrays.toString(coordinate) + ")";
+        return "(" + this.coordinate[0] + ",...," + this.coordinate[this.coordinate.length - 1] + ')';
     }
 }

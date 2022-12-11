@@ -3,10 +3,12 @@ package zhao.algorithmMagic.operands.vector
 import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
 import zhao.algorithmMagic.exception.OperatorOperationException
-import zhao.algorithmMagic.utils.{ASMath, ASStr}
+import zhao.algorithmMagic.utils.ASMath
 
 /**
  * Spark向量对象，通过该类可以将Spark的API接入到本框架中，能够很好的对接到分布式内存计算技术
+ *
+ * Spark vector object. Through this class, you can connect Spark's API to this framework, which can be well connected to the distributed memory computing technology
  *
  * @param sparkContext Spark上下文对象
  * @param vector       Spark的vector对象
@@ -171,7 +173,7 @@ object SparkVector {
     parse(sparkContext,
       sparkContext.textFile(textFilePath)
         .flatMap(data => data.split(splitRex))
-        .map(ASStr.stringToDouble)
+        .map(_.toDouble)
     )
   }
 

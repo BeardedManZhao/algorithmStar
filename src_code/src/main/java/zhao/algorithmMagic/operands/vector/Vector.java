@@ -2,6 +2,8 @@ package zhao.algorithmMagic.operands.vector;
 
 import zhao.algorithmMagic.operands.Operands;
 
+import java.util.Arrays;
+
 /**
  * 向量的抽象类，其中包含一个向量的数据容器，以及向量的基本运算函数，这个向量中数值的类型等待实现，具体请参阅API说明。
  * <p>
@@ -139,4 +141,8 @@ public abstract class Vector<ImplementationType, ElementType> implements Operand
         return super.clone();
     }
 
+    @Override
+    public String toString() {
+        return Arrays.toString(this.VectorArrayPacking);
+    }
 }

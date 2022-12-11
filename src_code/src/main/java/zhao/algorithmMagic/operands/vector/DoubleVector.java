@@ -22,6 +22,7 @@ public class DoubleVector extends Vector<DoubleVector, Double> {
 
     private final boolean UsePrimitiveType;
     private double[] VectorArrayPrimitive;
+    private String vectorStr;
 
     /**
      * 使用初始传参的方式构建出来一个向量
@@ -35,6 +36,7 @@ public class DoubleVector extends Vector<DoubleVector, Double> {
     public DoubleVector(Double[] vectorArray) {
         super(vectorArray);
         UsePrimitiveType = false;
+        this.vectorStr = Arrays.toString(vectorArray);
     }
 
     /**
@@ -49,6 +51,7 @@ public class DoubleVector extends Vector<DoubleVector, Double> {
     public DoubleVector(double[] vectorArray) {
         this.VectorArrayPrimitive = vectorArray;
         UsePrimitiveType = true;
+        this.vectorStr = Arrays.toString(vectorArray);
     }
 
     /**
@@ -146,6 +149,7 @@ public class DoubleVector extends Vector<DoubleVector, Double> {
         } else {
             super.setVectorArrayPacking(vectorArray);
         }
+        this.vectorStr = Arrays.toString(vectorArray);
     }
 
     /**
@@ -410,10 +414,6 @@ public class DoubleVector extends Vector<DoubleVector, Double> {
 
     @Override
     public String toString() {
-        return "DoubleVector{" +
-                "UsePrimitiveType=" + UsePrimitiveType +
-                (isUsePrimitiveType() ?
-                        ", Vector=" + Arrays.toString(VectorArrayPrimitive) + '}' :
-                        ", Vector=" + Arrays.toString(getVectorArrayPacking()) + '}');
+        return this.vectorStr;
     }
 }

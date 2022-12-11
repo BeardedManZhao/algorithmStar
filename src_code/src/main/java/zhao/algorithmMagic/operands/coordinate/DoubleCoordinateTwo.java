@@ -61,7 +61,7 @@ public final class DoubleCoordinateTwo implements FloatingPointCoordinates<Doubl
 
     @Override
     public String toString() {
-        return "(" + this.x + "," + this.y + ")";
+        return "(" + this.x + ',' + this.y + ')';
     }
 
     /**

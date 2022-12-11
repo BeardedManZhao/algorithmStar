@@ -34,7 +34,7 @@ public final class DoubleCoordinateThree implements FloatingPointCoordinates<Dou
 
     @Override
     public String toString() {
-        return "(" + this.x + "," + this.y + ")";
+        return "(" + this.x + ',' + this.y + ',' + this.z + ')';
     }
 
     /**

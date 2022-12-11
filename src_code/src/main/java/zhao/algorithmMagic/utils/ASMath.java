@@ -514,9 +514,7 @@ public final class ASMath {
         final StringBuilder stringBuilder = new StringBuilder(value1.length() + value2.length() + 16);
         stringBuilder.append(value1);
         for (char c : value2.toCharArray()) {
-            if (!ASStr.contains(value1, c)) {
-                stringBuilder.append(c);
-            }
+            if (!ASStr.contains(value1, c)) stringBuilder.append(c);
         }
         return stringBuilder.toString();
     }

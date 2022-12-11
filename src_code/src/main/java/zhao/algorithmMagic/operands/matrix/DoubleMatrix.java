@@ -16,6 +16,7 @@ public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
 
     private final double[][] VectorArrayPrimitive;
     private final Double[][] VectorArrayPacking;
+    private final String matrixStr;
 
     /**
      * 构造一个矩阵，指定其矩阵的行列数
@@ -28,12 +29,14 @@ public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
         super(doubles.length, doubles[0].length, true);
         this.VectorArrayPrimitive = doubles;
         this.VectorArrayPacking = new Double[0][0];
+        matrixStr = super.toString();
     }
 
     protected DoubleMatrix(Double[]... doubles) {
         super(doubles.length, doubles[0].length, false);
         this.VectorArrayPacking = doubles;
         this.VectorArrayPrimitive = new double[0][0];
+        matrixStr = super.toString();
     }
 
     /**
@@ -336,5 +339,10 @@ public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
     @Override
     public int getNumberOfDimensions() {
         return getRowCount() * getColCount();
+    }
+
+    @Override
+    public String toString() {
+        return this.matrixStr;
     }
 }

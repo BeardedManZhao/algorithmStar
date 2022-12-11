@@ -15,6 +15,7 @@ import java.util.Arrays;
 public class IntegerVector extends Vector<IntegerVector, Integer> {
     final boolean UsePrimitiveType;
     int[] VectorArrayPrimitive;
+    private String vectorStr;
 
     /**
      * 使用初始传参的方式构建出来一个向量
@@ -28,6 +29,7 @@ public class IntegerVector extends Vector<IntegerVector, Integer> {
     public IntegerVector(Integer[] vectorArray) {
         super(vectorArray);
         UsePrimitiveType = false;
+        this.vectorStr = Arrays.toString(vectorArray);
     }
 
     /**
@@ -42,6 +44,7 @@ public class IntegerVector extends Vector<IntegerVector, Integer> {
     public IntegerVector(int[] vectorArray) {
         this.VectorArrayPrimitive = vectorArray;
         UsePrimitiveType = true;
+        this.vectorStr = Arrays.toString(vectorArray);
     }
 
     /**
@@ -241,6 +244,28 @@ public class IntegerVector extends Vector<IntegerVector, Integer> {
     }
 
     /**
+     * 对向量数据进行基本的设置
+     * <p>
+     * Make basic settings for vector data
+     *
+     * @param vectorArray 向量数据容器的数组形式
+     *                    <p>
+     *                    Array form of vector data container
+     */
+    @Override
+    protected void setVectorArrayPacking(Integer[] vectorArray) {
+        if (isUsePrimitiveType()) {
+            this.VectorArrayPrimitive = new int[vectorArray.length];
+            for (int n = 0; n < VectorArrayPrimitive.length; n++) {
+                VectorArrayPrimitive[n] = vectorArray[n];
+            }
+        } else {
+            super.setVectorArrayPacking(vectorArray);
+        }
+        this.vectorStr = Arrays.toString(vectorArray);
+    }
+
+    /**
      * @return 该对象的向量数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改
      * <p>
      * The vector array form of the object is copied, which does not generate any dependency, so it supports modification
@@ -260,17 +285,12 @@ public class IntegerVector extends Vector<IntegerVector, Integer> {
         return isUsePrimitiveType() ? this.VectorArrayPrimitive.length : super.getVectorArrayPacking().length;
     }
 
+    public int[] getVectorArrayPrimitive() {
+        return VectorArrayPrimitive;
+    }
 
     @Override
     public String toString() {
-        return "IntegerVector{" +
-                "UsePrimitiveType=" + UsePrimitiveType +
-                (isUsePrimitiveType() ?
-                        ", Vector=" + Arrays.toString(VectorArrayPrimitive) + '}' :
-                        ", Vector=" + Arrays.toString(getVectorArrayPacking()) + '}');
-    }
-
-    public int[] getVectorArrayPrimitive() {
-        return VectorArrayPrimitive;
+        return this.vectorStr;
     }
 }
