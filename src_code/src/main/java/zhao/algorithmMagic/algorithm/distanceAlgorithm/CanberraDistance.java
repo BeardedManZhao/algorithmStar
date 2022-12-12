@@ -14,8 +14,6 @@ import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute2D;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASMath;
 
-;
-
 /**
  * Java类于 2022/10/14 12:47:02 创建
  * <p>

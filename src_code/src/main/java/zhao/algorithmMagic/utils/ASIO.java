@@ -15,7 +15,7 @@ import java.io.*;
  */
 public final class ASIO {
 
-    private final static Logger logger = Logger.getLogger("ASIO");
+    private final static Logger LOGGER = Logger.getLogger("ASIO");
 
     /**
      * 将一个图片输出到指定的路径
@@ -29,7 +29,7 @@ public final class ASIO {
             ImageIO.write(image, "JPEG", new File(outPath));
             return true;
         } catch (IOException e) {
-            logger.error(e);
+            LOGGER.error(e);
             return false;
         }
     }
@@ -60,19 +60,19 @@ public final class ASIO {
             bufferedOutputStream.write(d);
             return true;
         } catch (IOException e) {
-            logger.error(e);
+            LOGGER.error(e);
             return false;
         } finally {
             if (bufferedOutputStream != null) {
                 try {
                     bufferedOutputStream.flush();
                 } catch (IOException e) {
-                    logger.error(e);
+                    LOGGER.error(e);
                 }
                 try {
                     bufferedOutputStream.close();
                 } catch (IOException e) {
-                    logger.error(e);
+                    LOGGER.error(e);
                 }
             }
         }

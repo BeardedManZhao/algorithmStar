@@ -18,6 +18,7 @@ import java.util.HashMap;
  * @author LingYuZhao
  */
 public final class OperationAlgorithmManager implements OperationAlgorithm {
+    public final static float VERSION = 1.12f;
     /**
      * 算法对象存档集合，您可以将算法对象存储到该集合中
      * <p>
@@ -27,11 +28,10 @@ public final class OperationAlgorithmManager implements OperationAlgorithm {
     private final static Logger LOGGER = LoggerFactory.getLogger("OperationAlgorithmManager");
     private final static OperationAlgorithmManager OPERATION_ALGORITHM_MANAGER = new OperationAlgorithmManager();
 
-
     static {
         LOGGER.info("+============================== Welcome to [mathematical expression] ==============================+");
         LOGGER.info("+ \tStart time " + new Date());
-        LOGGER.info("+ \tversion: 1.12");
+        LOGGER.info("+ \tversion: " + VERSION);
         LOGGER.info("+ \tCalculation component manager initialized successfully");
         LOGGER.info("+ \tFor more information, see: https://github.com/BeardedManZhao/algorithmStar.git");
         LOGGER.info("+--------------------------------------------------------------------------------------------------+");

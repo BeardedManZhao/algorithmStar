@@ -7,9 +7,13 @@ import java.util.HashSet;
 import java.util.List;
 
 /**
- * 分类集成器的启动器 该启动器中需要提供给集成器的函数有 类别与特征集合 分类模式 被分类的数据集
+ * 分类集成器的启动器 该启动器中需要提供给集成器的函数有 类别与特征集合 分类模式 被分类的数据集，您需要对该启动器的方法以此实现，才能将该启动器提供给集成器去运行。
+ * <p>
+ * Classifies the initiator of the integrator. The functions that the initiator needs to provide to the integrator include the data sets classified by category and feature set classification mode. You need to implement this method for the initiator in order to provide the initiator to the integrator for operation.
  *
- * @param <VALUE> 数据本身是什么类型的数据
+ * @param <VALUE> 数据本身的数据类型，在该启动器中，最小的数据单位是一个数据容器，而数据容器中有一个泛型字段，字段存储的是真正被分类的数据，在这里的泛型标识就是容器中数据字段的数据类型
+ *                <p>
+ *                The data type of the data itself. In this initiator, the smallest data unit is a data container, and there is a generic field in the data container. The field stores the really classified data. The generic ID here is the data type of the data field in the container
  */
 public interface HashClassificationLauncher<VALUE> extends zhao.algorithmMagic.lntegrator.launcher.Launcher<HashClassificationLauncher<VALUE>> {
 

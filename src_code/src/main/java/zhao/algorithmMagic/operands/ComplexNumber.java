@@ -20,7 +20,9 @@ public class ComplexNumber implements Operands<ComplexNumber> {
     private final String expression;
 
     /**
-     * 构建出来一个复数
+     * 通过复数的实部数值与虚部数值，构建出来一个复数对象
+     * <p>
+     * A complex object is constructed by the real part value and imaginary part value of the complex number
      *
      * @param real      复数的实部
      * @param imaginary 复数的虚部
@@ -29,6 +31,21 @@ public class ComplexNumber implements Operands<ComplexNumber> {
         this.real = real;
         this.imaginary = imaginary;
         this.expression = real + (imaginary >= 0 ? " + " + imaginary : " - " + -imaginary) + "i";
+    }
+
+    /**
+     * 通过外界传递的复数的表达式构造出来一个负数对象
+     * <p>
+     * A negative number object is constructed from the complex number expression passed outside
+     *
+     * @param real       复数的实部
+     * @param imaginary  复数的虚部
+     * @param expression 复数的表达式
+     */
+    protected ComplexNumber(int real, int imaginary, String expression) {
+        this.real = real;
+        this.imaginary = imaginary;
+        this.expression = expression;
     }
 
     public static ComplexNumber parse(int real, int imaginary) {
@@ -55,7 +72,7 @@ public class ComplexNumber implements Operands<ComplexNumber> {
         // 运算符前后各有一位 && 运算符后包含一个”i“ && i是最后一位
         if (split.length == 2 && ASStr.count(bi, 'i') == 1 && bi.indexOf('i') == length - 1) {
             int bi1 = Integer.parseInt(bi.substring(0, length - 1).trim());
-            return parse(Integer.parseInt(a), s.contains("-") ? -bi1 : bi1);
+            return new ComplexNumber(Integer.parseInt(a), s.contains("-") ? -bi1 : bi1, s);
         } else {
             throw new OperatorOperationException("[" + s + "]似乎不是一个正确的复数形式哦！正确的复数形式应为：[a + bi] [a - bi]");
         }
@@ -140,6 +157,8 @@ public class ComplexNumber implements Operands<ComplexNumber> {
 
     /**
      * @return 该复数对象的共轭复数
+     * <p>
+     * The conjugate complex of the complex object
      */
     public ComplexNumber conjugate() {
         return new ComplexNumber(this.real, -this.imaginary);

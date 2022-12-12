@@ -52,15 +52,6 @@ class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mllib.lin
   }
 
   /**
-   * @return 不论是基元还是包装，都返回一个基元的浮点数组，该方法是万能的，始终都会返回出来一个真正的向量数组！
-   *         <p>
-   *         Both primitives and wrappers return a floating-point array of primitives. This method is omnipotent and will always return a true vector array!
-   */
-  override def toArray: Array[Double] = {
-    vector.toArray
-  }
-
-  /**
    * 计算两个向量的内积，也称之为数量积，具体实现请参阅api说明
    * <p>
    * Calculate the inner product of two vectors, also known as the quantity product, please refer to the api node for the specific implementation
@@ -82,6 +73,15 @@ class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mllib.lin
       innerProduct
     }
     else throw new OperatorOperationException("'DoubleVector1 innerProduct DoubleVector2' 时，两个'DoubleVector'的向量所包含的数量不同，DoubleVector1=[" + doubles1.length + "]，DoubleVector2=[" + doubles2.length + "]\n" + "When 'DoubleVector1 innerProduct DoubleVector2', the two vectors of 'DoubleVector' contain different quantities, DoubleVector1=[" + doubles1.length + "], DoubleVector2=[" + doubles2.length + "]")
+  }
+
+  /**
+   * @return 不论是基元还是包装，都返回一个基元的浮点数组，该方法是万能的，始终都会返回出来一个真正的向量数组！
+   *         <p>
+   *         Both primitives and wrappers return a floating-point array of primitives. This method is omnipotent and will always return a true vector array!
+   */
+  override def toArray: Array[Double] = {
+    vector.toArray
   }
 
   /**
