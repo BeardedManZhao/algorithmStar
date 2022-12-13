@@ -33,5 +33,4 @@ public interface Operands<ImplementationType> extends Cloneable {
      * There is no description for the super interface, please refer to the subclass documentation
      */
     ImplementationType diff(ImplementationType value);
-
 }

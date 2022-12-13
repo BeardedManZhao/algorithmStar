@@ -15,7 +15,6 @@ import zhao.algorithmMagic.utils.ASMath;
 public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
 
     private final double[][] VectorArrayPrimitive;
-    private final Double[][] VectorArrayPacking;
     private final String matrixStr;
 
     /**
@@ -26,16 +25,8 @@ public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
      * @param doubles 一个二维数组，double[0]代表行  double[0][0]代表列
      */
     protected DoubleMatrix(double[]... doubles) {
-        super(doubles.length, doubles[0].length, true);
+        super(doubles.length, doubles[0].length);
         this.VectorArrayPrimitive = doubles;
-        this.VectorArrayPacking = new Double[0][0];
-        matrixStr = super.toString();
-    }
-
-    protected DoubleMatrix(Double[]... doubles) {
-        super(doubles.length, doubles[0].length, false);
-        this.VectorArrayPacking = doubles;
-        this.VectorArrayPrimitive = new double[0][0];
         matrixStr = super.toString();
     }
 
@@ -54,20 +45,6 @@ public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
     }
 
     /**
-     * 构造一个矩阵，矩阵的列数量以矩阵的第一行为准！
-     * <p>
-     * Construct a matrix, the number of columns of the matrix is based on the first row of the matrix!
-     *
-     * @param doubles 用于构造矩阵的二维数组
-     *                <p>
-     *                2D array for constructing the matrix
-     * @return matrix object
-     */
-    public static DoubleMatrix parse(Double[]... doubles) {
-        return new DoubleMatrix(doubles);
-    }
-
-    /**
      * 获取到矩阵中指定坐标点的数值
      *
      * @param row 行编号 从0开始
@@ -75,7 +52,7 @@ public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
      * @return 矩阵中的数值
      */
     public double get(int row, int col) {
-        return isUsePrimitiveType() ? VectorArrayPrimitive[row][col] : VectorArrayPacking[row][col];
+        return VectorArrayPrimitive[row][col];
     }
 
     /**
@@ -263,6 +240,8 @@ public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
         int colCount2 = matrix.getColCount();
         if (rowCount1 == rowCount2) {
             double res = 0;
+            int rowPointer1 = this.RowPointer;
+            int rowPointer2 = matrix.RowPointer;
             while (this.MovePointerDown() && matrix.MovePointerDown()) {
                 double[] doubles1 = this.toArray();
                 double[] doubles2 = matrix.toArray();
@@ -270,6 +249,8 @@ public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
                     res += doubles1[i] * doubles2[i];
                 }
             }
+            this.RowPointer = rowPointer1;
+            matrix.RowPointer = rowPointer2;
             return res;
         } else {
             throw new OperatorOperationException("您在'DoubleMatrix1 innerProduct DoubleMatrix2'的时候发生了错误，原因是两个矩阵的行列数不一致！\n" +
@@ -287,32 +268,13 @@ public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
     }
 
     /**
-     * @return 是否使用基元类型，基元类型能更好地降低内存占用，如果您不使用基元，将会启动父类的数据容器
-     * <p>
-     * Whether to use primitive types, primitive types can better reduce memory usage, if you do not use primitives, the data container of the parent class will be started
-     */
-    @Override
-    public boolean isUsePrimitiveType() {
-        return super.UsePrimitiveType;
-    }
-
-    /**
      * @return 不论是基元还是包装，都返回一个基元的浮点数组，该方法是万能的，始终都会返回出来一个真正的矩阵数组！
      * <p>
      * Both primitives and wrappers return a floating-point array of primitives. This method is omnipotent and will always return a true vector array!
      */
     @Override
     public double[] toArray() {
-        if (isUsePrimitiveType()) {
-            return this.VectorArrayPrimitive[super.RowPointer];
-        } else {
-            Double[] doubles1 = this.VectorArrayPacking[super.RowPointer];
-            double[] doubles = new double[doubles1.length];
-            for (int i = 0; i < doubles1.length; i++) {
-                doubles[i] = doubles1[i];
-            }
-            return doubles;
-        }
+        return this.VectorArrayPrimitive[super.RowPointer];
     }
 
     /**
@@ -322,13 +284,9 @@ public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
      */
     @Override
     public double[] CopyToNewArray() {
-        if (isUsePrimitiveType()) {
-            final double[] res = new double[this.getColCount()];
-            System.arraycopy(this.toArray(), 0, res, 0, res.length);
-            return res;
-        } else {
-            return this.toArray();
-        }
+        final double[] res = new double[this.getColCount()];
+        System.arraycopy(this.toArray(), 0, res, 0, res.length);
+        return res;
     }
 
     /**

@@ -2,8 +2,6 @@ package zhao.algorithmMagic.operands.vector;
 
 import zhao.algorithmMagic.operands.Operands;
 
-import java.util.Arrays;
-
 /**
  * 向量的抽象类，其中包含一个向量的数据容器，以及向量的基本运算函数，这个向量中数值的类型等待实现，具体请参阅API说明。
  * <p>
@@ -18,53 +16,11 @@ import java.util.Arrays;
 public abstract class Vector<ImplementationType, ElementType> implements Operands<ImplementationType> {
 
     /**
-     * 向量数据容器，其中就是向量的数据，子类应对该类进行操作。
-     * <p>
-     * Vector data container, which is the data of the vector, and subclasses should operate on this class.
-     */
-    private ElementType[] VectorArrayPacking;
-
-    /**
-     * 使用初始传参的方式构建出来一个向量
-     * <p>
-     * Construct a vector using the initial parameter pass method.
-     *
-     * @param vectorArrayPacking 向量中的数值序列集合
-     *                           <p>
-     *                           collection of numeric sequences in a vector
-     */
-    public Vector(ElementType[] vectorArrayPacking) {
-        VectorArrayPacking = vectorArrayPacking;
-    }
-
-    /**
      * 构造一个空向量，注意，如果您使用了此方法，那么您要在子类中调用"setVectorArrayPacking"
      * <p>
      * Constructs an empty vector, note that if you use this method then you call "set Vector Array" in your subclass
      */
     protected Vector() {
-    }
-
-    /**
-     * @return 向量数据容器的数组形式，调用此方法，您将可以获取到该向量中的数值
-     * <p>
-     * The array form of the vector data container, call this method, you will get the value in the vector
-     */
-    public ElementType[] getVectorArrayPacking() {
-        return VectorArrayPacking;
-    }
-
-    /**
-     * 对向量数据进行基本的设置
-     * <p>
-     * Make basic settings for vector data
-     *
-     * @param vectorArray 向量数据容器的数组形式
-     *                    <p>
-     *                    Array form of vector data container
-     */
-    protected void setVectorArrayPacking(ElementType[] vectorArray) {
-        this.VectorArrayPacking = vectorArray;
     }
 
     /**
@@ -107,13 +63,6 @@ public abstract class Vector<ImplementationType, ElementType> implements Operand
     public abstract ImplementationType expand();
 
     /**
-     * @return 是否使用基元类型，基元类型能更好地降低内存占用，如果您不使用基元，将会启动父类的数据容器
-     * <p>
-     * Whether to use primitive types, primitive types can better reduce memory usage, if you do not use primitives, the data container of the parent class will be started
-     */
-    public abstract boolean isUsePrimitiveType();
-
-    /**
      * @return 不论是基元还是包装，都返回一个基元的浮点数组，该方法是万能的，始终都会返回出来一个真正的向量数组！
      * <p>
      * Both primitives and wrappers return a floating-point array of primitives. This method is omnipotent and will always return a true vector array!
@@ -143,6 +92,6 @@ public abstract class Vector<ImplementationType, ElementType> implements Operand
 
     @Override
     public String toString() {
-        return Arrays.toString(this.VectorArrayPacking);
+        return "This is a vector";
     }
 }

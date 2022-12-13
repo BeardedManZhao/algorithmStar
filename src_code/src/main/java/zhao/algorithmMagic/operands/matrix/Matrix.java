@@ -1,6 +1,7 @@
 package zhao.algorithmMagic.operands.matrix;
 
-import zhao.algorithmMagic.operands.vector.Vector;
+import zhao.algorithmMagic.exception.OperatorOperationException;
+import zhao.algorithmMagic.operands.vector.ASVector;
 
 import java.util.Arrays;
 
@@ -16,12 +17,12 @@ import java.util.Arrays;
  * <p>
  * This class is abstract and contains the most basic definitions and type controls.
  */
-public abstract class Matrix<ImplementationType, ElementType> extends Vector<ImplementationType, ElementType> {
+public abstract class Matrix<ImplementationType extends Matrix<?, ?>, ElementType> extends ASVector<ImplementationType, ElementType> {
 
-    protected final boolean UsePrimitiveType;
     private final int rowCount;
     private final int colCount;
     private final int MaximumRowPointerCount;
+    protected boolean Unlock = true;
     protected int RowPointer = 0b11111111111111111111111111111111;
 
     /**
@@ -29,18 +30,16 @@ public abstract class Matrix<ImplementationType, ElementType> extends Vector<Imp
      * <p>
      * Constructs an empty matrix, specifying the number of rows and columns of its matrix
      *
-     * @param rowCount         矩阵中的行数量
-     *                         <p>
-     *                         the number of rows in the matrix
-     * @param colCount         矩阵中的列数量
-     *                         <p>
-     * @param usePrimitiveType 矩阵中是否使用了基元类型
+     * @param rowCount 矩阵中的行数量
+     *                 <p>
+     *                 the number of rows in the matrix
+     * @param colCount 矩阵中的列数量
+     *                 <p>
      */
-    protected Matrix(int rowCount, int colCount, boolean usePrimitiveType) {
+    protected Matrix(int rowCount, int colCount) {
         this.rowCount = rowCount;
         this.colCount = colCount;
         this.MaximumRowPointerCount = rowCount - 0b10;
-        UsePrimitiveType = usePrimitiveType;
     }
 
     /**
@@ -146,4 +145,117 @@ public abstract class Matrix<ImplementationType, ElementType> extends Vector<Imp
                 "------------MatrixEnd------------\n";
     }
 
+    /**
+     * @param value 与当前向量一起进行计算的另一个向量对象。
+     *              <p>
+     *              Another vector object that is evaluated with the current vector.
+     * @param lock  如果设置为true 代表在计算的时候进行锁机制的判断，可以有效避免行指针混乱。
+     *              <p>
+     *              If it is set to true, it means that the lock mechanism is judged during calculation, which can effectively avoid confusion of row pointers.
+     * @return 两个矩阵按坐标求和之后的新矩阵。
+     */
+    @Override
+    public ImplementationType add(ImplementationType value, boolean lock) {
+        if (lock) {
+            if (this.Unlock && value.Unlock) {
+                this.Unlock = false;
+                value.Unlock = false;
+                ImplementationType res = this.add(value);
+                this.Unlock = true;
+                value.Unlock = true;
+                return res;
+            } else {
+                throw new OperatorOperationException("您不能将一个正在进行计算的矩阵提供给其它线程进行计算，因为矩阵计算依赖行指针，行指针是共用的。\n" +
+                        "You cannot provide a matrix being calculated to other threads for calculation, because matrix calculation depends on row pointers, which are shared.");
+            }
+        }
+        return this.add(value);
+    }
+
+    /**
+     * @param value 与当前向量一起进行计算的另一个向量对象。
+     *              <p>
+     *              Another vector object that is evaluated with the current vector.
+     * @param lock  如果设置为true 代表在计算的时候进行锁机制的判断，可以有效避免行指针混乱。
+     *              <p>
+     *              If it is set to true, it means that the lock mechanism is judged during calculation, which can effectively avoid confusion of row pointers.
+     * @return 两个矩阵按坐标求差之后的新矩阵。
+     */
+    @Override
+    public ImplementationType diff(ImplementationType value, boolean lock) {
+        if (lock) {
+            if (this.Unlock && value.Unlock) {
+                this.Unlock = false;
+                value.Unlock = false;
+                ImplementationType res = this.diff(value);
+                this.Unlock = true;
+                value.Unlock = true;
+                return res;
+            } else {
+                throw new OperatorOperationException("您不能将一个正在进行计算的矩阵提供给其它线程进行计算，因为矩阵计算依赖行指针，行指针是共用的。\n" +
+                        "You cannot provide a matrix being calculated to other threads for calculation, because matrix calculation depends on row pointers, which are shared.");
+            }
+        }
+        return this.diff(value);
+    }
+
+    /**
+     * @param value 与当前向量一起进行计算的另一个向量对象。
+     *              <p>
+     *              Another vector object that is evaluated with the current vector.
+     * @param lock  如果设置为true 代表在计算的时候进行锁机制的判断，可以有效避免行指针混乱。
+     *              <p>
+     *              If it is set to true, it means that the lock mechanism is judged during calculation, which can effectively avoid confusion of row pointers.
+     * @return 两个矩阵按行进行外积计算之后的新矩阵。
+     */
+    @Override
+    public ImplementationType multiply(ImplementationType value, boolean lock) {
+        if (lock) {
+            if (this.Unlock && value.Unlock) {
+                this.Unlock = false;
+                value.Unlock = false;
+                ImplementationType res = this.multiply(value);
+                this.Unlock = true;
+                value.Unlock = true;
+                return res;
+            } else {
+                throw new OperatorOperationException("您不能将一个正在进行计算的矩阵提供给其它线程进行计算，因为矩阵计算依赖行指针，行指针是共用的。\n" +
+                        "You cannot provide a matrix being calculated to other threads for calculation, because matrix calculation depends on row pointers, which are shared.");
+            }
+        }
+        return this.multiply(value);
+    }
+
+    /**
+     * @param value 与当前向量一起进行计算的另一个向量对象。
+     *              <p>
+     *              Another vector object that is evaluated with the current vector.
+     * @param lock  如果设置为true 代表在计算的时候进行锁机制的判断，可以有效避免行指针混乱。
+     *              <p>
+     *              If it is set to true, it means that the lock mechanism is judged during calculation, which can effectively avoid confusion of row pointers.
+     * @return 两个矩阵按行进行计算之后的内积数值
+     */
+    public ElementType innerProduct(ImplementationType value, boolean lock) {
+        if (lock) {
+            if (this.Unlock && value.Unlock) {
+                this.Unlock = false;
+                value.Unlock = false;
+                ElementType res = this.innerProduct(value);
+                this.Unlock = true;
+                value.Unlock = true;
+                return res;
+            } else {
+                throw new OperatorOperationException("您不能将一个正在进行计算的矩阵提供给其它线程进行计算，因为矩阵计算依赖行指针，行指针是共用的。\n" +
+                        "You cannot provide a matrix being calculated to other threads for calculation, because matrix calculation depends on row pointers, which are shared.");
+            }
+        }
+        return this.innerProduct(value);
+    }
+
+    /**
+     * @return 当前矩阵对象是否被其他的线程所占用，如果返回false，就代表当前矩阵对象可以参与多线程的计算工作
+     */
+    public boolean isUnlock() {
+        return Unlock;
+    }
 }

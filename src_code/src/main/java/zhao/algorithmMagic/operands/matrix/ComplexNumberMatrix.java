@@ -21,7 +21,7 @@ public class ComplexNumberMatrix extends Matrix<ComplexNumberMatrix, ComplexNumb
     private final String matrixStr;
 
     protected ComplexNumberMatrix(ComplexNumber[][] complexNumbers) {
-        super(complexNumbers.length, complexNumbers[0].length, false);
+        super(complexNumbers.length, complexNumbers[0].length);
         this.complexNumbers = complexNumbers;
         final StringBuilder stringBuilder = new StringBuilder();
         int rowPointer = this.RowPointer;
@@ -254,20 +254,6 @@ public class ComplexNumberMatrix extends Matrix<ComplexNumberMatrix, ComplexNumb
     }
 
     /**
-     * @return 是否使用基元类型，基元类型能更好地降低内存占用，如果您不使用基元，将会启动父类的数据容器
-     * <p>
-     * Whether to use primitive types, primitive types can better reduce memory usage, if you do not use primitives, the data container of the parent class will be started
-     * <p>
-     * 本复数矩阵中，不存在基元类型！因此本发放返回为false
-     * <p>
-     * In this complex matrix, there is no primitive type! So this release returns false
-     */
-    @Override
-    public boolean isUsePrimitiveType() {
-        return false;
-    }
-
-    /**
      * @return 不论是基元还是包装，都返回一个基元的浮点数组，该方法是万能的，始终都会返回出来一个真正的数组！
      * <p>
      * Both primitives and wrappers return a floating-point array of primitives. This method is omnipotent and will always return a true vector array!
@@ -327,34 +313,6 @@ public class ComplexNumberMatrix extends Matrix<ComplexNumberMatrix, ComplexNumb
     public String toString() {
         return this.matrixStr;
     }
-
-    /**
-     * @return 向量数据容器的数组形式，调用此方法，您将可以获取到该向量中的数值
-     * <p>
-     * The array form of the vector data container, call this method, you will get the value in the vector
-     */
-    @Override
-    public ComplexNumber[] getVectorArrayPacking() {
-        return toComplexNumberArray();
-    }
-
-    /**
-     * 对向量数据进行基本的设置
-     * <p>
-     * Make basic settings for vector data
-     *
-     * @param vectorArray 向量数据容器的数组形式
-     *                    <p>
-     *                    Array form of vector data container
-     * @deprecated 在本复数矩阵中，有关复数信息的传递应在构造函数中进行
-     * <p>
-     * In this complex matrix, the passing of information about complex numbers should be done in the constructor
-     */
-    @Override
-    @Deprecated()
-    protected void setVectorArrayPacking(ComplexNumber[] vectorArray) {
-    }
-
 
     /**
      * 对复数矩阵进行共轭运算，矩阵中的每一个复数都将会被共轭。

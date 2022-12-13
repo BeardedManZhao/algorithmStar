@@ -76,25 +76,9 @@ class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mllib.lin
   }
 
   /**
-   * @return 不论是基元还是包装，都返回一个基元的浮点数组，该方法是万能的，始终都会返回出来一个真正的向量数组！
-   *         <p>
-   *         Both primitives and wrappers return a floating-point array of primitives. This method is omnipotent and will always return a true vector array!
-   */
-  override def toArray: Array[Double] = {
-    vector.toArray
-  }
-
-  /**
    * @return 该类的实现类对象，用于拓展该接口的子类
    */
   override def expand(): SparkVector = this
-
-  /**
-   * @return 是否使用基元类型，基元类型能更好地降低内存占用，如果您不使用基元，将会启动父类的数据容器
-   *         <p>
-   *         Whether to use primitive types, primitive types can better reduce memory usage, if you do not use primitives, the data container of the parent class will be started
-   */
-  override def isUsePrimitiveType: Boolean = false
 
   /**
    * 将两个操作数进行求和的方法，具体用法请参阅API说明。
@@ -158,6 +142,15 @@ class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mllib.lin
    *         The vector array form of the object is copied, which does not generate any dependency, so it supports modification
    */
   override def CopyToNewArray(): Array[Double] = toArray
+
+  /**
+   * @return 不论是基元还是包装，都返回一个基元的浮点数组，该方法是万能的，始终都会返回出来一个真正的向量数组！
+   *         <p>
+   *         Both primitives and wrappers return a floating-point array of primitives. This method is omnipotent and will always return a true vector array!
+   */
+  override def toArray: Array[Double] = {
+    vector.toArray
+  }
 }
 
 object SparkVector {

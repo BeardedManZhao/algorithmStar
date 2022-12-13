@@ -12,8 +12,7 @@ import java.util.Arrays;
  *
  * @author 4
  */
-public class IntegerVector extends Vector<IntegerVector, Integer> {
-    final boolean UsePrimitiveType;
+public class IntegerVector extends ASVector<IntegerVector, Integer> {
     int[] VectorArrayPrimitive;
     private String vectorStr;
 
@@ -26,24 +25,8 @@ public class IntegerVector extends Vector<IntegerVector, Integer> {
      *                    <p>
      *                    collection of numeric sequences in a vector
      */
-    public IntegerVector(Integer[] vectorArray) {
-        super(vectorArray);
-        UsePrimitiveType = false;
-        this.vectorStr = Arrays.toString(vectorArray);
-    }
-
-    /**
-     * 使用初始传参的方式构建出来一个向量
-     * <p>
-     * Construct a vector using the initial parameter pass method.
-     *
-     * @param vectorArray 向量中的数值序列集合
-     *                    <p>
-     *                    collection of numeric sequences in a vector
-     */
     public IntegerVector(int[] vectorArray) {
         this.VectorArrayPrimitive = vectorArray;
-        UsePrimitiveType = true;
         this.vectorStr = Arrays.toString(vectorArray);
     }
 
@@ -136,14 +119,8 @@ public class IntegerVector extends Vector<IntegerVector, Integer> {
     @Override
     public Integer moduleLength() {
         int res = 0;
-        if (isUsePrimitiveType()) {
-            for (int value : VectorArrayPrimitive) {
-                res += ASMath.Power2(value);
-            }
-        } else {
-            for (int value : super.getVectorArrayPacking()) {
-                res += ASMath.Power2(value);
-            }
+        for (int value : VectorArrayPrimitive) {
+            res += ASMath.Power2(value);
         }
         return (int) Math.sqrt(res);
     }
@@ -211,58 +188,13 @@ public class IntegerVector extends Vector<IntegerVector, Integer> {
     }
 
     /**
-     * @return 是否使用基元类型，基元类型能更好地降低内存占用，如果您不使用基元，将会启动父类的数据容器
-     * <p>
-     * Whether to use primitive types, primitive types can better reduce memory usage, if you do not use primitives, the data container of the parent class will be started
-     */
-    @Override
-    public boolean isUsePrimitiveType() {
-        return this.UsePrimitiveType;
-    }
-
-    /**
      * @return 不论是基元还是包装，都返回一个基元的浮点数组，该方法是万能的，始终都会返回出来一个真正的向量数组！
      * <p>
      * Both primitives and wrappers return a floating-point array of primitives. This method is omnipotent and will always return a true vector array!
      */
     @Override
     public double[] toArray() {
-        if (isUsePrimitiveType()) {
-            return ASClass.IntArray_To_DoubleArray(this.getVectorArrayPrimitive());
-        } else {
-            double[] doubles = new double[getNumberOfDimensions()];
-            Integer[] vectorArray = this.getVectorArrayPacking();
-            if (vectorArray != null) {
-                for (int n = 0; n < doubles.length; n++) {
-                    doubles[n] = vectorArray[n];
-                }
-                return doubles;
-            } else {
-                return new double[]{0x1.b7cdfd9d7bdbbp-34};
-            }
-        }
-    }
-
-    /**
-     * 对向量数据进行基本的设置
-     * <p>
-     * Make basic settings for vector data
-     *
-     * @param vectorArray 向量数据容器的数组形式
-     *                    <p>
-     *                    Array form of vector data container
-     */
-    @Override
-    protected void setVectorArrayPacking(Integer[] vectorArray) {
-        if (isUsePrimitiveType()) {
-            this.VectorArrayPrimitive = new int[vectorArray.length];
-            for (int n = 0; n < VectorArrayPrimitive.length; n++) {
-                VectorArrayPrimitive[n] = vectorArray[n];
-            }
-        } else {
-            super.setVectorArrayPacking(vectorArray);
-        }
-        this.vectorStr = Arrays.toString(vectorArray);
+        return ASClass.IntArray_To_DoubleArray(this.getVectorArrayPrimitive());
     }
 
     /**
@@ -282,7 +214,18 @@ public class IntegerVector extends Vector<IntegerVector, Integer> {
      */
     @Override
     public int getNumberOfDimensions() {
-        return isUsePrimitiveType() ? this.VectorArrayPrimitive.length : super.getVectorArrayPacking().length;
+        return this.VectorArrayPrimitive.length;
+    }
+
+    /**
+     * @param integerVector 将此向量中的数据复制到另一个相同类型的向量对象中
+     */
+    public void copyTo(IntegerVector integerVector) {
+        if (integerVector.VectorArrayPrimitive.length < this.VectorArrayPrimitive.length) {
+            integerVector.VectorArrayPrimitive = new int[this.VectorArrayPrimitive.length];
+        }
+        System.arraycopy(this.VectorArrayPrimitive, 0, integerVector.VectorArrayPrimitive, 0, this.VectorArrayPrimitive.length);
+        integerVector.vectorStr = this.vectorStr;
     }
 
     public int[] getVectorArrayPrimitive() {
@@ -292,5 +235,129 @@ public class IntegerVector extends Vector<IntegerVector, Integer> {
     @Override
     public String toString() {
         return this.vectorStr;
+    }
+
+    /**
+     * 在两个向量对象之间进行计算的函数，自从1.13版本开始支持该函数的调用，该函数中的计算并不会产生一个新的向量，而是将计算操作作用于原操作数中
+     * <p>
+     * The function that calculates between two vector objects supports the call of this function since version 1.13. The calculation in this function will not generate a new vector, but will apply the calculation operation to the original operand
+     *
+     * @param value        与当前向量一起进行计算的另一个向量对象。
+     *                     <p>
+     *                     Another vector object that is evaluated with the current vector.
+     * @param ModifyCaller 计算操作作用对象的设置，该参数如果为true，那么计算时针对向量序列的修改操作将会直接作用到调用函数的向量中，反之将会作用到被操作数中。
+     *                     <p>
+     *                     The setting of the calculation operation action object. If this parameter is true, the modification of the vector sequence during calculation will directly affect the vector of the calling function, and vice versa.
+     * @return 两个向量经过了按维度求和计算之后，被修改的向量对象
+     */
+    @Override
+    public IntegerVector add(IntegerVector value, boolean ModifyCaller) {
+        int[] doubles2 = value.VectorArrayPrimitive;
+        if (this.VectorArrayPrimitive.length == doubles2.length) {
+            StringBuilder stringBuilder = new StringBuilder(this.vectorStr.length() + 16);
+            if (ModifyCaller) {
+                for (int i = 0; i < this.VectorArrayPrimitive.length; i++) {
+                    this.VectorArrayPrimitive[i] += doubles2[i];
+                    stringBuilder.append(this.VectorArrayPrimitive[i]).append(',');
+                }
+                this.vectorStr = stringBuilder.toString();
+                return this;
+            } else {
+                for (int i = 0; i < doubles2.length; i++) {
+                    doubles2[i] += this.VectorArrayPrimitive[i];
+                    stringBuilder.append(doubles2[i]).append(',');
+                }
+                this.vectorStr = stringBuilder.toString();
+                return value;
+            }
+        } else {
+            int numberOfDimensions1 = this.VectorArrayPrimitive.length;
+            int numberOfDimensions2 = doubles2.length;
+            throw new OperatorOperationException(
+                    "'IntegerVector1 add IntegerVector2' 时，两个'IntegerVector'的向量所包含的数量不同，IntegerVector1=[" + numberOfDimensions1 + "]，IntegerVector2=[" + numberOfDimensions2 + "]\n" +
+                            "When 'IntegerVector1 add IntegerVector2', the two vectors of 'IntegerVector' contain different quantities, IntegerVector1=[" + numberOfDimensions1 + "], IntegerVector2=[" + numberOfDimensions2 + "]"
+            );
+        }
+    }
+
+    /**
+     * 在两个向量对象之间进行计算的函数，自从1.13版本开始支持该函数的调用，该函数中的计算并不会产生一个新的向量，而是将计算操作作用于原操作数中
+     * <p>
+     * The function that calculates between two vector objects supports the call of this function since version 1.13. The calculation in this function will not generate a new vector, but will apply the calculation operation to the original operand
+     *
+     * @param value        与当前向量一起进行计算的另一个向量对象。
+     *                     <p>
+     *                     Another vector object that is evaluated with the current vector.
+     * @param ModifyCaller 计算操作作用对象的设置，该参数如果为true，那么计算时针对向量序列的修改操作将会直接作用到调用函数的向量中，反之将会作用到被操作数中。
+     *                     <p>
+     *                     The setting of the calculation operation action object. If this parameter is true, the modification of the vector sequence during calculation will directly affect the vector of the calling function, and vice versa.
+     * @return 两个向量经过了按维度的减法计算之后，被修改的向量对象
+     */
+    @Override
+    public IntegerVector diff(IntegerVector value, boolean ModifyCaller) {
+        int[] doubles2 = value.VectorArrayPrimitive;
+        if (this.VectorArrayPrimitive.length == doubles2.length) {
+            StringBuilder stringBuilder = new StringBuilder(this.vectorStr.length() + 16);
+            if (ModifyCaller) {
+                for (int i = 0; i < this.VectorArrayPrimitive.length; i++) {
+                    this.VectorArrayPrimitive[i] -= doubles2[i];
+                    stringBuilder.append(this.VectorArrayPrimitive[i]).append(',');
+                }
+                this.vectorStr = stringBuilder.toString();
+                return this;
+            } else {
+                for (int i = 0; i < doubles2.length; i++) {
+                    doubles2[i] = this.VectorArrayPrimitive[i] - doubles2[i];
+                    stringBuilder.append(doubles2[i]).append(',');
+                }
+                this.vectorStr = stringBuilder.toString();
+                return value;
+            }
+        } else {
+            int numberOfDimensions1 = this.VectorArrayPrimitive.length;
+            int numberOfDimensions2 = doubles2.length;
+            throw new OperatorOperationException(
+                    "'IntegerVector1 diff IntegerVector2' 时，两个'IntegerVector'的向量所包含的数量不同，IntegerVector1=[" + numberOfDimensions1 + "]，IntegerVector2=[" + numberOfDimensions2 + "]\n" +
+                            "When 'IntegerVector1 diff IntegerVector2', the two vectors of 'IntegerVector' contain different quantities, IntegerVector1=[" + numberOfDimensions1 + "], IntegerVector2=[" + numberOfDimensions2 + "]"
+            );
+        }
+    }
+
+    /**
+     * 在两个向量对象之间进行计算的函数，自从1.13版本开始支持该函数的调用，该函数中的计算并不会产生一个新的向量，而是将计算操作作用于原操作数中
+     * <p>
+     * The function that calculates between two vector objects supports the call of this function since version 1.13. The calculation in this function will not generate a new vector, but will apply the calculation operation to the original operand
+     *
+     * @param value        与当前向量一起进行计算的另一个向量对象。
+     *                     <p>
+     *                     Another vector object that is evaluated with the current vector.
+     * @param ModifyCaller 计算操作作用对象的设置，该参数如果为true，那么计算时针对向量序列的修改操作将会直接作用到调用函数的向量中，反之将会作用到被操作数中。
+     *                     <p>
+     *                     The setting of the calculation operation action object. If this parameter is true, the modification of the vector sequence during calculation will directly affect the vector of the calling function, and vice versa.
+     * @return 两个向量经过了外积计算之后，被修改的向量对象
+     */
+    @Override
+    public IntegerVector multiply(IntegerVector value, boolean ModifyCaller) {
+        int[] ints2 = value.VectorArrayPrimitive;
+        if (this.VectorArrayPrimitive.length == ints2.length) {
+            int[] res = new int[ints2.length];
+            ASMath.CrossMultiplication(this.VectorArrayPrimitive.length, ints2.length, res, this.VectorArrayPrimitive, ints2);
+            if (ModifyCaller) {
+                this.VectorArrayPrimitive = res;
+                this.vectorStr = Arrays.toString(res);
+                return this;
+            } else {
+                value.VectorArrayPrimitive = res;
+                value.vectorStr = Arrays.toString(res);
+                return value;
+            }
+        } else {
+            int length1 = this.VectorArrayPrimitive.length;
+            int length2 = ints2.length;
+            throw new OperatorOperationException(
+                    "'IntegerVector1 multiply IntegerVector2' 时，两个'IntegerVector'的向量所包含的数量不同，IntegerVector1=[" + length1 + "]，IntegerVector2=[" + length2 + "]\n" +
+                            "When 'IntegerVector1 multiply IntegerVector2', the two vectors of 'IntegerVector' contain different quantities, IntegerVector1=[" + length1 + "], IntegerVector2=[" + length2 + "]"
+            );
+        }
     }
 }

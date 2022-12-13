@@ -420,7 +420,7 @@ public final class ASMath {
      * @param doubles1         操作数，数组1
      * @param doubles2         被操作数，数组2
      */
-    private static void CrossMultiplication(int colCount1, int colCount2, double[] ResultsContainer, double[] doubles1, double[] doubles2) {
+    public static void CrossMultiplication(int colCount1, int colCount2, double[] ResultsContainer, double[] doubles1, double[] doubles2) {
         int now = 0; // 结果数组的索引，用于依次添加叉乘结果
         // 迭代矩阵1该行的每一个元素
         for (int i = 0; i < colCount1; i++) {
@@ -429,6 +429,28 @@ public final class ASMath {
                 if (ii != i) {
                     ResultsContainer[now] = doubles1[i] * doubles2[ii];
                     now++;
+                }
+            }
+        }
+    }
+
+
+    /**
+     * 叉乘结果计算并拷贝到指定的数组中
+     *
+     * @param colCount1        操作数，数组1的长度
+     * @param colCount2        被操作数，数组2的长度
+     * @param ResultsContainer 叉乘结果的数据容器
+     * @param doubles1         操作数，数组1
+     * @param doubles2         被操作数，数组2
+     */
+    public static void CrossMultiplication(int colCount1, int colCount2, int[] ResultsContainer, int[] doubles1, int[] doubles2) {
+        int now = 0b11111111111111111111111111111111;
+        for (int i = 0; i < colCount1; i++) {
+            // 迭代矩阵2该行的每一个元素
+            for (int ii = 0; ii < colCount2; ii++) {
+                if (ii != i) {
+                    ResultsContainer[++now] = doubles1[i] * doubles2[ii];
                 }
             }
         }
@@ -546,41 +568,6 @@ public final class ASMath {
             }
         }
         return stringBuilder.toString();
-    }
-
-    /**
-     * 将一个数值的十倍计算出来
-     *
-     * @param number 需要被计算的数值
-     * @return 数值的十倍数值
-     */
-    public static int tenfold(int number) {
-        return ((number << 2) << 1) + (number << 1);
-    }
-
-    /**
-     * 将一个数值的 1/10 倍计算出来
-     *
-     * @param number 需要被计算的数值
-     * @return 数值的 1/10倍
-     */
-    public static int DividebyTen(int number) {
-        return (number >> 1) / 5;
-    }
-
-    /**
-     * 将一个数值 乘 10 的 n次方
-     *
-     * @param number 需要被乘方的数值
-     * @param n      次方数
-     * @return number * 10 ^ n
-     */
-    public static int PowerOfTen(int number, int n) {
-        int res = number;
-        for (int i = 1; i < n; i++) {
-            res = tenfold(res);
-        }
-        return res;
     }
 
     /**

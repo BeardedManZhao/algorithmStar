@@ -18,26 +18,9 @@ import java.util.Arrays;
  *
  * @author zhao
  */
-public class DoubleVector extends Vector<DoubleVector, Double> {
-
-    private final boolean UsePrimitiveType;
-    private double[] VectorArrayPrimitive;
+public class DoubleVector extends ASVector<DoubleVector, Double> {
     private String vectorStr;
-
-    /**
-     * 使用初始传参的方式构建出来一个向量
-     * <p>
-     * Construct a vector using the initial parameter pass method.
-     *
-     * @param vectorArray 向量中的数值序列集合
-     *                    <p>
-     *                    collection of numeric sequences in a vector
-     */
-    public DoubleVector(Double[] vectorArray) {
-        super(vectorArray);
-        UsePrimitiveType = false;
-        this.vectorStr = Arrays.toString(vectorArray);
-    }
+    private double[] VectorArrayPrimitive;
 
     /**
      * 使用初始传参的方式构建出来一个向量
@@ -50,7 +33,6 @@ public class DoubleVector extends Vector<DoubleVector, Double> {
      */
     public DoubleVector(double[] vectorArray) {
         this.VectorArrayPrimitive = vectorArray;
-        UsePrimitiveType = true;
         this.vectorStr = Arrays.toString(vectorArray);
     }
 
@@ -63,7 +45,7 @@ public class DoubleVector extends Vector<DoubleVector, Double> {
      * @return DoubleVector
      */
     public static DoubleVector parse(Double[] doubles) {
-        return new DoubleVector(doubles);
+        return new DoubleVector(Arrays.stream(doubles).mapToDouble(Double::doubleValue).toArray());
     }
 
     /**
@@ -111,62 +93,21 @@ public class DoubleVector extends Vector<DoubleVector, Double> {
         return DoubleVector.parse((endDoubleCoordinateMany.diff(startDoubleCoordinateMany.extend())).toArray());
     }
 
-
     /**
-     * @return 向量数据容器的数组形式，调用此方法，您可以获取到该向量中的数值。
-     * <p>
-     * 如果您使用的是基元类型的，那么该方法将会返回null，您可以使用"getVectorPrimitiveArray()"作为代替。
-     * <p>
-     * The array form of the vector data container, you can get the values in the vector by calling this method.
-     * <p>
-     * If you are using a primitive type then this method will return null, you can use "getVectorPrimitiveArray()" instead.
+     * @param vectorArrayPrimitive 设置本向量的基础向量数组
      */
-    @Override
-    public Double[] getVectorArrayPacking() {
-        if (isUsePrimitiveType()) {
-            return null;
-        } else {
-            return super.getVectorArrayPacking();
-        }
-    }
-
-    /**
-     * 对向量数据进行基本的设置
-     * <p>
-     * Make basic settings for vector data
-     *
-     * @param vectorArray 向量数据容器的数组形式
-     *                    <p>
-     *                    Array form of vector data container
-     */
-    @Override
-    protected void setVectorArrayPacking(Double[] vectorArray) {
-        if (isUsePrimitiveType()) {
-            this.VectorArrayPrimitive = new double[vectorArray.length];
-            for (int n = 0; n < VectorArrayPrimitive.length; n++) {
-                VectorArrayPrimitive[n] = vectorArray[n];
-            }
-        } else {
-            super.setVectorArrayPacking(vectorArray);
-        }
-        this.vectorStr = Arrays.toString(vectorArray);
+    public void setVectorArrayPrimitive(double[] vectorArrayPrimitive) {
+        VectorArrayPrimitive = vectorArrayPrimitive;
+        this.vectorStr = Arrays.toString(vectorArrayPrimitive);
     }
 
     /**
      * @return 向量数据容器的数组形式，调用此方法，您可以获取到该向量中的数值。
      * <p>
-     * 如果您使用的是包装类型的，那么该方法会返回null，您可以使用"getVectorArrayPacking()"作为代替。
-     * <p>
      * The array form of the vector data container, you can get the values in the vector by calling this method.
-     * <p>
-     * If you are using a wrapper type then this method will return null, you can use "get Vector Array()" instead.
      */
     public double[] getVectorPrimitiveArray() {
-        if (isUsePrimitiveType()) {
-            return this.VectorArrayPrimitive;
-        } else {
-            return null;
-        }
+        return this.VectorArrayPrimitive;
     }
 
     /**
@@ -242,14 +183,8 @@ public class DoubleVector extends Vector<DoubleVector, Double> {
     @Override
     public Double moduleLength() {
         double res = 0;
-        if (isUsePrimitiveType()) {
-            for (double value : VectorArrayPrimitive) {
-                res += value * value;
-            }
-        } else {
-            for (double value : super.getVectorArrayPacking()) {
-                res += value * value;
-            }
+        for (double value : VectorArrayPrimitive) {
+            res += value * value;
         }
         return Math.sqrt(res);
     }
@@ -335,37 +270,13 @@ public class DoubleVector extends Vector<DoubleVector, Double> {
     }
 
     /**
-     * @return 是否使用基元类型，基元类型能更好地降低内存占用，如果您不使用基元，将会启动父类的数据容器
-     * <p>
-     * Whether to use primitive types, primitive types can better reduce memory usage, if you do not use primitives, the data container of the parent class will be started
-     */
-    @Override
-    public boolean isUsePrimitiveType() {
-        return UsePrimitiveType;
-    }
-
-    /**
      * @return 不论是基元还是包装，都返回一个基元的浮点数组，该方法是万能的，始终都会返回出来一个真正的向量数组！
      * <p>
      * Both primitives and wrappers return a floating-point array of primitives. This method is omnipotent and will always return a true vector array!
      */
     @Override
     public double[] toArray() {
-        if (isUsePrimitiveType()) {
-            double[] vectorPrimitiveArray = this.getVectorPrimitiveArray();
-            return vectorPrimitiveArray != null ? vectorPrimitiveArray : new double[]{0x1.b7cdfd9d7bdbbp-34};
-        } else {
-            double[] doubles = new double[getNumberOfDimensions()];
-            Double[] vectorArray = this.getVectorArrayPacking();
-            if (vectorArray != null) {
-                for (int n = 0; n < doubles.length; n++) {
-                    doubles[n] = vectorArray[n];
-                }
-                return doubles;
-            } else {
-                return new double[]{0x1.b7cdfd9d7bdbbp-34};
-            }
-        }
+        return this.VectorArrayPrimitive;
     }
 
     /**
@@ -375,14 +286,10 @@ public class DoubleVector extends Vector<DoubleVector, Double> {
      */
     @Override
     public double[] CopyToNewArray() {
-        if (isUsePrimitiveType()) {
-            final double[] doubles = this.toArray();
-            final double[] res = new double[doubles.length];
-            System.arraycopy(doubles, 0, res, 0, res.length);
-            return res;
-        } else {
-            return this.toArray();
-        }
+        final double[] doubles = this.toArray();
+        final double[] res = new double[doubles.length];
+        System.arraycopy(doubles, 0, res, 0, res.length);
+        return res;
     }
 
     /**
@@ -392,7 +299,7 @@ public class DoubleVector extends Vector<DoubleVector, Double> {
      */
     @Override
     public int getNumberOfDimensions() {
-        return isUsePrimitiveType() ? this.VectorArrayPrimitive.length : super.getVectorArrayPacking().length;
+        return this.VectorArrayPrimitive.length;
     }
 
     /**
@@ -405,15 +312,142 @@ public class DoubleVector extends Vector<DoubleVector, Double> {
      *                     The target vector type to be converted into.
      */
     public void copyTo(DoubleVector doubleVector) {
-        if (this.isUsePrimitiveType()) {
-            doubleVector.VectorArrayPrimitive = this.VectorArrayPrimitive;
-        } else {
-            doubleVector.setVectorArrayPacking(this.getVectorArrayPacking());
+        if (doubleVector.VectorArrayPrimitive.length < this.VectorArrayPrimitive.length) {
+            doubleVector.VectorArrayPrimitive = new double[this.VectorArrayPrimitive.length];
         }
+        System.arraycopy(this.VectorArrayPrimitive, 0, doubleVector.VectorArrayPrimitive, 0, this.VectorArrayPrimitive.length);
+        doubleVector.vectorStr = this.vectorStr;
     }
 
     @Override
     public String toString() {
         return this.vectorStr;
+    }
+
+    /**
+     * 在两个向量对象之间进行计算的函数，自从1.13版本开始支持该函数的调用，该函数中的计算并不会产生一个新的向量，而是将计算操作作用于原操作数中
+     * <p>
+     * The function that calculates between two vector objects supports the call of this function since version 1.13. The calculation in this function will not generate a new vector, but will apply the calculation operation to the original operand
+     *
+     * @param value        与当前向量一起进行计算的另一个向量对象。
+     *                     <p>
+     *                     Another vector object that is evaluated with the current vector.
+     * @param ModifyCaller 计算操作作用对象的设置，该参数如果为true，那么计算时针对向量序列的修改操作将会直接作用到调用函数的向量中，反之将会作用到被操作数中。
+     *                     <p>
+     *                     The setting of the calculation operation action object. If this parameter is true, the modification of the vector sequence during calculation will directly affect the vector of the calling function, and vice versa.
+     * @return 两个向量经过了按维度求和计算之后，被修改的向量对象
+     */
+    @Override
+    public DoubleVector add(DoubleVector value, boolean ModifyCaller) {
+        double[] doubles1 = this.VectorArrayPrimitive;
+        double[] doubles2 = value.VectorArrayPrimitive;
+        if (doubles1.length == doubles2.length) {
+            StringBuilder stringBuilder = new StringBuilder(this.vectorStr.length() + 16);
+            if (ModifyCaller) {
+                for (int i = 0; i < doubles1.length; i++) {
+                    doubles1[i] += doubles2[i];
+                    stringBuilder.append(doubles1[i]).append(',');
+                }
+                this.vectorStr = stringBuilder.toString();
+                return this;
+            } else {
+                for (int i = 0; i < doubles2.length; i++) {
+                    doubles2[i] += doubles1[i];
+                    stringBuilder.append(doubles2[i]).append(',');
+                }
+                value.vectorStr = stringBuilder.toString();
+                return value;
+            }
+        } else {
+            int numberOfDimensions1 = doubles1.length;
+            int numberOfDimensions2 = doubles2.length;
+            throw new OperatorOperationException(
+                    "'DoubleVector1 add DoubleVector2' 时，两个'DoubleVector'的向量所包含的数量不同，DoubleVector1=[" + numberOfDimensions1 + "]，DoubleVector2=[" + numberOfDimensions2 + "]\n" +
+                            "When 'DoubleVector1 add DoubleVector2', the two vectors of 'DoubleVector' contain different quantities, DoubleVector1=[" + numberOfDimensions1 + "], DoubleVector2=[" + numberOfDimensions2 + "]"
+            );
+        }
+    }
+
+    /**
+     * 在两个向量对象之间进行计算的函数，自从1.13版本开始支持该函数的调用，该函数中的计算并不会产生一个新的向量，而是将计算操作作用于原操作数中
+     * <p>
+     * The function that calculates between two vector objects supports the call of this function since version 1.13. The calculation in this function will not generate a new vector, but will apply the calculation operation to the original operand
+     *
+     * @param value        与当前向量一起进行计算的另一个向量对象。
+     *                     <p>
+     *                     Another vector object that is evaluated with the current vector.
+     * @param ModifyCaller 计算操作作用对象的设置，该参数如果为true，那么计算时针对向量序列的修改操作将会直接作用到调用函数的向量中，反之将会作用到被操作数中。
+     *                     <p>
+     *                     The setting of the calculation operation action object. If this parameter is true, the modification of the vector sequence during calculation will directly affect the vector of the calling function, and vice versa.
+     * @return 两个向量经过了按维度的减法计算之后，被修改的向量对象
+     */
+    @Override
+    public DoubleVector diff(DoubleVector value, boolean ModifyCaller) {
+        double[] doubles1 = this.VectorArrayPrimitive;
+        double[] doubles2 = value.VectorArrayPrimitive;
+        if (doubles1.length == doubles2.length) {
+            StringBuilder stringBuilder = new StringBuilder(this.vectorStr.length() + 16);
+            if (ModifyCaller) {
+                for (int i = 0; i < doubles1.length; i++) {
+                    doubles1[i] -= doubles2[i];
+                    stringBuilder.append(doubles1[i]).append(',');
+                }
+                this.vectorStr = stringBuilder.toString();
+                return this;
+            } else {
+                for (int i = 0; i < doubles2.length; i++) {
+                    doubles2[i] = doubles1[i] - doubles2[i];
+                    stringBuilder.append(doubles2[i]).append(',');
+                }
+                this.vectorStr = stringBuilder.toString();
+                return value;
+            }
+        } else {
+            int numberOfDimensions1 = doubles1.length;
+            int numberOfDimensions2 = doubles2.length;
+            throw new OperatorOperationException(
+                    "'DoubleVector1 diff DoubleVector2' 时，两个'DoubleVector'的向量所包含的数量不同，DoubleVector1=[" + numberOfDimensions1 + "]，DoubleVector2=[" + numberOfDimensions2 + "]\n" +
+                            "When 'DoubleVector1 diff DoubleVector2', the two vectors of 'DoubleVector' contain different quantities, DoubleVector1=[" + numberOfDimensions1 + "], DoubleVector2=[" + numberOfDimensions2 + "]"
+            );
+        }
+    }
+
+    /**
+     * 在两个向量对象之间进行计算的函数，自从1.13版本开始支持该函数的调用，该函数中的计算并不会产生一个新的向量，而是将计算操作作用于原操作数中
+     * <p>
+     * The function that calculates between two vector objects supports the call of this function since version 1.13. The calculation in this function will not generate a new vector, but will apply the calculation operation to the original operand
+     *
+     * @param value        与当前向量一起进行计算的另一个向量对象。
+     *                     <p>
+     *                     Another vector object that is evaluated with the current vector.
+     * @param ModifyCaller 计算操作作用对象的设置，该参数如果为true，那么计算时针对向量序列的修改操作将会直接作用到调用函数的向量中，反之将会作用到被操作数中。
+     *                     <p>
+     *                     The setting of the calculation operation action object. If this parameter is true, the modification of the vector sequence during calculation will directly affect the vector of the calling function, and vice versa.
+     * @return 两个向量经过了外积计算之后，被修改的向量对象
+     */
+    @Override
+    public DoubleVector multiply(DoubleVector value, boolean ModifyCaller) {
+        double[] doubles1 = this.VectorArrayPrimitive;
+        double[] doubles2 = value.VectorArrayPrimitive;
+        if (doubles1.length == doubles2.length) {
+            double[] res = new double[doubles1.length];
+            ASMath.CrossMultiplication(doubles1.length, doubles2.length, res, doubles1, doubles2);
+            if (ModifyCaller) {
+                this.VectorArrayPrimitive = res;
+                this.vectorStr += '*' + value.vectorStr;
+                return this;
+            } else {
+                value.VectorArrayPrimitive = res;
+                value.vectorStr += '*' + this.vectorStr;
+                return value;
+            }
+        } else {
+            int length1 = doubles1.length;
+            int length2 = doubles2.length;
+            throw new OperatorOperationException(
+                    "'DoubleVector1 multiply DoubleVector2' 时，两个'DoubleVector'的向量所包含的数量不同，DoubleVector1=[" + length1 + "]，DoubleVector2=[" + length2 + "]\n" +
+                            "When 'DoubleVector1 multiply DoubleVector2', the two vectors of 'DoubleVector' contain different quantities, DoubleVector1=[" + length1 + "], DoubleVector2=[" + length2 + "]"
+            );
+        }
     }
 }
