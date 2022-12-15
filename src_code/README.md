@@ -1,21 +1,21 @@
 # ![image](https://user-images.githubusercontent.com/113756063/194830221-abe24fcc-484b-4769-b3b7-ec6d8138f436.png) Algorithm Star-MachineBrain
 
-- 切换到 [中文文档](https://github.com/BeardedManZhao/algorithmStar/blob/main/src_code/README-Chinese.md)
-- knowledge base(Coming soon)
+- 切换到 [中文文档](https://github.com/BeardedManZhao/algorithmStar/blob/main/src_code/update/1.12_1.13-Chinese.md)
+- knowledge base
   <a href="https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/knowledge%20base.md">
   <img src = "https://user-images.githubusercontent.com/113756063/194832492-f8c184c1-55e8-4f16-943a-34b99ac751d4.png"/>
   </a>
 
 ### Update log:
 
-* Framework version: 1.12
+* Optimize the sorting algorithm.
+* The method of adding vector array copy in the vector interface.
+* For all vector types, the storage of wrapper classes is removed, and only the basic types can be used. This is a
+  performance consideration.
+* Two functions of shallow copy and deep copy of vector data are added to the vector interface.
+* In the vector architecture, ASVector is added, which contains three functions. It is an optimization method for AS,
+  allowing you to calculate vectors based on the original vector data and detect the occupation of row pointers.
+* Take the string form of a vector as a variable that changes at any time. When it is necessary to convert a vector to a
+  String type, it will not take too long.
 
-- New Spark vector support
-
-- The new version is officially updated to Maven warehouse
-
-<hr>
-
-- 切换到 [中文文档](https://github.com/BeardedManZhao/algorithmStar/blob/main/src_code/README-Chinese.md)
-
-### Version update date : 2022-11-23
+### Version update date : 2022-12-15

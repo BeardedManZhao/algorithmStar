@@ -35,6 +35,7 @@ public abstract class Matrix<ImplementationType extends Matrix<?, ?>, ElementTyp
      *                 the number of rows in the matrix
      * @param colCount 矩阵中的列数量
      *                 <p>
+     *                 the number of cols in the matrix
      */
     protected Matrix(int rowCount, int colCount) {
         this.rowCount = rowCount;

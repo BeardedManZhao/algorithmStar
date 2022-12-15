@@ -14,12 +14,14 @@ import zhao.algorithmMagic.exception.OperatorOperationException;
 public final class IntegerCoordinateMany implements IntegerCoordinates<IntegerCoordinateMany>, Coordinate<IntegerCoordinateMany> {
 
     private final int[] coordinate;
+    private final String str;
 
     /**
      * @param coordinate 一个多维坐标
      */
     public IntegerCoordinateMany(int... coordinate) {
         this.coordinate = coordinate;
+        str = "(" + this.coordinate[0] + ",...," + this.coordinate[this.coordinate.length - 1] + ')';
     }
 
     /**
@@ -103,6 +105,6 @@ public final class IntegerCoordinateMany implements IntegerCoordinates<IntegerCo
 
     @Override
     public String toString() {
-        return "(" + this.coordinate[0] + ",...," + this.coordinate[this.coordinate.length - 1] + ')';
+        return this.str;
     }
 }

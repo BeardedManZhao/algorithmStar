@@ -13,6 +13,7 @@ public final class IntegerCoordinateTwo implements IntegerCoordinates<IntegerCoo
 
     private final int x;
     private final int y;
+    private final String str;
 
     /**
      * 实例化一个坐标
@@ -23,6 +24,7 @@ public final class IntegerCoordinateTwo implements IntegerCoordinates<IntegerCoo
     public IntegerCoordinateTwo(int x, int y) {
         this.x = x;
         this.y = y;
+        str = "(" + this.x + ',' + this.y + ')';
     }
 
     public Integer getX() {
@@ -69,7 +71,7 @@ public final class IntegerCoordinateTwo implements IntegerCoordinates<IntegerCoo
 
     @Override
     public String toString() {
-        return "(" + this.x + "," + this.y + ")";
+        return this.str;
     }
 
     /**

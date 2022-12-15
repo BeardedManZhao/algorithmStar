@@ -14,6 +14,7 @@ public final class IntegerCoordinateThree implements IntegerCoordinates<IntegerC
     private final int x;
     private final int y;
     private final int z;
+    private final String str;
 
     /**
      * 实例化一个坐标
@@ -26,6 +27,7 @@ public final class IntegerCoordinateThree implements IntegerCoordinates<IntegerC
         this.x = x;
         this.y = y;
         this.z = z;
+        str = "(" + this.x + "," + this.y + "," + this.z + ")";
     }
 
     public int getX() {
@@ -76,7 +78,7 @@ public final class IntegerCoordinateThree implements IntegerCoordinates<IntegerC
 
     @Override
     public String toString() {
-        return "(" + this.x + "," + this.y + "," + this.z + ")";
+        return this.str;
     }
 
     /**

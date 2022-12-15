@@ -142,7 +142,7 @@ public class Dijkstra implements GeneratingAlgorithmMany {
                 doubleRouteNet.addSubMarkRoute(this.stringDoubleConsanguinityRouteHashMap.get(routeName));
                 // 将当前路线的距离获取到
                 Double aDouble = hashMap.get(end);
-                // 进行比较,最后会晒选出来最小的距离
+                // 进行比较,最后会选出来最小的距离
                 if (aDouble < dis) {
                     dis = aDouble;
                 }

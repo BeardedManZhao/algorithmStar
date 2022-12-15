@@ -14,22 +14,19 @@ import zhao.algorithmMagic.utils.ASClass;
 public final class DoubleCoordinateMany implements FloatingPointCoordinates<DoubleCoordinateMany> {
 
     private final double[] coordinate;
+    private final String str;
 
     /**
      * @param coordinate 一个多维坐标
      */
     public DoubleCoordinateMany(double... coordinate) {
         this.coordinate = coordinate;
+        str = "(" + this.coordinate[0] + ",...," + this.coordinate[this.coordinate.length - 1] + ')';
     }
 
     public DoubleCoordinateMany(int[] coordinate) {
         this.coordinate = ASClass.IntArray_To_DoubleArray(coordinate);
-    }
-
-    public DoubleCoordinateMany(IntegerCoordinateMany integerCoordinateMany) {
-        int[] ints = integerCoordinateMany.toArray();
-        this.coordinate = new double[ints.length];
-        System.arraycopy(coordinate, 0, this.coordinate, 0, coordinate.length);
+        str = "(" + this.coordinate[0] + ",...," + this.coordinate[this.coordinate.length - 1] + ')';
     }
 
     /**
@@ -111,6 +108,6 @@ public final class DoubleCoordinateMany implements FloatingPointCoordinates<Doub
 
     @Override
     public String toString() {
-        return "(" + this.coordinate[0] + ",...," + this.coordinate[this.coordinate.length - 1] + ')';
+        return this.str;
     }
 }

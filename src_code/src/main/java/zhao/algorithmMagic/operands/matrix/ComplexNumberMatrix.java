@@ -333,4 +333,9 @@ public class ComplexNumberMatrix extends Matrix<ComplexNumberMatrix, ComplexNumb
         }
         return parse(complexNumbers);
     }
+
+    @Override
+    protected void reFresh() {
+        this.PointerReset();
+    }
 }

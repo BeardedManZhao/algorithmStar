@@ -13,6 +13,7 @@ public final class DoubleCoordinateTwo implements FloatingPointCoordinates<Doubl
 
     private final double x;
     private final double y;
+    private final String str;
 
     /**
      * 实例化一个坐标
@@ -23,6 +24,7 @@ public final class DoubleCoordinateTwo implements FloatingPointCoordinates<Doubl
     public DoubleCoordinateTwo(double x, double y) {
         this.x = x;
         this.y = y;
+        str = "(" + this.x + ',' + this.y + ')';
     }
 
     /**
@@ -61,7 +63,7 @@ public final class DoubleCoordinateTwo implements FloatingPointCoordinates<Doubl
 
     @Override
     public String toString() {
-        return "(" + this.x + ',' + this.y + ')';
+        return this.str;
     }
 
     /**

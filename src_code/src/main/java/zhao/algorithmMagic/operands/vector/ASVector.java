@@ -8,6 +8,8 @@ package zhao.algorithmMagic.operands.vector;
  * @author zhao
  */
 public abstract class ASVector<ImplementationType, ElementType> extends Vector<ImplementationType, ElementType> {
+    protected abstract void reFresh();
+
     /**
      * 在两个向量对象之间进行计算的函数，自从1.13版本开始支持该函数的调用，该函数中的计算并不会产生一个新的向量，而是将计算操作作用于原操作数中
      * <p>

@@ -174,11 +174,7 @@ public class CosineDistance<V extends Vector<?, ?>> implements DistanceAlgorithm
      */
     @Override
     public double getTrueDistance(double[] doubles1, double[] doubles2) {
-        DoubleVector vector1 = DoubleVector.parse(doubles1);
-        DoubleVector vector2 = DoubleVector.parse(doubles2);
-        Double aDouble = vector1.innerProduct(vector2.expand());
-        logger.info(aDouble + " / ( " + vector1 + " * " + vector2 + " )");
-        return aDouble / (vector1.moduleLength() * vector2.moduleLength());
+        return getTrueDistance(DoubleVector.parse(doubles1), DoubleVector.parse(doubles2));
     }
 
     /**
@@ -192,11 +188,19 @@ public class CosineDistance<V extends Vector<?, ?>> implements DistanceAlgorithm
      */
     @Override
     public double getTrueDistance(int[] ints1, int[] ints2) {
-        IntegerVector vector1 = IntegerVector.parse(ints1);
-        IntegerVector vector2 = IntegerVector.parse(ints2);
-        int integer = vector1.innerProduct(vector2.expand());
-        logger.info(integer + " / ( " + vector1 + " * " + vector2 + " )");
-        return integer / (double) (vector1.moduleLength() * vector2.moduleLength());
+        return getTrueDistance(IntegerVector.parse(ints1), IntegerVector.parse(ints2));
+    }
+
+    public double getTrueDistance(DoubleVector doubleVector1, DoubleVector doubleVector2) {
+        double aDouble = doubleVector1.innerProduct(doubleVector2);
+        logger.info(aDouble + " / ( " + doubleVector1 + " * " + doubleVector2 + " )");
+        return aDouble / (doubleVector1.moduleLength() * doubleVector2.moduleLength());
+    }
+
+    public double getTrueDistance(IntegerVector doubleVector1, IntegerVector doubleVector2) {
+        double aDouble = doubleVector1.innerProduct(doubleVector2);
+        logger.info(aDouble + " / ( " + doubleVector1 + " * " + doubleVector2 + " )");
+        return aDouble / (doubleVector1.moduleLength() * doubleVector2.moduleLength());
     }
 
     /**

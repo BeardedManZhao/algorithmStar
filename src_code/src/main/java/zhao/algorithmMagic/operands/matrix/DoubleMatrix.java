@@ -303,4 +303,9 @@ public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
     public String toString() {
         return this.matrixStr;
     }
+
+    @Override
+    protected void reFresh() {
+        this.PointerReset();
+    }
 }

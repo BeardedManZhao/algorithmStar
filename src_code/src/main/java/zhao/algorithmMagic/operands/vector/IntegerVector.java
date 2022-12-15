@@ -9,12 +9,15 @@ import java.util.Arrays;
 
 /**
  * Java类于 2022/10/20 14:58:56 创建
+ * <p>
+ * 整形向量，其中每一个序列元素都是整数类型
  *
- * @author 4
+ * @author zhao
  */
 public class IntegerVector extends ASVector<IntegerVector, Integer> {
     int[] VectorArrayPrimitive;
     private String vectorStr;
+    private int moduleLength;
 
     /**
      * 使用初始传参的方式构建出来一个向量
@@ -118,11 +121,7 @@ public class IntegerVector extends ASVector<IntegerVector, Integer> {
      */
     @Override
     public Integer moduleLength() {
-        int res = 0;
-        for (int value : VectorArrayPrimitive) {
-            res += ASMath.Power2(value);
-        }
-        return (int) Math.sqrt(res);
+        return this.moduleLength;
     }
 
     /**
@@ -225,6 +224,7 @@ public class IntegerVector extends ASVector<IntegerVector, Integer> {
             integerVector.VectorArrayPrimitive = new int[this.VectorArrayPrimitive.length];
         }
         System.arraycopy(this.VectorArrayPrimitive, 0, integerVector.VectorArrayPrimitive, 0, this.VectorArrayPrimitive.length);
+        integerVector.reFresh();
         integerVector.vectorStr = this.vectorStr;
     }
 
@@ -235,6 +235,20 @@ public class IntegerVector extends ASVector<IntegerVector, Integer> {
     @Override
     public String toString() {
         return this.vectorStr;
+    }
+
+    @Override
+    protected void reFresh() {
+        double tempM = 0;
+        StringBuilder stringBuilder = new StringBuilder(this.VectorArrayPrimitive.length << 1);
+        stringBuilder.append('[');
+        for (int v : this.VectorArrayPrimitive) {
+            tempM += v * v; // 刷新模长
+            stringBuilder.append(' ').append(v); // 刷新字符串形式
+        }
+        stringBuilder.append(' ').append(']');
+        this.moduleLength = (int) Math.sqrt(tempM);
+        this.vectorStr = stringBuilder.toString();
     }
 
     /**
@@ -254,20 +268,17 @@ public class IntegerVector extends ASVector<IntegerVector, Integer> {
     public IntegerVector add(IntegerVector value, boolean ModifyCaller) {
         int[] doubles2 = value.VectorArrayPrimitive;
         if (this.VectorArrayPrimitive.length == doubles2.length) {
-            StringBuilder stringBuilder = new StringBuilder(this.vectorStr.length() + 16);
             if (ModifyCaller) {
                 for (int i = 0; i < this.VectorArrayPrimitive.length; i++) {
                     this.VectorArrayPrimitive[i] += doubles2[i];
-                    stringBuilder.append(this.VectorArrayPrimitive[i]).append(',');
                 }
-                this.vectorStr = stringBuilder.toString();
+                this.reFresh();
                 return this;
             } else {
                 for (int i = 0; i < doubles2.length; i++) {
                     doubles2[i] += this.VectorArrayPrimitive[i];
-                    stringBuilder.append(doubles2[i]).append(',');
                 }
-                this.vectorStr = stringBuilder.toString();
+                value.reFresh();
                 return value;
             }
         } else {
@@ -297,20 +308,17 @@ public class IntegerVector extends ASVector<IntegerVector, Integer> {
     public IntegerVector diff(IntegerVector value, boolean ModifyCaller) {
         int[] doubles2 = value.VectorArrayPrimitive;
         if (this.VectorArrayPrimitive.length == doubles2.length) {
-            StringBuilder stringBuilder = new StringBuilder(this.vectorStr.length() + 16);
             if (ModifyCaller) {
                 for (int i = 0; i < this.VectorArrayPrimitive.length; i++) {
                     this.VectorArrayPrimitive[i] -= doubles2[i];
-                    stringBuilder.append(this.VectorArrayPrimitive[i]).append(',');
                 }
-                this.vectorStr = stringBuilder.toString();
+                this.reFresh();
                 return this;
             } else {
                 for (int i = 0; i < doubles2.length; i++) {
                     doubles2[i] = this.VectorArrayPrimitive[i] - doubles2[i];
-                    stringBuilder.append(doubles2[i]).append(',');
                 }
-                this.vectorStr = stringBuilder.toString();
+                value.reFresh();
                 return value;
             }
         } else {
@@ -344,11 +352,11 @@ public class IntegerVector extends ASVector<IntegerVector, Integer> {
             ASMath.CrossMultiplication(this.VectorArrayPrimitive.length, ints2.length, res, this.VectorArrayPrimitive, ints2);
             if (ModifyCaller) {
                 this.VectorArrayPrimitive = res;
-                this.vectorStr = Arrays.toString(res);
+                this.reFresh();
                 return this;
             } else {
                 value.VectorArrayPrimitive = res;
-                value.vectorStr = Arrays.toString(res);
+                value.reFresh();
                 return value;
             }
         } else {

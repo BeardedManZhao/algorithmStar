@@ -18,7 +18,7 @@ import java.util.HashMap;
  * @author LingYuZhao
  */
 public final class OperationAlgorithmManager implements OperationAlgorithm {
-    public final static float VERSION = 1.12f; // 后续版本为1.13
+    public final static float VERSION = 1.13f;
     /**
      * 算法对象存档集合，您可以将算法对象存储到该集合中
      * <p>

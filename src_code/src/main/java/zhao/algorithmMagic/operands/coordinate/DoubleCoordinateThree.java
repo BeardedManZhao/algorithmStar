@@ -13,11 +13,13 @@ public final class DoubleCoordinateThree implements FloatingPointCoordinates<Dou
     private final double x;
     private final double y;
     private final double z;
+    private final String str;
 
     public DoubleCoordinateThree(double x, double y, double z) {
         this.x = x;
         this.y = y;
         this.z = z;
+        str = "(" + this.x + ',' + this.y + ',' + this.z + ')';
     }
 
     public Double getX() {
@@ -34,7 +36,7 @@ public final class DoubleCoordinateThree implements FloatingPointCoordinates<Dou
 
     @Override
     public String toString() {
-        return "(" + this.x + ',' + this.y + ',' + this.z + ')';
+        return this.str;
     }
 
     /**

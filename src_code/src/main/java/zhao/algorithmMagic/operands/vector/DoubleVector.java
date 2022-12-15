@@ -21,6 +21,7 @@ import java.util.Arrays;
 public class DoubleVector extends ASVector<DoubleVector, Double> {
     private String vectorStr;
     private double[] VectorArrayPrimitive;
+    private double moduleLength;
 
     /**
      * 使用初始传参的方式构建出来一个向量
@@ -33,7 +34,7 @@ public class DoubleVector extends ASVector<DoubleVector, Double> {
      */
     public DoubleVector(double[] vectorArray) {
         this.VectorArrayPrimitive = vectorArray;
-        this.vectorStr = Arrays.toString(vectorArray);
+        reFresh();
     }
 
     /**
@@ -94,11 +95,28 @@ public class DoubleVector extends ASVector<DoubleVector, Double> {
     }
 
     /**
+     * 将向量的字段进行刷新
+     */
+    @Override
+    protected void reFresh() {
+        double tempM = 0;
+        StringBuilder stringBuilder = new StringBuilder(this.VectorArrayPrimitive.length << 1);
+        stringBuilder.append('[');
+        for (double v : this.VectorArrayPrimitive) {
+            tempM += v * v; // 刷新模长
+            stringBuilder.append(' ').append(v); // 刷新字符串形式
+        }
+        stringBuilder.append(' ').append(']');
+        this.moduleLength = Math.sqrt(tempM);
+        this.vectorStr = stringBuilder.toString();
+    }
+
+    /**
      * @param vectorArrayPrimitive 设置本向量的基础向量数组
      */
     public void setVectorArrayPrimitive(double[] vectorArrayPrimitive) {
         VectorArrayPrimitive = vectorArrayPrimitive;
-        this.vectorStr = Arrays.toString(vectorArrayPrimitive);
+        reFresh();
     }
 
     /**
@@ -182,11 +200,7 @@ public class DoubleVector extends ASVector<DoubleVector, Double> {
      */
     @Override
     public Double moduleLength() {
-        double res = 0;
-        for (double value : VectorArrayPrimitive) {
-            res += value * value;
-        }
-        return Math.sqrt(res);
+        return this.moduleLength;
     }
 
     /**
@@ -342,20 +356,17 @@ public class DoubleVector extends ASVector<DoubleVector, Double> {
         double[] doubles1 = this.VectorArrayPrimitive;
         double[] doubles2 = value.VectorArrayPrimitive;
         if (doubles1.length == doubles2.length) {
-            StringBuilder stringBuilder = new StringBuilder(this.vectorStr.length() + 16);
             if (ModifyCaller) {
                 for (int i = 0; i < doubles1.length; i++) {
                     doubles1[i] += doubles2[i];
-                    stringBuilder.append(doubles1[i]).append(',');
                 }
-                this.vectorStr = stringBuilder.toString();
+                this.reFresh();
                 return this;
             } else {
                 for (int i = 0; i < doubles2.length; i++) {
                     doubles2[i] += doubles1[i];
-                    stringBuilder.append(doubles2[i]).append(',');
                 }
-                value.vectorStr = stringBuilder.toString();
+                value.reFresh();
                 return value;
             }
         } else {
@@ -386,20 +397,17 @@ public class DoubleVector extends ASVector<DoubleVector, Double> {
         double[] doubles1 = this.VectorArrayPrimitive;
         double[] doubles2 = value.VectorArrayPrimitive;
         if (doubles1.length == doubles2.length) {
-            StringBuilder stringBuilder = new StringBuilder(this.vectorStr.length() + 16);
             if (ModifyCaller) {
                 for (int i = 0; i < doubles1.length; i++) {
                     doubles1[i] -= doubles2[i];
-                    stringBuilder.append(doubles1[i]).append(',');
                 }
-                this.vectorStr = stringBuilder.toString();
+                this.reFresh();
                 return this;
             } else {
                 for (int i = 0; i < doubles2.length; i++) {
                     doubles2[i] = doubles1[i] - doubles2[i];
-                    stringBuilder.append(doubles2[i]).append(',');
                 }
-                this.vectorStr = stringBuilder.toString();
+                value.reFresh();
                 return value;
             }
         } else {
@@ -434,11 +442,11 @@ public class DoubleVector extends ASVector<DoubleVector, Double> {
             ASMath.CrossMultiplication(doubles1.length, doubles2.length, res, doubles1, doubles2);
             if (ModifyCaller) {
                 this.VectorArrayPrimitive = res;
-                this.vectorStr += '*' + value.vectorStr;
+                this.reFresh();
                 return this;
             } else {
                 value.VectorArrayPrimitive = res;
-                value.vectorStr += '*' + this.vectorStr;
+                value.reFresh();
                 return value;
             }
         } else {

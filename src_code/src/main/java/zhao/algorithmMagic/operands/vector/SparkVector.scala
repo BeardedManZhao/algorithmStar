@@ -106,13 +106,6 @@ class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mllib.lin
   }
 
   /**
-   * @return 向量中包含的维度数量
-   *         <p>
-   *         the number of dimensions contained in the vector
-   */
-  override def getNumberOfDimensions: Int = size
-
-  /**
    * 在两个操作数之间做差的方法，具体用法请参阅API说明。
    * <p>
    * The method of making a difference between two operands, please refer to the API description for specific usage.
@@ -137,11 +130,11 @@ class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mllib.lin
   }
 
   /**
-   * @return 该对象的向量数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改
+   * @return 向量中包含的维度数量
    *         <p>
-   *         The vector array form of the object is copied, which does not generate any dependency, so it supports modification
+   *         the number of dimensions contained in the vector
    */
-  override def CopyToNewArray(): Array[Double] = toArray
+  override def getNumberOfDimensions: Int = size
 
   /**
    * @return 不论是基元还是包装，都返回一个基元的浮点数组，该方法是万能的，始终都会返回出来一个真正的向量数组！
@@ -151,6 +144,13 @@ class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mllib.lin
   override def toArray: Array[Double] = {
     vector.toArray
   }
+
+  /**
+   * @return 该对象的向量数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改
+   *         <p>
+   *         The vector array form of the object is copied, which does not generate any dependency, so it supports modification
+   */
+  override def CopyToNewArray(): Array[Double] = toArray
 }
 
 object SparkVector {
