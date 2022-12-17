@@ -5,8 +5,6 @@ import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateMany;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASMath;
 
-import java.util.Arrays;
-
 /**
  * Java类于 2022/10/20 14:58:56 创建
  * <p>
@@ -30,7 +28,7 @@ public class IntegerVector extends ASVector<IntegerVector, Integer> {
      */
     public IntegerVector(int[] vectorArray) {
         this.VectorArrayPrimitive = vectorArray;
-        this.vectorStr = Arrays.toString(vectorArray);
+        reFresh();
     }
 
     /**
@@ -68,10 +66,10 @@ public class IntegerVector extends ASVector<IntegerVector, Integer> {
         int numberOfDimensions2 = value.getNumberOfDimensions();
         if (numberOfDimensions1 == numberOfDimensions2) {
             int[] res = new int[numberOfDimensions1];
-            double[] doubles1 = this.toArray();
-            double[] doubles2 = value.toArray();
+            int[] ints1 = this.VectorArrayPrimitive;
+            int[] ints2 = value.VectorArrayPrimitive;
             for (int i = 0; i < numberOfDimensions1; i++) {
-                res[i] = (int) (doubles1[i] + doubles2[i]);
+                res[i] = ints1[i] + ints2[i];
             }
             return IntegerVector.parse(res);
         } else {
@@ -97,10 +95,10 @@ public class IntegerVector extends ASVector<IntegerVector, Integer> {
         int numberOfDimensions2 = value.getNumberOfDimensions();
         if (numberOfDimensions1 == numberOfDimensions2) {
             int[] res = new int[numberOfDimensions1];
-            double[] doubles1 = this.toArray();
-            double[] doubles2 = value.toArray();
+            int[] ints1 = this.VectorArrayPrimitive;
+            int[] ints2 = value.VectorArrayPrimitive;
             for (int i = 0; i < numberOfDimensions1; i++) {
-                res[i] = (int) (doubles1[i] - doubles2[i]);
+                res[i] = (ints1[i] - ints2[i]);
             }
             return IntegerVector.parse(res);
         } else {
@@ -135,8 +133,8 @@ public class IntegerVector extends ASVector<IntegerVector, Integer> {
      */
     @Override
     public IntegerVector multiply(IntegerVector vector) {
-        double[] vectorArray1 = this.toArray();
-        double[] vectorArray2 = vector.toArray();
+        int[] vectorArray1 = this.VectorArrayPrimitive;
+        int[] vectorArray2 = vector.VectorArrayPrimitive;
         int length1 = vectorArray1.length;
         int length2 = vectorArray2.length;
         if (length1 == length2) {
@@ -162,18 +160,18 @@ public class IntegerVector extends ASVector<IntegerVector, Integer> {
      */
     @Override
     public Integer innerProduct(IntegerVector vector) {
-        double[] doubles1 = this.toArray();
-        double[] doubles2 = vector.toArray();
-        if (doubles1.length == doubles2.length) {
+        int[] ints1 = this.VectorArrayPrimitive;
+        int[] ints2 = vector.VectorArrayPrimitive;
+        if (ints1.length == ints2.length) {
             int innerProduct = 0b0;
-            for (int indexNum = 0b0; indexNum < doubles1.length; indexNum++) {
-                innerProduct += doubles1[indexNum] * doubles2[indexNum];
+            for (int indexNum = 0b0; indexNum < ints1.length; indexNum++) {
+                innerProduct += ints1[indexNum] * ints2[indexNum];
             }
             return innerProduct;
         } else {
             throw new OperatorOperationException(
-                    "'IntegerVector1 innerProduct IntegerVector2' 时，两个'IntegerVector'的向量所包含的数量不同，IntegerVector1=[" + doubles1.length + "]，IntegerVector2=[" + doubles2.length + "]\n" +
-                            "When 'IntegerVector1 innerProduct IntegerVector2', the two vectors of 'IntegerVector' contain different quantities, IntegerVector1=[" + doubles1.length + "], IntegerVector2=[" + doubles2.length + "]"
+                    "'IntegerVector1 innerProduct IntegerVector2' 时，两个'IntegerVector'的向量所包含的数量不同，IntegerVector1=[" + ints1.length + "]，IntegerVector2=[" + ints2.length + "]\n" +
+                            "When 'IntegerVector1 innerProduct IntegerVector2', the two vectors of 'IntegerVector' contain different quantities, IntegerVector1=[" + ints1.length + "], IntegerVector2=[" + ints2.length + "]"
             );
         }
     }
@@ -187,9 +185,20 @@ public class IntegerVector extends ASVector<IntegerVector, Integer> {
     }
 
     /**
+     * @return 针对整数数组中无法进行原数组的获而提供的补偿方法，该方法可以直接将整数数组中的向量数组获取到
+     */
+    public int[] toIntArray() {
+        return this.VectorArrayPrimitive;
+    }
+
+    /**
      * @return 不论是基元还是包装，都返回一个基元的浮点数组，该方法是万能的，始终都会返回出来一个真正的向量数组！
      * <p>
      * Both primitives and wrappers return a floating-point array of primitives. This method is omnipotent and will always return a true vector array!
+     * <p>
+     * 需要注意的是，在整数向量对象中，该函数将返回一个新的数组，这是因为数据类型的限制，如果您需要使用到原有的数组对象，请调用toIntArray
+     * <p>
+     * It should be noted that in the integer vector object, this function will return a new array, because of the limitation of data type. If you need to use the original array object, please call toIntArray
      */
     @Override
     public double[] toArray() {

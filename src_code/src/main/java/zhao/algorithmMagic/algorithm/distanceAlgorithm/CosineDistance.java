@@ -191,16 +191,34 @@ public class CosineDistance<V extends Vector<?, ?>> implements DistanceAlgorithm
         return getTrueDistance(IntegerVector.parse(ints1), IntegerVector.parse(ints2));
     }
 
+    /**
+     * 获取两个序列之间的向量夹角余弦距离
+     * <p>
+     * Obtain the cosine distance of the vector angle between two sequences
+     *
+     * @param doubleVector1 向量对象1
+     * @param doubleVector2 向量对象2
+     * @return 两个向量之间的余弦距离系数
+     */
     public double getTrueDistance(DoubleVector doubleVector1, DoubleVector doubleVector2) {
         double aDouble = doubleVector1.innerProduct(doubleVector2);
         logger.info(aDouble + " / ( " + doubleVector1 + " * " + doubleVector2 + " )");
         return aDouble / (doubleVector1.moduleLength() * doubleVector2.moduleLength());
     }
 
-    public double getTrueDistance(IntegerVector doubleVector1, IntegerVector doubleVector2) {
-        double aDouble = doubleVector1.innerProduct(doubleVector2);
-        logger.info(aDouble + " / ( " + doubleVector1 + " * " + doubleVector2 + " )");
-        return aDouble / (doubleVector1.moduleLength() * doubleVector2.moduleLength());
+    /**
+     * 获取两个序列之间的向量夹角余弦距离
+     * <p>
+     * Obtain the cosine distance of the vector angle between two sequences
+     *
+     * @param integerVector1 向量对象1
+     * @param integerVector2 向量对象2
+     * @return 两个向量之间的余弦距离系数
+     */
+    public double getTrueDistance(IntegerVector integerVector1, IntegerVector integerVector2) {
+        double aDouble = integerVector1.innerProduct(integerVector2);
+        logger.info(aDouble + " / ( " + integerVector1 + " * " + integerVector2 + " )");
+        return aDouble / (integerVector1.moduleLength() * integerVector2.moduleLength());
     }
 
     /**

@@ -351,6 +351,19 @@ public final class ASMath {
 
     /**
      * 计算两个数组的叉乘，并返回结果
+     *
+     * @param ints1 叉乘操作数组
+     * @param ints2 被叉乘的操作数组
+     * @return 叉乘结果数组
+     */
+    public static int[] CrossMultiplication(int[] ints1, int[] ints2) {
+        int[] res = new int[(ints1.length - 1) * ints1.length];
+        CrossMultiplication(ints1.length, ints2.length, res, ints1, ints2);
+        return res;
+    }
+
+    /**
+     * 计算两个数组的叉乘，并返回结果
      * <p>
      * Calculates the cross product of two arrays and returns the result
      *
@@ -471,7 +484,7 @@ public final class ASMath {
      * get the union of two sets
      */
     public static <ElementType> Set<ElementType> Union(Set<ElementType> set1, Set<ElementType> set2) {
-        HashSet<ElementType> hashSet = new HashSet<>(set1.size() + set2.size());
+        HashSet<ElementType> hashSet = new HashSet<>(set1.size() + set2.size() + 0x10);
         hashSet.addAll(set1);
         hashSet.addAll(set2);
         return hashSet;

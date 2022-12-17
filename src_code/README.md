@@ -7,15 +7,12 @@
   </a>
 
 ### Update log:
+* Framework version: 1.13 - xxx 
 
-* Optimize the sorting algorithm.
-* The method of adding vector array copy in the vector interface.
-* For all vector types, the storage of wrapper classes is removed, and only the basic types can be used. This is a
-  performance consideration.
-* Two functions of shallow copy and deep copy of vector data are added to the vector interface.
-* In the vector architecture, ASVector is added, which contains three functions. It is an optimization method for AS,
-  allowing you to calculate vectors based on the original vector data and detect the occupation of row pointers.
-* Take the string form of a vector as a variable that changes at any time. When it is necessary to convert a vector to a
-  String type, it will not take too long.
+* It provides support for obtaining the original array for the integer vector. You can use toIntArray to obtain the
+  array object of the integer vector.
 
-### Version update date : 2022-12-15
+* It optimizes the calculation between the integer vectors, reduces the internal call to the toArray method, and avoids
+  redundancy.
+
+### Version update date : XX XX-XX-XX
