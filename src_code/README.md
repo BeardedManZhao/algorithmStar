@@ -7,12 +7,41 @@
   </a>
 
 ### Update log:
-* Framework version: 1.13 - xxx 
+
+* Framework version: 1.13 - xxx
 
 * It provides support for obtaining the original array for the integer vector. You can use toIntArray to obtain the
   array object of the integer vector.
 
 * It optimizes the calculation between the integer vectors, reduces the internal call to the toArray method, and avoids
   redundancy.
+
+* The string parsing logic of route objects and complex objects is optimized to reduce the number of operations
+
+* For the printing of calculation logs of calculation components, this is an operation that requires huge performance.
+  Therefore, in this update, you can manually intervene in the printing of calculation logs, as shown below.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
+import zhao.algorithmMagic.algorithm.distanceAlgorithm.CosineDistance;
+import zhao.algorithmMagic.operands.vector.DoubleVector;
+import zhao.algorithmMagic.operands.vector.IntegerVector;
+import zhao.algorithmMagic.operands.vector.Vector;
+
+public class MAIN1 {
+  public static void main(String[] args) {
+    // Open log output 
+    // TODO This is optional. 
+    //  If you do not want useless calculation logs, you can directly set it to false here or do not set this parameter, 
+    //  which is false by default
+    OperationAlgorithmManager.PrintCalculationComponentLog = true;
+    CosineDistance<Vector<DoubleVector, IntegerVector>> zhao = CosineDistance.getInstance("zhao");
+    double trueDistance = zhao.getTrueDistance(DoubleVector.parse(1.0, 2.0, 3.0, 4.0, 5.0), DoubleVector.parse(1.0, 2.0, 3.0, 4.0, 5.0));
+    System.out.println(trueDistance);
+  }
+}
+```
 
 ### Version update date : XX XX-XX-XX

@@ -100,7 +100,9 @@ public class EuclideanMetric<I extends IntegerCoordinates<I> & Coordinate<I>, D 
      */
     public double getTrueDistance(DoubleVector doubleVector) {
         double res = 0;
-        logger.info("√ ⁿ∑₁( coordinate² )");
+        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+            logger.info("√ ⁿ∑₁( coordinate² )");
+        }
         for (double v : doubleVector.toArray()) {
             res += ASMath.Power2(v);
         }
@@ -138,7 +140,9 @@ public class EuclideanMetric<I extends IntegerCoordinates<I> & Coordinate<I>, D 
      */
     public double getTrueDistance(FloatingPointCoordinates<D> iFloatingPointCoordinates) {
         double res = 0;
-        logger.info("√ ⁿ∑₁( coordinate² )");
+        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+            logger.info("√ ⁿ∑₁( coordinate² )");
+        }
         for (double d : iFloatingPointCoordinates.toArray()) {
             res += d * d;
         }
@@ -157,7 +161,9 @@ public class EuclideanMetric<I extends IntegerCoordinates<I> & Coordinate<I>, D 
      */
     public double getTrueDistance(IntegerCoordinates<I> integerCoordinates) {
         int res = 0;
-        logger.info("√ ⁿ∑₁( coordinate² )");
+        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+            logger.info("√ ⁿ∑₁( coordinate² )");
+        }
         for (int d : integerCoordinates.toArray()) {
             res += ASMath.Power2(d);
         }
@@ -174,7 +180,9 @@ public class EuclideanMetric<I extends IntegerCoordinates<I> & Coordinate<I>, D 
      * @return True Euclidean distance between two points
      */
     public double getTrueDistance(IntegerCoordinates<I> integerCoordinateMany1, IntegerCoordinates<I> integerCoordinateMany2) {
-        logger.info("√ ⁿ∑₁(" + integerCoordinateMany1 + " - " + integerCoordinateMany2 + ").map(d -> d²)");
+        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+            logger.info("√ ⁿ∑₁(" + integerCoordinateMany1 + " - " + integerCoordinateMany2 + ").map(d -> d²)");
+        }
         int res = 0;
         for (int i : integerCoordinateMany1.extend().diff(integerCoordinateMany2.extend()).toArray()) {
             res += ASMath.Power2(i);
@@ -192,7 +200,9 @@ public class EuclideanMetric<I extends IntegerCoordinates<I> & Coordinate<I>, D 
      * @return True Euclidean distance between two points
      */
     public double getTrueDistance(FloatingPointCoordinates<D> doubleCoordinateMany1, FloatingPointCoordinates<D> doubleCoordinateMany2) {
-        logger.info("√ ⁿ∑₁(" + doubleCoordinateMany1 + " - " + doubleCoordinateMany2 + ").map(d -> d²)");
+        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+            logger.info("√ ⁿ∑₁(" + doubleCoordinateMany1 + " - " + doubleCoordinateMany2 + ").map(d -> d²)");
+        }
         int res = 0;
         for (double i : doubleCoordinateMany1.diff(doubleCoordinateMany2.extend()).toArray()) {
             res += ASMath.Power2(i);
@@ -226,7 +236,9 @@ public class EuclideanMetric<I extends IntegerCoordinates<I> & Coordinate<I>, D 
      */
     @Override
     public double getTrueDistance(double[] doubles1, double[] doubles2) {
-        logger.info("√ ⁿ∑₁( Xn - Yn )²");
+        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+            logger.info("√ ⁿ∑₁( Xn - Yn )²");
+        }
         double[] doubles = new DoubleCoordinateMany(doubles1).diff(new DoubleCoordinateMany(doubles2)).toArray();
         double res = 0;
         for (double aDouble : doubles) {
@@ -248,7 +260,9 @@ public class EuclideanMetric<I extends IntegerCoordinates<I> & Coordinate<I>, D 
      */
     @Override
     public double getTrueDistance(int[] ints1, int[] ints2) {
-        logger.info("√ ⁿ∑₁( Xn - Yn )²");
+        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+            logger.info("√ ⁿ∑₁( Xn - Yn )²");
+        }
         int[] ints = new IntegerCoordinateMany(ints1).diff(new IntegerCoordinateMany(ints2)).toArray();
         int res = 0;
         for (int anInt : ints) {

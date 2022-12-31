@@ -2,7 +2,8 @@ package zhao.algorithmMagic.operands;
 
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.utils.ASMath;
-import zhao.algorithmMagic.utils.ASStr;
+
+import java.util.regex.Pattern;
 
 /**
  * Java类于 2022/10/11 18:33:09 创建
@@ -15,6 +16,7 @@ import zhao.algorithmMagic.utils.ASStr;
  */
 public class ComplexNumber implements Operands<ComplexNumber> {
 
+    protected final static Pattern ADD_SUBTRACT_SEPARATOR = Pattern.compile("[" + ASMath.MATHEMATICAL_SYMBOLS_PLUS + ASMath.MATHEMATICAL_SYMBOLS_SUBTRACT + "]\\s*?");
     private final int real;
     private final int imaginary;
     private final String expression;
@@ -65,17 +67,19 @@ public class ComplexNumber implements Operands<ComplexNumber> {
      * plural object
      */
     public static ComplexNumber parse(String s) {
-        String[] split = s.split("\\s*[" + ASMath.MATHEMATICAL_SYMBOLS_PLUS + "|" + ASMath.MATHEMATICAL_SYMBOLS_SUBTRACT + "]\\s*");
-        String a = split[0].trim();
-        String bi = split[1].trim();
-        int length = bi.length();
-        // 运算符前后各有一位 && 运算符后包含一个”i“ && i是最后一位
-        if (split.length == 2 && ASStr.count(bi, 'i') == 1 && bi.indexOf('i') == length - 1) {
-            int bi1 = Integer.parseInt(bi.substring(0, length - 1).trim());
-            return new ComplexNumber(Integer.parseInt(a), s.contains("-") ? -bi1 : bi1, s);
-        } else {
-            throw new OperatorOperationException("[" + s + "]似乎不是一个正确的复数形式哦！正确的复数形式应为：[a + bi] [a - bi]");
+        String trim = s.trim();
+        if (trim.charAt(trim.length() - 1) == 'i') {
+            String[] split = ADD_SUBTRACT_SEPARATOR.split(trim);
+            if (split.length == 2) {
+                String a = split[0];
+                String bi = split[1];
+                int length = bi.length();
+                // 运算符前后各有一位 && 运算符后包含一个”i“ && i是最后一位
+                int bi1 = Integer.parseInt(bi.substring(0, length - 1).trim());
+                return new ComplexNumber(Integer.parseInt(a.trim()), trim.charAt(a.length()) == '-' ? -bi1 : bi1, s);
+            }
         }
+        throw new OperatorOperationException("[" + s + "]似乎不是一个正确的复数形式哦！正确的复数形式应为：[a + bi] or [a - bi]");
     }
 
     public int getReal() {

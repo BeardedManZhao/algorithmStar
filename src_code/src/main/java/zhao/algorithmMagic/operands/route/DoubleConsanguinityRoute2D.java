@@ -50,7 +50,7 @@ public class DoubleConsanguinityRoute2D implements Route2D<DoubleConsanguinityRo
      * @return 血亲坐标
      */
     public static DoubleConsanguinityRoute2D parse(String CoordinatePath, DoubleCoordinateTwo startingCoordinate, DoubleCoordinateTwo endPointCoordinate) {
-        String[] split = CoordinatePath.split("\\s*->\\s*");
+        String[] split = PATH_SEPARATOR.split(CoordinatePath);
         if (split.length == 2) {
             return new DoubleConsanguinityRoute2D(split[0].trim(), split[1].trim(), startingCoordinate, endPointCoordinate);
         } else {

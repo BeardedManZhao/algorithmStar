@@ -4,6 +4,8 @@ import zhao.algorithmMagic.operands.Operands;
 import zhao.algorithmMagic.operands.coordinate.Coordinate;
 import zhao.algorithmMagic.operands.vector.DoubleVector;
 
+import java.util.regex.Pattern;
+
 /**
  * 路线接口,路线代表从一个坐标到另一个坐标的数据集合,其中不仅仅包含两个坐标之间的距离,它可以包含两个坐标的任意关系,也可以包含两个坐标之间的联系.
  * <p>
@@ -17,6 +19,8 @@ import zhao.algorithmMagic.operands.vector.DoubleVector;
  *                             Coordinate type, representing the implementation class of the start and end coordinates.
  */
 public interface Route<ImplementationType, CoordinateType extends Coordinate<?>> extends Operands<ImplementationType> {
+
+    Pattern PATH_SEPARATOR = Pattern.compile("\\s*?->\\s*?");
 
     /**
      * @return 起始坐标对象

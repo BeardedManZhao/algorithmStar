@@ -131,7 +131,9 @@ public class Dijkstra2D implements GeneratingAlgorithm2D {
         String ESName = endPointCoordinateName + " -> " + startingCoordinateName;
         // 计算该线路的始末坐标距离
         double trueDistance = this.distanceAlgorithm.getTrueDistance(route);
-        logger.info("Insert " + SEName + " AND " + ESName + "=> " + trueDistance);
+        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+            logger.info("Insert " + SEName + " AND " + ESName + "=> " + trueDistance);
+        }
         // 第一轮分配起始点的周边
         extracted(startingCoordinateName, endPointCoordinateName, trueDistance);
         // 第二轮分配终止点的周边，因为该起始点属于终止点的周边

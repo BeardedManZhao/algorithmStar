@@ -84,7 +84,9 @@ public class CanberraDistance<I extends IntegerCoordinates<I> & Coordinate<I>, D
      * distance from the coordinate point to the origin
      */
     public double getTrueDistance(FloatingPointCoordinates<D> iFloatingPointCoordinates) {
-        logger.info("ⁿ∑₁ ((|COORDINATE(n) - 0|) / (|COORDINATE(n)| + |0|))");
+        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+            logger.info("ⁿ∑₁ ((|COORDINATE(n) - 0|) / (|COORDINATE(n)| + |0|))");
+        }
         return iFloatingPointCoordinates.getNumberOfDimensions();
     }
 
@@ -101,7 +103,9 @@ public class CanberraDistance<I extends IntegerCoordinates<I> & Coordinate<I>, D
      * distance from the coordinate point to the origin
      */
     public double getTrueDistance(IntegerCoordinates<I> integerCoordinates) {
-        logger.info("ⁿ∑₁ ((|COORDINATE(n) - 0|) / (|COORDINATE(n)| + |0|))");
+        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+            logger.info("ⁿ∑₁ ((|COORDINATE(n) - 0|) / (|COORDINATE(n)| + |0|))");
+        }
         return integerCoordinates.getNumberOfDimensions();
     }
 
@@ -121,7 +125,9 @@ public class CanberraDistance<I extends IntegerCoordinates<I> & Coordinate<I>, D
      * shortest distance between two coordinates
      */
     public double getTrueDistance(IntegerCoordinates<I> integerCoordinate1, IntegerCoordinates<I> integerCoordinate2) {
-        logger.info("ⁿ∑₁ ((|COORDINATE1(n) - COORDINATE2(n)|) / (|COORDINATE1(n)| + |COORDINATE2(n)|))");
+        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+            logger.info("ⁿ∑₁ ((|COORDINATE1(n) - COORDINATE2(n)|) / (|COORDINATE1(n)| + |COORDINATE2(n)|))");
+        }
         return getTrueDistance(integerCoordinate1.toArray(), integerCoordinate2.toArray());
     }
 
@@ -141,7 +147,9 @@ public class CanberraDistance<I extends IntegerCoordinates<I> & Coordinate<I>, D
      * shortest distance between two coordinates
      */
     public double getTrueDistance(FloatingPointCoordinates<D> iFloatingPointCoordinates1, FloatingPointCoordinates<D> iFloatingPointCoordinates2) {
-        logger.info("ⁿ∑₁ ((|COORDINATE1(n) - COORDINATE2(n)|) / (|COORDINATE1(n)| + |COORDINATE2(n)|))");
+        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+            logger.info("ⁿ∑₁ ((|COORDINATE1(n) - COORDINATE2(n)|) / (|COORDINATE1(n)| + |COORDINATE2(n)|))");
+        }
         return getTrueDistance(iFloatingPointCoordinates1.toArray(), iFloatingPointCoordinates2.toArray());
     }
 
@@ -186,7 +194,9 @@ public class CanberraDistance<I extends IntegerCoordinates<I> & Coordinate<I>, D
      */
     @Override
     public double getTrueDistance(DoubleConsanguinityRoute doubleConsanguinityRoute) {
-        logger.info("ⁿ∑₁ ((|COORDINATE1(n) - COORDINATE2(n)|) / (|COORDINATE1(n)| + |COORDINATE2(n)|))");
+        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+            logger.info("ⁿ∑₁ ((|COORDINATE1(n) - COORDINATE2(n)|) / (|COORDINATE1(n)| + |COORDINATE2(n)|))");
+        }
         return getTrueDistance(doubleConsanguinityRoute.getStartingCoordinate().toArray(), doubleConsanguinityRoute.getEndPointCoordinate().toArray());
     }
 

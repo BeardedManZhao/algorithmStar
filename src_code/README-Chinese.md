@@ -11,5 +11,27 @@
 * 框架版本：1.13 - xxx
 * 为整形向量提供了原数组的获取支持，可以使用toIntArray获取到整形向量的数组对象。
 * 为整形向量之间的计算进行了优化，减少了在内部的toArray方法的调用，避免冗余。
+* 针对路线对象与复数对象的字符串解析的逻辑进行了优化，减少操作的数量
+* 针对计算组件的计算日志打印，这是一个需要巨大性能的操作，因此在本次更新中，您可以手动干预计算日志的打印情况，具体操作方式如下所示。
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
+import zhao.algorithmMagic.algorithm.distanceAlgorithm.CosineDistance;
+import zhao.algorithmMagic.operands.vector.DoubleVector;
+import zhao.algorithmMagic.operands.vector.IntegerVector;
+import zhao.algorithmMagic.operands.vector.Vector;
+
+public class MAIN1 {
+  public static void main(String[] args) {
+    // 打开日志输出 TODO 这是可选的，如果您不想要无用的计算日志，您可以直接在这里设置为false或是不进行该参数的设置，该参数默认为false
+    OperationAlgorithmManager.PrintCalculationComponentLog = true;
+    CosineDistance<Vector<DoubleVector, IntegerVector>> zhao = CosineDistance.getInstance("zhao");
+    double trueDistance = zhao.getTrueDistance(DoubleVector.parse(1.0, 2.0, 3.0, 4.0, 5.0), DoubleVector.parse(1.0, 2.0, 3.0, 4.0, 5.0));
+    System.out.println(trueDistance);
+  }
+}
+```
 
 ### Version update date : XX XX-XX-XX

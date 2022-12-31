@@ -110,7 +110,9 @@ public class JaccardSimilarityCoefficient<ElementType> implements DifferenceAlgo
         // 计算出两个集合中的交并集集合长度
         int intersectionSetSize = ASMath.intersection(value1, value2, union).size();
         int unionSetSize = union.size();
-        logger.info("|value1 ∩ value2| / |value1 ∪ value2| = " + intersectionSetSize + " / " + unionSetSize);
+        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+            logger.info("|value1 ∩ value2| / |value1 ∪ value2| = " + intersectionSetSize + " / " + unionSetSize);
+        }
         // 计算两个集合之间的交并集合差异系数
         return intersectionSetSize / (double) unionSetSize;
     }

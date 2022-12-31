@@ -87,7 +87,9 @@ public class ManhattanDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
      * Manhattan distances from the coordinate point to the origin
      */
     public double getTrueDistance(FloatingPointCoordinates<D> iFloatingPointCoordinates) {
-        logger.info("ⁿ∑₁ (|COORDINATE(n) - 0|)");
+        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+            logger.info("ⁿ∑₁ (|COORDINATE(n) - 0|)");
+        }
         double res = 0;
         for (double v : iFloatingPointCoordinates.toArray()) {
             res += ASMath.absoluteValue(v);
@@ -108,7 +110,9 @@ public class ManhattanDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
      * Manhattan distances from the coordinate point to the origin
      */
     public double getTrueDistance(IntegerCoordinates<I> integerCoordinates) {
-        logger.info("ⁿ∑₁ (|COORDINATE(n) - 0|)");
+        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+            logger.info("ⁿ∑₁ (|COORDINATE(n) - 0|)");
+        }
         double res = 0;
         for (double v : integerCoordinates.toArray()) {
             res += ASMath.absoluteValue(v);
@@ -133,7 +137,9 @@ public class ManhattanDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
      */
     public double getTrueDistance(FloatingPointCoordinates<D> floatingPointCoordinate1, FloatingPointCoordinates<D> floatingPointCoordinate2) {
         double res = 0;
-        logger.info("√ ⁿ∑₁( " + floatingPointCoordinate1 + " - " + floatingPointCoordinate2 + ").map(d -> |d|)");
+        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+            logger.info("√ ⁿ∑₁( " + floatingPointCoordinate1 + " - " + floatingPointCoordinate2 + ").map(d -> |d|)");
+        }
         for (double d : floatingPointCoordinate1.diff(floatingPointCoordinate2.extend()).toArray()) {
             res += ASMath.absoluteValue(d);
         }
@@ -157,7 +163,9 @@ public class ManhattanDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
      */
     public double getTrueDistance(IntegerCoordinates<I> integerCoordinate1, IntegerCoordinates<I> integerCoordinate2) {
         int res = 0;
-        logger.info("√ ⁿ∑₁( " + integerCoordinate1 + " - " + integerCoordinate2 + ").map(d -> |d|)");
+        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+            logger.info("√ ⁿ∑₁( " + integerCoordinate1 + " - " + integerCoordinate2 + ").map(d -> |d|)");
+        }
         for (int d : (integerCoordinate1.extend().diff(integerCoordinate2.extend())).toArray()) {
             res += ASMath.absoluteValue(d);
         }
@@ -241,7 +249,9 @@ public class ManhattanDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
     @Override
     public double getTrueDistance(double[] doubles1, double[] doubles2) {
         double[] doubles = new DoubleCoordinateMany(doubles1).diff(new DoubleCoordinateMany(doubles2)).toArray();
-        logger.info("√ ⁿ∑₁( Xn - Yn )²");
+        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+            logger.info("√ ⁿ∑₁( Xn - Yn )²");
+        }
         double res = 0;
         for (double aDouble : doubles) {
             res += ASMath.absoluteValue(aDouble);
@@ -261,7 +271,9 @@ public class ManhattanDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
     @Override
     public double getTrueDistance(int[] ints1, int[] ints2) {
         int[] ints = new IntegerCoordinateMany(ints1).diff(new IntegerCoordinateMany(ints2)).toArray();
-        logger.info("√ ⁿ∑₁( Xn - Yn )²");
+        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+            logger.info("√ ⁿ∑₁( Xn - Yn )²");
+        }
         int res = 0;
         for (int anInt : ints) {
             res += ASMath.absoluteValue(anInt);

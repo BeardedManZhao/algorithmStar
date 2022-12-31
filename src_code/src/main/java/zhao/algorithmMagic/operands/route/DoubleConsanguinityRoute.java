@@ -49,7 +49,7 @@ public class DoubleConsanguinityRoute implements NameRoute<DoubleConsanguinityRo
      * @return 血亲坐标
      */
     public static DoubleConsanguinityRoute parse(String CoordinatePath, DoubleCoordinateMany startingCoordinate, DoubleCoordinateMany endPointCoordinate) {
-        String[] split = CoordinatePath.split("\\s*->\\s*");
+        String[] split = PATH_SEPARATOR.split(CoordinatePath);
         if (split.length == 2) {
             return new DoubleConsanguinityRoute(split[0].trim(), split[1].trim(), startingCoordinate, endPointCoordinate);
         } else {

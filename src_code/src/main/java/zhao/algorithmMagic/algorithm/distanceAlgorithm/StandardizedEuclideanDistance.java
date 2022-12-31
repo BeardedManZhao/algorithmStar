@@ -85,7 +85,9 @@ public class StandardizedEuclideanDistance<I extends IntegerCoordinates<I> & Coo
     public double getTrueDistance(FloatingPointCoordinates<D> iFloatingPointCoordinates) {
         double[] doubles1 = iFloatingPointCoordinates.toArray();
         double[] doublesZ = Z_ScoreNormalization.StandardizedSequence(doubles1);
-        logger.info("√ ⁿ∑₁( (iFloatingPointCoordinates(n) / StandardSequence(n))² )");
+        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+            logger.info("√ ⁿ∑₁( (iFloatingPointCoordinates(n) / StandardSequence(n))² )");
+        }
         return this.euclideanMetric.getTrueDistance(new DoubleCoordinateMany(DivideByNormalization(doubles1, doublesZ)));
     }
 
@@ -133,7 +135,9 @@ public class StandardizedEuclideanDistance<I extends IntegerCoordinates<I> & Coo
     public double getTrueDistance(IntegerCoordinates<I> integerCoordinates) {
         int[] doubles1 = integerCoordinates.toArray();
         int[] doublesZ = Z_ScoreNormalization.StandardizedSequence(doubles1);
-        logger.info("√ ⁿ∑₁( (integerCoordinates(n) / StandardSequence(n))² )");
+        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+            logger.info("√ ⁿ∑₁( (integerCoordinates(n) / StandardSequence(n))² )");
+        }
         return this.euclideanMetric.getTrueDistance(new IntegerCoordinateMany(DivideByNormalization(doubles1, doublesZ)));
     }
 
@@ -149,7 +153,9 @@ public class StandardizedEuclideanDistance<I extends IntegerCoordinates<I> & Coo
      */
     @Override
     public double getTrueDistance(IntegerCoordinates<I> integerCoordinateMany1, IntegerCoordinates<I> integerCoordinateMany2) {
-        logger.info("√ ⁿ∑₁( " + integerCoordinateMany1 + " - " + integerCoordinateMany2 + ").map(i -> (i / StandardSequence)²)");
+        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+            logger.info("√ ⁿ∑₁( " + integerCoordinateMany1 + " - " + integerCoordinateMany2 + ").map(i -> (i / StandardSequence)²)");
+        }
         int[] doubles1 = integerCoordinateMany1.extend().diff(integerCoordinateMany2.extend()).toArray();
         int[] doublesZ = Z_ScoreNormalization.StandardizedSequence(doubles1);
         return this.euclideanMetric.getTrueDistance(new IntegerCoordinateMany(DivideByNormalization(doubles1, doublesZ)));
@@ -166,7 +172,9 @@ public class StandardizedEuclideanDistance<I extends IntegerCoordinates<I> & Coo
      */
     @Override
     public double getTrueDistance(FloatingPointCoordinates<D> doubleCoordinateMany1, FloatingPointCoordinates<D> doubleCoordinateMany2) {
-        logger.info("√ ⁿ∑₁( " + doubleCoordinateMany1 + " - " + doubleCoordinateMany2 + ").map(d -> (d / StandardSequence)²)");
+        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+            logger.info("√ ⁿ∑₁( " + doubleCoordinateMany1 + " - " + doubleCoordinateMany2 + ").map(d -> (d / StandardSequence)²)");
+        }
         double[] doubles1 = doubleCoordinateMany1.diff(doubleCoordinateMany2.extend()).toArray();
         double[] doublesZ = Z_ScoreNormalization.StandardizedSequence(doubles1);
         return this.euclideanMetric.getTrueDistance(new DoubleCoordinateMany(DivideByNormalization(doubles1, doublesZ)));

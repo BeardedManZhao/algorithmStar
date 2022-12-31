@@ -2,6 +2,8 @@ package zhao.algorithmMagic.utils;
 
 /**
  * Java类于 2022/10/11 19:04:22 创建
+ * <p>
+ * 字符串工具类
  *
  * @author 4
  */
@@ -16,8 +18,8 @@ public final class ASStr {
      */
     public static int count(String StringToBeCounted, char c) {
         int res = 0;
-        for (char c1 : StringToBeCounted.toCharArray()) {
-            if (c1 == c) ++res;
+        for (int length = StringToBeCounted.length() - 1; length >= 0; length--) {
+            if (StringToBeCounted.charAt(length) == c) ++res;
         }
         return res;
     }

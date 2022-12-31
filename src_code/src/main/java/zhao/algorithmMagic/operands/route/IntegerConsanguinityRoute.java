@@ -55,7 +55,7 @@ public class IntegerConsanguinityRoute implements NameRoute<IntegerConsanguinity
      * @return 血亲坐标
      */
     public static IntegerConsanguinityRoute parse(String CoordinatePath, IntegerCoordinateMany startingCoordinate, IntegerCoordinateMany endPointCoordinate) {
-        String[] split = CoordinatePath.split("\\s*->\\s*");
+        String[] split = PATH_SEPARATOR.split(CoordinatePath);
         if (split.length == 2) {
             return new IntegerConsanguinityRoute(split[0].trim(), split[1].trim(), startingCoordinate, endPointCoordinate);
         } else {

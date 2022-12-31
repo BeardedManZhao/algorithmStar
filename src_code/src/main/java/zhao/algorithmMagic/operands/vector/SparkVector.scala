@@ -52,15 +52,6 @@ class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mllib.lin
   }
 
   /**
-   * @return 不论是基元还是包装，都返回一个基元的浮点数组，该方法是万能的，始终都会返回出来一个真正的向量数组！
-   *         <p>
-   *         Both primitives and wrappers return a floating-point array of primitives. This method is omnipotent and will always return a true vector array!
-   */
-  override def toArray: Array[Double] = {
-    vector.toArray
-  }
-
-  /**
    * 计算两个向量的内积，也称之为数量积，具体实现请参阅api说明
    * <p>
    * Calculate the inner product of two vectors, also known as the quantity product, please refer to the api node for the specific implementation
@@ -115,6 +106,13 @@ class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mllib.lin
   }
 
   /**
+   * @return 向量中包含的维度数量
+   *         <p>
+   *         the number of dimensions contained in the vector
+   */
+  override def getNumberOfDimensions: Int = size
+
+  /**
    * 在两个操作数之间做差的方法，具体用法请参阅API说明。
    * <p>
    * The method of making a difference between two operands, please refer to the API description for specific usage.
@@ -139,18 +137,20 @@ class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mllib.lin
   }
 
   /**
-   * @return 向量中包含的维度数量
-   *         <p>
-   *         the number of dimensions contained in the vector
-   */
-  override def getNumberOfDimensions: Int = size
-
-  /**
    * @return 该对象的向量数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改
    *         <p>
    *         The vector array form of the object is copied, which does not generate any dependency, so it supports modification
    */
   override def CopyToNewArray(): Array[Double] = toArray
+
+  /**
+   * @return 不论是基元还是包装，都返回一个基元的浮点数组，该方法是万能的，始终都会返回出来一个真正的向量数组！
+   *         <p>
+   *         Both primitives and wrappers return a floating-point array of primitives. This method is omnipotent and will always return a true vector array!
+   */
+  override def toArray: Array[Double] = {
+    vector.toArray
+  }
 }
 
 object SparkVector {

@@ -28,6 +28,13 @@ public final class OperationAlgorithmManager implements OperationAlgorithm {
     private final static Logger LOGGER = LoggerFactory.getLogger("OperationAlgorithmManager");
     private final static OperationAlgorithmManager OPERATION_ALGORITHM_MANAGER = new OperationAlgorithmManager();
 
+    /**
+     * 计算组件的日志打印开关，当此处值为false的时候，计算组件中的日志将不会被打印，logger也不会被调用，一般来说，这里为了减少冗余的字符串实例化操作，会设置为false，当需要调试的时候才需要打开此处的数值。
+     * <p>
+     * The log printing switch of the calculation component. When the value here is false, the log in the calculation component will not be printed and the logger will not be called. Generally speaking, in order to reduce redundant string instantiation operations, the value here will be set to false. You need to turn on the value here only when debugging is required.
+     */
+    public static boolean PrintCalculationComponentLog = false;
+
     static {
         LOGGER.info("+============================== Welcome to [mathematical expression] ==============================+");
         LOGGER.info("+ \tStart time " + new Date());

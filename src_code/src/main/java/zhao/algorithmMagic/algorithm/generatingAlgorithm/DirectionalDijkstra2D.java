@@ -60,7 +60,9 @@ public class DirectionalDijkstra2D extends Dijkstra2D {
     }
 
     /**
-     * 设置是否要使用正方向来进行路径的构造与查找，如果设置为true，那么在调用""的时候会从起始点开始查找终止点，反之就是从终止点开始查找起始点。
+     * 设置是否要使用正方向来进行路径的构造与查找，如果设置为true，那么在调用"addRoute"的时候会从起始点开始查找终止点，反之就是从终止点开始查找起始点。
+     * <p>
+     * Set whether to use the positive direction for path construction and search. If it is set to true, then when "addRoute" is called, the starting point will be searched, and vice versa.
      *
      * @param forward true代表使用正方向
      * @return chain call
@@ -86,13 +88,17 @@ public class DirectionalDijkstra2D extends Dijkstra2D {
         if (isForward()) {
             // 获取起始点到终止点的名称
             String SEName = startingCoordinateName + " -> " + endPointCoordinateName;
-            logger.info("Insert " + SEName + " => " + trueDistance);
+            if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+                logger.info("Insert " + SEName + " => " + trueDistance);
+            }
             extracted(startingCoordinateName, endPointCoordinateName, trueDistance);
             this.doubleConsanguinityRoute2DHashMap.put(SEName, route);
         } else {
             // 获取起始点到终止点的名称
             String ESName = endPointCoordinateName + " -> " + startingCoordinateName;
-            logger.info("Insert " + ESName + " => " + trueDistance);
+            if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+                logger.info("Insert " + ESName + " => " + trueDistance);
+            }
             extracted(endPointCoordinateName, startingCoordinateName, trueDistance);
             this.doubleConsanguinityRoute2DHashMap.put(ESName, route);
         }

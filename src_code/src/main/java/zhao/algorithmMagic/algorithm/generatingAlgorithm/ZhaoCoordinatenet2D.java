@@ -135,10 +135,14 @@ public class ZhaoCoordinatenet2D implements GeneratingAlgorithm2D, Route2DDrawin
      */
     public void addRouteNet(RouteNet<IntegerCoordinateTwo, IntegerConsanguinityRoute2D> routeNet, boolean isMultithreading) {
         if (isMultithreading) {
-            logger.info("Multithreading Analyze network....");
+            if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+                logger.info("Multithreading Analyze network....");
+            }
             new Thread(() -> addRouteNet(routeNet), "ZhaoCoordinateNet2D").start();
         } else {
-            logger.info("Analyzing network using single thread....");
+            if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+                logger.info("Analyzing network using single thread....");
+            }
             addRouteNet(routeNet);
         }
     }
@@ -154,9 +158,15 @@ public class ZhaoCoordinatenet2D implements GeneratingAlgorithm2D, Route2DDrawin
      */
     public void addRouteNet(RouteNet<IntegerCoordinateTwo, IntegerConsanguinityRoute2D> routeNet) {
         HashSet<IntegerConsanguinityRoute2D> netDataSet = routeNet.getNetDataSet();
-        for (IntegerConsanguinityRoute2D integerConsanguinityRoute2D : netDataSet) {
-            logger.info("Analyze relationships : " + integerConsanguinityRoute2D);
-            addRoute(integerConsanguinityRoute2D);
+        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+            for (IntegerConsanguinityRoute2D integerConsanguinityRoute2D : netDataSet) {
+                logger.info("Analyze relationships : " + integerConsanguinityRoute2D);
+                addRoute(integerConsanguinityRoute2D);
+            }
+        } else {
+            for (IntegerConsanguinityRoute2D integerConsanguinityRoute2D : netDataSet) {
+                addRoute(integerConsanguinityRoute2D);
+            }
         }
     }
 

@@ -105,7 +105,9 @@ public class MinkowskiDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
      */
     public double getTrueDistance(FloatingPointCoordinates<D> iFloatingPointCoordinates) {
         double res = 0;
-        logger.info("ⁿ∑₁( coordinate^" + $P + " )^" + "1/" + $P);
+        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+            logger.info("ⁿ∑₁( coordinate^" + $P + " )^" + "1/" + $P);
+        }
         for (double d : iFloatingPointCoordinates.toArray()) {
             res += Math.pow(d, $P);
         }
@@ -124,7 +126,9 @@ public class MinkowskiDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
      */
     public double getTrueDistance(IntegerCoordinates<I> integerCoordinates) {
         int res = 0;
-        logger.info("ⁿ∑₁( coordinate^" + $P + " )^" + "1/" + $P);
+        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+            logger.info("ⁿ∑₁( coordinate^" + $P + " )^" + "1/" + $P);
+        }
         for (int d : integerCoordinates.toArray()) {
             res += Math.pow(d, $P);
         }
@@ -142,7 +146,9 @@ public class MinkowskiDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
      * @return True Euclidean distance between two points
      */
     public double getTrueDistance(IntegerCoordinates<I> integerCoordinateMany1, IntegerCoordinates<I> integerCoordinateMany2) {
-        logger.info("(ⁿ∑₁( " + integerCoordinateMany1 + " - " + integerCoordinateMany2 + ").map(d -> d²)) ^ 1/" + $P);
+        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+            logger.info("(ⁿ∑₁( " + integerCoordinateMany1 + " - " + integerCoordinateMany2 + ").map(d -> d²)) ^ 1/" + $P);
+        }
         int res = 0;
         for (int i : integerCoordinateMany1.extend().diff(integerCoordinateMany2.extend()).toArray()) {
             res += Math.pow(i, $P);
@@ -160,7 +166,9 @@ public class MinkowskiDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
      * @return True Euclidean distance between two points
      */
     public double getTrueDistance(FloatingPointCoordinates<D> floatingPointCoordinate1, FloatingPointCoordinates<D> floatingPointCoordinate2) {
-        logger.info("(ⁿ∑₁( " + floatingPointCoordinate1 + " - " + floatingPointCoordinate2 + ").map(d -> d²)) ^ 1/" + $P);
+        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+            logger.info("(ⁿ∑₁( " + floatingPointCoordinate1 + " - " + floatingPointCoordinate2 + ").map(d -> d²)) ^ 1/" + $P);
+        }
         int res = 0;
         for (double i : floatingPointCoordinate1.diff(floatingPointCoordinate2.extend()).toArray()) {
             res += Math.pow(i, $P);

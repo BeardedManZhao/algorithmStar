@@ -92,7 +92,9 @@ public class CosineDistance<V extends Vector<?, ?>> implements DistanceAlgorithm
      */
     public double getCos(Vector<V, Double> vector1, Vector<V, Double> vector2) {
         Double aDouble = vector1.innerProduct(vector2.expand());
-        logger.info(aDouble + " / ( " + vector1 + " * " + vector2 + " )");
+        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+            logger.info(aDouble + " / ( " + vector1 + " * " + vector2 + " )");
+        }
         return aDouble / (vector1.moduleLength() * vector2.moduleLength());
     }
 
@@ -109,7 +111,9 @@ public class CosineDistance<V extends Vector<?, ?>> implements DistanceAlgorithm
      */
     public double getCosineFunctionVariable(Vector<V, Double> vector1, Vector<V, Double> vector2) {
         double cos = getCos(vector1, vector2);
-        logger.info("ArcCos(Cos(" + cos + "))");
+        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+            logger.info("ArcCos(Cos(" + cos + "))");
+        }
         return Math.acos(cos);
     }
 
@@ -202,7 +206,9 @@ public class CosineDistance<V extends Vector<?, ?>> implements DistanceAlgorithm
      */
     public double getTrueDistance(DoubleVector doubleVector1, DoubleVector doubleVector2) {
         double aDouble = doubleVector1.innerProduct(doubleVector2);
-        logger.info(aDouble + " / ( " + doubleVector1 + " * " + doubleVector2 + " )");
+        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+            logger.info(aDouble + " / ( " + doubleVector1 + " * " + doubleVector2 + " )");
+        }
         return aDouble / (doubleVector1.moduleLength() * doubleVector2.moduleLength());
     }
 
@@ -217,7 +223,9 @@ public class CosineDistance<V extends Vector<?, ?>> implements DistanceAlgorithm
      */
     public double getTrueDistance(IntegerVector integerVector1, IntegerVector integerVector2) {
         double aDouble = integerVector1.innerProduct(integerVector2);
-        logger.info(aDouble + " / ( " + integerVector1 + " * " + integerVector2 + " )");
+        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+            logger.info(aDouble + " / ( " + integerVector1 + " * " + integerVector2 + " )");
+        }
         return aDouble / (integerVector1.moduleLength() * integerVector2.moduleLength());
     }
 

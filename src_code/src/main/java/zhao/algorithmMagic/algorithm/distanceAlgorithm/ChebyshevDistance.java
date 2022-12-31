@@ -102,7 +102,9 @@ public class ChebyshevDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
      */
     public double getTrueDistance(FloatingPointCoordinates<D> iFloatingPointCoordinates) {
         double res = 0;
-        logger.info("MAX(|0 - coordinate|)");
+        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+            logger.info("MAX(|0 - coordinate|)");
+        }
         for (double d : iFloatingPointCoordinates.toArray()) {
             double v = ASMath.absoluteValue(d);
             if (v > res) res = v;
@@ -124,7 +126,9 @@ public class ChebyshevDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
      */
     public double getTrueDistance(IntegerCoordinates<I> integerCoordinates) {
         int res = 0;
-        logger.info("MAX(|0 - coordinate|)");
+        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+            logger.info("MAX(|0 - coordinate|)");
+        }
         for (int d : integerCoordinates.toArray()) {
             int v = ASMath.absoluteValue(d);
             if (v > res) res = v;
@@ -149,7 +153,9 @@ public class ChebyshevDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
      */
     public double getTrueDistance(IntegerCoordinates<I> integerCoordinate1, IntegerCoordinates<I> integerCoordinate2) {
         int res = 0;
-        logger.info("MAX(|coordinate1 - coordinate2|)");
+        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+            logger.info("MAX(|coordinate1 - coordinate2|)");
+        }
         for (int i : integerCoordinate1.extend().diff(integerCoordinate2.extend()).toArray()) {
             int v = ASMath.absoluteValue(i);
             if (v > res) res = v;
@@ -174,7 +180,9 @@ public class ChebyshevDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
      */
     public double getTrueDistance(FloatingPointCoordinates<D> iFloatingPointCoordinates1, FloatingPointCoordinates<D> iFloatingPointCoordinates2) {
         double res = 0;
-        logger.info("MAX(|coordinate1 - coordinate2|)");
+        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+            logger.info("MAX(|coordinate1 - coordinate2|)");
+        }
         for (double i : iFloatingPointCoordinates1.diff(iFloatingPointCoordinates2.extend()).toArray()) {
             double v = ASMath.absoluteValue(i);
             if (v > res) res = v;

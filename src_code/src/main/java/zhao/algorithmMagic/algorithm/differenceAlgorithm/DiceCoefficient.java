@@ -109,7 +109,9 @@ public class DiceCoefficient<ElementType> implements DifferenceAlgorithm<Set<Ele
         int size1 = ASMath.intersection(value1, value2).size();
         // 计算出来两个集合总共的长度
         int size2 = value1.size() + value2.size();
-        logger.info("2 len(|A ∪ B|) / len(|A|) + len(|B|) = " + "2 * " + size1 + " / " + size2);
+        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+            logger.info("2 len(|A ∪ B|) / len(|A|) + len(|B|) = " + "2 * " + size1 + " / " + size2);
+        }
         // 2 * 交集的长度 / 并集的长度
         return (size1 << 1) / (double) size2;
     }
@@ -128,7 +130,9 @@ public class DiceCoefficient<ElementType> implements DifferenceAlgorithm<Set<Ele
         int size1 = ASMath.intersection(value1, value2).length();
         // 计算出来两个集合总共的长度
         int size2 = value1.length() + value2.length();
-        logger.info("2 len(|A ∪ B|) / len(|A|) + len(|B|) = " + "2 * " + size1 + " / " + size2);
+        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
+            logger.info("2 len(|A ∪ B|) / len(|A|) + len(|B|) = " + "2 * " + size1 + " / " + size2);
+        }
         // 2 * 交集的长度 / 并集的长度
         return (size1 << 1) / (double) size2;
     }
