@@ -132,6 +132,20 @@ public abstract class Matrix<ImplementationType extends Matrix<?, ?>, ElementTyp
         return this.expand();
     }
 
+    /**
+     * @return 该对象的向量数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改
+     * <p>
+     * The vector array form of the object is copied, which does not generate any dependency, so it supports modification
+     */
+    public abstract double[][] toArrays();
+
+    /**
+     * @return 返回该矩阵中所有行数据的数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改。
+     * <p>
+     * Returns the array form of all row data in the matrix. Since it is copied, it will not generate any dependency, so it supports modification.
+     */
+    public abstract double[][] CopyToNewArrays();
+
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();

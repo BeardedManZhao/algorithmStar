@@ -268,13 +268,23 @@ public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
     }
 
     /**
-     * @return 不论是基元还是包装，都返回一个基元的浮点数组，该方法是万能的，始终都会返回出来一个真正的矩阵数组！
+     * @return 获取到本矩阵中的某一行数据，按照行指针获取，通过调整外界行指针的变化，来获取到对应行数据，需要注意的是，该函数获取到的数据矩阵对象中正在使用的，如果返回值被更改，那么会导致一些不可意料的情况发生。
      * <p>
-     * Both primitives and wrappers return a floating-point array of primitives. This method is omnipotent and will always return a true vector array!
+     * Get the data of a certain row in this matrix according to the row pointer, and get the data of the corresponding row by adjusting the changes of the external row pointer. Note that if the return value of the data matrix object obtained by this function is being used, it will lead to some unexpected situations.
      */
     @Override
     public double[] toArray() {
         return this.VectorArrayPrimitive[super.RowPointer];
+    }
+
+    /**
+     * @return 获取到本矩阵中的所有数据，需要注意的是，该函数获取到的数据矩阵对象中正在使用的，如果返回值被更改，那么会导致一些不可意料的情况发生。
+     * <p>
+     * Get all the data in this matrix. Note that if the return value of the data matrix object obtained by this function is changed, some unexpected situations will occur.
+     */
+    @Override
+    public double[][] toArrays() {
+        return this.VectorArrayPrimitive;
     }
 
     /**
@@ -286,6 +296,18 @@ public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
     public double[] CopyToNewArray() {
         final double[] res = new double[this.getColCount()];
         System.arraycopy(this.toArray(), 0, res, 0, res.length);
+        return res;
+    }
+
+    /**
+     * @return 返回该矩阵中所有行数据的数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改。
+     * <p>
+     * Returns the array form of all row data in the matrix. Since it is copied, it will not generate any dependency, so it supports modification.
+     */
+    @Override
+    public double[][] CopyToNewArrays() {
+        final double[][] res = new double[this.getRowCount()][this.getColCount()];
+        System.arraycopy(this.VectorArrayPrimitive, 0, res, 0, res.length);
         return res;
     }
 

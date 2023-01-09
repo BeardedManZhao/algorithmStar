@@ -80,8 +80,9 @@ public final class ASStr {
         if (c.length < 1) {
             return false;
         } else if (c.length == 1) {
+            final char c2 = c[0];
             for (char c1 : str1.toCharArray()) {
-                if (c1 == c[0]) {
+                if (c1 == c2) {
                     return true;
                 }
             }

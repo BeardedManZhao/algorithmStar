@@ -123,6 +123,48 @@ public class MAIN1 {
 }
 ```
 
+### 聚合计算
+聚合计算组件，于 1.14 版本之后开始支持使用，是专用于多个元素聚合计算的操作算法组件，在库中有各类聚合操作算法，各类聚合计算组件在下面的表格中进行了相关介绍！
+
+- 聚合计算组件列表
+
+| 计算组件类型                                                                 | 支持版本 | 功能                 |
+|------------------------------------------------------------------------|------|--------------------|
+| zhao.algorithmMagic.algorithm.aggregationAlgorithm.ExtremumAggregation | v1.0 | 计算一些数值的极值          |
+| zhao.algorithmMagic.algorithm.aggregationAlgorithm.WeightedAverage     | v1.0 | 计算一些数值的加权平均数       |
+| zhao.algorithmMagic.algorithm.aggregationAlgorithm.ModularOperation    | v1.0 | 计算一个序列或多个序列聚合之后的模长 |
+
+本次以数值的极值计算为例，展示聚合组件的功能
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.algorithm.aggregationAlgorithm.ExtremumAggregation;
+import zhao.algorithmMagic.operands.vector.DoubleVector;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 聚合计算组件 极值计算
+        ExtremumAggregation extremum = ExtremumAggregation.getInstance("Extremum");
+        // 构建一个向量
+        DoubleVector doubleVector = DoubleVector.parse(6, 2, 4, 5, 1, 9, 6, 19, 45);
+        // 设置获取最小值
+        extremum.setMode(ExtremumAggregation.MIN);
+        // 开始计算并打印最小值
+        System.out.println(extremum.calculation(doubleVector));
+        // 设置获取最大值
+        extremum.setMode(ExtremumAggregation.MAX);
+        // 开始计算并打印最大值
+        System.out.println(extremum.calculation(doubleVector));
+        // 设置获取奇数最小值
+        extremum.setMode(ExtremumAggregation.ODD_MIN);
+        System.out.println(extremum.calculation(doubleVector));
+        // 设置获取偶数最大值
+        extremum.setMode(ExtremumAggregation.EVEN_MAX);
+        System.out.println(extremum.calculation(doubleVector));
+    }
+}
+```
+
 - Switch
   to [English Document](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/OperationAlgorithm.md)
 

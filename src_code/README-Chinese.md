@@ -24,13 +24,37 @@ import zhao.algorithmMagic.operands.vector.IntegerVector;
 import zhao.algorithmMagic.operands.vector.Vector;
 
 public class MAIN1 {
-  public static void main(String[] args) {
-    // 打开日志输出 TODO 这是可选的，如果您不想要无用的计算日志，您可以直接在这里设置为false或是不进行该参数的设置，该参数默认为false
-    OperationAlgorithmManager.PrintCalculationComponentLog = true;
-    CosineDistance<Vector<DoubleVector, IntegerVector>> zhao = CosineDistance.getInstance("zhao");
-    double trueDistance = zhao.getTrueDistance(DoubleVector.parse(1.0, 2.0, 3.0, 4.0, 5.0), DoubleVector.parse(1.0, 2.0, 3.0, 4.0, 5.0));
-    System.out.println(trueDistance);
-  }
+    public static void main(String[] args) {
+        // 打开日志输出 TODO 这是可选的，如果您不想要无用的计算日志，您可以直接在这里设置为false或是不进行该参数的设置，该参数默认为false
+        OperationAlgorithmManager.PrintCalculationComponentLog = true;
+        CosineDistance<Vector<DoubleVector, IntegerVector>> zhao = CosineDistance.getInstance("zhao");
+        double trueDistance = zhao.getTrueDistance(DoubleVector.parse(1.0, 2.0, 3.0, 4.0, 5.0), DoubleVector.parse(1.0, 2.0, 3.0, 4.0, 5.0));
+        System.out.println(trueDistance);
+    }
+}
+```
+
+* 增加了聚合计算模块，其中包含诸多聚合类计算组件，下面是有关加权平均值聚合运算的示例
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.algorithm.aggregationAlgorithm.WeightedAverage;
+import zhao.algorithmMagic.operands.vector.DoubleVector;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 聚合计算组件 加权平均值
+        WeightedAverage avg = WeightedAverage.getInstance("avg");
+        // 构建一个向量
+        DoubleVector doubleVector = DoubleVector.parse(20, 10, 40);
+        // 计算平均值并打印
+        System.out.println(avg.calculation(doubleVector));
+        // 设置权重数组 这样的设置使得 10 这个数值在本次计算中的影响占比会比较高
+        double[] doubles = {1, 2, 1};
+        // 计算加权平均值并打印
+        System.out.println(avg.calculation(doubles, doubleVector.toArray()));
+    }
 }
 ```
 

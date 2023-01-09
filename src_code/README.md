@@ -31,16 +31,41 @@ import zhao.algorithmMagic.operands.vector.IntegerVector;
 import zhao.algorithmMagic.operands.vector.Vector;
 
 public class MAIN1 {
-  public static void main(String[] args) {
-    // Open log output 
-    // TODO This is optional. 
-    //  If you do not want useless calculation logs, you can directly set it to false here or do not set this parameter, 
-    //  which is false by default
-    OperationAlgorithmManager.PrintCalculationComponentLog = true;
-    CosineDistance<Vector<DoubleVector, IntegerVector>> zhao = CosineDistance.getInstance("zhao");
-    double trueDistance = zhao.getTrueDistance(DoubleVector.parse(1.0, 2.0, 3.0, 4.0, 5.0), DoubleVector.parse(1.0, 2.0, 3.0, 4.0, 5.0));
-    System.out.println(trueDistance);
-  }
+    public static void main(String[] args) {
+        // Open log output 
+        // TODO This is optional. 
+        //  If you do not want useless calculation logs, you can directly set it to false here or do not set this parameter, 
+        //  which is false by default
+        OperationAlgorithmManager.PrintCalculationComponentLog = true;
+        CosineDistance<Vector<DoubleVector, IntegerVector>> zhao = CosineDistance.getInstance("zhao");
+        double trueDistance = zhao.getTrueDistance(DoubleVector.parse(1.0, 2.0, 3.0, 4.0, 5.0), DoubleVector.parse(1.0, 2.0, 3.0, 4.0, 5.0));
+        System.out.println(trueDistance);
+    }
+}
+```
+
+* The aggregation calculation module is added, which includes many aggregation calculation components. The following is
+  an example of weighted average aggregation operation
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.algorithm.aggregationAlgorithm.WeightedAverage;
+import zhao.algorithmMagic.operands.vector.DoubleVector;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // Aggregate calculation component weighted average
+        WeightedAverage avg = WeightedAverage.getInstance("avg");
+        // Build a vector
+        DoubleVector doubleVector = DoubleVector.parse(20, 10, 40);
+        // Calculate the average value and print it
+        System.out.println(avg.calculation(doubleVector));
+        // The setting of weight array makes the influence of 10 in this calculation higher
+        double[] doubles = {1, 2, 1};
+        // Calculate weighted average and print
+        System.out.println(avg.calculation(doubles, doubleVector.toArray()));
+    }
 }
 ```
 

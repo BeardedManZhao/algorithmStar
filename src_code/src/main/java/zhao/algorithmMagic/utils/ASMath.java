@@ -1,6 +1,7 @@
 package zhao.algorithmMagic.utils;
 
 import zhao.algorithmMagic.operands.ComplexNumber;
+import zhao.algorithmMagic.utils.filter.NumericalFiltering;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -54,6 +55,58 @@ public final class ASMath {
         return new int[]{max, min};
     }
 
+
+    /**
+     * 计算一个序列中的最大值或最小值
+     *
+     * @param doubles 需要被计算的序列
+     * @param isMax   如果为true，代表计算的是最大值
+     * @return 序列中所有元素的极值
+     */
+    public static double MaxOrMin(double[] doubles, boolean isMax, NumericalFiltering numericalFiltering) {
+        // 计算最大值最小值
+        double res = doubles[0];
+        if (isMax) {
+            for (double aDouble : doubles) {
+                if (numericalFiltering.isComplianceEvents(aDouble)) {
+                    res = Math.max(res, aDouble);
+                }
+            }
+        } else {
+            for (double aDouble : doubles) {
+                if (numericalFiltering.isComplianceEvents(aDouble)) {
+                    res = Math.min(res, aDouble);
+                }
+            }
+        }
+        return res;
+    }
+
+    /**
+     * 计算一个序列的最大值与最小值
+     *
+     * @param doubles 被计算的序列
+     * @return 计算结果，第一个参数是最大值，第二个参数是最小值
+     */
+    public static int MaxOrMin(int[] doubles, boolean isMax, NumericalFiltering numericalFiltering) {
+        // 计算最大值最小值
+        int res = doubles[0];
+        if (isMax) {
+            for (int aDouble : doubles) {
+                if (numericalFiltering.isComplianceEvents(aDouble)) {
+                    res = Math.max(res, aDouble);
+                }
+            }
+        } else {
+            for (int aDouble : doubles) {
+                if (numericalFiltering.isComplianceEvents(aDouble)) {
+                    res = Math.min(res, aDouble);
+                }
+            }
+        }
+        return res;
+    }
+
     /**
      * 计算一个数值的阶乘
      *
@@ -102,7 +155,7 @@ public final class ASMath {
      *
      * @param n 数据样本的总数
      * @param m 要提取的数据样本数量，不同数量的组合在样本中有很多方式，可以计算出来，m个数据样本在n个数据样本之内的组合
-     * @return 排列组合中的具体组合数量。
+     * @return 排列组合中的具体组合数量，如果返回-1，代表参数不合法。
      */
     public static double CombinationNumber(int n, int m) {
         if (m <= n) {
@@ -125,9 +178,7 @@ public final class ASMath {
             // 序列中 Xn 这个数值的出现频率
             int frequency = frequency(Xn, X);
             // 计算出 Xn 在所有整个序列中的概率，真假条件由外界传入
-            double probability = probability(X, event) / X.length;
-            System.out.println("E(X)  = ⁿ∑₁ (probability(Xn) * frequency(Xn in X)) = ⁿ∑₁ " + probability + " * " + frequency + ")");
-            res += probability * frequency;
+            res += (probability(X, event) / X.length) * frequency;
         }
         return res;
     }
@@ -533,7 +584,7 @@ public final class ASMath {
     public static double[] sort(boolean des, double... doubles) {
         Arrays.sort(doubles);
         if (!des) {
-            ASStr.ArrayReverse(doubles);
+            return ASStr.ArrayReverse(doubles);
         }
         return doubles;
     }

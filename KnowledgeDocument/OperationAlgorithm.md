@@ -134,6 +134,48 @@ public class MAIN1 {
 }
 ```
 
+### Aggregate Calculation
+Aggregation calculation component, which is supported since version 1.14, is an operation algorithm component dedicated to aggregation calculation of multiple elements. There are various aggregation operation algorithms in the library. Various aggregation calculation components are described in the following table!
+
+- Aggregate Calculation Component List
+
+| Calculation component type                                             | Supported versions | function           |
+|------------------------------------------------------------------------|--------------------|--------------------|
+| zhao.algorithmMagic.algorithm.aggregationAlgorithm.ExtremumAggregation | v1.0               | 计算一些数值的极值          |
+| zhao.algorithmMagic.algorithm.aggregationAlgorithm.WeightedAverage     | v1.0               | 计算一些数值的加权平均数       |
+| zhao.algorithmMagic.algorithm.aggregationAlgorithm.ModularOperation    | v1.0               | 计算一个序列或多个序列聚合之后的模长 |
+
+This time, the extreme value calculation of numerical value is taken as an example to show the functions of aggregation components
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.algorithm.aggregationAlgorithm.ExtremumAggregation;
+import zhao.algorithmMagic.operands.vector.DoubleVector;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 聚合计算组件 极值计算
+        ExtremumAggregation extremum = ExtremumAggregation.getInstance("Extremum");
+        // 构建一个向量
+        DoubleVector doubleVector = DoubleVector.parse(6, 2, 4, 5, 1, 9, 6, 19, 45);
+        // 设置获取最小值
+        extremum.setMode(ExtremumAggregation.MIN);
+        // 开始计算并打印最小值
+        System.out.println(extremum.calculation(doubleVector));
+        // 设置获取最大值
+        extremum.setMode(ExtremumAggregation.MAX);
+        // 开始计算并打印最大值
+        System.out.println(extremum.calculation(doubleVector));
+        // 设置获取奇数最小值
+        extremum.setMode(ExtremumAggregation.ODD_MIN);
+        System.out.println(extremum.calculation(doubleVector));
+        // 设置获取偶数最大值
+        extremum.setMode(ExtremumAggregation.EVEN_MAX);
+        System.out.println(extremum.calculation(doubleVector));
+    }
+}
+```
+
 - 切换到 [中文文档](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/OperationAlgorithm-Chinese.md)
 
 <hr>

@@ -185,7 +185,9 @@ public class IntegerVector extends ASVector<IntegerVector, Integer> {
     }
 
     /**
-     * @return 针对整数数组中无法进行原数组的获而提供的补偿方法，该方法可以直接将整数数组中的向量数组获取到
+     * @return 针对整数数组中无法进行原数组的获而提供的补偿方法，该方法可以直接将整数数组中的向量数组获取到，注意，该数组是原数据。
+     * <p>
+     * For the compensation method provided for the inability to obtain the original array in the integer array, this method can directly obtain the vector array in the integer array. Note that this array is the original data.
      */
     public int[] toIntArray() {
         return this.VectorArrayPrimitive;
