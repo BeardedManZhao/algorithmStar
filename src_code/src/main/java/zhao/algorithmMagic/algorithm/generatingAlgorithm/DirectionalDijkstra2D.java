@@ -24,7 +24,7 @@ public class DirectionalDijkstra2D extends Dijkstra2D {
     public DirectionalDijkstra2D() {
     }
 
-    public DirectionalDijkstra2D(String AlgorithmName) {
+    protected DirectionalDijkstra2D(String AlgorithmName) {
         super(AlgorithmName);
     }
 

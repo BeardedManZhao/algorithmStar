@@ -5,6 +5,7 @@ import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateMany;
 import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateThree;
 import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo;
+import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASMath;
 
 import java.util.Arrays;
@@ -112,23 +113,6 @@ public class DoubleVector extends ASVector<DoubleVector, Double> {
     }
 
     /**
-     * @param vectorArrayPrimitive 设置本向量的基础向量数组
-     */
-    public void setVectorArrayPrimitive(double[] vectorArrayPrimitive) {
-        VectorArrayPrimitive = vectorArrayPrimitive;
-        reFresh();
-    }
-
-    /**
-     * @return 向量数据容器的数组形式，调用此方法，您可以获取到该向量中的数值。
-     * <p>
-     * The array form of the vector data container, you can get the values in the vector by calling this method.
-     */
-    public double[] getVectorPrimitiveArray() {
-        return this.VectorArrayPrimitive;
-    }
-
-    /**
      * 将两个操作数进行求和的方法，具体用法请参阅API说明。
      * <p>
      * The method for summing two operands, please refer to the API description for specific usage.
@@ -145,8 +129,8 @@ public class DoubleVector extends ASVector<DoubleVector, Double> {
         int numberOfDimensions2 = value.getNumberOfDimensions();
         if (numberOfDimensions1 == numberOfDimensions2) {
             double[] res = new double[numberOfDimensions1];
-            double[] doubles1 = this.toArray();
-            double[] doubles2 = value.toArray();
+            double[] doubles1 = this.toDoubleArray();
+            double[] doubles2 = value.toDoubleArray();
             for (int i = 0; i < numberOfDimensions1; i++) {
                 res[i] = doubles1[i] + doubles2[i];
             }
@@ -176,8 +160,8 @@ public class DoubleVector extends ASVector<DoubleVector, Double> {
         int numberOfDimensions2 = value.getNumberOfDimensions();
         if (numberOfDimensions1 == numberOfDimensions2) {
             double[] res = new double[numberOfDimensions1];
-            double[] doubles1 = this.toArray();
-            double[] doubles2 = value.toArray();
+            double[] doubles1 = this.toDoubleArray();
+            double[] doubles2 = value.toDoubleArray();
             for (int i = 0; i < numberOfDimensions1; i++) {
                 res[i] = doubles1[i] - doubles2[i];
             }
@@ -216,8 +200,8 @@ public class DoubleVector extends ASVector<DoubleVector, Double> {
      */
     @Override
     public DoubleVector multiply(DoubleVector vector) {
-        double[] vectorArray1 = this.toArray();
-        double[] vectorArray2 = vector.toArray();
+        double[] vectorArray1 = this.toDoubleArray();
+        double[] vectorArray2 = vector.toDoubleArray();
         int length1 = vectorArray1.length;
         int length2 = vectorArray2.length;
         if (length1 == length2) {
@@ -259,8 +243,8 @@ public class DoubleVector extends ASVector<DoubleVector, Double> {
      */
     @Override
     public Double innerProduct(DoubleVector vector) {
-        double[] doubles1 = this.toArray();
-        double[] doubles2 = vector.toArray();
+        double[] doubles1 = this.toDoubleArray();
+        double[] doubles2 = vector.toDoubleArray();
         if (doubles1.length == doubles2.length) {
             double innerProduct = 0b0;
             for (int indexNum = 0b0; indexNum < doubles1.length; indexNum++) {
@@ -289,7 +273,7 @@ public class DoubleVector extends ASVector<DoubleVector, Double> {
      * Both primitives and wrappers return a floating-point array of primitives. This method is omnipotent and will always return a true vector array!
      */
     @Override
-    public double[] toArray() {
+    public double[] toDoubleArray() {
         return this.VectorArrayPrimitive;
     }
 
@@ -299,11 +283,33 @@ public class DoubleVector extends ASVector<DoubleVector, Double> {
      * The vector array form of the object is copied, which does not generate any dependency, so it supports modification
      */
     @Override
-    public double[] CopyToNewArray() {
-        final double[] doubles = this.toArray();
+    public double[] CopyToNewDoubleArray() {
+        final double[] doubles = this.toDoubleArray();
         final double[] res = new double[doubles.length];
         System.arraycopy(doubles, 0, res, 0, res.length);
         return res;
+    }
+
+    /**
+     * @return 不论是基元还是包装，都返回一个基元的整形数组，该方法是万能的，始终都会返回出来一个真正的向量数组！
+     * <p>
+     * Both primitives and wrappers return a floating-point array of primitives. This method is omnipotent and will always return a true vector array!
+     * <p>
+     * 注意 该方法在大部分情况下返回的通常都是源数组，不允许更改，只能作为只读变量。
+     */
+    @Override
+    public int[] toIntArray() {
+        return ASClass.DoubleArray_To_IntArray(toDoubleArray());
+    }
+
+    /**
+     * @return 该对象的向量数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改
+     * <p>
+     * The vector array form of the object is copied, which does not generate any dependency, so it supports modification
+     */
+    @Override
+    public int[] CopyToNewIntArray() {
+        return toIntArray();
     }
 
     /**
@@ -314,23 +320,6 @@ public class DoubleVector extends ASVector<DoubleVector, Double> {
     @Override
     public int getNumberOfDimensions() {
         return this.VectorArrayPrimitive.length;
-    }
-
-    /**
-     * 向量数据转移，您可以通过这个方法，将向量中的所有数值拷贝到其它的向量容器
-     * <p>
-     * Vector type conversion, you can customize the type of the vector, please note: the sequence numeric data type inside your vector cannot be changed!
-     *
-     * @param doubleVector 被转换成的目标向量
-     *                     <p>
-     *                     The target vector type to be converted into.
-     */
-    public void copyTo(DoubleVector doubleVector) {
-        if (doubleVector.VectorArrayPrimitive.length < this.VectorArrayPrimitive.length) {
-            doubleVector.VectorArrayPrimitive = new double[this.VectorArrayPrimitive.length];
-        }
-        System.arraycopy(this.VectorArrayPrimitive, 0, doubleVector.VectorArrayPrimitive, 0, this.VectorArrayPrimitive.length);
-        doubleVector.vectorStr = this.vectorStr;
     }
 
     @Override

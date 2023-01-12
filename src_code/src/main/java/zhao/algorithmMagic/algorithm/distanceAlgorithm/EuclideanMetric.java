@@ -103,7 +103,7 @@ public class EuclideanMetric<I extends IntegerCoordinates<I> & Coordinate<I>, D 
         if (OperationAlgorithmManager.PrintCalculationComponentLog) {
             logger.info("√ ⁿ∑₁( coordinate² )");
         }
-        for (double v : doubleVector.toArray()) {
+        for (double v : doubleVector.toDoubleArray()) {
             res += ASMath.Power2(v);
         }
         return Math.sqrt(res);

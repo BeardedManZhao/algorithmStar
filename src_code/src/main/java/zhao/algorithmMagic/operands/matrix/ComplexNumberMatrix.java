@@ -2,6 +2,7 @@ package zhao.algorithmMagic.operands.matrix;
 
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.operands.ComplexNumber;
+import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASMath;
 
 import java.util.Arrays;
@@ -71,33 +72,6 @@ public class ComplexNumberMatrix extends Matrix<ComplexNumberMatrix, ComplexNumb
             }
         }
         return parse(complexNumbers);
-    }
-
-    /**
-     * @return 该对象的向量数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改
-     * <p>
-     * The vector array form of the object is copied, which does not generate any dependency, so it supports modification
-     */
-    @Override
-    public double[][] toArrays() {
-        int temp = this.RowPointer;
-        PointerReset();
-        double[][] res = new double[this.complexNumbers.length][this.complexNumbers[0].length];
-        int count = -1;
-        while (this.MovePointerDown()) {
-            res[++count] = this.toArray();
-        }
-        return res;
-    }
-
-    /**
-     * @return 返回该矩阵中所有行数据的数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改。
-     * <p>
-     * Returns the array form of all row data in the matrix. Since it is copied, it will not generate any dependency, so it supports modification.
-     */
-    @Override
-    public double[][] CopyToNewArrays() {
-        return toArrays();
     }
 
     /**
@@ -281,41 +255,6 @@ public class ComplexNumberMatrix extends Matrix<ComplexNumberMatrix, ComplexNumb
     }
 
     /**
-     * @return 不论是基元还是包装，都返回一个基元的浮点数组，该方法是万能的，始终都会返回出来一个真正的数组！
-     * <p>
-     * Both primitives and wrappers return a floating-point array of primitives. This method is omnipotent and will always return a true vector array!
-     * 请注意这里返回的数值是所有复数的实部 虚部，格式为：a.b1(结尾处的1可能是近似值)，如果您需要使用指针获取到复数数组，请使用"toComplexNumberArray"。
-     * <p>
-     * Please note that the values returned here are the real and imaginary parts of all complex numbers in the format: a.b1 (the 1 at the end may be an approximation), if you need to use a pointer to get an array of complex numbers, please use "toComplexNumberArray".
-     */
-    @Override
-    public double[] toArray() {
-        ComplexNumber[] complexNumbers = toComplexNumberArray();
-        double[] res = new double[complexNumbers.length];
-        for (int i = 0; i < res.length; i++) {
-            ComplexNumber complexNumber = complexNumbers[i];
-            // 获取到虚部的数值
-            int imaginary = complexNumber.getImaginary();
-            // 计算出来虚部小数点后的位数，然后根据位数构建一个阈值
-            int length = String.valueOf(imaginary).length();
-            double len = length < 1 ? 1 : Math.pow(10, length);
-            // 根据阈值生成小数点后的显示样式
-            res[i] = complexNumber.getReal() + (imaginary / len) + (1 / ((len) * 10));
-        }
-        return res;
-    }
-
-    /**
-     * @return 该对象的向量数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改
-     * <p>
-     * The vector array form of the object is copied, which does not generate any dependency, so it supports modification
-     */
-    @Override
-    public double[] CopyToNewArray() {
-        return toArray();
-    }
-
-    /**
      * @return 返回矩阵种当前指针的复数数组
      */
     public ComplexNumber[] toComplexNumberArray() {
@@ -364,5 +303,114 @@ public class ComplexNumberMatrix extends Matrix<ComplexNumberMatrix, ComplexNumb
     @Override
     protected void reFresh() {
         this.PointerReset();
+    }
+
+    /**
+     * @return 不论是基元还是包装，都返回一个基元的浮点数组，该方法是万能的，始终都会返回出来一个真正的数组！
+     * <p>
+     * Both primitives and wrappers return a floating-point array of primitives. This method is omnipotent and will always return a true vector array!
+     * 请注意这里返回的数值是所有复数的实部 虚部，格式为：a.b1(结尾处的1可能是近似值)，如果您需要使用指针获取到复数数组，请使用"toComplexNumberArray"。
+     * <p>
+     * Please note that the values returned here are the real and imaginary parts of all complex numbers in the format: a.b1 (the 1 at the end may be an approximation), if you need to use a pointer to get an array of complex numbers, please use "toComplexNumberArray".
+     */
+    public double[] toDoubleArray() {
+        ComplexNumber[] complexNumbers = toComplexNumberArray();
+        double[] res = new double[complexNumbers.length];
+        for (int i = 0; i < res.length; i++) {
+            ComplexNumber complexNumber = complexNumbers[i];
+            // 获取到虚部的数值
+            int imaginary = complexNumber.getImaginary();
+            // 计算出来虚部小数点后的位数，然后根据位数构建一个阈值
+            int length = String.valueOf(imaginary).length();
+            double len = length < 1 ? 1 : Math.pow(10, length);
+            // 根据阈值生成小数点后的显示样式
+            res[i] = complexNumber.getReal() + (imaginary / len) + (1 / ((len) * 10));
+        }
+        return res;
+    }
+
+    /**
+     * @return 该对象的向量数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改
+     * <p>
+     * The vector array form of the object is copied, which does not generate any dependency, so it supports modification
+     */
+    public double[] CopyToNewDoubleArray() {
+        return toDoubleArray();
+    }
+
+    /**
+     * @return 不论是基元还是包装，都返回一个基元的整形数组，该方法是万能的，始终都会返回出来一个真正的向量数组！
+     * <p>
+     * Both primitives and wrappers return a floating-point array of primitives. This method is omnipotent and will always return a true vector array!
+     * <p>
+     * 注意 该方法在大部分情况下返回的通常都是源数组，不允许更改，只能作为只读变量。
+     */
+    @Override
+    public int[] toIntArray() {
+        return ASClass.DoubleArray_To_IntArray(toDoubleArray());
+    }
+
+    /**
+     * @return 该对象的向量数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改
+     * <p>
+     * The vector array form of the object is copied, which does not generate any dependency, so it supports modification
+     */
+    @Override
+    public int[] CopyToNewIntArray() {
+        return toIntArray();
+    }
+
+    /**
+     * @return 获取到本矩阵中的所有数据，需要注意的是，该函数获取到的数据矩阵对象中正在使用的，如果返回值被更改，那么会导致一些不可意料的情况发生。
+     * <p>
+     * Get all the data in this matrix. Note that if the return value of the data matrix object obtained by this function is changed, some unexpected situations will occur.
+     */
+    public double[][] toDoubleArrays() {
+        int temp = this.RowPointer;
+        PointerReset();
+        double[][] res = new double[this.complexNumbers.length][this.complexNumbers[0].length];
+        int count = -1;
+        while (this.MovePointerDown()) {
+            res[++count] = this.toDoubleArray();
+        }
+        PointerReset(temp);
+        return res;
+    }
+
+    /**
+     * @return 返回该矩阵中所有行数据的数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改。
+     * <p>
+     * Returns the array form of all row data in the matrix. Since it is copied, it will not generate any dependency, so it supports modification.
+     */
+    public double[][] CopyToNewDoubleArrays() {
+        return toDoubleArrays();
+    }
+
+    /**
+     * @return 获取到本矩阵中的所有数据，需要注意的是，该函数获取到的数据矩阵对象中正在使用的，如果返回值被更改，那么会导致一些不可意料的情况发生。
+     * <p>
+     * Get all the data in this matrix. Note that if the return value of the data matrix object obtained by this function is changed, some unexpected situations will occur.
+     */
+    @Override
+    public int[][] toIntArrays() {
+        int temp = this.RowPointer;
+        PointerReset();
+        int[][] res = new int[this.complexNumbers.length][this.complexNumbers[0].length];
+        int count = -1;
+        while (this.MovePointerDown()) {
+            res[++count] = toIntArray();
+        }
+        PointerReset(temp);
+        return res;
+    }
+
+    /**
+     * @return 返回该矩阵中所有行数据的数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改。
+     * <p>
+     * Returns the array form of all row data in the matrix. Since it is copied, it will not generate any dependency, so it supports modification.
+     */
+    @Override
+    public int[][] CopyToNewIntArrays() {
+        return toIntArrays();
     }
 }

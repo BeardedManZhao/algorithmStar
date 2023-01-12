@@ -408,7 +408,18 @@ public final class ASMath {
      * @return 叉乘结果数组
      */
     public static int[] CrossMultiplication(int[] ints1, int[] ints2) {
-        int[] res = new int[(ints1.length - 1) * ints1.length];
+        return CrossMultiplication(ints1, ints2, (ints1.length - 1) * ints1.length);
+    }
+
+    /**
+     * 计算两个数组的叉乘，并返回结果
+     *
+     * @param ints1 叉乘操作数组
+     * @param ints2 被叉乘的操作数组
+     * @return 叉乘结果数组
+     */
+    public static int[] CrossMultiplication(int[] ints1, int[] ints2, int newLength) {
+        int[] res = new int[newLength];
         CrossMultiplication(ints1.length, ints2.length, res, ints1, ints2);
         return res;
     }

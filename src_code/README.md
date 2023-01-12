@@ -64,9 +64,105 @@ public class MAIN1 {
         // The setting of weight array makes the influence of 10 in this calculation higher
         double[] doubles = {1, 2, 1};
         // Calculate weighted average and print
-        System.out.println(avg.calculation(doubles, doubleVector.toArray()));
+        System.out.println(avg.calculation(doubles, doubleVector.toDoubleArray()));
     }
 }
+```
+
+* 增加了聚合计算模块，其中包含诸多聚合类计算组件，下面是有关加权平均值聚合运算的示例
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.algorithm.aggregationAlgorithm.WeightedAverage;
+import zhao.algorithmMagic.operands.vector.DoubleVector;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 聚合计算组件 加权平均值
+        WeightedAverage avg = WeightedAverage.getInstance("avg");
+        // 构建一个向量
+        DoubleVector doubleVector = DoubleVector.parse(20, 10, 40);
+        // 计算平均值并打印
+        System.out.println(avg.calculation(doubleVector));
+        // 设置权重数组 这样的设置使得 10 这个数值在本次计算中的影响占比会比较高
+        double[] doubles = {1, 2, 1};
+        // 计算加权平均值并打印
+        System.out.println(avg.calculation(doubles, doubleVector.toDoubleArray()));
+    }
+}
+```
+
+* Added feature extraction component
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.algorithm.featureExtraction.DictFeatureExtraction;
+import zhao.algorithmMagic.algorithm.featureExtraction.WordFrequency;
+import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
+
+public class MAIN1 {
+  public static void main(String[] args) {
+    // 获取到字典特征提取组件
+    DictFeatureExtraction dict = DictFeatureExtraction.getInstance("dict");
+    // 构造一个需要被提取的数组
+    String[] strings = {
+            "cat", "dog", "turtle", "fish", "cat"
+    };
+    // 开始提取特征矩阵
+    ColumnIntegerMatrix extract = dict.extract(strings);
+    // 打印矩阵
+    System.out.println(extract);
+    // 打印矩阵的hashMap形式
+    extract.toHashMap().forEach((key, value) -> System.out.println(value.toString() + '\t' + key));
+
+    System.out.println("================================================");
+
+    // 获取到词频特征提取组件
+    WordFrequency word = WordFrequency.getInstance("word");
+    // 构建一些被统计的文本
+    String[] data = {
+            "I love you, Because you are beautiful.",
+            "I need you. Because I'm trapped"
+    };
+    // 开始统计
+    ColumnIntegerMatrix extract1 = word.extract(data);
+    // 打印结果
+    System.out.println(extract1);
+  }
+}
+```
+
+```
+[INFO][dict][23-01-12:10]] : ColumnIntegerMatrix extract(String[] data)
+------------MatrixStart-----------
+cat	dog	turtle	fish	
+[1, 0, 0, 0]
+[0, 1, 0, 0]
+[0, 0, 1, 0]
+[0, 0, 0, 1]
+[1, 0, 0, 0]
+------------MatrixEnd------------
+
+[ 0 0 1 0 0 ]	turtle
+[ 1 0 0 0 1 ]	cat
+[ 0 0 0 1 0 ]	fish
+[ 0 1 0 0 0 ]	dog
+================================================
+[INFO][OperationAlgorithmManager][23-01-12:10]] : register OperationAlgorithm:word
+------------MatrixStart-----------
+I love you, Because you are beautiful.	I need you. Because I'm trapped	rowColName
+[1, 0]	love
+[0, 1]	trapped
+[0, 1]	need
+[1, 1]	I
+[0, 1]	I'm
+[1, 0]	beautiful
+[1, 1]	Because
+[1, 0]	are
+[2, 1]	you
+------------MatrixEnd------------
 ```
 
 ### Version update date : XX XX-XX-XX

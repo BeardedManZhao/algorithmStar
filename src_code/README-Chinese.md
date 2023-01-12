@@ -10,7 +10,7 @@
 
 * 框架版本：1.13 - xxx
 * 为整形向量提供了原数组的获取支持，可以使用toIntArray获取到整形向量的数组对象。
-* 为整形向量之间的计算进行了优化，减少了在内部的toArray方法的调用，避免冗余。
+* 为整形向量之间的计算进行了优化，减少了在内部的toDoubleArray方法的调用，避免冗余。
 * 针对路线对象与复数对象的字符串解析的逻辑进行了优化，减少操作的数量
 * 针对计算组件的计算日志打印，这是一个需要巨大性能的操作，因此在本次更新中，您可以手动干预计算日志的打印情况，具体操作方式如下所示。
 
@@ -53,9 +53,81 @@ public class MAIN1 {
         // 设置权重数组 这样的设置使得 10 这个数值在本次计算中的影响占比会比较高
         double[] doubles = {1, 2, 1};
         // 计算加权平均值并打印
-        System.out.println(avg.calculation(doubles, doubleVector.toArray()));
+        System.out.println(avg.calculation(doubles, doubleVector.toDoubleArray()));
     }
 }
+```
+
+* 增加了特征提取组件
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.algorithm.featureExtraction.DictFeatureExtraction;
+import zhao.algorithmMagic.algorithm.featureExtraction.WordFrequency;
+import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
+
+public class MAIN1 {
+  public static void main(String[] args) {
+    // 获取到字典特征提取组件
+    DictFeatureExtraction dict = DictFeatureExtraction.getInstance("dict");
+    // 构造一个需要被提取的数组
+    String[] strings = {
+            "cat", "dog", "turtle", "fish", "cat"
+    };
+    // 开始提取特征矩阵
+    ColumnIntegerMatrix extract = dict.extract(strings);
+    // 打印矩阵
+    System.out.println(extract);
+    // 打印矩阵的hashMap形式
+    extract.toHashMap().forEach((key, value) -> System.out.println(value.toString() + '\t' + key));
+
+    System.out.println("================================================");
+
+    // 获取到词频特征提取组件
+    WordFrequency word = WordFrequency.getInstance("word");
+    // 构建一些被统计的文本
+    String[] data = {
+            "I love you, Because you are beautiful.",
+            "I need you. Because I'm trapped"
+    };
+    // 开始统计
+    ColumnIntegerMatrix extract1 = word.extract(data);
+    // 打印结果
+    System.out.println(extract1);
+  }
+}
+```
+
+```
+[INFO][dict][23-01-12:10]] : ColumnIntegerMatrix extract(String[] data)
+------------MatrixStart-----------
+cat	dog	turtle	fish	
+[1, 0, 0, 0]
+[0, 1, 0, 0]
+[0, 0, 1, 0]
+[0, 0, 0, 1]
+[1, 0, 0, 0]
+------------MatrixEnd------------
+
+[ 0 0 1 0 0 ]	turtle
+[ 1 0 0 0 1 ]	cat
+[ 0 0 0 1 0 ]	fish
+[ 0 1 0 0 0 ]	dog
+================================================
+[INFO][OperationAlgorithmManager][23-01-12:10]] : register OperationAlgorithm:word
+------------MatrixStart-----------
+I love you, Because you are beautiful.	I need you. Because I'm trapped	rowColName
+[1, 0]	love
+[0, 1]	trapped
+[0, 1]	need
+[1, 1]	I
+[0, 1]	I'm
+[1, 0]	beautiful
+[1, 1]	Because
+[1, 0]	are
+[2, 1]	you
+------------MatrixEnd------------
 ```
 
 ### Version update date : XX XX-XX-XX

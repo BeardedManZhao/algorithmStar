@@ -136,6 +136,6 @@ public class LinearNormalization extends DataStandardization {
      */
     @Override
     public DoubleVector NormalizedSequence(DoubleVector doubleVector) {
-        return new DoubleVector(StandardizedSequence(doubleVector.toArray()));
+        return new DoubleVector(StandardizedSequence(doubleVector.toDoubleArray()));
     }
 }

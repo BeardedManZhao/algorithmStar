@@ -1,14 +1,15 @@
 package zhao.algorithmMagic.operands.matrix;
 
 import zhao.algorithmMagic.exception.OperatorOperationException;
+import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASMath;
 
 /**
  * Java类于 2022/10/11 20:02:06 创建
  * <p>
- * 一个浮点矩阵，其中包含基元与包装类型，这个矩阵的性能会稍微强大一些，但是功能性比较弱，支持矩阵的转置。
+ * 一个浮点矩阵，其中维护了一个基元数组，矩阵中基于数组提供了很多转换函数，同时也提供了对维护数组的提取与拷贝函数。
  * <p>
- * A floating-point matrix containing primitives and wrapper types. This matrix is slightly more powerful, but less functional, the support matrix transposition.
+ * A floating point matrix, in which a primitive array is maintained, provides many conversion functions based on the array, and also provides extraction and copy functions for the maintained array.
  *
  * @author zhao
  */
@@ -22,7 +23,9 @@ public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
      * <p>
      * Constructs an empty matrix, specifying the number of rows and columns of its matrix
      *
-     * @param doubles 一个二维数组，double[0]代表行  double[0][0]代表列
+     * @param doubles 矩阵中的元素数值，该数值将会被直接应用到本类中，因此在外界请勿更改。
+     *                <p>
+     *                The element value in the matrix will be directly applied to this class, so do not change it outside.
      */
     protected DoubleMatrix(double[]... doubles) {
         super(doubles.length, doubles[0].length);
@@ -41,7 +44,11 @@ public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
      * @return matrix object
      */
     public static DoubleMatrix parse(double[]... doubles) {
-        return new DoubleMatrix(doubles);
+        if (doubles.length > 0) {
+            return new DoubleMatrix(doubles);
+        } else {
+            throw new OperatorOperationException("The array of construction matrix cannot be empty");
+        }
     }
 
     /**
@@ -51,7 +58,8 @@ public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
      * @param col 列编号 从0开始
      * @return 矩阵中的数值
      */
-    public double get(int row, int col) {
+    @Override
+    public Double get(int row, int col) {
         return VectorArrayPrimitive[row][col];
     }
 
@@ -105,8 +113,8 @@ public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
             int rowPointer1 = value.RowPointer;
             while (this.MovePointerDown() && value.MovePointerDown()) {
                 double[] line = new double[colCount1];
-                double[] doubles1 = this.toArray();
-                double[] doubles2 = value.toArray();
+                double[] doubles1 = this.toDoubleArray();
+                double[] doubles2 = value.toDoubleArray();
                 for (int i = 0; i < colCount1; i++) {
                     line[i] = doubles1[i] + doubles2[i];
                 }
@@ -145,8 +153,8 @@ public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
             int rowPointer2 = value.RowPointer;
             while (this.MovePointerDown() && value.MovePointerDown()) {
                 double[] line = new double[colCount1];
-                double[] doubles1 = toArray();
-                double[] doubles2 = value.toArray();
+                double[] doubles1 = toDoubleArray();
+                double[] doubles2 = value.toDoubleArray();
                 for (int i = 0; i < colCount1; i++) {
                     line[i] = doubles1[i] - doubles2[i];
                 }
@@ -176,7 +184,7 @@ public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
         int rowPointer = this.RowPointer;
         PointerReset();
         while (this.MovePointerDown()) {
-            double[] doubles1 = toArray();
+            double[] doubles1 = toDoubleArray();
             for (double v : doubles1) {
                 res += ASMath.Power2(v);
             }
@@ -207,7 +215,7 @@ public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
             int rowPointer2 = matrix.RowPointer;
             // 迭代每一行
             while (this.MovePointerDown() && matrix.MovePointerDown()) {
-                doubles[this.RowPointer] = ASMath.CrossMultiplication(this.toArray(), matrix.toArray(), newLength);
+                doubles[this.RowPointer] = ASMath.CrossMultiplication(this.toDoubleArray(), matrix.toDoubleArray(), newLength);
             }
             this.RowPointer = rowPointer1;
             matrix.RowPointer = rowPointer2;
@@ -243,8 +251,8 @@ public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
             int rowPointer1 = this.RowPointer;
             int rowPointer2 = matrix.RowPointer;
             while (this.MovePointerDown() && matrix.MovePointerDown()) {
-                double[] doubles1 = this.toArray();
-                double[] doubles2 = matrix.toArray();
+                double[] doubles1 = this.toDoubleArray();
+                double[] doubles2 = matrix.toDoubleArray();
                 for (int i = 0; i < doubles1.length; i++) {
                     res += doubles1[i] * doubles2[i];
                 }
@@ -272,8 +280,7 @@ public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
      * <p>
      * Get the data of a certain row in this matrix according to the row pointer, and get the data of the corresponding row by adjusting the changes of the external row pointer. Note that if the return value of the data matrix object obtained by this function is being used, it will lead to some unexpected situations.
      */
-    @Override
-    public double[] toArray() {
+    public double[] toDoubleArray() {
         return this.VectorArrayPrimitive[super.RowPointer];
     }
 
@@ -282,8 +289,7 @@ public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
      * <p>
      * Get all the data in this matrix. Note that if the return value of the data matrix object obtained by this function is changed, some unexpected situations will occur.
      */
-    @Override
-    public double[][] toArrays() {
+    public double[][] toDoubleArrays() {
         return this.VectorArrayPrimitive;
     }
 
@@ -292,10 +298,56 @@ public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
      * <p>
      * The vector array form of the object is copied, which does not generate any dependency, so it supports modification
      */
-    @Override
-    public double[] CopyToNewArray() {
+    public double[] CopyToNewDoubleArray() {
         final double[] res = new double[this.getColCount()];
-        System.arraycopy(this.toArray(), 0, res, 0, res.length);
+        System.arraycopy(this.toDoubleArray(), 0, res, 0, res.length);
+        return res;
+    }
+
+    /**
+     * @return 不论是基元还是包装，都返回一个基元的整形数组，该方法是万能的，始终都会返回出来一个真正的向量数组！
+     * <p>
+     * Both primitives and wrappers return a floating-point array of primitives. This method is omnipotent and will always return a true vector array!
+     * <p>
+     * 注意 该方法在大部分情况下返回的通常都是源数组，不允许更改，只能作为只读变量。
+     */
+    @Override
+    public int[] toIntArray() {
+        return new int[0];
+    }
+
+    /**
+     * @return 该对象的向量数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改
+     * <p>
+     * The vector array form of the object is copied, which does not generate any dependency, so it supports modification
+     */
+    @Override
+    public int[] CopyToNewIntArray() {
+        return new int[0];
+    }
+
+    /**
+     * @return 返回该矩阵中所有行数据的数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改。
+     * <p>
+     * Returns the array form of all row data in the matrix. Since it is copied, it will not generate any dependency, so it supports modification.
+     */
+    public double[][] CopyToNewDoubleArrays() {
+        final double[][] res = new double[this.getRowCount()][this.getColCount()];
+        ASClass.array2DCopy(this.VectorArrayPrimitive, res);
+        return res;
+    }
+
+    /**
+     * @return 获取到本矩阵中的所有数据，需要注意的是，该函数获取到的数据矩阵对象中正在使用的，如果返回值被更改，那么会导致一些不可意料的情况发生。
+     * <p>
+     * Get all the data in this matrix. Note that if the return value of the data matrix object obtained by this function is changed, some unexpected situations will occur.
+     */
+    @Override
+    public int[][] toIntArrays() {
+        int[][] res = new int[this.getRowCount()][this.getColCount()];
+        for (int i = 0; i < this.toDoubleArrays().length; i++) {
+            res[i] = ASClass.DoubleArray_To_IntArray(this.VectorArrayPrimitive[i]);
+        }
         return res;
     }
 
@@ -305,10 +357,8 @@ public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
      * Returns the array form of all row data in the matrix. Since it is copied, it will not generate any dependency, so it supports modification.
      */
     @Override
-    public double[][] CopyToNewArrays() {
-        final double[][] res = new double[this.getRowCount()][this.getColCount()];
-        System.arraycopy(this.VectorArrayPrimitive, 0, res, 0, res.length);
-        return res;
+    public int[][] CopyToNewIntArrays() {
+        return toIntArrays();
     }
 
     /**

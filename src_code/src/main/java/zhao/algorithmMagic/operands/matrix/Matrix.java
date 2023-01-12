@@ -62,6 +62,15 @@ public abstract class Matrix<ImplementationType extends Matrix<?, ?>, ElementTyp
     }
 
     /**
+     * 获取到矩阵中指定坐标点的数值
+     *
+     * @param row 行编号 从0开始
+     * @param col 列编号 从0开始
+     * @return 矩阵中的数值
+     */
+    public abstract ElementType get(int row, int col);
+
+    /**
      * 将现有矩阵的转置矩阵获取到
      * <p>
      * Get the transpose of an existing matrix into
@@ -70,7 +79,7 @@ public abstract class Matrix<ImplementationType extends Matrix<?, ?>, ElementTyp
      * <p>
      * new matrix after matrix transpose
      */
-    abstract ImplementationType transpose();
+    public abstract ImplementationType transpose();
 
     /**
      * 行指针是获取到某一行向量的关键组件，您必须要通过操作行指针，来获取到每一行的序列
@@ -132,27 +141,13 @@ public abstract class Matrix<ImplementationType extends Matrix<?, ?>, ElementTyp
         return this.expand();
     }
 
-    /**
-     * @return 该对象的向量数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改
-     * <p>
-     * The vector array form of the object is copied, which does not generate any dependency, so it supports modification
-     */
-    public abstract double[][] toArrays();
-
-    /**
-     * @return 返回该矩阵中所有行数据的数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改。
-     * <p>
-     * Returns the array form of all row data in the matrix. Since it is copied, it will not generate any dependency, so it supports modification.
-     */
-    public abstract double[][] CopyToNewArrays();
-
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         int rowPointer = this.RowPointer;
         PointerReset();
         while (MovePointerDown()) {
-            stringBuilder.append(Arrays.toString(this.toArray())).append("\n");
+            stringBuilder.append(Arrays.toString(this.toDoubleArray())).append("\n");
         }
         PointerReset(rowPointer);
         return "------------MatrixStart-----------\n" +
@@ -266,6 +261,34 @@ public abstract class Matrix<ImplementationType extends Matrix<?, ?>, ElementTyp
         }
         return this.innerProduct(value);
     }
+
+    /**
+     * @return 获取到本矩阵中的所有数据，需要注意的是，该函数获取到的数据矩阵对象中正在使用的，如果返回值被更改，那么会导致一些不可意料的情况发生。
+     * <p>
+     * Get all the data in this matrix. Note that if the return value of the data matrix object obtained by this function is changed, some unexpected situations will occur.
+     */
+    public abstract double[][] toDoubleArrays();
+
+    /**
+     * @return 返回该矩阵中所有行数据的数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改。
+     * <p>
+     * Returns the array form of all row data in the matrix. Since it is copied, it will not generate any dependency, so it supports modification.
+     */
+    public abstract double[][] CopyToNewDoubleArrays();
+
+    /**
+     * @return 获取到本矩阵中的所有数据，需要注意的是，该函数获取到的数据矩阵对象中正在使用的，如果返回值被更改，那么会导致一些不可意料的情况发生。
+     * <p>
+     * Get all the data in this matrix. Note that if the return value of the data matrix object obtained by this function is changed, some unexpected situations will occur.
+     */
+    public abstract int[][] toIntArrays();
+
+    /**
+     * @return 返回该矩阵中所有行数据的数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改。
+     * <p>
+     * Returns the array form of all row data in the matrix. Since it is copied, it will not generate any dependency, so it supports modification.
+     */
+    public abstract int[][] CopyToNewIntArrays();
 
     /**
      * @return 当前矩阵对象是否被其他的线程所占用，如果返回false，就代表当前矩阵对象可以参与多线程的计算工作

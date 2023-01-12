@@ -14,6 +14,7 @@ import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute;
 import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute2D;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 
 /**
@@ -45,6 +46,68 @@ public final class ASClass {
             targetNotRealizedException.setStackTrace(c.getStackTrace());
             throw targetNotRealizedException;
         }
+    }
+
+    /**
+     * 将一个数组拓展，拓展位的数值为0
+     *
+     * @param targetLength
+     * @param array
+     * @return
+     */
+    public static int[] expandArray(int targetLength, int[] array) {
+        int diffLength = targetLength - array.length;
+        if (diffLength > 0) {
+            int[] ints = new int[array.length + diffLength];
+            System.arraycopy(array, 0, array, 0, array.length);
+            return ints;
+        }
+        return array;
+    }
+
+    /**
+     * 将一个整形包装数组拆箱
+     *
+     * @param integers 需要被拆箱的数据数组
+     * @return 拆箱之后的新数据
+     */
+    public static int[] unBox(Collection<Integer> integers) {
+        int[] res = new int[integers.size()];
+        int count = -1;
+        for (int anInt : integers) {
+            res[++count] = anInt;
+        }
+        return res;
+    }
+
+    /**
+     * 将一个整形包装数组拆箱
+     *
+     * @param integers 需要被拆箱的数据数组
+     * @return 拆箱之后的新数据
+     */
+    public static int[] unBox(Integer[] integers) {
+        int[] res = new int[integers.length];
+        int count = -1;
+        for (int anInt : integers) {
+            res[++count] = anInt;
+        }
+        return res;
+    }
+
+    /**
+     * 将一个基元数组装箱
+     *
+     * @param ints 需要被装箱的所有基元数组
+     * @return 装箱洲的新数组
+     */
+    public static Integer[] Box(int[] ints) {
+        Integer[] integers = new Integer[ints.length];
+        int count = -1;
+        for (int anInt : ints) {
+            integers[++count] = anInt;
+        }
+        return integers;
     }
 
     /**
@@ -181,7 +244,7 @@ public final class ASClass {
     }
 
     /**
-     * 整数类型的2维网络，咋混换到 浮点类型的二维网络。
+     * 整数类型的2维网络，转换到 浮点类型的二维网络。
      * <p>
      * The 2D network of integer type is mixed into the 2D network of floating point type.
      *
@@ -221,7 +284,7 @@ public final class ASClass {
      * @param ints 需要被转换的数组
      * @return 转换之后的double数组
      */
-    public static double[] IntArray_To_DoubleArray(int... ints) {
+    public static double[] IntArray_To_DoubleArray(int[] ints) {
         double[] res = new double[ints.length];
         int i = 0, j = res.length - 1;
         while (i < j) {
@@ -240,7 +303,7 @@ public final class ASClass {
      * @param doubles 需要被转换的数组
      * @return 转换之后的double数组
      */
-    public static int[] DoubleArray_To_IntArray(double... doubles) {
+    public static int[] DoubleArray_To_IntArray(double[] doubles) {
         int[] res = new int[doubles.length];
         int i = 0, j = res.length - 1;
         while (i < j) {
@@ -251,5 +314,42 @@ public final class ASClass {
             res[i] = (int) doubles[j];
         }
         return res;
+    }
+
+    /**
+     * 将一个二维数组中的数据原样拷贝到新的二维数组中
+     *
+     * @param src  需要被拷贝的原数组
+     * @param dest 需要被拷贝的目标数组
+     */
+    public static void array2DCopy(Collection<Integer[]> src, int[][] dest) {
+        int count = -1;
+        for (Integer[] integers : src) {
+            dest[++count] = ASClass.unBox(integers);
+        }
+    }
+
+    /**
+     * 将一个二维数组中的数据原样拷贝到新的二维数组中
+     *
+     * @param src  需要被拷贝的原数组
+     * @param dest 需要被拷贝的目标数组
+     */
+    public static void array2DCopy(int[][] src, int[][] dest) {
+        for (int i = 0; i < dest.length; i++) {
+            System.arraycopy(src[i], 0, dest[i], 0, src[i].length);
+        }
+    }
+
+    /**
+     * 将一个二维数组中的数据原样拷贝到新的二维数组中
+     *
+     * @param src  需要被拷贝的原数组
+     * @param dest 需要被拷贝的目标数组
+     */
+    public static void array2DCopy(double[][] src, double[][] dest) {
+        for (int i = 0; i < dest.length; i++) {
+            System.arraycopy(src[i], 0, dest[i], 0, dest[i].length);
+        }
     }
 }

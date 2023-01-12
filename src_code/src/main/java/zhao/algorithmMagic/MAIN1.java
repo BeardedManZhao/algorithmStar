@@ -1,19 +1,36 @@
 package zhao.algorithmMagic;
 
-import zhao.algorithmMagic.algorithm.aggregationAlgorithm.WeightedAverage;
-import zhao.algorithmMagic.operands.vector.DoubleVector;
+import zhao.algorithmMagic.algorithm.featureExtraction.DictFeatureExtraction;
+import zhao.algorithmMagic.algorithm.featureExtraction.WordFrequency;
+import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
 
-public class MAIN1 {
+public final class MAIN1 {
     public static void main(String[] args) {
-        // 聚合计算组件 加权平均值
-        WeightedAverage avg = WeightedAverage.getInstance("avg");
-        // 构建一个向量
-        DoubleVector doubleVector = DoubleVector.parse(20, 10, 40);
-        // 计算平均值并打印
-        System.out.println(avg.calculation(doubleVector));
-        // 设置权重数组 这样的设置使得 10 这个数值在本次计算中的影响占比会比较高
-        double[] doubles = {1, 2, 1};
-        // 计算加权平均值并打印
-        System.out.println(avg.calculation(doubles, doubleVector.toArray()));
+        // 获取到字典特征提取组件
+        DictFeatureExtraction dict = DictFeatureExtraction.getInstance("dict");
+        // 构造一个需要被提取的数组
+        String[] strings = {
+                "cat", "dog", "turtle", "fish", "cat"
+        };
+        // 开始提取特征矩阵
+        ColumnIntegerMatrix extract = dict.extract(strings);
+        // 打印矩阵
+        System.out.println(extract);
+        // 打印矩阵的hashMap形式
+        extract.toHashMap().forEach((key, value) -> System.out.println(value.toString() + '\t' + key));
+
+        System.out.println("================================================");
+
+        // 获取到词频特征提取组件
+        WordFrequency word = WordFrequency.getInstance("word");
+        // 构建一些被统计的文本
+        String[] data = {
+                "I love you, Because you are beautiful.",
+                "I need you. Because I'm trapped"
+        };
+        // 开始统计
+        ColumnIntegerMatrix extract1 = word.extract(data);
+        // 打印结果
+        System.out.println(extract1);
     }
 }

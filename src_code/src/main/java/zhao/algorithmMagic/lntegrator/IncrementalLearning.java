@@ -349,7 +349,7 @@ public class IncrementalLearning implements AlgorithmIntegrator<IncrementalLearn
      * The initiator you pass in should have a θ involved in the calculation, which is an unknown parameter in the formula, and the purpose of the integrator is to derive the value of this parameter in a certain monotonic interval. Inference rules are more in line with the model logic you pass in.
      */
     public double run(DoubleVector doubleVector1, DoubleVector doubleVector2) {
-        return CalculateTheMostSimilarParametersD(BuildingLearningSequences(doubleVector1.toArray(), doubleVector2.toArray()));
+        return CalculateTheMostSimilarParametersD(BuildingLearningSequences(doubleVector1.toDoubleArray(), doubleVector2.toDoubleArray()));
     }
 
     /**
@@ -364,7 +364,7 @@ public class IncrementalLearning implements AlgorithmIntegrator<IncrementalLearn
      * The initiator you pass in should have a θ involved in the calculation, which is an unknown parameter in the formula, and the purpose of the integrator is to derive the value of this parameter in a certain monotonic interval. Inference rules are more in line with the model logic you pass in.
      */
     public double run(IntegerVector integerVector1, IntegerVector integerVector2) {
-        return CalculateTheMostSimilarParametersD(BuildingLearningSequences(integerVector1.toArray(), integerVector2.toArray()));
+        return CalculateTheMostSimilarParametersD(BuildingLearningSequences(integerVector1.toDoubleArray(), integerVector2.toDoubleArray()));
     }
 
     /**

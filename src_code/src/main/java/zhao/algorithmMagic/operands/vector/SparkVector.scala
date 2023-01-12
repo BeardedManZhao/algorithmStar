@@ -3,7 +3,7 @@ package zhao.algorithmMagic.operands.vector
 import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
 import zhao.algorithmMagic.exception.OperatorOperationException
-import zhao.algorithmMagic.utils.ASMath
+import zhao.algorithmMagic.utils.{ASClass, ASMath}
 
 /**
  * Spark向量对象，通过该类可以将Spark的API接入到本框架中，能够很好的对接到分布式内存计算技术
@@ -43,21 +43,12 @@ class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mllib.lin
    *         waiting to be realized
    */
   override def multiply(vector: SparkVector): SparkVector = {
-    val vectorArray1 = this.toArray
-    val vectorArray2 = vector.toArray
+    val vectorArray1 = this.toDoubleArray
+    val vectorArray2 = vector.toDoubleArray
     val length1 = vectorArray1.length
     val length2 = vectorArray2.length
     if (length1 == length2) SparkVector.parse(sparkContext, ASMath.CrossMultiplication(vectorArray1, vectorArray2))
     else throw new OperatorOperationException("'DoubleVector1 multiply DoubleVector2' 时，两个'DoubleVector'的向量所包含的数量不同，DoubleVector1=[" + length1 + "]，DoubleVector2=[" + length2 + "]\n" + "When 'DoubleVector1 multiply DoubleVector2', the two vectors of 'DoubleVector' contain different quantities, DoubleVector1=[" + length1 + "], DoubleVector2=[" + length2 + "]")
-  }
-
-  /**
-   * @return 不论是基元还是包装，都返回一个基元的浮点数组，该方法是万能的，始终都会返回出来一个真正的向量数组！
-   *         <p>
-   *         Both primitives and wrappers return a floating-point array of primitives. This method is omnipotent and will always return a true vector array!
-   */
-  override def toArray: Array[Double] = {
-    vector.toArray
   }
 
   /**
@@ -72,8 +63,8 @@ class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mllib.lin
    *         waiting to be realized
    */
   override def innerProduct(vector: SparkVector): Double = {
-    val doubles1: Array[Double] = this.toArray
-    val doubles2: Array[Double] = vector.toArray
+    val doubles1: Array[Double] = this.toDoubleArray
+    val doubles2: Array[Double] = vector.toDoubleArray
     if (doubles1.length == doubles2.length) {
       var innerProduct: Double = 0
       for (indexNum <- doubles1.indices) {
@@ -104,8 +95,8 @@ class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mllib.lin
     val numberOfDimensions2 = value.getNumberOfDimensions
     if (numberOfDimensions1 == numberOfDimensions2) {
       val res = new Array[Double](numberOfDimensions1)
-      val doubles1 = this.toArray
-      val doubles2 = value.toArray
+      val doubles1 = this.toDoubleArray
+      val doubles2 = value.toDoubleArray
       for (i <- 0 until numberOfDimensions1) {
         res(i) = doubles1(i) + doubles2(i)
       }
@@ -128,14 +119,23 @@ class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mllib.lin
     val numberOfDimensions2 = value.getNumberOfDimensions
     if (numberOfDimensions1 == numberOfDimensions2) {
       val res = new Array[Double](numberOfDimensions1)
-      val doubles1 = this.toArray
-      val doubles2 = value.toArray
+      val doubles1 = this.toDoubleArray
+      val doubles2 = value.toDoubleArray
       for (i <- 0 until numberOfDimensions1) {
         res(i) = doubles1(i) - doubles2(i)
       }
       SparkVector.parse(sparkContext, res)
     }
     else throw new OperatorOperationException("'DoubleVector1 diff DoubleVector2' 时，两个'DoubleVector'的向量所包含的数量不同，DoubleVector1=[" + numberOfDimensions1 + "]，DoubleVector2=[" + numberOfDimensions2 + "]\n" + "When 'DoubleVector1 diff DoubleVector2', the two vectors of 'DoubleVector' contain different quantities, DoubleVector1=[" + numberOfDimensions1 + "], DoubleVector2=[" + numberOfDimensions2 + "]")
+  }
+
+  /**
+   * @return 不论是基元还是包装，都返回一个基元的浮点数组，该方法是万能的，始终都会返回出来一个真正的向量数组！
+   *         <p>
+   *         Both primitives and wrappers return a floating-point array of primitives. This method is omnipotent and will always return a true vector array!
+   */
+  override def toDoubleArray: Array[Double] = {
+    vector.toArray
   }
 
   /**
@@ -146,11 +146,13 @@ class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mllib.lin
   override def getNumberOfDimensions: Int = size
 
   /**
-   * @return 该对象的向量数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改
+   * @return 不论是基元还是包装，都返回一个基元的整形数组，该方法是万能的，始终都会返回出来一个真正的向量数组！
    *         <p>
-   *         The vector array form of the object is copied, which does not generate any dependency, so it supports modification
+   *         Both primitives and wrappers return a floating-point array of primitives. This method is omnipotent and will always return a true vector array!
+   *         <p>
+   *         注意 该方法在大部分情况下返回的通常都是源数组，不允许更改，只能作为只读变量。
    */
-  override def CopyToNewArray(): Array[Double] = toArray
+  override def toIntArray: Array[Int] = ASClass.DoubleArray_To_IntArray(toDoubleArray)
 }
 
 object SparkVector {

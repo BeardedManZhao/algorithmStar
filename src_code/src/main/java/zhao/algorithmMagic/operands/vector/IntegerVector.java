@@ -189,8 +189,22 @@ public class IntegerVector extends ASVector<IntegerVector, Integer> {
      * <p>
      * For the compensation method provided for the inability to obtain the original array in the integer array, this method can directly obtain the vector array in the integer array. Note that this array is the original data.
      */
+    @Override
     public int[] toIntArray() {
         return this.VectorArrayPrimitive;
+    }
+
+    /**
+     * @return 该对象的向量数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改
+     * <p>
+     * The vector array form of the object is copied, which does not generate any dependency, so it supports modification
+     */
+    @Override
+    public int[] CopyToNewIntArray() {
+        final int[] ints = this.toIntArray();
+        final int[] res = new int[ints.length];
+        System.arraycopy(ints, 0, res, 0, res.length);
+        return res;
     }
 
     /**
@@ -203,7 +217,7 @@ public class IntegerVector extends ASVector<IntegerVector, Integer> {
      * It should be noted that in the integer vector object, this function will return a new array, because of the limitation of data type. If you need to use the original array object, please call toIntArray
      */
     @Override
-    public double[] toArray() {
+    public double[] toDoubleArray() {
         return ASClass.IntArray_To_DoubleArray(this.getVectorArrayPrimitive());
     }
 
@@ -213,8 +227,8 @@ public class IntegerVector extends ASVector<IntegerVector, Integer> {
      * The vector array form of the object is copied, which does not generate any dependency, so it supports modification
      */
     @Override
-    public double[] CopyToNewArray() {
-        return this.toArray();
+    public double[] CopyToNewDoubleArray() {
+        return this.toDoubleArray();
     }
 
     /**
@@ -225,18 +239,6 @@ public class IntegerVector extends ASVector<IntegerVector, Integer> {
     @Override
     public int getNumberOfDimensions() {
         return this.VectorArrayPrimitive.length;
-    }
-
-    /**
-     * @param integerVector 将此向量中的数据复制到另一个相同类型的向量对象中
-     */
-    public void copyTo(IntegerVector integerVector) {
-        if (integerVector.VectorArrayPrimitive.length < this.VectorArrayPrimitive.length) {
-            integerVector.VectorArrayPrimitive = new int[this.VectorArrayPrimitive.length];
-        }
-        System.arraycopy(this.VectorArrayPrimitive, 0, integerVector.VectorArrayPrimitive, 0, this.VectorArrayPrimitive.length);
-        integerVector.reFresh();
-        integerVector.vectorStr = this.vectorStr;
     }
 
     public int[] getVectorArrayPrimitive() {
