@@ -5,7 +5,6 @@ import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateMany;
 import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateThree;
 import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo;
-import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASMath;
 
 import java.util.Arrays;
@@ -19,7 +18,7 @@ import java.util.Arrays;
  *
  * @author zhao
  */
-public class DoubleVector extends ASVector<DoubleVector, Double> {
+public class DoubleVector extends ASVector<DoubleVector, Double, double[]> {
     private String vectorStr;
     private double[] VectorArrayPrimitive;
     private double moduleLength;
@@ -113,6 +112,16 @@ public class DoubleVector extends ASVector<DoubleVector, Double> {
     }
 
     /**
+     * @return 将本对象中存储的向量序列的数组直接返回，注意，这里返回的是一个正在被维护的数组，因此建议保证返回值作为只读变量使用。
+     * <p>
+     * Return the array of vector sequences stored in this object directly. Note that the returned value is an array being maintained. Therefore, it is recommended to ensure that the returned value is used as a read-only variable.
+     */
+    @Override
+    public double[] toArray() {
+        return this.VectorArrayPrimitive;
+    }
+
+    /**
      * 将两个操作数进行求和的方法，具体用法请参阅API说明。
      * <p>
      * The method for summing two operands, please refer to the API description for specific usage.
@@ -129,8 +138,8 @@ public class DoubleVector extends ASVector<DoubleVector, Double> {
         int numberOfDimensions2 = value.getNumberOfDimensions();
         if (numberOfDimensions1 == numberOfDimensions2) {
             double[] res = new double[numberOfDimensions1];
-            double[] doubles1 = this.toDoubleArray();
-            double[] doubles2 = value.toDoubleArray();
+            double[] doubles1 = this.toArray();
+            double[] doubles2 = value.toArray();
             for (int i = 0; i < numberOfDimensions1; i++) {
                 res[i] = doubles1[i] + doubles2[i];
             }
@@ -160,8 +169,8 @@ public class DoubleVector extends ASVector<DoubleVector, Double> {
         int numberOfDimensions2 = value.getNumberOfDimensions();
         if (numberOfDimensions1 == numberOfDimensions2) {
             double[] res = new double[numberOfDimensions1];
-            double[] doubles1 = this.toDoubleArray();
-            double[] doubles2 = value.toDoubleArray();
+            double[] doubles1 = this.toArray();
+            double[] doubles2 = value.toArray();
             for (int i = 0; i < numberOfDimensions1; i++) {
                 res[i] = doubles1[i] - doubles2[i];
             }
@@ -200,8 +209,8 @@ public class DoubleVector extends ASVector<DoubleVector, Double> {
      */
     @Override
     public DoubleVector multiply(DoubleVector vector) {
-        double[] vectorArray1 = this.toDoubleArray();
-        double[] vectorArray2 = vector.toDoubleArray();
+        double[] vectorArray1 = this.toArray();
+        double[] vectorArray2 = vector.toArray();
         int length1 = vectorArray1.length;
         int length2 = vectorArray2.length;
         if (length1 == length2) {
@@ -243,8 +252,8 @@ public class DoubleVector extends ASVector<DoubleVector, Double> {
      */
     @Override
     public Double innerProduct(DoubleVector vector) {
-        double[] doubles1 = this.toDoubleArray();
-        double[] doubles2 = vector.toDoubleArray();
+        double[] doubles1 = this.toArray();
+        double[] doubles2 = vector.toArray();
         if (doubles1.length == doubles2.length) {
             double innerProduct = 0b0;
             for (int indexNum = 0b0; indexNum < doubles1.length; indexNum++) {
@@ -268,48 +277,15 @@ public class DoubleVector extends ASVector<DoubleVector, Double> {
     }
 
     /**
-     * @return 不论是基元还是包装，都返回一个基元的浮点数组，该方法是万能的，始终都会返回出来一个真正的向量数组！
+     * @return 将本对象中存储的向量序列数组拷贝到一个新数组并将新数组返回，这里返回的是一个新数组，支持修改等操作。
      * <p>
-     * Both primitives and wrappers return a floating-point array of primitives. This method is omnipotent and will always return a true vector array!
+     * Copy the vector sequence array stored in this object to a new array and return the new array. Here, a new array is returned, which supports modification and other operations.
      */
     @Override
-    public double[] toDoubleArray() {
-        return this.VectorArrayPrimitive;
-    }
-
-    /**
-     * @return 该对象的向量数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改
-     * <p>
-     * The vector array form of the object is copied, which does not generate any dependency, so it supports modification
-     */
-    @Override
-    public double[] CopyToNewDoubleArray() {
-        final double[] doubles = this.toDoubleArray();
-        final double[] res = new double[doubles.length];
-        System.arraycopy(doubles, 0, res, 0, res.length);
+    public double[] copyToNewArray() {
+        double[] res = new double[this.VectorArrayPrimitive.length];
+        System.arraycopy(toArray(), 0, res, 0, this.VectorArrayPrimitive.length);
         return res;
-    }
-
-    /**
-     * @return 不论是基元还是包装，都返回一个基元的整形数组，该方法是万能的，始终都会返回出来一个真正的向量数组！
-     * <p>
-     * Both primitives and wrappers return a floating-point array of primitives. This method is omnipotent and will always return a true vector array!
-     * <p>
-     * 注意 该方法在大部分情况下返回的通常都是源数组，不允许更改，只能作为只读变量。
-     */
-    @Override
-    public int[] toIntArray() {
-        return ASClass.DoubleArray_To_IntArray(toDoubleArray());
-    }
-
-    /**
-     * @return 该对象的向量数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改
-     * <p>
-     * The vector array form of the object is copied, which does not generate any dependency, so it supports modification
-     */
-    @Override
-    public int[] CopyToNewIntArray() {
-        return toIntArray();
     }
 
     /**

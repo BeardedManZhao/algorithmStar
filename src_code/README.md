@@ -10,8 +10,8 @@
 
 * Framework version: 1.13 - xxx
 
-* It provides support for obtaining the original array for the integer vector. You can use toIntArray to obtain the
-  array object of the integer vector.
+* It supports the acquisition of the original array for the reshaping vector. You can use toArray to obtain the array
+  object of the vector or matrix.
 
 * It optimizes the calculation between the integer vectors, reduces the internal call to the toArray method, and avoids
   redundancy.
@@ -103,34 +103,34 @@ import zhao.algorithmMagic.algorithm.featureExtraction.WordFrequency;
 import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
 
 public class MAIN1 {
-  public static void main(String[] args) {
-    // 获取到字典特征提取组件
-    DictFeatureExtraction dict = DictFeatureExtraction.getInstance("dict");
-    // 构造一个需要被提取的数组
-    String[] strings = {
-            "cat", "dog", "turtle", "fish", "cat"
-    };
-    // 开始提取特征矩阵
-    ColumnIntegerMatrix extract = dict.extract(strings);
-    // 打印矩阵
-    System.out.println(extract);
-    // 打印矩阵的hashMap形式
-    extract.toHashMap().forEach((key, value) -> System.out.println(value.toString() + '\t' + key));
+    public static void main(String[] args) {
+        // 获取到字典特征提取组件
+        DictFeatureExtraction dict = DictFeatureExtraction.getInstance("dict");
+        // 构造一个需要被提取的数组
+        String[] strings = {
+                "cat", "dog", "turtle", "fish", "cat"
+        };
+        // 开始提取特征矩阵
+        ColumnIntegerMatrix extract = dict.extract(strings);
+        // 打印矩阵
+        System.out.println(extract);
+        // 打印矩阵的hashMap形式
+        extract.toHashMap().forEach((key, value) -> System.out.println(value.toString() + '\t' + key));
 
-    System.out.println("================================================");
+        System.out.println("================================================");
 
-    // 获取到词频特征提取组件
-    WordFrequency word = WordFrequency.getInstance("word");
-    // 构建一些被统计的文本
-    String[] data = {
-            "I love you, Because you are beautiful.",
-            "I need you. Because I'm trapped"
-    };
-    // 开始统计
-    ColumnIntegerMatrix extract1 = word.extract(data);
-    // 打印结果
-    System.out.println(extract1);
-  }
+        // 获取到词频特征提取组件
+        WordFrequency word = WordFrequency.getInstance("word");
+        // 构建一些被统计的文本
+        String[] data = {
+                "I love you, Because you are beautiful.",
+                "I need you. Because I'm trapped"
+        };
+        // 开始统计
+        ColumnIntegerMatrix extract1 = word.extract(data);
+        // 打印结果
+        System.out.println(extract1);
+    }
 }
 ```
 
@@ -165,4 +165,57 @@ I love you, Because you are beautiful.	I need you. Because I'm trapped	rowColNam
 ------------MatrixEnd------------
 ```
 
+* Add feature selection function for all matrices, which can remove the specified number of dimension data according to
+  the specified percentage, and return a new matrix
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
+import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
+
+public final class MAIN1 {
+    public static void main(String[] args) {
+        // 准备一个矩阵
+        IntegerMatrix parse = IntegerMatrix.parse(
+                new int[]{1, 2, 1, 1, 1, 1, 1, 1, 1},
+                new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9},
+                new int[]{10, 20, 30, 40, 50, 60, 70, 80, 90}
+        );
+        // 开始进行特征选择 去除掉其中的 40% 的维度
+        IntegerMatrix integerMatrix = parse.featureSelection(0.4);
+        System.out.println(integerMatrix);
+
+        // 准备一个矩阵 其中存储的是鸟的数据样本
+        IntegerMatrix parse1 = ColumnIntegerMatrix.parse(
+                new String[]{"1d", "2d", "3d", "4d", "5d", "6d", "7d", "8d", "9d"}, // 样本来源地区编号
+                new String[]{"羽毛", "羽毛的颜色", "种族"}, // 样本统计的三种维度
+                new int[]{1, 2, 1, 1, 1, 1, 1, 1, 1},
+                new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9},
+                new int[]{10, 20, 30, 40, 50, 60, 70, 80, 90}
+        );
+        // 开始进行特征选择 去除掉其中的 40% 的维度
+        IntegerMatrix integerMatrix1 = parse1.featureSelection(0.4);
+        System.out.println(integerMatrix1);
+    }
+}
+```
+
+```
+------------MatrixStart-----------
+[10, 20, 30, 40, 50, 60, 70, 80, 90]
+[1, 2, 3, 4, 5, 6, 7, 8, 9]
+------------MatrixEnd------------
+
+------------MatrixStart-----------
+1d  2d  3d  4d  5d  6d  7d  8d  9d  rowColName
+[10, 20, 30, 40, 50, 60, 70, 80, 90]	种族
+[1, 2, 3, 4, 5, 6, 7, 8, 9]	      羽毛的颜色
+------------MatrixEnd------------
+```
+* The calculation function featureSelection is added to the matrix data object to remove redundant dimensions
+ 
+* Added the calculation function deleteRelatedDimensions for the matrix data object to remove the relevant dimensions of the specified dimension
+ 
+* A new matrix type is added to the matrix system. The matrix object ColumnIntegerMatrix with row and column fields
 ### Version update date : XX XX-XX-XX

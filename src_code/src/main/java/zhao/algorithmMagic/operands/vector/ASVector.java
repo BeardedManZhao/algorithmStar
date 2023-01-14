@@ -7,27 +7,18 @@ package zhao.algorithmMagic.operands.vector;
  *
  * @author zhao
  */
-public abstract class ASVector<ImplementationType, ElementType> extends Vector<ImplementationType, ElementType> {
+public abstract class ASVector<ImplementationType, ElementType, ArrayType> extends Vector<ImplementationType, ElementType, ArrayType> {
     /**
      * 刷新操作数对象的所有字段
      */
     protected abstract void reFresh();
 
-
     /**
-     * @return 该对象的向量数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改
+     * @return 将本对象中存储的向量序列的数组直接返回，注意，这里返回的是一个正在被维护的数组，因此建议保证返回值作为只读变量使用。
      * <p>
-     * The vector array form of the object is copied, which does not generate any dependency, so it supports modification
+     * Return the array of vector sequences stored in this object directly. Note that the returned value is an array being maintained. Therefore, it is recommended to ensure that the returned value is used as a read-only variable.
      */
-    public abstract int[] CopyToNewIntArray();
-
-
-    /**
-     * @return 该对象的向量数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改
-     * <p>
-     * The vector array form of the object is copied, which does not generate any dependency, so it supports modification
-     */
-    public abstract double[] CopyToNewDoubleArray();
+    public abstract ArrayType toArray();
 
     /**
      * 在两个向量对象之间进行计算的函数，自从1.13版本开始支持该函数的调用，该函数中的计算并不会产生一个新的向量，而是将计算操作作用于原操作数中

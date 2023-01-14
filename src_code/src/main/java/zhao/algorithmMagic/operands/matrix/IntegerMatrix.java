@@ -4,7 +4,10 @@ import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASMath;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.TreeMap;
 
 /**
  * 一个整数矩阵，其中维护了一个基元数组，矩阵中基于数组提供了很多转换函数，同时也提供了对维护数组的提取与拷贝函数。
@@ -13,9 +16,7 @@ import java.util.Arrays;
  *
  * @author zhao
  */
-public class IntegerMatrix extends Matrix<IntegerMatrix, Integer> {
-
-    private final int[][] VectorArrayPrimitive;
+public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], int[][]> {
 
     /**
      * 构造一个空的矩阵，指定其矩阵的行列数
@@ -27,8 +28,7 @@ public class IntegerMatrix extends Matrix<IntegerMatrix, Integer> {
      *             The element value in the matrix will be directly applied to this class, so do not change it outside.
      */
     protected IntegerMatrix(int[]... ints) {
-        super(ints.length, ints[0].length);
-        this.VectorArrayPrimitive = ints;
+        super(ints.length, ints[0].length, ints);
     }
 
 
@@ -47,6 +47,19 @@ public class IntegerMatrix extends Matrix<IntegerMatrix, Integer> {
             return new IntegerMatrix(ints);
         } else {
             throw new OperatorOperationException("The array of construction matrix cannot be empty");
+        }
+    }
+
+    protected static void ex(double thresholdLeft, double thresholdRight, int[][] ints, int[] mid, ArrayList<int[]> res) {
+        for (int[] anInt : ints) {
+            double num = ASMath.correlationCoefficient(anInt, mid);
+            if (num >= thresholdLeft || num <= thresholdRight) {
+                // 这个情况代表是不符合删除区间的，也就是不需要被删除的
+                int[] res1 = new int[anInt.length];
+                System.arraycopy(anInt, 0, res1, 0, anInt.length);
+                res.add(res1);
+            }
+            res.add(anInt);
         }
     }
 
@@ -72,8 +85,8 @@ public class IntegerMatrix extends Matrix<IntegerMatrix, Integer> {
             int rowPointer1 = value.RowPointer;
             while (this.MovePointerDown() && value.MovePointerDown()) {
                 int[] line = new int[colCount1];
-                int[] ints1 = this.toIntArray();
-                int[] ints2 = value.toIntArray();
+                int[] ints1 = this.toArray();
+                int[] ints2 = value.toArray();
                 for (int i = 0; i < colCount1; i++) {
                     line[i] = ints1[i] + ints2[i];
                 }
@@ -110,8 +123,8 @@ public class IntegerMatrix extends Matrix<IntegerMatrix, Integer> {
             int rowPointer1 = value.RowPointer;
             while (this.MovePointerDown() && value.MovePointerDown()) {
                 int[] line = new int[colCount1];
-                int[] ints1 = this.toIntArray();
-                int[] ints2 = value.toIntArray();
+                int[] ints1 = this.toArray();
+                int[] ints2 = value.toArray();
                 for (int i = 0; i < colCount1; i++) {
                     line[i] = ints1[i] - ints2[i];
                 }
@@ -129,7 +142,7 @@ public class IntegerMatrix extends Matrix<IntegerMatrix, Integer> {
 
     @Override
     public Integer get(int row, int col) {
-        return this.VectorArrayPrimitive[row][col];
+        return toArrays()[row][col];
     }
 
     /**
@@ -159,52 +172,6 @@ public class IntegerMatrix extends Matrix<IntegerMatrix, Integer> {
     }
 
     /**
-     * @return 获取到本矩阵中的所有数据，需要注意的是，该函数获取到的数据矩阵对象中正在使用的，如果返回值被更改，那么会导致一些不可意料的情况发生。
-     * <p>
-     * Get all the data in this matrix. Note that if the return value of the data matrix object obtained by this function is changed, some unexpected situations will occur.
-     */
-    @Override
-    public double[][] toDoubleArrays() {
-        double[][] res = new double[this.getRowCount()][this.getColCount()];
-        for (int i = 0; i < this.toIntArrays().length; i++) {
-            res[i] = ASClass.IntArray_To_DoubleArray(this.VectorArrayPrimitive[i]);
-        }
-        return res;
-    }
-
-    /**
-     * @return 返回该矩阵中所有行数据的数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改。
-     * <p>
-     * Returns the array form of all row data in the matrix. Since it is copied, it will not generate any dependency, so it supports modification.
-     */
-    @Override
-    public double[][] CopyToNewDoubleArrays() {
-        return toDoubleArrays();
-    }
-
-    /**
-     * @return 获取到本矩阵中的所有数据，需要注意的是，该函数获取到的数据矩阵对象中正在使用的，如果返回值被更改，那么会导致一些不可意料的情况发生。
-     * <p>
-     * Get all the data in this matrix. Note that if the return value of the data matrix object obtained by this function is changed, some unexpected situations will occur.
-     */
-    @Override
-    public int[][] toIntArrays() {
-        return this.VectorArrayPrimitive;
-    }
-
-    /**
-     * @return 返回该矩阵中所有行数据的数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改。
-     * <p>
-     * Returns the array form of all row data in the matrix. Since it is copied, it will not generate any dependency, so it supports modification.
-     */
-    @Override
-    public int[][] CopyToNewIntArrays() {
-        final int[][] res = new int[this.getRowCount()][this.getColCount()];
-        ASClass.array2DCopy(this.VectorArrayPrimitive, res);
-        return res;
-    }
-
-    /**
      * 刷新操作数对象的所有字段
      */
     @Override
@@ -226,7 +193,7 @@ public class IntegerMatrix extends Matrix<IntegerMatrix, Integer> {
         int rowPointer = this.RowPointer;
         PointerReset();
         while (this.MovePointerDown()) {
-            int[] ints = toIntArray();
+            int[] ints = toArray();
             for (int v : ints) {
                 res += ASMath.Power2(v);
             }
@@ -257,7 +224,7 @@ public class IntegerMatrix extends Matrix<IntegerMatrix, Integer> {
             int rowPointer2 = matrix.RowPointer;
             // 迭代每一行
             while (this.MovePointerDown() && matrix.MovePointerDown()) {
-                doubles[this.RowPointer] = ASMath.CrossMultiplication(this.toIntArray(), matrix.toIntArray(), newLength);
+                doubles[this.RowPointer] = ASMath.CrossMultiplication(this.toArray(), matrix.toArray(), newLength);
             }
             this.RowPointer = rowPointer1;
             matrix.RowPointer = rowPointer2;
@@ -291,8 +258,8 @@ public class IntegerMatrix extends Matrix<IntegerMatrix, Integer> {
             int rowPointer1 = this.RowPointer;
             int rowPointer2 = matrix.RowPointer;
             while (this.MovePointerDown() && matrix.MovePointerDown()) {
-                int[] ints = this.toIntArray();
-                int[] ints1 = matrix.toIntArray();
+                int[] ints = this.toArray();
+                int[] ints1 = matrix.toArray();
                 for (int i = 0; i < ints.length; i++) {
                     res += ints[i] * ints1[i];
                 }
@@ -316,52 +283,6 @@ public class IntegerMatrix extends Matrix<IntegerMatrix, Integer> {
     }
 
     /**
-     * @return 不论是基元还是包装，都返回一个基元的浮点数组，该方法是万能的，始终都会返回出来一个真正的向量数组！
-     * <p>
-     * Both primitives and wrappers return a floating-point array of primitives. This method is omnipotent and will always return a true vector array!
-     * <p>
-     * 注意 该方法在大部分情况下返回的通常都是源数组，不允许更改，只能作为只读变量。
-     */
-    @Override
-    public double[] toDoubleArray() {
-        return ASClass.IntArray_To_DoubleArray(toIntArray());
-    }
-
-    /**
-     * @return 该对象的向量数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改
-     * <p>
-     * The vector array form of the object is copied, which does not generate any dependency, so it supports modification
-     */
-    @Override
-    public double[] CopyToNewDoubleArray() {
-        return toDoubleArray();
-    }
-
-    /**
-     * @return 不论是基元还是包装，都返回一个基元的整形数组，该方法是万能的，始终都会返回出来一个真正的向量数组！
-     * <p>
-     * Both primitives and wrappers return a floating-point array of primitives. This method is omnipotent and will always return a true vector array!
-     * <p>
-     * 注意 该方法在大部分情况下返回的通常都是源数组，不允许更改，只能作为只读变量。
-     */
-    @Override
-    public int[] toIntArray() {
-        return this.VectorArrayPrimitive[RowPointer];
-    }
-
-    /**
-     * @return 该对象的向量数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改
-     * <p>
-     * The vector array form of the object is copied, which does not generate any dependency, so it supports modification
-     */
-    @Override
-    public int[] CopyToNewIntArray() {
-        final int[] res = new int[this.getColCount()];
-        System.arraycopy(this.toIntArray(), 0, res, 0, res.length);
-        return res;
-    }
-
-    /**
      * @return 向量中包含的维度数量
      * <p>
      * the number of dimensions contained in the vector
@@ -373,12 +294,127 @@ public class IntegerMatrix extends Matrix<IntegerMatrix, Integer> {
 
     @Override
     public String toString() {
-        StringBuilder stringBuilder = new StringBuilder(this.VectorArrayPrimitive.length << 2);
-        for (int[] ints : this.VectorArrayPrimitive) {
+        int[][] ints1 = this.toArrays();
+        StringBuilder stringBuilder = new StringBuilder(ints1.length << 2);
+        for (int[] ints : ints1) {
             stringBuilder.append(Arrays.toString(ints)).append("\n");
         }
         return "------------MatrixStart-----------\n" +
                 stringBuilder +
                 "------------MatrixEnd------------\n";
+    }
+
+    /**
+     * @return 将本对象中存储的向量序列的数组直接返回，注意，这里返回的是一个正在被维护的数组，因此建议保证返回值作为只读变量使用。
+     * <p>
+     * Return the array of vector sequences stored in this object directly. Note that the returned value is an array being maintained. Therefore, it is recommended to ensure that the returned value is used as a read-only variable.
+     */
+    @Override
+    public int[] toArray() {
+        return toArrays()[RowPointer];
+    }
+
+    /**
+     * @return 将本对象中存储的向量序列数组拷贝到一个新数组并将新数组返回，这里返回的是一个新数组，支持修改等操作。
+     * <p>
+     * Copy the vector sequence array stored in this object to a new array and return the new array. Here, a new array is returned, which supports modification and other operations.
+     */
+    @Override
+    public int[] copyToNewArray() {
+        int[] src = toArray();
+        int[] res = new int[src.length];
+        System.arraycopy(src, 0, res, 0, res.length);
+        return res;
+    }
+
+    /**
+     * 该方法将会获取到矩阵中的二维数组，值得注意的是，在该函数中获取到的数组是一个新的数组，不会有任何的关系。
+     * <p>
+     * This method will obtain the two-dimensional array in the matrix. It is worth noting that the array obtained in this function is a new array and will not have any relationship.
+     *
+     * @return 当前矩阵对象中的二维数组的深拷贝新数组，支持修改！！
+     * <p>
+     * The deep copy new array of the two-dimensional array in the current matrix object supports modification!!
+     */
+    @Override
+    public int[][] copyToNewArrays() {
+        int[][] src = toArrays();
+        int[][] res = new int[getRowCount()][getColCount()];
+        ASClass.array2DCopy(src, res);
+        return res;
+    }
+
+    /**
+     * 去除冗余特征维度，将当前矩阵中的每一个维度都进行方差或无向差计算，并将过于稳定的冗余特征去除。
+     * <p>
+     * Remove redundant feature dimensions, calculate variance or undirected difference of each dimension in the current matrix, and remove redundant features that are too stable.
+     *
+     * @param threshold 冗余去除阈值，代表去除的百分比，这个值应是一个小于1的数值，例如设置为0.4 代表去除掉冗余程度倒序排行中，最后40% 的维度。
+     *                  <p>
+     *                  Redundancy removal threshold, which represents the percentage of removal, should be a value less than 1. For example, set to 0.4 to remove the last 40% of the dimensions in the reverse order of redundancy.
+     * @return 去除冗余特征维度之后的新矩阵
+     * <p>
+     * New matrix after removing redundant feature dimensions
+     */
+    @Override
+    public IntegerMatrix featureSelection(double threshold) {
+        if (threshold >= 1) throw Matrix.OPERATOR_OPERATION_EXCEPTION;
+        // 计算出本次要去除的维度数量
+        int num = (int) (getRowCount() * threshold);
+        if (num <= 0) {
+            return IntegerMatrix.parse(copyToNewArrays());
+        } else {
+            // 计算出本次剩余的维度数量
+            num = getRowCount() - num;
+            // 准备好一个排序集合，存储所有的离散值结果与数组
+            TreeMap<Double, int[]> treeMap = new TreeMap<>(Comparator.reverseOrder());
+            // 将每一个维度的向量的方差计算出来
+            for (int[] ints : this.toArrays()) {
+                // 计算出离散值，并将离散值与当前数组添加到集合中
+                treeMap.put(ASMath.undirectedDifference(ints), ints);
+            }
+            // 开始获取到前 num 个数组
+            int index = -1;
+            int[][] res = new int[num][getColCount()];
+            for (int[] value : treeMap.values()) {
+                System.arraycopy(value, 0, res[++index], 0, value.length);
+                --num;
+                if (num == 0) break;
+            }
+            return IntegerMatrix.parse(res);
+        }
+    }
+
+    /**
+     * 删除与目标索引维度相关的所有行维度，并返回新矩阵对象。
+     * <p>
+     * Delete all row dimensions related to the target index dimension and return a new matrix object.
+     *
+     * @param index          需要被作为相关系数中心点的行编号。
+     *                       <p>
+     *                       The row number to be used as the center point of the correlation coefficient.
+     * @param thresholdLeft  相关系数阈值，需要被删除的相关系数阈值区间左边界。
+     *                       <p>
+     *                       The correlation coefficient threshold is the left boundary of the correlation coefficient threshold interval to be deleted.
+     * @param thresholdRight 相关系数阈值，需要被删除的相关系数阈值区间右边界。
+     *                       <p>
+     *                       The correlation coefficient threshold is the right boundary of the correlation coefficient threshold interval to be deleted.
+     * @return 进行了相关维度删除之后构造出来的新矩阵
+     * <p>
+     * The new matrix constructed after deleting relevant dimensions
+     */
+    @Override
+    public IntegerMatrix deleteRelatedDimensions(int index, double thresholdLeft, double thresholdRight) {
+        if (index >= 0 && index < getRowCount()) {
+            int[][] ints = toArrays();
+            // 获取到当前的相关系数中心序列
+            int[] mid = ints[index];
+            ArrayList<int[]> res = new ArrayList<>();
+            // 开始进行计算
+            ex(thresholdLeft, thresholdRight, ints, mid, res);
+            return IntegerMatrix.parse(res.toArray(new int[0][]));
+        } else {
+            return IntegerMatrix.parse(copyToNewArrays());
+        }
     }
 }

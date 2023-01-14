@@ -4,6 +4,11 @@ import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASMath;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.TreeMap;
+
 /**
  * Java类于 2022/10/11 20:02:06 创建
  * <p>
@@ -13,10 +18,7 @@ import zhao.algorithmMagic.utils.ASMath;
  *
  * @author zhao
  */
-public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
-
-    private final double[][] VectorArrayPrimitive;
-    private final String matrixStr;
+public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], double[][]> {
 
     /**
      * 构造一个矩阵，指定其矩阵的行列数
@@ -28,9 +30,7 @@ public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
      *                The element value in the matrix will be directly applied to this class, so do not change it outside.
      */
     protected DoubleMatrix(double[]... doubles) {
-        super(doubles.length, doubles[0].length);
-        this.VectorArrayPrimitive = doubles;
-        matrixStr = super.toString();
+        super(doubles.length, doubles[0].length, doubles);
     }
 
     /**
@@ -51,6 +51,19 @@ public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
         }
     }
 
+    protected static void ex(double thresholdLeft, double thresholdRight, double[][] ints, double[] mid, ArrayList<double[]> res) {
+        for (double[] anInt : ints) {
+            double num = ASMath.correlationCoefficient(anInt, mid);
+            if (num >= thresholdLeft || num <= thresholdRight) {
+                // 这个情况代表是不符合删除区间的，也就是不需要被删除的
+                double[] res1 = new double[anInt.length];
+                System.arraycopy(anInt, 0, res1, 0, anInt.length);
+                res.add(res1);
+            }
+            res.add(anInt);
+        }
+    }
+
     /**
      * 获取到矩阵中指定坐标点的数值
      *
@@ -60,7 +73,7 @@ public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
      */
     @Override
     public Double get(int row, int col) {
-        return VectorArrayPrimitive[row][col];
+        return toArrays()[row][col];
     }
 
     /**
@@ -281,84 +294,7 @@ public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
      * Get the data of a certain row in this matrix according to the row pointer, and get the data of the corresponding row by adjusting the changes of the external row pointer. Note that if the return value of the data matrix object obtained by this function is being used, it will lead to some unexpected situations.
      */
     public double[] toDoubleArray() {
-        return this.VectorArrayPrimitive[super.RowPointer];
-    }
-
-    /**
-     * @return 获取到本矩阵中的所有数据，需要注意的是，该函数获取到的数据矩阵对象中正在使用的，如果返回值被更改，那么会导致一些不可意料的情况发生。
-     * <p>
-     * Get all the data in this matrix. Note that if the return value of the data matrix object obtained by this function is changed, some unexpected situations will occur.
-     */
-    public double[][] toDoubleArrays() {
-        return this.VectorArrayPrimitive;
-    }
-
-    /**
-     * @return 该对象的向量数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改
-     * <p>
-     * The vector array form of the object is copied, which does not generate any dependency, so it supports modification
-     */
-    public double[] CopyToNewDoubleArray() {
-        final double[] res = new double[this.getColCount()];
-        System.arraycopy(this.toDoubleArray(), 0, res, 0, res.length);
-        return res;
-    }
-
-    /**
-     * @return 不论是基元还是包装，都返回一个基元的整形数组，该方法是万能的，始终都会返回出来一个真正的向量数组！
-     * <p>
-     * Both primitives and wrappers return a floating-point array of primitives. This method is omnipotent and will always return a true vector array!
-     * <p>
-     * 注意 该方法在大部分情况下返回的通常都是源数组，不允许更改，只能作为只读变量。
-     */
-    @Override
-    public int[] toIntArray() {
-        return new int[0];
-    }
-
-    /**
-     * @return 该对象的向量数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改
-     * <p>
-     * The vector array form of the object is copied, which does not generate any dependency, so it supports modification
-     */
-    @Override
-    public int[] CopyToNewIntArray() {
-        return new int[0];
-    }
-
-    /**
-     * @return 返回该矩阵中所有行数据的数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改。
-     * <p>
-     * Returns the array form of all row data in the matrix. Since it is copied, it will not generate any dependency, so it supports modification.
-     */
-    public double[][] CopyToNewDoubleArrays() {
-        final double[][] res = new double[this.getRowCount()][this.getColCount()];
-        ASClass.array2DCopy(this.VectorArrayPrimitive, res);
-        return res;
-    }
-
-    /**
-     * @return 获取到本矩阵中的所有数据，需要注意的是，该函数获取到的数据矩阵对象中正在使用的，如果返回值被更改，那么会导致一些不可意料的情况发生。
-     * <p>
-     * Get all the data in this matrix. Note that if the return value of the data matrix object obtained by this function is changed, some unexpected situations will occur.
-     */
-    @Override
-    public int[][] toIntArrays() {
-        int[][] res = new int[this.getRowCount()][this.getColCount()];
-        for (int i = 0; i < this.toDoubleArrays().length; i++) {
-            res[i] = ASClass.DoubleArray_To_IntArray(this.VectorArrayPrimitive[i]);
-        }
-        return res;
-    }
-
-    /**
-     * @return 返回该矩阵中所有行数据的数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改。
-     * <p>
-     * Returns the array form of all row data in the matrix. Since it is copied, it will not generate any dependency, so it supports modification.
-     */
-    @Override
-    public int[][] CopyToNewIntArrays() {
-        return toIntArrays();
+        return toArrays()[super.RowPointer];
     }
 
     /**
@@ -373,7 +309,126 @@ public class DoubleMatrix extends Matrix<DoubleMatrix, Double> {
 
     @Override
     public String toString() {
-        return this.matrixStr;
+        double[][] doubles = toArrays();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (double[] aDouble : doubles) {
+            stringBuilder.append(Arrays.toString(aDouble)).append('\n');
+        }
+        return "------------MatrixStart-----------\n" +
+                stringBuilder +
+                "------------MatrixEnd------------\n";
+    }
+
+    /**
+     * @return 将本对象中存储的向量序列的数组直接返回，注意，这里返回的是一个正在被维护的数组，因此建议保证返回值作为只读变量使用。
+     * <p>
+     * Return the array of vector sequences stored in this object directly. Note that the returned value is an array being maintained. Therefore, it is recommended to ensure that the returned value is used as a read-only variable.
+     */
+    @Override
+    public double[] toArray() {
+        return toArrays()[RowPointer];
+    }
+
+    /**
+     * @return 该对象的向量数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改
+     * <p>
+     * The vector array form of the object is copied, which does not generate any dependency, so it supports modification
+     */
+    @Override
+    public double[] copyToNewArray() {
+        final double[] res = new double[this.getColCount()];
+        System.arraycopy(this.toDoubleArray(), 0, res, 0, res.length);
+        return res;
+    }
+
+    /**
+     * 该方法将会获取到矩阵中的二维数组，值得注意的是，在该函数中获取到的数组是一个新的数组，不会有任何的关系。
+     * <p>
+     * This method will obtain the two-dimensional array in the matrix. It is worth noting that the array obtained in this function is a new array and will not have any relationship.
+     *
+     * @return 当前矩阵对象中的二维数组的深拷贝新数组，支持修改！！
+     * <p>
+     * The deep copy new array of the two-dimensional array in the current matrix object supports modification!!
+     */
+    @Override
+    public double[][] copyToNewArrays() {
+        double[][] res = new double[this.getRowCount()][this.getColCount()];
+        ASClass.array2DCopy(toArrays(), res);
+        return res;
+    }
+
+    /**
+     * 去除冗余特征维度，将当前矩阵中的每一个维度都进行方差或无向差计算，并将过于稳定的冗余特征去除。
+     * <p>
+     * Remove redundant feature dimensions, calculate variance or undirected difference of each dimension in the current matrix, and remove redundant features that are too stable.
+     *
+     * @param threshold 去除阈值，代表去除的维度数量是当前所有维度数量的百分之threshold，小于0.01将认为不进行去除
+     *                  <p>
+     *                  Removal threshold, which means that the number of dimensions removed is the threshold of the current number of all dimensions. If it is less than 0.01, it will be considered not to be removed
+     * @return 去除冗余特征维度之后的新矩阵
+     * <p>
+     * New matrix after removing redundant feature dimensions
+     */
+    @Override
+    public DoubleMatrix featureSelection(double threshold) {
+        if (threshold >= 1) throw Matrix.OPERATOR_OPERATION_EXCEPTION;
+        // 计算出本次要去除的维度数量
+        int num = (int) (getRowCount() * threshold);
+        if (num <= 0) {
+            return DoubleMatrix.parse(copyToNewArrays());
+        } else {
+            // 计算出本次剩余的维度数量
+            num = getRowCount() - num;
+            // 准备好一个排序集合，存储所有的离散值结果与数组
+            TreeMap<Double, double[]> treeMap = new TreeMap<>(Comparator.reverseOrder());
+            // 将每一个维度的向量的方差计算出来
+            for (double[] ints : this.toArrays()) {
+                // 计算出离散值，并将离散值与当前数组添加到集合中
+                treeMap.put(ASMath.undirectedDifference(ints), ints);
+            }
+            // 开始获取到前 num 个数组
+            int index = -1;
+            double[][] res = new double[num][getColCount()];
+            for (double[] value : treeMap.values()) {
+                System.arraycopy(value, 0, res[++index], 0, value.length);
+                --num;
+                if (num == 0) break;
+            }
+            return DoubleMatrix.parse(res);
+        }
+    }
+
+    /**
+     * 删除与目标索引维度相关的所有行维度，并返回新矩阵对象。
+     * <p>
+     * Delete all row dimensions related to the target index dimension and return a new matrix object.
+     *
+     * @param index          需要被作为相关系数中心点的行编号。
+     *                       <p>
+     *                       The row number to be used as the center point of the correlation coefficient.
+     * @param thresholdLeft  相关系数阈值，需要被删除的相关系数阈值区间左边界。
+     *                       <p>
+     *                       The correlation coefficient threshold is the left boundary of the correlation coefficient threshold interval to be deleted.
+     * @param thresholdRight 相关系数阈值，需要被删除的相关系数阈值区间右边界。
+     *                       <p>
+     *                       The correlation coefficient threshold is the right boundary of the correlation coefficient threshold interval to be deleted.
+     * @return 进行了相关维度删除之后构造出来的新矩阵
+     * <p>
+     * The new matrix constructed after deleting relevant dimensions
+     */
+    @Override
+    public DoubleMatrix deleteRelatedDimensions(int index, double thresholdLeft, double thresholdRight) {
+        if (index >= 0 && index < getRowCount()) {
+            double[][] ints = toArrays();
+            // 获取到当前的相关系数中心序列
+            double[] mid = ints[index];
+            ArrayList<double[]> res = new ArrayList<>();
+            // 开始进行计算
+            ex(thresholdLeft, thresholdRight, ints, mid, res);
+            return DoubleMatrix.parse(res.toArray(new double[0][]));
+        } else {
+            return DoubleMatrix.parse(copyToNewArrays());
+        }
     }
 
     @Override

@@ -9,8 +9,8 @@
 ### 更新日志
 
 * 框架版本：1.13 - xxx
-* 为整形向量提供了原数组的获取支持，可以使用toIntArray获取到整形向量的数组对象。
-* 为整形向量之间的计算进行了优化，减少了在内部的toDoubleArray方法的调用，避免冗余。
+* 为整形向量提供了原数组的获取支持，可以使用toArray获取到向量或矩阵的数组对象。
+* 为整形向量之间的计算进行了优化，减少了在内部的toArray方法的调用，避免冗余。
 * 针对路线对象与复数对象的字符串解析的逻辑进行了优化，减少操作的数量
 * 针对计算组件的计算日志打印，这是一个需要巨大性能的操作，因此在本次更新中，您可以手动干预计算日志的打印情况，具体操作方式如下所示。
 
@@ -68,34 +68,34 @@ import zhao.algorithmMagic.algorithm.featureExtraction.WordFrequency;
 import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
 
 public class MAIN1 {
-  public static void main(String[] args) {
-    // 获取到字典特征提取组件
-    DictFeatureExtraction dict = DictFeatureExtraction.getInstance("dict");
-    // 构造一个需要被提取的数组
-    String[] strings = {
-            "cat", "dog", "turtle", "fish", "cat"
-    };
-    // 开始提取特征矩阵
-    ColumnIntegerMatrix extract = dict.extract(strings);
-    // 打印矩阵
-    System.out.println(extract);
-    // 打印矩阵的hashMap形式
-    extract.toHashMap().forEach((key, value) -> System.out.println(value.toString() + '\t' + key));
+    public static void main(String[] args) {
+        // 获取到字典特征提取组件
+        DictFeatureExtraction dict = DictFeatureExtraction.getInstance("dict");
+        // 构造一个需要被提取的数组
+        String[] strings = {
+                "cat", "dog", "turtle", "fish", "cat"
+        };
+        // 开始提取特征矩阵
+        ColumnIntegerMatrix extract = dict.extract(strings);
+        // 打印矩阵
+        System.out.println(extract);
+        // 打印矩阵的hashMap形式
+        extract.toHashMap().forEach((key, value) -> System.out.println(value.toString() + '\t' + key));
 
-    System.out.println("================================================");
+        System.out.println("================================================");
 
-    // 获取到词频特征提取组件
-    WordFrequency word = WordFrequency.getInstance("word");
-    // 构建一些被统计的文本
-    String[] data = {
-            "I love you, Because you are beautiful.",
-            "I need you. Because I'm trapped"
-    };
-    // 开始统计
-    ColumnIntegerMatrix extract1 = word.extract(data);
-    // 打印结果
-    System.out.println(extract1);
-  }
+        // 获取到词频特征提取组件
+        WordFrequency word = WordFrequency.getInstance("word");
+        // 构建一些被统计的文本
+        String[] data = {
+                "I love you, Because you are beautiful.",
+                "I need you. Because I'm trapped"
+        };
+        // 开始统计
+        ColumnIntegerMatrix extract1 = word.extract(data);
+        // 打印结果
+        System.out.println(extract1);
+    }
 }
 ```
 
@@ -129,5 +129,57 @@ I love you, Because you are beautiful.	I need you. Because I'm trapped	rowColNam
 [2, 1]	you
 ------------MatrixEnd------------
 ```
+
+* 为所有的矩阵增加特征选择函数，能够按照指定的百分比去除指定数量的维度数据，并返回一个新矩阵
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
+import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
+
+public final class MAIN1 {
+    public static void main(String[] args) {
+        // 准备一个矩阵
+        IntegerMatrix parse = IntegerMatrix.parse(
+                new int[]{1, 2, 1, 1, 1, 1, 1, 1, 1},
+                new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9},
+                new int[]{10, 20, 30, 40, 50, 60, 70, 80, 90}
+        );
+        // 开始进行特征选择 去除掉其中的 40% 的维度
+        IntegerMatrix integerMatrix = parse.featureSelection(0.4);
+        System.out.println(integerMatrix);
+
+        // 准备一个矩阵 其中存储的是鸟的数据样本
+        IntegerMatrix parse1 = ColumnIntegerMatrix.parse(
+                new String[]{"1d", "2d", "3d", "4d", "5d", "6d", "7d", "8d", "9d"}, // 样本来源地区编号
+                new String[]{"羽毛", "羽毛的颜色", "种族"}, // 样本统计的三种维度
+                new int[]{1, 2, 1, 1, 1, 1, 1, 1, 1},
+                new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9},
+                new int[]{10, 20, 30, 40, 50, 60, 70, 80, 90}
+        );
+        // 开始进行特征选择 去除掉其中的 40% 的维度
+        IntegerMatrix integerMatrix1 = parse1.featureSelection(0.4);
+        System.out.println(integerMatrix1);
+    }
+}
+```
+
+```
+------------MatrixStart-----------
+[10, 20, 30, 40, 50, 60, 70, 80, 90]
+[1, 2, 3, 4, 5, 6, 7, 8, 9]
+------------MatrixEnd------------
+
+------------MatrixStart-----------
+1d  2d  3d  4d  5d  6d  7d  8d  9d  rowColName
+[10, 20, 30, 40, 50, 60, 70, 80, 90]	种族
+[1, 2, 3, 4, 5, 6, 7, 8, 9]	      羽毛的颜色
+------------MatrixEnd------------
+```
+
+* 为矩阵数据对象增加了计算函数 featureSelection 用于去除冗余的维度
+* 为矩阵数据对象增加了计算函数 deleteRelatedDimensions 用于去除指定维度的相关维度
+* 为矩阵体系中增加了一个新的矩阵类型，带有行列字段的矩阵对象 ColumnIntegerMatrix
 
 ### Version update date : XX XX-XX-XX

@@ -49,68 +49,6 @@ public final class ASClass {
     }
 
     /**
-     * 将一个数组拓展，拓展位的数值为0
-     *
-     * @param targetLength
-     * @param array
-     * @return
-     */
-    public static int[] expandArray(int targetLength, int[] array) {
-        int diffLength = targetLength - array.length;
-        if (diffLength > 0) {
-            int[] ints = new int[array.length + diffLength];
-            System.arraycopy(array, 0, array, 0, array.length);
-            return ints;
-        }
-        return array;
-    }
-
-    /**
-     * 将一个整形包装数组拆箱
-     *
-     * @param integers 需要被拆箱的数据数组
-     * @return 拆箱之后的新数据
-     */
-    public static int[] unBox(Collection<Integer> integers) {
-        int[] res = new int[integers.size()];
-        int count = -1;
-        for (int anInt : integers) {
-            res[++count] = anInt;
-        }
-        return res;
-    }
-
-    /**
-     * 将一个整形包装数组拆箱
-     *
-     * @param integers 需要被拆箱的数据数组
-     * @return 拆箱之后的新数据
-     */
-    public static int[] unBox(Integer[] integers) {
-        int[] res = new int[integers.length];
-        int count = -1;
-        for (int anInt : integers) {
-            res[++count] = anInt;
-        }
-        return res;
-    }
-
-    /**
-     * 将一个基元数组装箱
-     *
-     * @param ints 需要被装箱的所有基元数组
-     * @return 装箱洲的新数组
-     */
-    public static Integer[] Box(int[] ints) {
-        Integer[] integers = new Integer[ints.length];
-        int count = -1;
-        for (int anInt : ints) {
-            integers[++count] = anInt;
-        }
-        return integers;
-    }
-
-    /**
      * Double类型的二维线路，转换到 整形的二维线路
      * <p>
      * 2D line of type Double, converted to 2D line of type
@@ -322,10 +260,10 @@ public final class ASClass {
      * @param src  需要被拷贝的原数组
      * @param dest 需要被拷贝的目标数组
      */
-    public static void array2DCopy(Collection<Integer[]> src, int[][] dest) {
+    public static void array2DCopy(Collection<int[]> src, int[][] dest) {
         int count = -1;
-        for (Integer[] integers : src) {
-            dest[++count] = ASClass.unBox(integers);
+        for (int[] integers : src) {
+            System.arraycopy(integers, 0, dest[++count], 0, integers.length);
         }
     }
 
@@ -336,7 +274,7 @@ public final class ASClass {
      * @param dest 需要被拷贝的目标数组
      */
     public static void array2DCopy(int[][] src, int[][] dest) {
-        for (int i = 0; i < dest.length; i++) {
+        for (int i = 0; i < src.length; i++) {
             System.arraycopy(src[i], 0, dest[i], 0, src[i].length);
         }
     }
@@ -348,7 +286,19 @@ public final class ASClass {
      * @param dest 需要被拷贝的目标数组
      */
     public static void array2DCopy(double[][] src, double[][] dest) {
-        for (int i = 0; i < dest.length; i++) {
+        for (int i = 0; i < src.length; i++) {
+            System.arraycopy(src[i], 0, dest[i], 0, dest[i].length);
+        }
+    }
+
+    /**
+     * 将一个二维数组中的数据原样拷贝到新的二维数组中
+     *
+     * @param src  需要被拷贝的原数组
+     * @param dest 需要被拷贝的目标数组
+     */
+    public static void array2DCopy(Object[][] src, Object[][] dest) {
+        for (int i = 0; i < src.length; i++) {
             System.arraycopy(src[i], 0, dest[i], 0, dest[i].length);
         }
     }

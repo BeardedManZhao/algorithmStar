@@ -1,6 +1,8 @@
 # Hash Classification Integrator
 
-- 切换至 [中文文档](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Hash%20Classification%20Integrator-Chinese.md)
+-
+
+切换至 [中文文档](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Hash%20Classification%20Integrator-Chinese.md)
 
 ## introduce
 
@@ -185,4 +187,6 @@ public class MAIN1 {
 
 <hr>
 
-- 切换至 [中文文档](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Hash%20Classification%20Integrator-Chinese.md)
+-
+
+切换至 [中文文档](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Hash%20Classification%20Integrator-Chinese.md)

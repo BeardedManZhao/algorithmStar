@@ -13,7 +13,7 @@ import zhao.algorithmMagic.operands.Operands;
  *                             <p>
  *                             This class is abstract and contains the most basic definitions and type controls.
  */
-public abstract class Vector<ImplementationType, ElementType> implements Operands<ImplementationType> {
+public abstract class Vector<ImplementationType, ElementType, ArrayType> implements Operands<ImplementationType> {
 
     /**
      * 构造一个空向量，注意，如果您使用了此方法，那么您要在子类中调用"setVectorArrayPacking"
@@ -63,22 +63,11 @@ public abstract class Vector<ImplementationType, ElementType> implements Operand
     public abstract ImplementationType expand();
 
     /**
-     * @return 不论是基元还是包装，都返回一个基元的浮点数组，该方法是万能的，始终都会返回出来一个真正的向量数组！
+     * @return 将本对象中存储的向量序列数组拷贝到一个新数组并将新数组返回，这里返回的是一个新数组，支持修改等操作。
      * <p>
-     * Both primitives and wrappers return a floating-point array of primitives. This method is omnipotent and will always return a true vector array!
-     * <p>
-     * 注意 该方法在大部分情况下返回的通常都是源数组，不允许更改，只能作为只读变量。
+     * Copy the vector sequence array stored in this object to a new array and return the new array. Here, a new array is returned, which supports modification and other operations.
      */
-    public abstract double[] toDoubleArray();
-
-    /**
-     * @return 不论是基元还是包装，都返回一个基元的整形数组，该方法是万能的，始终都会返回出来一个真正的向量数组！
-     * <p>
-     * Both primitives and wrappers return a floating-point array of primitives. This method is omnipotent and will always return a true vector array!
-     * <p>
-     * 注意 该方法在大部分情况下返回的通常都是源数组，不允许更改，只能作为只读变量。
-     */
-    public abstract int[] toIntArray();
+    public abstract ArrayType copyToNewArray();
 
     /**
      * @return 向量中包含的维度数量

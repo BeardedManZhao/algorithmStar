@@ -197,7 +197,7 @@ public class ManhattanDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
      */
     public double getTrueDistance(DoubleVector doubleVector) {
         double res = 0;
-        for (double v : doubleVector.toDoubleArray()) {
+        for (double v : doubleVector.toArray()) {
             res += ASMath.absoluteValue(v);
         }
         return res;

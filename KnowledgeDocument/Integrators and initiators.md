@@ -1,6 +1,8 @@
 # Integrators and initiators-Chinese
 
-- 切换至 [中文文档](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Integrators%20and%20initiators-Chinese.md)
+-
+
+切换至 [中文文档](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Integrators%20and%20initiators-Chinese.md)
 
 ## introduce
 
@@ -122,4 +124,6 @@ public class MAIN1 {
 
 ```
 
-- 切换至 [中文文档](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Integrators%20and%20initiators-Chinese.md)
+-
+
+切换至 [中文文档](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Integrators%20and%20initiators-Chinese.md)

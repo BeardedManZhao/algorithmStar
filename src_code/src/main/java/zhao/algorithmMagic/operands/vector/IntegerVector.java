@@ -12,7 +12,7 @@ import zhao.algorithmMagic.utils.ASMath;
  *
  * @author zhao
  */
-public class IntegerVector extends ASVector<IntegerVector, Integer> {
+public class IntegerVector extends ASVector<IntegerVector, Integer, int[]> {
     int[] VectorArrayPrimitive;
     private String vectorStr;
     private int moduleLength;
@@ -185,50 +185,15 @@ public class IntegerVector extends ASVector<IntegerVector, Integer> {
     }
 
     /**
-     * @return 针对整数数组中无法进行原数组的获而提供的补偿方法，该方法可以直接将整数数组中的向量数组获取到，注意，该数组是原数据。
+     * @return 将本对象中存储的向量序列数组拷贝到一个新数组并将新数组返回，这里返回的是一个新数组，支持修改等操作。
      * <p>
-     * For the compensation method provided for the inability to obtain the original array in the integer array, this method can directly obtain the vector array in the integer array. Note that this array is the original data.
+     * Copy the vector sequence array stored in this object to a new array and return the new array. Here, a new array is returned, which supports modification and other operations.
      */
     @Override
-    public int[] toIntArray() {
-        return this.VectorArrayPrimitive;
-    }
-
-    /**
-     * @return 该对象的向量数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改
-     * <p>
-     * The vector array form of the object is copied, which does not generate any dependency, so it supports modification
-     */
-    @Override
-    public int[] CopyToNewIntArray() {
-        final int[] ints = this.toIntArray();
-        final int[] res = new int[ints.length];
-        System.arraycopy(ints, 0, res, 0, res.length);
+    public int[] copyToNewArray() {
+        int[] res = new int[this.VectorArrayPrimitive.length];
+        System.arraycopy(toArray(), 0, res, 0, res.length);
         return res;
-    }
-
-    /**
-     * @return 不论是基元还是包装，都返回一个基元的浮点数组，该方法是万能的，始终都会返回出来一个真正的向量数组！
-     * <p>
-     * Both primitives and wrappers return a floating-point array of primitives. This method is omnipotent and will always return a true vector array!
-     * <p>
-     * 需要注意的是，在整数向量对象中，该函数将返回一个新的数组，这是因为数据类型的限制，如果您需要使用到原有的数组对象，请调用toIntArray
-     * <p>
-     * It should be noted that in the integer vector object, this function will return a new array, because of the limitation of data type. If you need to use the original array object, please call toIntArray
-     */
-    @Override
-    public double[] toDoubleArray() {
-        return ASClass.IntArray_To_DoubleArray(this.getVectorArrayPrimitive());
-    }
-
-    /**
-     * @return 该对象的向量数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改
-     * <p>
-     * The vector array form of the object is copied, which does not generate any dependency, so it supports modification
-     */
-    @Override
-    public double[] CopyToNewDoubleArray() {
-        return this.toDoubleArray();
     }
 
     /**
@@ -239,10 +204,6 @@ public class IntegerVector extends ASVector<IntegerVector, Integer> {
     @Override
     public int getNumberOfDimensions() {
         return this.VectorArrayPrimitive.length;
-    }
-
-    public int[] getVectorArrayPrimitive() {
-        return VectorArrayPrimitive;
     }
 
     @Override
@@ -262,6 +223,16 @@ public class IntegerVector extends ASVector<IntegerVector, Integer> {
         stringBuilder.append(' ').append(']');
         this.moduleLength = (int) Math.sqrt(tempM);
         this.vectorStr = stringBuilder.toString();
+    }
+
+    /**
+     * @return 将本对象中存储的向量序列的数组直接返回，注意，这里返回的是一个正在被维护的数组，因此建议保证返回值作为只读变量使用。
+     * <p>
+     * Return the array of vector sequences stored in this object directly. Note that the returned value is an array being maintained. Therefore, it is recommended to ensure that the returned value is used as a read-only variable.
+     */
+    @Override
+    public int[] toArray() {
+        return this.VectorArrayPrimitive;
     }
 
     /**

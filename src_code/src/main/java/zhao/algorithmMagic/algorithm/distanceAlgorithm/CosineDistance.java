@@ -29,7 +29,7 @@ import zhao.algorithmMagic.utils.ASClass;
  *            The class object type that participates in the operation of this algorithm
  * @author zhao
  */
-public class CosineDistance<V extends Vector<?, ?>> implements DistanceAlgorithm {
+public class CosineDistance<V extends Vector<?, ?, ?>> implements DistanceAlgorithm {
     protected final Logger logger;
     protected final String AlgorithmName;
 
@@ -53,7 +53,7 @@ public class CosineDistance<V extends Vector<?, ?>> implements DistanceAlgorithm
      * @return 算法类对象
      * @throws TargetNotRealizedException 当您传入的算法名称对应的组件不能被成功提取的时候会抛出异常
      */
-    public static <V extends Vector<?, ?>> CosineDistance<V> getInstance(String Name) {
+    public static <V extends Vector<?, ?, ?>> CosineDistance<V> getInstance(String Name) {
         if (OperationAlgorithmManager.containsAlgorithmName(Name)) {
             OperationAlgorithm operationAlgorithm = OperationAlgorithmManager.getInstance().get(Name);
             if (operationAlgorithm instanceof CosineDistance) {
@@ -90,7 +90,7 @@ public class CosineDistance<V extends Vector<?, ?>> implements DistanceAlgorithm
      * <p>
      * Cosine of the included angle, double type.
      */
-    public double getCos(Vector<V, Double> vector1, Vector<V, Double> vector2) {
+    public double getCos(Vector<V, Double, double[]> vector1, Vector<V, Double, double[]> vector2) {
         Double aDouble = vector1.innerProduct(vector2.expand());
         if (OperationAlgorithmManager.PrintCalculationComponentLog) {
             logger.info(aDouble + " / ( " + vector1 + " * " + vector2 + " )");
@@ -109,7 +109,7 @@ public class CosineDistance<V extends Vector<?, ?>> implements DistanceAlgorithm
      * <p>
      * Cosine of the included angle, double type.
      */
-    public double getCosineFunctionVariable(Vector<V, Double> vector1, Vector<V, Double> vector2) {
+    public double getCosineFunctionVariable(Vector<V, Double, double[]> vector1, Vector<V, Double, double[]> vector2) {
         double cos = getCos(vector1, vector2);
         if (OperationAlgorithmManager.PrintCalculationComponentLog) {
             logger.info("ArcCos(Cos(" + cos + "))");
@@ -128,7 +128,7 @@ public class CosineDistance<V extends Vector<?, ?>> implements DistanceAlgorithm
      * <p>
      * Cosine of the included angle, double type.
      */
-    public double getAngularDegree(Vector<V, Double> vector1, Vector<V, Double> vector2) {
+    public double getAngularDegree(Vector<V, Double, double[]> vector1, Vector<V, Double, double[]> vector2) {
         double v = Math.toDegrees(getCosineFunctionVariable(vector1, vector2));
         return v >= 180 ? 180 : v;
     }

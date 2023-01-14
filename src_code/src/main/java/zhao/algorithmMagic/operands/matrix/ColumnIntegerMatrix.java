@@ -1,10 +1,12 @@
 package zhao.algorithmMagic.operands.matrix;
 
 import zhao.algorithmMagic.exception.OperatorOperationException;
+import zhao.algorithmMagic.operands.RCNOperands;
 import zhao.algorithmMagic.operands.vector.IntegerVector;
+import zhao.algorithmMagic.utils.ASMath;
+import zhao.algorithmMagic.utils.dataContainer.IntegerAndInts;
 
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * 一个整数矩阵，其中维护了一个基元数组，矩阵中基于数组提供了很多转换函数，同时也提供了对维护数组的提取与拷贝函数。
@@ -13,7 +15,7 @@ import java.util.HashMap;
  *
  * @author zhao
  */
-public class ColumnIntegerMatrix extends IntegerMatrix {
+public class ColumnIntegerMatrix extends IntegerMatrix implements RCNOperands<int[]> {
     private final String[] Field1;
     private final String[] Field2;
 
@@ -28,7 +30,7 @@ public class ColumnIntegerMatrix extends IntegerMatrix {
         super(ints);
         if (ints.length > 0) {
             int length = ints[0].length;
-            if (field2 != null) {
+            if (field2 != null && field2.length > 0) {
                 if (field2.length == ints.length) {
                     Field2 = field2;
                 } else {
@@ -37,7 +39,7 @@ public class ColumnIntegerMatrix extends IntegerMatrix {
             } else {
                 Field2 = new String[0];
             }
-            if (field1 != null) {
+            if (field1 != null && field1.length > 0) {
                 if (field1.length == length) {
                     Field1 = field1;
                 } else {
@@ -73,14 +75,14 @@ public class ColumnIntegerMatrix extends IntegerMatrix {
      * @return 该矩阵中所对应的列名称
      */
     public String[] getColFieldNames() {
-        return Field1;
+        return Field1.clone();
     }
 
     /**
      * @return 该矩阵中对应的行名称
      */
     public String[] getRowFieldNames() {
-        return Field2;
+        return Field2.clone();
     }
 
     /**
@@ -90,7 +92,7 @@ public class ColumnIntegerMatrix extends IntegerMatrix {
      */
     public HashMap<String, IntegerVector> toHashMap() {
         HashMap<String, IntegerVector> hashMap = new HashMap<>(getRowCount() + 10);
-        int[][] ints = toIntArrays();
+        int[][] ints = toArrays();
         // 开始添加数据
         for (int i = 0; i < this.Field1.length; i++) {
             // 将当前字段的每一个元素添加到当前字段对应的数组中
@@ -118,7 +120,7 @@ public class ColumnIntegerMatrix extends IntegerMatrix {
         }
         // 添加行字段与行数据
         String[] rowFieldNames = this.getRowFieldNames();
-        int[][] ints = this.toIntArrays();
+        int[][] ints = this.toArrays();
         if (rowFieldNames.length != 0) {
             for (int i = 0; i < ints.length; i++) {
                 stringBuilder
@@ -133,5 +135,212 @@ public class ColumnIntegerMatrix extends IntegerMatrix {
         return "------------MatrixStart-----------\n" +
                 stringBuilder +
                 "------------MatrixEnd------------\n";
+    }
+
+    /**
+     * 去除冗余特征维度，将当前矩阵中的每一个维度都进行方差或无向差计算，并将过于稳定的冗余特征去除。
+     * <p>
+     * Remove redundant feature dimensions, calculate variance or undirected difference of each dimension in the current matrix, and remove redundant features that are too stable.
+     *
+     * @param threshold 冗余去除阈值，代表去除的百分比，这个值应是一个小于1的数值，例如设置为0.4 代表去除掉冗余程度倒序排行中，最后40% 的维度。
+     *                  <p>
+     *                  Redundancy removal threshold, which represents the percentage of removal, should be a value less than 1. For example, set to 0.4 to remove the last 40% of the dimensions in the reverse order of redundancy.
+     * @return 去除冗余特征维度之后的新矩阵
+     * <p>
+     * New matrix after removing redundant feature dimensions
+     */
+    @Override
+    public ColumnIntegerMatrix featureSelection(double threshold) {
+        if (threshold >= 1) throw Matrix.OPERATOR_OPERATION_EXCEPTION;
+        // 计算出本次要去除的维度数量
+        int num = (int) (getRowCount() * threshold);
+        if (num <= 0) {
+            return ColumnIntegerMatrix.parse(getColFieldNames(), getRowFieldNames(), copyToNewArrays());
+        } else {
+            // 计算出本次剩余的维度数量
+            num = getRowCount() - num;
+            // 准备好一个排序集合，存储所有的离散值结果与数组
+            TreeMap<Double, IntegerAndInts> treeMap = new TreeMap<>(Comparator.reverseOrder());
+            // 将每一个维度的向量的方差计算出来
+            int count = -1;
+            for (int[] ints : this.toArrays()) {
+                // 计算出离散值，并将离散值与当前行编号以及当前数组添加到集合中
+                treeMap.put(ASMath.undirectedDifference(ints), new IntegerAndInts(++count, ints));
+            }
+            // 开始获取到前 num 个数组
+            int index = -1;
+            // 构建列与数据的存储控件
+            String[] rowNames = new String[num];
+            int[][] res = new int[num][getColCount()];
+            for (IntegerAndInts value : treeMap.values()) {
+                System.arraycopy(value.ints, 0, res[++index], 0, value.ints.length);
+                rowNames[index] = this.Field2[value.anInt];
+                --num;
+                if (num == 0) break;
+            }
+            return ColumnIntegerMatrix.parse(getColFieldNames(), rowNames, res);
+        }
+    }
+
+    /**
+     * 删除与目标索引维度相关的所有行维度，并返回新矩阵对象。
+     * <p>
+     * Delete all row dimensions related to the target index dimension and return a new matrix object.
+     *
+     * @param index          需要被作为相关系数中心点的行编号。
+     *                       <p>
+     *                       The row number to be used as the center point of the correlation coefficient.
+     * @param thresholdLeft  相关系数阈值，需要被删除的相关系数阈值区间左边界。
+     *                       <p>
+     *                       The correlation coefficient threshold is the left boundary of the correlation coefficient threshold interval to be deleted.
+     * @param thresholdRight 相关系数阈值，需要被删除的相关系数阈值区间右边界。
+     *                       <p>
+     *                       The correlation coefficient threshold is the right boundary of the correlation coefficient threshold interval to be deleted.
+     * @return 进行了相关维度删除之后构造出来的新矩阵
+     * <p>
+     * The new matrix constructed after deleting relevant dimensions
+     */
+    @Override
+    public ColumnIntegerMatrix deleteRelatedDimensions(int index, double thresholdLeft, double thresholdRight) {
+        int rowCount = getRowCount();
+        if (index >= 0 && index < rowCount) {
+            int[][] ints = toArrays();
+            // 获取到当前的相关系数中心序列
+            int[] mid = ints[index];
+            ArrayList<int[]> res = new ArrayList<>(rowCount);
+            boolean b1 = this.Field1.length != 0;
+            boolean b2 = this.Field2.length != 0;
+            ArrayList<String> res_f1 = new ArrayList<>(b1 ? this.Field1.length : 16);
+            ArrayList<String> res_f2 = new ArrayList<>(b2 ? this.Field2.length : 16);
+            // 开始进行计算
+            if (b1 && b2) {
+                for (int i = 0; i < ints.length; i++) {
+                    int[] anInt = ints[i];
+                    double num = ASMath.correlationCoefficient(anInt, mid);
+                    if (num < thresholdLeft || num > thresholdRight) {
+                        // 这个情况代表是不符合删除区间的，也就是不需要被删除的
+                        int[] res1 = new int[anInt.length];
+                        System.arraycopy(anInt, 0, res1, 0, anInt.length);
+                        res_f1.add(this.Field1[i]);
+                        res_f2.add(this.Field2[i]);
+                        res.add(res1);
+                    }
+                }
+                return ColumnIntegerMatrix.parse(
+                        res_f1.toArray(new String[0]), res_f2.toArray(new String[0]), copyToNewArrays()
+                );
+            } else if (b2) {
+                // 说明第 1 字段不需要添加数据
+                for (int i = 0; i < ints.length; i++) {
+                    int[] anInt = ints[i];
+                    double num = ASMath.correlationCoefficient(anInt, mid);
+                    if (num < thresholdLeft || num > thresholdRight) {
+                        // 这个情况代表是不符合删除区间的，也就是不需要被删除的
+                        int[] res1 = new int[anInt.length];
+                        System.arraycopy(anInt, 0, res1, 0, anInt.length);
+                        res_f2.add(this.Field2[i]);
+                        res.add(res1);
+                    }
+                }
+                return ColumnIntegerMatrix.parse(
+                        null, res_f2.toArray(new String[0]), res.toArray(new int[0][])
+                );
+            } else if (b1) {
+                // 说明第二字段不需要加数据
+                for (int i = 0; i < ints.length; i++) {
+                    int[] anInt = ints[i];
+                    double num = ASMath.correlationCoefficient(anInt, mid);
+                    if (num < thresholdLeft || num > thresholdRight) {
+                        // 这个情况代表是不符合删除区间的，也就是不需要被删除的
+                        int[] res1 = new int[anInt.length];
+                        System.arraycopy(anInt, 0, res1, 0, anInt.length);
+                        res_f1.add(this.Field1[i]);
+                        res.add(res1);
+                    }
+                }
+                return ColumnIntegerMatrix.parse(
+                        res_f1.toArray(new String[0]), null, res.toArray(new int[0][])
+                );
+            } else {
+                // 说明都不需要字段名数据
+                IntegerMatrix.ex(thresholdLeft, thresholdRight, ints, mid, res);
+                return ColumnIntegerMatrix.parse(
+                        null, null, res.toArray(new int[0][])
+                );
+            }
+        } else {
+            return ColumnIntegerMatrix.parse(this.Field1.clone(), this.Field2.clone(), copyToNewArrays());
+        }
+    }
+
+    /**
+     * 获取到指定名称的行数组
+     * <p>
+     * Get the row array with the specified name
+     *
+     * @param name 指定的行目标名称
+     *             <p>
+     *             Specified row target name
+     * @return 一个包含当前行元素的新数组，是支持修改的。
+     * <p>
+     * A new array containing the elements of the current row supports modification.
+     */
+    @Override
+    public int[] getArrayByRowName(String name) {
+        int index = 0;
+        for (String s : this.Field2) {
+            if (s.equals(name)) {
+                return toArrays()[index].clone();
+            }
+            ++index;
+        }
+        return new int[0];
+    }
+
+    /**
+     * 获取到指定名称的列数组
+     * <p>
+     * Get the col array with the specified name
+     *
+     * @param name 指定的列目标名称
+     *             <p>
+     *             Specified col target name
+     * @return 一个包含当前列元素的新数组，是支持修改的。
+     * <p>
+     * A new array containing the elements of the current col supports modification.
+     */
+    @Override
+    public int[] getArrayByColName(String name) {
+        int index = 0;
+        for (String s : this.Field1) {
+            if (s.equals(name)) {
+                int count = -1;
+                int[] res = new int[getRowCount()];
+                for (int[] ints : toArrays()) {
+                    res[++count] = ints[index];
+                }
+                return res;
+            }
+            ++index;
+        }
+        return new int[0];
+    }
+
+    /**
+     * 将现有矩阵的转置矩阵获取到
+     * <p>
+     * Get the transpose of an existing matrix into
+     *
+     * @return 矩阵转置之后的新矩阵
+     * <p>
+     * new matrix after matrix transpose
+     */
+    @Override
+    public ColumnIntegerMatrix transpose() {
+        return ColumnIntegerMatrix.parse(
+                this.Field2.clone(),
+                this.Field1.clone(),
+                super.transpose().toArrays()
+        );
     }
 }

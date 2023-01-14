@@ -8,6 +8,7 @@ import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASStr;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * 词频文本特征提取，将一些数据按照词拆分并统计，获取到每一个词在计算时出现的次数.
@@ -18,7 +19,16 @@ import java.util.HashMap;
  */
 public class WordFrequency extends StringArrayFeature<ColumnIntegerMatrix> {
 
-    public final static char[] SPLIT_CHARS_GENERAL_PUNCTUATION = {' ', '\"', ',', '.', ':', ';', '?'};
+    /**
+     * 停用词列表，您可以直接操作该列表，在该列表中添加的所有词将会作为停用词，统计的时候将忽略该集合中的所有词
+     * <p>
+     * Deactivated word list. You can operate the list directly. All words added in the list will be used as deactivated words. All words in the collection will be ignored during statistics
+     */
+    public final static HashSet<String> stopWordSet = new HashSet<>();
+    /**
+     * 特征提取方案，将某些标点符号与不可见字符作为特征切分符，这是一个有序的数组，用于切分时的二分查找切分。
+     */
+    protected final static char[] SPLIT_CHARS_GENERAL_PUNCTUATION = {' ', '\t', '\n', '\"', ',', '.', ':', ';', '?'};
 
     public WordFrequency(String AlgorithmName) {
         super(AlgorithmName);
@@ -93,10 +103,10 @@ public class WordFrequency extends StringArrayFeature<ColumnIntegerMatrix> {
      */
     public HashMap<String, int[]> extractHashMap(String[] data) {
         if (data == null) return new HashMap<>();
-        HashMap<String, int[]> hashMap = new HashMap<>(data.length + 16);
+        HashMap<String, int[]> hashMap = new HashMap<>(data.length << 1);
         // 首先将所有的词频计算出来
         for (int i = 0; i < data.length; i++) {
-            for (String s : ASStr.splitBySortChars(data[i], SPLIT_CHARS_GENERAL_PUNCTUATION)) {
+            for (String s : ASStr.splitBySortChars(data[i], SPLIT_CHARS_GENERAL_PUNCTUATION, stopWordSet)) {
                 int[] orDefault = hashMap.get(s);
                 if (orDefault == null) {
                     int[] ints = new int[data.length];

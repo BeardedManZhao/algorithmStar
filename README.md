@@ -16,13 +16,14 @@ You can integrate Arithmetic Star into your project through maven, and the confi
 can add it to your maven project, or you can download it from Releases and manually integrate it into your project.
 
 ```xml
-    <dependencies>
-        <dependency>
-            <groupId>io.github.BeardedManZhao</groupId>
-            <artifactId>algorithmStar</artifactId>
-            <version>1.13</version>
-        </dependency>
-    </dependencies>
+
+<dependencies>
+    <dependency>
+        <groupId>io.github.BeardedManZhao</groupId>
+        <artifactId>algorithmStar</artifactId>
+        <version>1.13</version>
+    </dependency>
+</dependencies>
 ```
 
 ### Use API examples

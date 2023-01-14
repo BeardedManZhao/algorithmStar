@@ -1,5 +1,6 @@
 package zhao.algorithmMagic.utils;
 
+import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.operands.ComplexNumber;
 import zhao.algorithmMagic.utils.filter.NumericalFiltering;
 
@@ -262,13 +263,13 @@ public final class ASMath {
     public static double variance(double[] doubles) {
         // 每个样本值与全体样本值的平均数之差
         double avg = avg(doubles);
-        double[] temp = new double[doubles.length];
-        for (int i = 0; i < doubles.length; i++) {
-            // 将每一个数值与平均数之差的平方计算出来
-            temp[i] = Power2(doubles[i] - avg);
+        double sum = 0;
+        for (double aDouble : doubles) {
+            // 将每一个数值与平均数之差的平方计算出来，并进行求和
+            sum += Power2(aDouble - avg);
         }
-        // 返回平均数
-        return avg(temp);
+        // 返回方差
+        return sum / doubles.length;
     }
 
     /**
@@ -280,13 +281,49 @@ public final class ASMath {
     public static double variance(int[] ints) {
         // 每个样本值与全体样本值的平均数之差
         int avg = avg(ints);
-        double[] temp = new double[ints.length];
-        for (int i = 0; i < ints.length; i++) {
+        double sum = 0;
+        for (int anInt : ints) {
             // 将每一个数值与平均数之差的平方计算出来
-            temp[i] = Power2(ints[i] - avg);
+            sum += Power2(anInt - avg);
         }
         // 返回平均数
-        return avg(temp);
+        return sum / ints.length;
+    }
+
+    /**
+     * 将一个序列的方差计算出来
+     *
+     * @param ints 被计算的序列
+     * @return 方差数值
+     */
+    public static double undirectedDifference(int[] ints) {
+        // 每个样本值与全体样本值的平均数之差
+        int avg = avg(ints);
+        double sum = 0;
+        for (int anInt : ints) {
+            // 将每一个数值与平均数之差的平方计算出来
+            sum += absoluteValue(anInt - avg);
+        }
+        // 返回平均数
+        return sum / ints.length;
+    }
+
+    /**
+     * 无向差用于描述一组数据的稳定性，与方差计算区别在于方差使用平方，无向差使用绝对值，避免了数值过大，数值溢出的问题。
+     *
+     * @param doubles 需要被计算无向差的序列
+     * @return 无向差越大，代表稳定性越差。
+     */
+    public static double undirectedDifference(double[] doubles) {
+        // 每个样本值与全体样本值的平均数之差
+        double avg = avg(doubles);
+        double sum = 0;
+        for (double anInt : doubles) {
+            // 将每一个数值与平均数之差的平方计算出来
+            sum += absoluteValue(anInt - avg);
+        }
+        // 返回平均数
+        return sum / doubles.length;
     }
 
     /**
@@ -361,30 +398,6 @@ public final class ASMath {
      */
     public static int absoluteValue(int num) {
         return num > 0 ? num : -num;
-    }
-
-    /**
-     * 对一个数值进行取反
-     *
-     * @param num 被取反的数值
-     * @return 取反结果
-     */
-    public static double reversal(double num) {
-        return -num;
-    }
-
-    /**
-     * 对一些数值进行取反
-     *
-     * @param doubles 被取反的数值
-     * @return 取反结果
-     */
-    public static double[] reversal(double... doubles) {
-        double[] doubles1 = new double[doubles.length];
-        for (int i = 0; i < doubles.length; i++) {
-            doubles1[i] = -doubles[i];
-        }
-        return doubles1;
     }
 
     /**
@@ -652,10 +665,82 @@ public final class ASMath {
      * @param end   区间终止数值
      * @return 区间内所有数值的累加结果
      */
-    public int sumOfRange(int start, int end) {
+    public static int sumOfRange(int start, int end) {
         if (start == end) {
             return start;
         }
         return ((start + end) * ((end - start) + 1)) >> 1;
+    }
+
+    /**
+     * 计算两个序列之间的相关系数
+     *
+     * @param doubles1 被计算的序列1
+     * @param doubles2 被计算的序列2
+     * @return 序列1与序列2之间的相关系数，如果为负数则代表负相关，反之代表正相关，系数绝对值越接近1 数据联系就越高。
+     * <p>
+     * The correlation coefficient between sequence 1 and sequence 2. If it is negative, it represents negative correlation.
+     * If it is negative, it represents positive correlation.
+     * The closer the absolute value of the coefficient is to 1, the higher the data connection will be.
+     */
+    public static double correlationCoefficient(int[] doubles1, int[] doubles2) {
+        int n = doubles1.length;
+        if (n == doubles2.length) {
+            int Sx = 0; // 第一个序列的总和
+            int Sy = 0; // 第二个序列的总和
+            int Sxy = 0; // 双序列元素之乘积的总和
+            int SxF2 = 0; // 第一个序列的平方总和
+            int SyF2 = 0; // 第二个序列的平方总和
+            // 开始计算
+            for (int i = 0; i < n; i++) {
+                int x = doubles1[i];
+                int y = doubles2[i];
+                Sx += x;
+                Sy += y;
+                Sxy += x * y;
+                SxF2 += x * x;
+                SyF2 += y * y;
+            }
+            int SxFF2 = Sx * Sx; // 第一个序列总和的平方
+            int SyFF2 = Sy * Sy; // 第二个序列总和的平方
+            return ((n * Sxy) - (Sx * Sy)) / (Math.sqrt(n * SxF2 - SxFF2) * Math.sqrt(n * SyF2 - SyFF2));
+        } else {
+            throw new OperatorOperationException("计算相关系数时的两个序列中所包含的元素数量应相等哦！\nWhen calculating the correlation coefficient, the number of elements contained in the two sequences should be equal!");
+        }
+    }
+
+    /**
+     * 计算两个序列之间的相关系数
+     *
+     * @param doubles1 被计算的序列1
+     * @param doubles2 被计算的序列2
+     * @return 序列1与序列2之间的相关系数，如果为负数则代表负相关，反之代表正相关，系数绝对值越接近1 数据联系就越高。
+     * <p>
+     * The correlation coefficient between sequence 1 and sequence 2. If it is negative, it represents negative correlation. If it is negative, it represents positive correlation. The closer the absolute value of the coefficient is to 1, the higher the data connection will be.
+     */
+    public static double correlationCoefficient(double[] doubles1, double[] doubles2) {
+        int n = doubles1.length;
+        if (n == doubles2.length) {
+            double Sx = 0; // 第一个序列的总和
+            double Sy = 0; // 第二个序列的总和
+            double Sxy = 0; // 双序列元素之乘积的总和
+            double SxF2 = 0; // 第一个序列的平方总和
+            double SyF2 = 0; // 第二个序列的平方总和
+            // 开始计算
+            for (int i = 0; i < n; i++) {
+                double x = doubles1[i];
+                double y = doubles2[i];
+                Sx += x;
+                Sy += y;
+                Sxy += x * y;
+                SxF2 += x * x;
+                SyF2 += y * y;
+            }
+            double SxFF2 = Sx * Sx; // 第一个序列总和的平方
+            double SyFF2 = Sy * Sy; // 第二个序列总和的平方
+            return ((n * Sxy) - (Sx * Sy)) / (Math.sqrt(n * SxF2 - SxFF2) * Math.sqrt(n * SyF2 - SyFF2));
+        } else {
+            throw new OperatorOperationException("计算相关系数时的两个序列中所包含的元素数量应相等哦！\nWhen calculating the correlation coefficient, the number of elements contained in the two sequences should be equal!");
+        }
     }
 }

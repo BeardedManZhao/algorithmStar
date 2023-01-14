@@ -8,6 +8,7 @@ import zhao.algorithmMagic.operands.coordinate.FloatingPointCoordinates;
 import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateMany;
 import zhao.algorithmMagic.operands.coordinate.IntegerCoordinates;
 import zhao.algorithmMagic.operands.vector.DoubleVector;
+import zhao.algorithmMagic.operands.vector.IntegerVector;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASMath;
 
@@ -21,6 +22,9 @@ import zhao.algorithmMagic.utils.ASMath;
  * @author zhao
  */
 public class LinearNormalization extends DataStandardization {
+
+    private double max = 1;
+    private double min = 0;
 
     protected LinearNormalization(String algorithmName) {
         super(algorithmName);
@@ -61,16 +65,36 @@ public class LinearNormalization extends DataStandardization {
      * @param doubles 需要被标准化的一个序列
      * @return 标准化的结果
      */
-    public static double[] StandardizedSequence(double[] doubles) {
-        double[] res = new double[doubles.length];
+    public static double[] normalization(double[] doubles, double min1, double max1) {
         // 计算最大值最小值
         double[] doubles1 = ASMath.MaxAndMin(doubles);
         double max = doubles1[0b0];
         double min = doubles1[0b1];
-        double MAX_MIN = max - min;
         // 开始将序列标准化
+        return normalization(doubles, min, max, min1, max1);
+    }
+
+    /**
+     * 将一个多维序列归一化，在该函数中可以指定归一化之后的结果区间数值
+     *
+     * @param doubles 需要被归一化的序列
+     * @param min     向量序列中的最大值
+     * @param max     向量序列中的最小值
+     * @param max1    归一化之后的每一个元素的允许的最小值
+     * @param min1    归一化之后的每一个元素的允许的最大值
+     */
+    public static double[] normalization(double[] doubles, double min, double max, double min1, double max1) {
+        double[] res = new double[doubles.length];
+        // 判断是否需要归一化，不需要就原样返回
+        if (max <= max1 && min >= min1) {
+            System.arraycopy(doubles, 0, res, 0, res.length);
+            return res;
+        }
+        // 如果需要就开始归一化
+        double MAX_MIN = max - min;
+        double MAX_MIN1 = max1 - min1;
         for (int i = 0; i < res.length; i++) {
-            res[i] = (doubles[i] - min) / MAX_MIN;
+            res[i] = ((doubles[i] - min) / MAX_MIN) * MAX_MIN1 + min1;
         }
         return res;
     }
@@ -83,17 +107,59 @@ public class LinearNormalization extends DataStandardization {
      * @param doubles 需要被标准化的一个序列
      * @return 标准化的结果
      */
-    public static int[] StandardizedSequence(int[] doubles) {
-        int[] res = new int[doubles.length];
+    public static int[] normalization(int[] doubles, int min1, int max1) {
         int[] doubles1 = ASMath.MaxAndMin(doubles);
         int max = doubles1[0b0];
         int min = doubles1[0b1];
-        int MAX_MIN = max - min;
         // 开始将序列标准化
+        return normalization(doubles1, min, max, min1, max1);
+    }
+
+    /**
+     * 将一个多维序列归一化，在该函数中可以指定归一化之后的结果区间数值
+     *
+     * @param ints 需要被归一化的序列
+     * @param min  向量序列中的最大值
+     * @param max  向量序列中的最小值
+     * @param max1 归一化之后的每一个元素的允许的最小值
+     * @param min1 归一化之后的每一个元素的允许的最大值
+     */
+    public static int[] normalization(int[] ints, int min, int max, int min1, int max1) {
+        int[] res = new int[ints.length];
+        // 判断是否需要归一化，不需要就原样返回
+        if (max <= max1 && min >= min1) {
+            System.arraycopy(ints, 0, res, 0, res.length);
+            return res;
+        }
+        // 如果需要就开始归一化
+        int MAX_MIN = max - min;
+        int MAX_MIN1 = max1 - min1;
         for (int i = 0; i < res.length; i++) {
-            res[i] = (doubles[i] - min) / MAX_MIN;
+            res[i] = ((ints[i] - min) / MAX_MIN) * MAX_MIN1 + min1;
         }
         return res;
+    }
+
+    /**
+     * 设置归一化之后的序列最大值
+     *
+     * @param max 最大值数值
+     * @return 链式调用
+     */
+    public LinearNormalization setMax(double max) {
+        this.max = max;
+        return this;
+    }
+
+    /**
+     * 设置归一化之后的序列最小值
+     *
+     * @param min 最小值数值
+     * @return 链式调用
+     */
+    public LinearNormalization setMin(double min) {
+        this.min = min;
+        return this;
     }
 
     /**
@@ -108,7 +174,7 @@ public class LinearNormalization extends DataStandardization {
      */
     @Override
     public FloatingPointCoordinates<DoubleCoordinateMany> NormalizedSequence(DoubleCoordinateMany v) {
-        return new DoubleCoordinateMany(StandardizedSequence(v.toArray()));
+        return new DoubleCoordinateMany(normalization(v.toArray(), min, max));
     }
 
     /**
@@ -123,7 +189,7 @@ public class LinearNormalization extends DataStandardization {
      */
     @Override
     public IntegerCoordinates<IntegerCoordinateMany> NormalizedSequence(IntegerCoordinateMany v) {
-        return new IntegerCoordinateMany(StandardizedSequence(v.toArray()));
+        return new IntegerCoordinateMany(normalization(v.toArray(), (int) min, (int) max));
     }
 
     /**
@@ -136,6 +202,19 @@ public class LinearNormalization extends DataStandardization {
      */
     @Override
     public DoubleVector NormalizedSequence(DoubleVector doubleVector) {
-        return new DoubleVector(StandardizedSequence(doubleVector.toDoubleArray()));
+        return new DoubleVector(normalization(doubleVector.toArray(), min, max));
+    }
+
+    /**
+     * 将一个序列进行标准化，具体的标准化有不同的实现
+     *
+     * @param integerVector 需要被标准化的向量
+     * @return v的标准化样式
+     * <p>
+     * Normalized style of v
+     */
+    @Override
+    public IntegerVector NormalizedSequence(IntegerVector integerVector) {
+        return new IntegerVector(normalization(integerVector.toArray(), (int) min, (int) max));
     }
 }

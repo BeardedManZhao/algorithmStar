@@ -145,7 +145,7 @@ public class ComplexNumber implements Operands<ComplexNumber> {
      * <p>
      * The method of making a difference between two operands, please refer to the API description for specific usage.
      *
-     * @param value 被除的参数（被除数）坟墓  Parameter to be divided (dividend)
+     * @param value 被除的参数（被除数）复数  Parameter to be divided (dividend)
      * @return 结果数值  result value
      * <p>
      * (ac + bd) / (c² + d²) + (bc - ad) / (c² + d²) i

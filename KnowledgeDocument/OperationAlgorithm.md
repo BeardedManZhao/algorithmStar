@@ -15,14 +15,27 @@ the integrator processes the results of the algorithm.
 ## API usage
 
 There are many algorithms in the framework, and different algorithms have different effects. Several representative
-algorithms are selected for demonstration below. The use of other algorithms is not much different. Some of the
-architecture diagrams in the algorithm module are shown below.
+algorithms are selected for demonstration below. The use of other algorithms is not much different. Some architecture
+diagrams in the algorithm module are shown below.
 ![image](https://user-images.githubusercontent.com/113756063/195986247-5f3c65ec-27f8-4149-8349-ccca0f29766d.png)
 
 ### distance algorithm
 
 The distance algorithm is mainly to study and calculate the distance between two coordinates. The famous Euclid is an
 example. The use of the distance algorithm is as follows
+
+- List of distance calculation components
+
+| Calculation component type                                                    | Supported versions | function    |
+|-------------------------------------------------------------------------------|--------------------|-------------|
+| zhao.algorithmMagic.algorithm.distanceAlgorithm.EuclideanMetric               | v1.0               | 计算欧几里得距离    |
+| zhao.algorithmMagic.algorithm.distanceAlgorithm.CanberraDistance              | v1.0               | 计算堪培拉距离     |
+| zhao.algorithmMagic.algorithm.distanceAlgorithm.ChebyshevDistance             | v1.0               | 计算切比雪夫距离    |
+| zhao.algorithmMagic.algorithm.distanceAlgorithm.CosineDistance                | v1.0               | 计算向量余弦度量    |
+| zhao.algorithmMagic.algorithm.distanceAlgorithm.HausdorffDistance             | v1.0               | 计算豪斯多夫距离    |
+| zhao.algorithmMagic.algorithm.distanceAlgorithm.ManhattanDistance             | v1.0               | 计算曼哈顿距离     |
+| zhao.algorithmMagic.algorithm.distanceAlgorithm.MinkowskiDistance             | v1.0               | 计算闵可夫斯基距离   |
+| zhao.algorithmMagic.algorithm.distanceAlgorithm.StandardizedEuclideanDistance | v1.0               | 计算标准化欧几里得度量 |
 
 ```java
 import zhao.algorithmMagic.algorithm.EuclideanMetric;
@@ -51,6 +64,16 @@ As the name implies, it is to compare the differences between two values. Hanmin
 calculate the differences between the two by XOR, and has excellent performance for counting the specific quantity of
 differences!
 
+- List of variance calculation components
+
+| Calculation component type                                                      | Supported versions | function             |
+|---------------------------------------------------------------------------------|--------------------|----------------------|
+| zhao.algorithmMagic.algorithm.differenceAlgorithm.BrayCurtisDistance            | v1.0               | 计算两个数据样本之间的布雷柯蒂斯差异系数 |
+| zhao.algorithmMagic.algorithm.differenceAlgorithm.DiceCoefficient               | v1.0               | 计算两个数据样本之间的Dice差异系数  |
+| zhao.algorithmMagic.algorithm.differenceAlgorithm.EditDistance                  | v1.0               | 计算两个数据样本之间的最小编辑次数    |
+| zhao.algorithmMagic.algorithm.differenceAlgorithm.HammingDistance               | v1.0               | 计算两个数据样本之间的汉明差异系数    |
+| zhao.algorithmMagic.algorithm.differenceAlgorithm.JacquardSimilarityCoefficient | v1.0               | 计算两个数据样本之间的杰卡德相似系数   |
+
 ```java
 import zhao.algorithmMagic.algorithm.HammingDistance;
 import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo;
@@ -69,10 +92,19 @@ public class MAIN1 {
 }
 ```
 
-### sequence normalization
+### Feature preprocessing
 
-It is beneficial to amplify or reduce the changes of certain dimensions by changing the data with very extreme
-dimensions to a data sequence within a certain range in the same proportion and so on.
+The process of transforming feature data into feature data more suitable for the algorithm model through some
+transformation functions, for example, normalization can change some data with extreme dimensions to data series within
+a certain range by means of equal proportion, which is conducive to enlarging or reducing the changes of some
+dimensions.
+
+- Standardized calculation component list
+
+| Calculation component type                                       | Supported versions | function              |
+|------------------------------------------------------------------|--------------------|-----------------------|
+| zhao.algorithmMagic.algorithm.normalization.LinearNormalization  | v1.0               | 将一个向量数据样本进行线性归一化      |
+| zhao.algorithmMagic.algorithm.normalization.Z_ScoreNormalization | v1.0               | 将一个向量数据样本进行正负均匀分配的标准化 |
 
 ```java
 import zhao.algorithmMagic.algorithm.normalization.LinearNormalization;
@@ -100,6 +132,16 @@ public class MAIN1 {
 It is a new algorithm developed by me. It is mainly used to automatically analyze the relationship between coordinates
 and coordinates. If possible, adding a new coordinate will generate some related new connections. This algorithm is used
 in the homepage to conduct a personal and Relationship between people inferred!
+
+- 路径推导算法列表
+
+| Calculation component type                                              | Supported versions | function                     |
+|-------------------------------------------------------------------------|--------------------|------------------------------|
+| zhao.algorithmMagic.algorithm.generatingAlgorithm.Dijkstra              | v1.0               | 计算一个路线网站中的最小距离               |
+| zhao.algorithmMagic.algorithm.generatingAlgorithm.Dijkstra2D            | v1.0               | 计算一个路线网站中的最小距离               |
+| zhao.algorithmMagic.algorithm.generatingAlgorithm.DirectionalDijkstra2D | v1.0               | 计算一个路线网站中的最小距离               |
+| zhao.algorithmMagic.algorithm.generatingAlgorithm.ZhaoCoordinateNet     | v1.0               | 计算一个路线网站潜在联系，并生成对应的路线对象到路线网中 |
+| zhao.algorithmMagic.algorithm.generatingAlgorithm.ZhaoCoordinateNet2D   | v1.0               | 计算一个路线网站潜在联系，并生成对应的路线对象到路线网中 |
 
 ```java
 import zhao.algorithmMagic.algorithm.generatingAlgorithm.ZhaoCoordinateNet2D;
@@ -135,17 +177,22 @@ public class MAIN1 {
 ```
 
 ### Aggregate Calculation
-Aggregation calculation component, which is supported since version 1.14, is an operation algorithm component dedicated to aggregation calculation of multiple elements. There are various aggregation operation algorithms in the library. Various aggregation calculation components are described in the following table!
+
+Aggregation calculation component, which is supported since version 1.14, is an operation algorithm component dedicated
+to aggregation calculation of multiple elements. There are various aggregation operation algorithms in the library.
+Various aggregation calculation components are described in the following table!
 
 - Aggregate Calculation Component List
 
 | Calculation component type                                             | Supported versions | function           |
 |------------------------------------------------------------------------|--------------------|--------------------|
-| zhao.algorithmMagic.algorithm.aggregationAlgorithm.ExtremumAggregation | v1.0               | 计算一些数值的极值          |
-| zhao.algorithmMagic.algorithm.aggregationAlgorithm.WeightedAverage     | v1.0               | 计算一些数值的加权平均数       |
-| zhao.algorithmMagic.algorithm.aggregationAlgorithm.ModularOperation    | v1.0               | 计算一个序列或多个序列聚合之后的模长 |
+| zhao.algorithmMagic.algorithm.aggregationAlgorithm.ExtremumAggregation | v1.14              | 计算一些数值的极值          |
+| zhao.algorithmMagic.algorithm.aggregationAlgorithm.WeightedAverage     | v1.14              | 计算一些数值的加权平均数       |
+| zhao.algorithmMagic.algorithm.aggregationAlgorithm.ModularOperation    | v1.14              | 计算一个序列或多个序列聚合之后的模长 |
 
-This time, the extreme value calculation of numerical value is taken as an example to show the functions of aggregation components
+This time, the extreme value calculation of numerical value is taken as an example to show the functions of aggregation
+components
+
 ```java
 package zhao.algorithmMagic;
 
@@ -176,8 +223,59 @@ public class MAIN1 {
 }
 ```
 
+### feature extraction
+
+The feature extraction component, which began to appear after version 1.14, focuses on transforming the features of some
+data into data that can be processed by computers, such as vectors.
+
+- Feature extraction component list
+
+| Calculation component type                                            | Supported versions | function           |
+|-----------------------------------------------------------------------|--------------------|--------------------|
+| zhao.algorithmMagic.algorithm.featureExtraction.DictFeatureExtraction | v1.14              | 对一些字符串数据进行子典特征提取   |
+| zhao.algorithmMagic.algorithm.featureExtraction.WordFrequency         | v1.14              | 对一些字符串数据进行词频向量特征提取 |
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.algorithm.featureExtraction.DictFeatureExtraction;
+import zhao.algorithmMagic.algorithm.featureExtraction.WordFrequency;
+import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 获取到字典特征提取组件
+        DictFeatureExtraction dict = DictFeatureExtraction.getInstance("dict");
+        // 构造一个需要被提取的数组
+        String[] strings = {
+                "cat", "dog", "turtle", "fish", "cat"
+        };
+        // 开始提取特征矩阵
+        ColumnIntegerMatrix extract = dict.extract(strings);
+        // 打印矩阵
+        System.out.println(extract);
+        // 打印矩阵的hashMap形式
+        extract.toHashMap().forEach((key, value) -> System.out.println(value.toString() + '\t' + key));
+
+        System.out.println("================================================");
+
+        // 获取到词频特征提取组件
+        WordFrequency word = WordFrequency.getInstance("word");
+        // 构建一些被统计的文本
+        String[] data = {
+                "I love you, Because you are beautiful.",
+                "I need you. Because I'm trapped"
+        };
+        // 开始统计
+        ColumnIntegerMatrix extract1 = word.extract(data);
+        // 打印结果
+        System.out.println(extract1);
+    }
+}
+```
+
 - 切换到 [中文文档](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/OperationAlgorithm-Chinese.md)
 
 <hr>
 
-### warning：In version 1.0, please avoid calling "getTrueDistance (DoubleVector doubleVector)" as far as possible, because this function is unreasonable. In later versions, this function is deleted!!!! A more appropriate function will be used instead.
+### warning：In version 1.0, please avoid calling " getTrueDistance (DoubleVector doubleVector) " as far as possible, because this function is unreasonable. In later versions, this function is deleted!!!! A more appropriate function will be used instead.

@@ -11,9 +11,7 @@ package zhao.algorithmMagic.operands.coordinate;
  */
 public final class IntegerCoordinateThree implements IntegerCoordinates<IntegerCoordinateThree>, Coordinate<IntegerCoordinateThree> {
 
-    private final int x;
-    private final int y;
-    private final int z;
+    private final int[] coordinate;
     private final String str;
 
     /**
@@ -24,22 +22,20 @@ public final class IntegerCoordinateThree implements IntegerCoordinates<IntegerC
      * @param z 坐标的纵轴
      */
     public IntegerCoordinateThree(int x, int y, int z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        str = "(" + this.x + "," + this.y + "," + this.z + ")";
+        this.coordinate = new int[]{x, y, z};
+        str = "(" + this.coordinate[0] + "," + this.coordinate[1] + "," + this.coordinate[2] + ")";
     }
 
     public int getX() {
-        return x;
+        return this.coordinate[0];
     }
 
     public int getY() {
-        return y;
+        return this.coordinate[1];
     }
 
     public int getZ() {
-        return z;
+        return this.coordinate[2];
     }
 
     /**
@@ -56,7 +52,11 @@ public final class IntegerCoordinateThree implements IntegerCoordinates<IntegerC
      */
     @Override
     public IntegerCoordinateThree add(IntegerCoordinateThree value) {
-        return new IntegerCoordinateThree(this.x + value.x, this.y + value.y, z);
+        return new IntegerCoordinateThree(
+                this.coordinate[0] + value.coordinate[0],
+                this.coordinate[1] + value.coordinate[1],
+                this.coordinate[2] + value.coordinate[2]
+        );
     }
 
     /**
@@ -73,7 +73,11 @@ public final class IntegerCoordinateThree implements IntegerCoordinates<IntegerC
      */
     @Override
     public IntegerCoordinateThree diff(IntegerCoordinateThree value) {
-        return new IntegerCoordinateThree(this.x - value.x, this.y - value.y, z);
+        return new IntegerCoordinateThree(
+                this.coordinate[0] - value.coordinate[0],
+                this.coordinate[1] - value.coordinate[1],
+                this.coordinate[2] - value.coordinate[2]
+        );
     }
 
     @Override
@@ -98,7 +102,7 @@ public final class IntegerCoordinateThree implements IntegerCoordinates<IntegerC
      */
     @Override
     public int[] toArray() {
-        return new int[]{x, y, z};
+        return this.coordinate;
     }
 
     /**

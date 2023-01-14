@@ -17,30 +17,34 @@ import java.util.Arrays;
  * <p>
  * This class is abstract and contains the most basic definitions and type controls.
  */
-public abstract class Matrix<ImplementationType extends Matrix<?, ?>, ElementType> extends ASVector<ImplementationType, ElementType> {
+public abstract class Matrix<ImplementationType extends Matrix<?, ?, ?, ?>, ElementType, ArrayType, ArraysType> extends ASVector<ImplementationType, ElementType, ArrayType> {
 
+    protected final static OperatorOperationException OPERATOR_OPERATION_EXCEPTION = new OperatorOperationException("您不能将所有的维度都去掉！！！！\nYou cannot remove all dimensions!!!!");
     private final int rowCount;
     private final int colCount;
     private final int MaximumRowPointerCount;
+    private final byte MinimumRowPointerCount = 0b11111111111111111111111111111111;
+    private final ArraysType arraysType;
     protected boolean Unlock = true;
-    protected int RowPointer = 0b11111111111111111111111111111111;
+    protected int RowPointer = MinimumRowPointerCount;
 
     /**
      * 构造一个空的矩阵，指定其矩阵的行列数
      * <p>
      * Constructs an empty matrix, specifying the number of rows and columns of its matrix
      *
-     * @param rowCount 矩阵中的行数量
-     *                 <p>
-     *                 the number of rows in the matrix
-     * @param colCount 矩阵中的列数量
-     *                 <p>
-     *                 the number of cols in the matrix
+     * @param rowCount   矩阵中的行数量
+     *                   <p>
+     *                   the number of rows in the matrix
+     * @param colCount   矩阵中的列数量
+     *                   <p>
+     * @param arraysType 该矩阵对象中的二维数组对象。
      */
-    protected Matrix(int rowCount, int colCount) {
+    protected Matrix(int rowCount, int colCount, ArraysType arraysType) {
         this.rowCount = rowCount;
         this.colCount = colCount;
         this.MaximumRowPointerCount = rowCount - 0b10;
+        this.arraysType = arraysType;
     }
 
     /**
@@ -109,7 +113,7 @@ public abstract class Matrix<ImplementationType extends Matrix<?, ?>, ElementTyp
      * Whether the row pointer is moved up successfully, if it does not return false, it means that it cannot continue to move.
      */
     boolean MovePointerUp() {
-        if (this.RowPointer <= MaximumRowPointerCount) {
+        if (this.RowPointer >= MinimumRowPointerCount) {
             this.RowPointer--;
             return true;
         } else {
@@ -147,7 +151,7 @@ public abstract class Matrix<ImplementationType extends Matrix<?, ?>, ElementTyp
         int rowPointer = this.RowPointer;
         PointerReset();
         while (MovePointerDown()) {
-            stringBuilder.append(Arrays.toString(this.toDoubleArray())).append("\n");
+            stringBuilder.append(Arrays.toString((Object[]) this.toArray())).append("\n");
         }
         PointerReset(rowPointer);
         return "------------MatrixStart-----------\n" +
@@ -263,37 +267,49 @@ public abstract class Matrix<ImplementationType extends Matrix<?, ?>, ElementTyp
     }
 
     /**
-     * @return 获取到本矩阵中的所有数据，需要注意的是，该函数获取到的数据矩阵对象中正在使用的，如果返回值被更改，那么会导致一些不可意料的情况发生。
-     * <p>
-     * Get all the data in this matrix. Note that if the return value of the data matrix object obtained by this function is changed, some unexpected situations will occur.
-     */
-    public abstract double[][] toDoubleArrays();
-
-    /**
-     * @return 返回该矩阵中所有行数据的数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改。
-     * <p>
-     * Returns the array form of all row data in the matrix. Since it is copied, it will not generate any dependency, so it supports modification.
-     */
-    public abstract double[][] CopyToNewDoubleArrays();
-
-    /**
-     * @return 获取到本矩阵中的所有数据，需要注意的是，该函数获取到的数据矩阵对象中正在使用的，如果返回值被更改，那么会导致一些不可意料的情况发生。
-     * <p>
-     * Get all the data in this matrix. Note that if the return value of the data matrix object obtained by this function is changed, some unexpected situations will occur.
-     */
-    public abstract int[][] toIntArrays();
-
-    /**
-     * @return 返回该矩阵中所有行数据的数组形式，由于是拷贝出来的，不会产生任何依赖关系，因此支持修改。
-     * <p>
-     * Returns the array form of all row data in the matrix. Since it is copied, it will not generate any dependency, so it supports modification.
-     */
-    public abstract int[][] CopyToNewIntArrays();
-
-    /**
      * @return 当前矩阵对象是否被其他的线程所占用，如果返回false，就代表当前矩阵对象可以参与多线程的计算工作
      */
     public boolean isUnlock() {
         return Unlock;
     }
+
+    /**
+     * @return 将本对象中存储的向量序列的数组直接返回，注意，这里返回的是一个正在被维护的数组，因此建议保证返回值作为只读变量使用。
+     * <p>
+     * Return the array of vector sequences stored in this object directly. Note that the returned value is an array being maintained. Therefore, it is recommended to ensure that the returned value is used as a read-only variable.
+     */
+    @Override
+    public abstract ArrayType toArray();
+
+    /**
+     * @return 将本对象中存储的向量序列数组拷贝到一个新数组并将新数组返回，这里返回的是一个新数组，支持修改等操作。
+     * <p>
+     * Copy the vector sequence array stored in this object to a new array and return the new array. Here, a new array is returned, which supports modification and other operations.
+     */
+    @Override
+    public abstract ArrayType copyToNewArray();
+
+    /**
+     * 该方法将会获取到矩阵中的二维数组，注意，与toArray一样返回的是正在被维护的数组对象，建议作为只读变量使用。
+     * <p>
+     * This method will get the two-dimensional array in the matrix. Note that the array object being maintained is returned as the same as toArray. It is recommended to use it as a read-only variable.
+     *
+     * @return 当前矩阵对象中正在被维护的二维数组，如果修改该值，那么将会导致原矩阵对象中的数据发生变化。
+     * <p>
+     * If the value of the two-dimensional array being maintained in the current matrix object is modified, the data in the original matrix object will change.
+     */
+    public final ArraysType toArrays() {
+        return this.arraysType;
+    }
+
+    /**
+     * 该方法将会获取到矩阵中的二维数组，值得注意的是，在该函数中获取到的数组是一个新的数组，不会有任何的关系。
+     * <p>
+     * This method will obtain the two-dimensional array in the matrix. It is worth noting that the array obtained in this function is a new array and will not have any relationship.
+     *
+     * @return 当前矩阵对象中的二维数组的深拷贝新数组，支持修改！！
+     * <p>
+     * The deep copy new array of the two-dimensional array in the current matrix object supports modification!!
+     */
+    public abstract ArraysType copyToNewArrays();
 }

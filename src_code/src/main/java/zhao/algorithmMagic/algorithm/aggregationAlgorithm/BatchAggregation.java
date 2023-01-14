@@ -47,7 +47,7 @@ public abstract class BatchAggregation implements AggregationAlgorithm {
      */
     public int calculation(IntegerVector integerVector) {
         logger.info(INT_VECTOR_FUNCTION_LOG);
-        return calculation(integerVector.toIntArray());
+        return calculation(integerVector.toArray());
     }
 
     /**
@@ -62,7 +62,7 @@ public abstract class BatchAggregation implements AggregationAlgorithm {
      */
     public double calculation(DoubleVector doubleVector) {
         logger.info(DOUBLE_VECTOR_FUNCTION_LOG);
-        return calculation(doubleVector.toDoubleArray());
+        return calculation(doubleVector.toArray());
     }
 
     /**
