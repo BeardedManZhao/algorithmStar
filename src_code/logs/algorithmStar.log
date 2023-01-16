@@ -1,0 +1,10 @@
+[INFO][OperationAlgorithmManager][23-01-16:08:02:27]] : +============================== Welcome to [mathematical expression] ==============================+
+[INFO][OperationAlgorithmManager][23-01-16:08:02:27]] : + 	Start time Mon Jan 16 20:02:27 CST 2023
+[INFO][OperationAlgorithmManager][23-01-16:08:02:27]] : + 	version: 1.13
+[INFO][OperationAlgorithmManager][23-01-16:08:02:27]] : + 	Calculation component manager initialized successfully
+[INFO][OperationAlgorithmManager][23-01-16:08:02:27]] : + 	For more information, see: https://github.com/BeardedManZhao/algorithmStar.git
+[INFO][OperationAlgorithmManager][23-01-16:08:02:27]] : +--------------------------------------------------------------------------------------------------+
+[INFO][OperationAlgorithmManager][23-01-16:08:02:27]] : register OperationAlgorithm:EuclideanMetric
+[INFO][OperationAlgorithmManager][23-01-16:08:02:27]] : register OperationAlgorithm:udf
+[INFO][OperationAlgorithmManager][23-01-16:08:02:27]] : An operation algorithm was obtained:EuclideanMetric
+[INFO][OperationAlgorithmManager][23-01-16:08:02:27]] : register OperationAlgorithm:knn

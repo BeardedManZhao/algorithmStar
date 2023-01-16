@@ -4,8 +4,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
+import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
-import zhao.algorithmMagic.operands.coordinate.*;
+import zhao.algorithmMagic.operands.coordinate.Coordinate;
+import zhao.algorithmMagic.operands.coordinate.FloatingPointCoordinates;
+import zhao.algorithmMagic.operands.coordinate.IntegerCoordinates;
 import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute;
 import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute2D;
 import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute;
@@ -239,12 +242,17 @@ public class EuclideanMetric<I extends IntegerCoordinates<I> & Coordinate<I>, D 
         if (OperationAlgorithmManager.PrintCalculationComponentLog) {
             logger.info("√ ⁿ∑₁( Xn - Yn )²");
         }
-        double[] doubles = new DoubleCoordinateMany(doubles1).diff(new DoubleCoordinateMany(doubles2)).toArray();
-        double res = 0;
-        for (double aDouble : doubles) {
-            res += ASMath.Power2(aDouble);
+        if (doubles1.length == doubles2.length) {
+            double res = 0;
+            for (int i = 0; i < doubles1.length; i++) {
+                res += ASMath.Power2(doubles1[i] - doubles2[i]);
+            }
+            return Math.sqrt(res);
+        } else {
+            throw new OperatorOperationException("计算度量发生错误，在计算欧几里得度量时，请使用两个长度相同的序列样本!!!\n" +
+                    "An error occurred in calculating the metric. Please use two sequence samples with the same length when calculating Euclidean metric!!!\n" +
+                    "v1.length = " + doubles1.length + '\t' + "v2.length = " + doubles2.length);
         }
-        return Math.sqrt(res);
     }
 
     /**
@@ -263,12 +271,17 @@ public class EuclideanMetric<I extends IntegerCoordinates<I> & Coordinate<I>, D 
         if (OperationAlgorithmManager.PrintCalculationComponentLog) {
             logger.info("√ ⁿ∑₁( Xn - Yn )²");
         }
-        int[] ints = new IntegerCoordinateMany(ints1).diff(new IntegerCoordinateMany(ints2)).toArray();
-        int res = 0;
-        for (int anInt : ints) {
-            res += ASMath.Power2(anInt);
+        if (ints1.length == ints2.length) {
+            int res = 0;
+            for (int i = 0; i < ints1.length; i++) {
+                res += ASMath.Power2(ints1[i] - ints2[i]);
+            }
+            return Math.sqrt(res);
+        } else {
+            throw new OperatorOperationException("计算度量发生错误，在计算欧几里得度量时，请使用两个长度相同的序列样本!!!\n" +
+                    "An error occurred in calculating the metric. Please use two sequence samples with the same length when calculating Euclidean metric!!!\n" +
+                    "v1.length = " + ints1.length + '\t' + "v2.length = " + ints2.length);
         }
-        return Math.sqrt(res);
     }
 
     /**

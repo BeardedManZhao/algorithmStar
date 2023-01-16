@@ -213,9 +213,91 @@ public final class MAIN1 {
 [1, 2, 3, 4, 5, 6, 7, 8, 9]	      羽毛的颜色
 ------------MatrixEnd------------
 ```
+
 * The calculation function featureSelection is added to the matrix data object to remove redundant dimensions
- 
-* Added the calculation function deleteRelatedDimensions for the matrix data object to remove the relevant dimensions of the specified dimension
- 
+
+* Added the calculation function deleteRelatedDimensions for the matrix data object to remove the relevant dimensions of
+  the specified dimension
+
 * A new matrix type is added to the matrix system. The matrix object ColumnIntegerMatrix with row and column fields
+
+* Added classification calculation components, such as KNN
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.algorithm.classificationAlgorithm.KnnClassification;
+import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
+import zhao.algorithmMagic.operands.vector.IntegerVector;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public final class MAIN1 {
+  public static void main(String[] args) {
+    // 开始进行近邻计算
+    KnnClassification knn = KnnClassification.getInstance("knn");
+    HashMap<String, ArrayList<IntegerVector>> classification = knn.classification(
+            // 这里代表类别名称 ? 是没有确定的类别
+            new String[]{"动作", "?", "爱情", "?", "爱情动作"},
+            // 这里是所有需要被确定的类别数据行
+            // 值得注意的是，需要保证类别名称数量和数据行数量一致
+            new int[][]{
+                    // 其中的第一列代表打斗次数 第二列代表接吻次数
+                    new int[]{101, 10},
+                    new int[]{18, 90},
+                    new int[]{1, 81},
+                    new int[]{181, 90},
+                    new int[]{101, 81}
+            }
+    );
+    // 开始打印类别
+    classification.forEach((key, value) -> System.out.println("类别：" + key + '\t' + value));
+
+
+
+    ColumnIntegerMatrix parse = ColumnIntegerMatrix.parse(
+            new String[]{"科1", "科2", "科3", "科4", "科5", "科6"},
+            new String[]{"张三", "李四", "王五", "赵六", "鲁迅", "甲X", "黄X"},
+            new int[]{120, 120, 120, 100, 100, 100},
+            new int[]{80, 30, 80, 45, 67, 89},    // 未知类别
+            new int[]{59, 59, 59, 59, 59, 59},
+            new int[]{110, 100, 120, 90, 80, 90}, // 未知类别
+            new int[]{100, 100, 100, 90, 90, 90}, // 未知类别
+            new int[]{90, 90, 90, 80, 80, 80},
+            new int[]{60, 60, 60, 60, 60, 60}
+    );
+    System.out.println(parse);
+    // 开始进行近邻计算
+    HashMap<String, ArrayList<IntegerVector>> classification1 = knn.classification(
+            new String[]{"优秀", "?", "不及格", "?", "?", "良好", "及格"},
+            parse
+    );
+    // 开始打印类别
+    classification1.forEach((key, value) -> System.out.println("类别：" + key + '\t' + value));
+  }
+}
+```
+
+```
+[INFO][OperationAlgorithmManager][23-01-16:07]] : register OperationAlgorithm:EuclideanMetric
+[INFO][OperationAlgorithmManager][23-01-16:07]] : register OperationAlgorithm:knn
+类别：爱情动作	[[ 181 90 ]]
+类别：爱情	[[ 18 90 ]]
+------------MatrixStart-----------
+科1  科2  科3  科4  科5  科6	rowColName
+[120, 120, 120, 100, 100, 100]	张三
+[80, 30, 80, 45, 67, 89]	李四
+[59, 59, 59, 59, 59, 59]	王五
+[110, 100, 120, 90, 80, 90]	赵六
+[100, 100, 100, 90, 90, 90]	鲁迅
+[90, 90, 90, 80, 80, 80]	甲X
+[60, 60, 60, 60, 60, 60]	黄X
+------------MatrixEnd------------
+
+类别：不及格	[[ 80 30 80 45 67 89 ]]
+类别：优秀	[[ 110 100 120 90 80 90 ]]
+类别：良好	[[ 100 100 100 90 90 90 ]]
+```
+
 ### Version update date : XX XX-XX-XX

@@ -257,6 +257,98 @@ public class MAIN1 {
 }
 ```
 
+### 特征分类
+
+分类组件，顾名思义根据目标样本与待处理样本之间的差距进行分类行为，在不同的分类组件中有不同的分类函数实现，具体的分类组件，请参阅下面的示例
+
+- 特征分类组件列表
+
+| 计算组件类型                                                                          | 支持版本  | 功能                           |
+|---------------------------------------------------------------------------------|-------|------------------------------|
+| zhao.algorithmMagic.algorithm.classificationAlgorithm.UDFDistanceClassification | v1.14 | 利用手动传入类别样本的方式，进行距离计算并分类      |
+| zhao.algorithmMagic.algorithm.classificationAlgorithm.KnnClassification         | v1.14 | 利用K 近邻算法将最近的K个特征进行距离计算，进行分类。 |
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.algorithm.classificationAlgorithm.KnnClassification;
+import zhao.algorithmMagic.algorithm.classificationAlgorithm.UDFDistanceClassification;
+import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
+import zhao.algorithmMagic.operands.vector.IntegerVector;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public final class MAIN1 {
+    public static void main(String[] args) {
+        // TODO 使用自定义距离分类计算组件进行分类
+        int[] ints1 = {101, 10};
+        int[] ints2 = {1, 81};
+        int[] ints3 = {101, 81};
+        // 准备一个矩阵，其中行字段名就是目标类别，列字段就是目标特征
+        ColumnIntegerMatrix parse = ColumnIntegerMatrix.parse(
+                new String[]{"打人", "接吻"},
+                new String[]{"动作", "爱情", "爱情动作", "未知1", "未知2"},
+                ints1, ints2, ints3,
+                new int[]{18, 90},
+                new int[]{181, 90}
+        );
+        // 先打印一下需要分类的特征矩阵
+        System.out.println(parse);
+        // 开始构建类别样本
+        HashMap<String, int[]> hashMap = new HashMap<>();
+        hashMap.put("动作", ints1);
+        hashMap.put("爱情", ints2);
+        hashMap.put("爱情动作", ints3);
+        // 开始计算类别，先获取到KNN计算组件
+        UDFDistanceClassification udf = UDFDistanceClassification.getInstance("udf");
+        HashMap<String, ArrayList<IntegerVector>> classification = udf.classification(parse, hashMap);
+        // 开始打印类别
+        classification.forEach((key, value) -> System.out.println("类别：" + key + '\t' + value));
+
+
+        // TODO 使用KNN近邻计算组件进行分类
+        KnnClassification knn = KnnClassification.getInstance("knn");
+        HashMap<String, ArrayList<IntegerVector>> classification1 = knn.classification(
+                // 这里代表类别名称 ? 是没有确定的类别
+                new String[]{"动作", "?", "爱情", "?", "爱情动作"},
+                // 这里是所有需要被确定的类别数据行
+                // 值得注意的是，需要保证类别名称数量和数据行数量一致
+                new int[][]{
+                        // 其中的第一列代表打斗次数 第二列代表接吻次数
+                        new int[]{101, 10},
+                        new int[]{18, 90},
+                        new int[]{1, 81},
+                        new int[]{181, 90},
+                        new int[]{101, 81}
+                }
+        );
+        // 开始打印类别
+        classification1.forEach((key, value) -> System.out.println("类别：" + key + '\t' + value));
+    }
+}
+```
+
+```
+------------MatrixStart-----------
+打人	接吻	rowColName
+[101, 10]	动作
+[1, 81]	爱情
+[101, 81]	爱情动作
+[18, 90]	未知1
+[181, 90]	未知2
+------------MatrixEnd------------
+[INFO][OperationAlgorithmManager][23-01-16:08]] : register OperationAlgorithm:EuclideanMetric
+[INFO][OperationAlgorithmManager][23-01-16:08]] : register OperationAlgorithm:udf
+类别：爱情动作	[[ 101 81 ], [ 181 90 ]]
+类别：爱情	[[ 1 81 ], [ 18 90 ]]
+类别：动作	[[ 101 10 ]]
+[INFO][OperationAlgorithmManager][23-01-16:08]] : An operation algorithm was obtained:EuclideanMetric
+[INFO][OperationAlgorithmManager][23-01-16:08]] : register OperationAlgorithm:knn
+类别：爱情动作	[[ 181 90 ]]
+类别：爱情	[[ 18 90 ]]
+```
+
 - Switch
   to [English Document](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/OperationAlgorithm.md)
 
