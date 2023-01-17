@@ -1,5 +1,11 @@
 package zhao.algorithmMagic.operands.vector
 
+import org.apache.spark.SparkContext
+import org.apache.spark.mllib.linalg
+import org.apache.spark.rdd.RDD
+import zhao.algorithmMagic.exception.OperatorOperationException
+import zhao.algorithmMagic.utils.ASMath
+
 /**
  * Spark向量对象，通过该类可以将Spark的API接入到本框架中，能够很好的对接到分布式内存计算技术
  *
@@ -8,9 +14,9 @@ package zhao.algorithmMagic.operands.vector
  * @param sparkContext Spark上下文对象
  * @param vector       Spark的vector对象
  */
-class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mllib.linalg.Vector) extends Vector[SparkVector, Double, Array[Double]] {
+final class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mllib.linalg.Vector) extends ThirdVector[SparkVector, Double, Array[Double], org.apache.spark.mllib.linalg.Vector] {
 
-  private final val size: Int = vector.size
+  private val size: Int = vector.size
 
   /**
    * 计算该向量的模长，具体实现请参阅api说明
@@ -109,6 +115,13 @@ class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mllib.lin
   }
 
   /**
+   * @return 向量中包含的维度数量
+   *         <p>
+   *         the number of dimensions contained in the vector
+   */
+  override def getNumberOfDimensions: Int = size
+
+  /**
    * 在两个操作数之间做差的方法，具体用法请参阅API说明。
    * <p>
    * The method of making a difference between two operands, please refer to the API description for specific usage.
@@ -133,11 +146,12 @@ class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mllib.lin
   }
 
   /**
-   * @return 向量中包含的维度数量
-   *         <p>
-   *         the number of dimensions contained in the vector
+   *
+   * @return 第三方向量中所维护的向量序列，通过此函数您可以直接获取到第三方库中的对象。
+   *
+   *         The vector sequence maintained in the third direction quantity. Through this function, you can directly obtain the objects in the third party library.
    */
-  override def getNumberOfDimensions: Int = size
+  override def toThirdArray: linalg.Vector = this.vector
 }
 
 object SparkVector {

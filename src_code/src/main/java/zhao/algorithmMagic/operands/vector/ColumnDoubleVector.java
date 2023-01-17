@@ -9,8 +9,7 @@ import java.util.HashMap;
  *
  * @author zhao
  */
-public class ColumnIntegerVector extends IntegerVector {
-
+public class ColumnDoubleVector extends DoubleVector {
     private final String[] Field;
     private final String vectorName;
 
@@ -23,7 +22,7 @@ public class ColumnIntegerVector extends IntegerVector {
      * @param field       向量中的每一个维度的名称
      * @param vectorArray 向量中的数值序列集合
      */
-    public ColumnIntegerVector(String vectorName, String[] field, int[] vectorArray) {
+    public ColumnDoubleVector(String vectorName, String[] field, double[] vectorArray) {
         super(vectorArray);
         this.vectorName = vectorName;
         this.Field = field;
@@ -42,8 +41,8 @@ public class ColumnIntegerVector extends IntegerVector {
      * <p>
      * Vector object with column name field
      */
-    public static ColumnIntegerVector parse(String vectorName, String[] field, int... vectorArray) {
-        return new ColumnIntegerVector(vectorName, field, vectorArray);
+    public static ColumnDoubleVector parse(String vectorName, String[] field, double... vectorArray) {
+        return new ColumnDoubleVector(vectorName, field, vectorArray);
     }
 
     /**
@@ -60,8 +59,8 @@ public class ColumnIntegerVector extends IntegerVector {
      * <p>
      * Converts the current vector into a key-value pair of column names and vectors.
      */
-    public HashMap<String, Integer> toHashMap() {
-        HashMap<String, Integer> hashMap = new HashMap<>(this.Field.length + 10);
+    public HashMap<String, Double> toHashMap() {
+        HashMap<String, Double> hashMap = new HashMap<>(this.Field.length + 10);
         for (int i = 0; i < this.Field.length; i++) {
             hashMap.put(this.Field[i], this.VectorArrayPrimitive[i]);
         }

@@ -19,8 +19,8 @@ import java.util.Arrays;
  * @author zhao
  */
 public class DoubleVector extends ASVector<DoubleVector, Double, double[]> {
+    protected double[] VectorArrayPrimitive;
     private String vectorStr;
-    private double[] VectorArrayPrimitive;
     private double moduleLength;
 
     /**

@@ -12,6 +12,9 @@ import zhao.algorithmMagic.operands.Operands;
  *                             该类为抽象，其中包含最基本的定义与类型管控
  *                             <p>
  *                             This class is abstract and contains the most basic definitions and type controls.
+ * @param <ArrayType>          实现类中所维护的向量数组类型，是从实现类中获取到本对象中数据的类型。
+ *                             <p>
+ *                             The vector array type maintained in the implementation class is the type of data in this object obtained from the implementation class.
  */
 public abstract class Vector<ImplementationType, ElementType, ArrayType> implements Operands<ImplementationType> {
 
@@ -67,7 +70,7 @@ public abstract class Vector<ImplementationType, ElementType, ArrayType> impleme
      * <p>
      * Copy the vector sequence array stored in this object to a new array and return the new array. Here, a new array is returned, which supports modification and other operations.
      */
-    public abstract ArrayType copyToNewArray();
+    protected abstract ArrayType copyToNewArray();
 
     /**
      * @return 向量中包含的维度数量

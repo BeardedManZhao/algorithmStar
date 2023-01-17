@@ -14,6 +14,7 @@ import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute2D;
 import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute;
 import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute2D;
 import zhao.algorithmMagic.operands.vector.DoubleVector;
+import zhao.algorithmMagic.operands.vector.RangeVector;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASMath;
 
@@ -36,7 +37,7 @@ import zhao.algorithmMagic.utils.ASMath;
  *            The type of floating-point coordinates involved in the operation in this class. You need to specify the floating-point coordinates that this class can operate on.
  * @author LingYuZhao
  */
-public class EuclideanMetric<I extends IntegerCoordinates<I> & Coordinate<I>, D extends FloatingPointCoordinates<?>> implements DistanceAlgorithm {
+public class EuclideanMetric<I extends IntegerCoordinates<I> & Coordinate<I>, D extends FloatingPointCoordinates<?>> implements DistanceAlgorithm, RangeDistance {
     protected final Logger logger;
     protected final String AlgorithmName;
 
@@ -329,5 +330,16 @@ public class EuclideanMetric<I extends IntegerCoordinates<I> & Coordinate<I>, D 
     @Override
     public double getTrueDistance(IntegerConsanguinityRoute2D integerConsanguinityRoute2D) {
         return getTrueDistance(integerConsanguinityRoute2D.getStartingCoordinate().toArray(), integerConsanguinityRoute2D.getEndPointCoordinate().toArray());
+    }
+
+    /**
+     * 计算向量距离原点的距离。
+     *
+     * @param rangeDistance 需要被计算的向量。
+     * @return 计算出来的距离结果数值。
+     */
+    @Override
+    public double getTrueDistance(RangeVector<?, ?, ?, ?> rangeDistance) {
+        return rangeDistance.moduleLength();
     }
 }

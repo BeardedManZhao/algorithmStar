@@ -60,8 +60,9 @@ public final class ASMath {
     /**
      * 计算一个序列中的最大值或最小值
      *
-     * @param doubles 需要被计算的序列
-     * @param isMax   如果为true，代表计算的是最大值
+     * @param doubles            需要被计算的序列
+     * @param isMax              如果为true，代表计算的是最大值
+     * @param numericalFiltering 取极值时的数值过滤器
      * @return 序列中所有元素的极值
      */
     public static double MaxOrMin(double[] doubles, boolean isMax, NumericalFiltering numericalFiltering) {
@@ -70,13 +71,17 @@ public final class ASMath {
         if (isMax) {
             for (double aDouble : doubles) {
                 if (numericalFiltering.isComplianceEvents(aDouble)) {
-                    res = Math.max(res, aDouble);
+                    if (res < aDouble) {
+                        res = aDouble;
+                    }
                 }
             }
         } else {
             for (double aDouble : doubles) {
                 if (numericalFiltering.isComplianceEvents(aDouble)) {
-                    res = Math.min(res, aDouble);
+                    if (res > aDouble) {
+                        res = aDouble;
+                    }
                 }
             }
         }
@@ -95,13 +100,17 @@ public final class ASMath {
         if (isMax) {
             for (int aDouble : doubles) {
                 if (numericalFiltering.isComplianceEvents(aDouble)) {
-                    res = Math.max(res, aDouble);
+                    if (res < aDouble) {
+                        res = aDouble;
+                    }
                 }
             }
         } else {
             for (int aDouble : doubles) {
                 if (numericalFiltering.isComplianceEvents(aDouble)) {
-                    res = Math.min(res, aDouble);
+                    if (res > aDouble) {
+                        res = aDouble;
+                    }
                 }
             }
         }
@@ -673,6 +682,20 @@ public final class ASMath {
     }
 
     /**
+     * 将区间内的所有数值进行累加
+     *
+     * @param start 区间起始数值
+     * @param end   区间终止数值
+     * @return 区间内所有数值的累加结果
+     */
+    public static double sumOfRange(double start, double end) {
+        if (start == end) {
+            return start;
+        }
+        return ((start + end) * ((end - start) + 1)) / 2;
+    }
+
+    /**
      * 计算两个序列之间的相关系数
      *
      * @param doubles1 被计算的序列1
@@ -701,9 +724,7 @@ public final class ASMath {
                 SxF2 += x * x;
                 SyF2 += y * y;
             }
-            int SxFF2 = Sx * Sx; // 第一个序列总和的平方
-            int SyFF2 = Sy * Sy; // 第二个序列总和的平方
-            return ((n * Sxy) - (Sx * Sy)) / (Math.sqrt(n * SxF2 - SxFF2) * Math.sqrt(n * SyF2 - SyFF2));
+            return ((n * Sxy) - (Sx * Sy)) / (Math.sqrt(n * SxF2 - (Sx * Sx)) * Math.sqrt(n * SyF2 - (Sy * Sy)));
         } else {
             throw new OperatorOperationException("计算相关系数时的两个序列中所包含的元素数量应相等哦！\nWhen calculating the correlation coefficient, the number of elements contained in the two sequences should be equal!");
         }
@@ -736,9 +757,7 @@ public final class ASMath {
                 SxF2 += x * x;
                 SyF2 += y * y;
             }
-            double SxFF2 = Sx * Sx; // 第一个序列总和的平方
-            double SyFF2 = Sy * Sy; // 第二个序列总和的平方
-            return ((n * Sxy) - (Sx * Sy)) / (Math.sqrt(n * SxF2 - SxFF2) * Math.sqrt(n * SyF2 - SyFF2));
+            return ((n * Sxy) - (Sx * Sy)) / (Math.sqrt(n * SxF2 - (Sx * Sx)) * Math.sqrt(n * SyF2 - (Sy * Sy)));
         } else {
             throw new OperatorOperationException("计算相关系数时的两个序列中所包含的元素数量应相等哦！\nWhen calculating the correlation coefficient, the number of elements contained in the two sequences should be equal!");
         }

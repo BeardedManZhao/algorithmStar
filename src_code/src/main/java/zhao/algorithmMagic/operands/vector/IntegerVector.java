@@ -13,7 +13,7 @@ import zhao.algorithmMagic.utils.ASMath;
  * @author zhao
  */
 public class IntegerVector extends ASVector<IntegerVector, Integer, int[]> {
-    int[] VectorArrayPrimitive;
+    protected int[] VectorArrayPrimitive;
     private String vectorStr;
     private int moduleLength;
 

@@ -4,9 +4,12 @@ import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
+import zhao.algorithmMagic.operands.vector.RangeVector;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASMath;
 import zhao.algorithmMagic.utils.filter.NumericalFilteringAndMAXorMIN;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * 最值计算组件，在该组件中能够对序列中的元素进行最值的聚合计算，提取出所有元素中的极值，需要注意的是，该组件支持极大与极小数值的计算，需要调用setMode函数来将极值计算模式进行变更。
@@ -15,7 +18,7 @@ import zhao.algorithmMagic.utils.filter.NumericalFilteringAndMAXorMIN;
  *
  * @author zhao
  */
-public class ExtremumAggregation extends BatchAggregation {
+public class ExtremumAggregation extends BatchAggregation implements RangeAggregation {
 
     /**
      * 普通最小值
@@ -218,5 +221,48 @@ public class ExtremumAggregation extends BatchAggregation {
             throw OPERATOR_OPERATION_EXCEPTION;
         }
         return ASMath.MaxOrMin(ints, mode.isMax, mode);
+    }
+
+    /**
+     * 计算函数，将某个数组中的所有元素按照某个规则进行聚合
+     * <p>
+     * Compute function to aggregate all elements in an array according to a certain rule
+     *
+     * @param rangeVector 需要被聚合的所有元素组成的数组
+     *                    <p>
+     *                    An array of all elements to be aggregated
+     * @return 一组数据被聚合之后的新结果
+     */
+    @Override
+    public double calculation(RangeVector<?, ?, ?, ?> rangeVector) {
+        if (mode.equals(MAX)) {
+            return rangeVector.getRangeEnd().doubleValue();
+        } else if (mode.equals(MIN)) {
+            return rangeVector.getRangeStart().doubleValue();
+        } else {
+            AtomicReference<Double> max = new AtomicReference<>(0.0);
+            if (mode.isMax) {
+                rangeVector.forEach(number -> {
+                    if (mode.isComplianceEvents(number)) {
+                        double aDouble = max.get();
+                        double v = number.doubleValue();
+                        if (aDouble < v) {
+                            max.set(v);
+                        }
+                    }
+                });
+            } else {
+                rangeVector.forEach(number -> {
+                    if (mode.isComplianceEvents(number)) {
+                        double aDouble = max.get();
+                        double v = number.doubleValue();
+                        if (aDouble > v) {
+                            max.set(v);
+                        }
+                    }
+                });
+            }
+            return max.get();
+        }
     }
 }

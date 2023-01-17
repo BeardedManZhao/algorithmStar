@@ -4,6 +4,7 @@ import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
+import zhao.algorithmMagic.operands.vector.RangeVector;
 import zhao.algorithmMagic.utils.ASClass;
 
 /**
@@ -13,7 +14,7 @@ import zhao.algorithmMagic.utils.ASClass;
  *
  * @author zhao
  */
-public class WeightedAverage extends WeightBatchAggregation {
+public class WeightedAverage extends WeightBatchAggregation implements RangeAggregation {
 
     protected WeightedAverage(String name) {
         super(name);
@@ -115,5 +116,20 @@ public class WeightedAverage extends WeightBatchAggregation {
             }
         }
         return res / ints.length;
+    }
+
+    /**
+     * 计算函数，将某个数组中的所有元素按照某个规则进行聚合
+     * <p>
+     * Compute function to aggregate all elements in an array according to a certain rule
+     *
+     * @param rangeVector 需要被聚合的所有元素组成的数组
+     *                    <p>
+     *                    An array of all elements to be aggregated
+     * @return 一组数据被聚合之后的新结果
+     */
+    @Override
+    public double calculation(RangeVector<?, ?, ?, ?> rangeVector) {
+        return rangeVector.getRangeSum().doubleValue() / rangeVector.size();
     }
 }

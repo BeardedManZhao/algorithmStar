@@ -11,8 +11,11 @@ import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute2D;
 import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute;
 import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute2D;
 import zhao.algorithmMagic.operands.vector.DoubleVector;
+import zhao.algorithmMagic.operands.vector.RangeVector;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASMath;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Java类于 2022/10/10 19:02:36 创建
@@ -32,7 +35,7 @@ import zhao.algorithmMagic.utils.ASMath;
  *            The type of floating-point coordinates involved in the operation in this class. You need to specify the floating-point coordinates that this class can operate on.
  * @author LingYuZhao
  */
-public class ManhattanDistance<I extends IntegerCoordinates<I> & Coordinate<I>, D extends FloatingPointCoordinates<?>> implements DistanceAlgorithm {
+public class ManhattanDistance<I extends IntegerCoordinates<I> & Coordinate<I>, D extends FloatingPointCoordinates<?>> implements DistanceAlgorithm, RangeDistance {
 
     protected final Logger logger;
     protected final String AlgorithmName;
@@ -138,7 +141,7 @@ public class ManhattanDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
     public double getTrueDistance(FloatingPointCoordinates<D> floatingPointCoordinate1, FloatingPointCoordinates<D> floatingPointCoordinate2) {
         double res = 0;
         if (OperationAlgorithmManager.PrintCalculationComponentLog) {
-            logger.info("√ ⁿ∑₁( " + floatingPointCoordinate1 + " - " + floatingPointCoordinate2 + ").map(d -> |d|)");
+            logger.info("ⁿ∑₁( " + floatingPointCoordinate1 + " - " + floatingPointCoordinate2 + ").map(d -> |d|)");
         }
         for (double d : floatingPointCoordinate1.diff(floatingPointCoordinate2.extend()).toArray()) {
             res += ASMath.absoluteValue(d);
@@ -164,7 +167,7 @@ public class ManhattanDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
     public double getTrueDistance(IntegerCoordinates<I> integerCoordinate1, IntegerCoordinates<I> integerCoordinate2) {
         int res = 0;
         if (OperationAlgorithmManager.PrintCalculationComponentLog) {
-            logger.info("√ ⁿ∑₁( " + integerCoordinate1 + " - " + integerCoordinate2 + ").map(d -> |d|)");
+            logger.info("ⁿ∑₁( " + integerCoordinate1 + " - " + integerCoordinate2 + ").map(d -> |d|)");
         }
         for (int d : (integerCoordinate1.extend().diff(integerCoordinate2.extend())).toArray()) {
             res += ASMath.absoluteValue(d);
@@ -250,7 +253,7 @@ public class ManhattanDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
     public double getTrueDistance(double[] doubles1, double[] doubles2) {
         double[] doubles = new DoubleCoordinateMany(doubles1).diff(new DoubleCoordinateMany(doubles2)).toArray();
         if (OperationAlgorithmManager.PrintCalculationComponentLog) {
-            logger.info("√ ⁿ∑₁( Xn - Yn )²");
+            logger.info("ⁿ∑₁|(Xn - Yn)|");
         }
         double res = 0;
         for (double aDouble : doubles) {
@@ -272,7 +275,7 @@ public class ManhattanDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
     public double getTrueDistance(int[] ints1, int[] ints2) {
         int[] ints = new IntegerCoordinateMany(ints1).diff(new IntegerCoordinateMany(ints2)).toArray();
         if (OperationAlgorithmManager.PrintCalculationComponentLog) {
-            logger.info("√ ⁿ∑₁( Xn - Yn )²");
+            logger.info("ⁿ∑₁|(Xn - Yn)|");
         }
         int res = 0;
         for (int anInt : ints) {
@@ -324,5 +327,18 @@ public class ManhattanDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
     @Override
     public double getTrueDistance(IntegerConsanguinityRoute2D integerConsanguinityRoute2D) {
         return getTrueDistance(integerConsanguinityRoute2D.getStartingCoordinate().toArray(), integerConsanguinityRoute2D.getEndPointCoordinate().toArray());
+    }
+
+    /**
+     * 计算向量距离原点的距离。
+     *
+     * @param rangeDistance 需要被计算的向量。
+     * @return 计算出来的距离结果数值。
+     */
+    @Override
+    public double getTrueDistance(RangeVector<?, ?, ?, ?> rangeDistance) {
+        AtomicReference<Double> res = new AtomicReference<>((double) 0);
+        rangeDistance.forEach(number -> res.set(res.get() + ASMath.absoluteValue(number.doubleValue())));
+        return res.get();
     }
 }
