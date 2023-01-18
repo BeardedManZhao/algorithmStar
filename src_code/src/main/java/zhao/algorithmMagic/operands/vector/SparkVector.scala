@@ -1,11 +1,5 @@
 package zhao.algorithmMagic.operands.vector
 
-import org.apache.spark.SparkContext
-import org.apache.spark.mllib.linalg
-import org.apache.spark.rdd.RDD
-import zhao.algorithmMagic.exception.OperatorOperationException
-import zhao.algorithmMagic.utils.ASMath
-
 /**
  * Spark向量对象，通过该类可以将Spark的API接入到本框架中，能够很好的对接到分布式内存计算技术
  *
@@ -53,14 +47,6 @@ final class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mll
   }
 
   /**
-   *
-   * @return 将本对象中存储的向量序列数组拷贝到一个新数组并将新数组返回，这里返回的是一个新数组，支持修改等操作。
-   *
-   *         Copy the vector sequence array stored in this object to a new array and return the new array. Here, a new array is returned, which supports modification and other operations.
-   */
-  override def copyToNewArray(): Array[Double] = vector.toArray
-
-  /**
    * 计算两个向量的内积，也称之为数量积，具体实现请参阅api说明
    * <p>
    * Calculate the inner product of two vectors, also known as the quantity product, please refer to the api node for the specific implementation
@@ -83,6 +69,14 @@ final class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mll
     }
     else throw new OperatorOperationException("'DoubleVector1 innerProduct DoubleVector2' 时，两个'DoubleVector'的向量所包含的数量不同，DoubleVector1=[" + doubles1.length + "]，DoubleVector2=[" + doubles2.length + "]\n" + "When 'DoubleVector1 innerProduct DoubleVector2', the two vectors of 'DoubleVector' contain different quantities, DoubleVector1=[" + doubles1.length + "], DoubleVector2=[" + doubles2.length + "]")
   }
+
+  /**
+   *
+   * @return 将本对象中存储的向量序列数组拷贝到一个新数组并将新数组返回，这里返回的是一个新数组，支持修改等操作。
+   *
+   *         Copy the vector sequence array stored in this object to a new array and return the new array. Here, a new array is returned, which supports modification and other operations.
+   */
+  override def copyToNewArray(): Array[Double] = vector.toArray
 
   /**
    * @return 该类的实现类对象，用于拓展该接口的子类

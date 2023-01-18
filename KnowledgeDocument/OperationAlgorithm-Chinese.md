@@ -349,6 +349,79 @@ public final class MAIN1 {
 类别：爱情	[[ 18 90 ]]
 ```
 
+### 概率计算与分类
+
+概率计算其本质也属于分类组件，例如朴素贝叶斯算法等，所有的概率计算组件都需要传递自定义的两个事件过滤对象，它是一种P(A|B)样式的计算结果，计算函数中的第一个事件过滤器扮演A事件，第二个事件过滤器扮演B事件
+
+- 概率计算组件列表
+
+| 计算组件类型                                                          | 支持版本  | 功能                             |
+|-----------------------------------------------------------------|-------|--------------------------------|
+| zhao.algorithmMagic.algorithm.probabilisticAlgorithm.NaiveBayes | v1.14 | 通过较小的计算量计算出形如”P(A\B)“事件发生的概率数值 |
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.algorithm.probabilisticAlgorithm.NaiveBayes;
+import zhao.algorithmMagic.core.AlgorithmStar;
+import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
+
+public final class MAIN1 {
+    public static void main(String[] args) {
+        String[] strings1 = {"职业", "体型", "喜欢"};
+        // 准备一个数据矩阵
+        // 职业：1-程序员  2-产品  3-美工
+        ColumnIntegerMatrix parse = ColumnIntegerMatrix.parse(
+                strings1,
+                null,
+                new int[]{1, 1, 0},
+                new int[]{2, 0, 1},
+                new int[]{1, 0, 1},
+                new int[]{1, 1, 1},
+                new int[]{3, 0, 0},
+                new int[]{3, 1, 0},
+                new int[]{2, 0, 1},
+                new int[]{2, 1, 1},
+                new int[]{2, 1, 0},
+                new int[]{2, 1, 0}
+        );
+        System.out.println(parse);
+        // 开始运行朴素贝叶斯算法 计算：在自己是产品同时超重的情况下，被喜欢的概率
+        AlgorithmStar<Object, Object> algorithmStar = AlgorithmStar.getInstance();
+        // 数据样本，是需要被计算的数据矩阵，注意该矩阵中需要至少包含3条有关 B事件 的数据。例如这里的数据样本中，(2,1,1)(2,1,0)(2,1,0) 是符合B事件的，正好有三条
+        // A事件(StatisticCondition1) 被喜欢，喜欢的列值为1
+        // B事件(StatisticCondition2) 职业是产品 同时还超重 是条件概率的前提
+        double[] bayes = algorithmStar.estimateGetFraction(NaiveBayes.getInstance("bayes"), parse, v -> v[2] == 1, v -> v[0] == 2 && v[1] == 1);
+        System.out.println(bayes[0]); // 获取到结果概率的分子
+        System.out.println(bayes[1]); // 获取到结果概率的分母
+        System.out.println(bayes[0] / bayes[1]); // 获取到结果概率
+    }
+}
+```
+
+```
+------------IntegerMatrixStart-----------
+职业	体型	喜欢	
+[1, 1, 0]
+[2, 0, 1]
+[1, 0, 1]
+[1, 1, 1]
+[3, 0, 0]
+[3, 1, 0]
+[2, 0, 1]
+[2, 1, 1]
+[2, 1, 0]
+[2, 1, 0]
+------------IntegerMatrixEnd------------
+
+[INFO][OperationAlgorithmManager][23-01-18:09]] : register OperationAlgorithm:bayes
+0.25
+0.3
+0.8333333333333334
+
+进程已结束,退出代码0
+```
+
 - Switch
   to [English Document](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/OperationAlgorithm.md)
 

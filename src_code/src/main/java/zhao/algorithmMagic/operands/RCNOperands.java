@@ -34,4 +34,33 @@ public interface RCNOperands<ArrayType> {
      * A new array containing the elements of the current col supports modification.
      */
     ArrayType getArrayByColName(String name);
+
+
+    /**
+     * 获取到指定索引编号的行数组
+     * <p>
+     * Get the row array with the specified index
+     *
+     * @param index 指定的行目标索引值
+     *              <p>
+     *              Specified row index number
+     * @return 一个包含当前行元素的新数组，是支持修改的。
+     * <p>
+     * A new array containing the elements of the current row supports modification.
+     */
+    ArrayType getArrayByRowIndex(int index);
+
+    /**
+     * 获取到指定索引编号的列数组
+     * <p>
+     * Get the col array with the specified index
+     *
+     * @param index 指定的列目标索引值
+     *              <p>
+     *              Specified col index number
+     * @return 一个包含当前列元素的新数组，是支持修改的。
+     * <p>
+     * A new array containing the elements of the current col supports modification.
+     */
+    ArrayType getArrayByColIndex(int index);
 }

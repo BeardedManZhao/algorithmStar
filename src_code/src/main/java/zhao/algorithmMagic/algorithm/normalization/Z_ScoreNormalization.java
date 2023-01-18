@@ -8,6 +8,8 @@ import zhao.algorithmMagic.operands.coordinate.FloatingPointCoordinates;
 import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateMany;
 import zhao.algorithmMagic.operands.coordinate.IntegerCoordinates;
 import zhao.algorithmMagic.operands.vector.DoubleVector;
+import zhao.algorithmMagic.operands.vector.FastRangeDoubleVector;
+import zhao.algorithmMagic.operands.vector.FastRangeIntegerVector;
 import zhao.algorithmMagic.operands.vector.IntegerVector;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASMath;
@@ -21,7 +23,7 @@ import zhao.algorithmMagic.utils.ASMath;
  *
  * @author zhao
  */
-public class Z_ScoreNormalization extends DataStandardization {
+public class Z_ScoreNormalization extends DataStandardization implements RangeDataStandardization {
 
     protected Z_ScoreNormalization(String algorithmName) {
         super(algorithmName);
@@ -148,5 +150,35 @@ public class Z_ScoreNormalization extends DataStandardization {
     @Override
     public IntegerVector NormalizedSequence(IntegerVector integerVector) {
         return new IntegerVector(StandardizedSequence(integerVector.toArray()));
+    }
+
+    /**
+     * 将一个序列进行标准化，具体的标准化有不同的实现
+     *
+     * @param fastRangeIntegerVector 需要被标准化的数值，可以是坐标或向量，更多信息需要查阅实现
+     *                               <p>
+     *                               The value to be normalized, which can be a coordinate or a vector. For more information, see the implementation
+     * @return v的标准化样式
+     * <p>
+     * Normalized style of v
+     */
+    @Override
+    public IntegerVector NormalizedSequence(FastRangeIntegerVector fastRangeIntegerVector) {
+        return NormalizedSequence(fastRangeIntegerVector.toVector());
+    }
+
+    /**
+     * 将一个序列进行标准化，具体的标准化有不同的实现
+     *
+     * @param fastRangeDoubleVector 需要被标准化的数值，可以是坐标或向量，更多信息需要查阅实现
+     *                              <p>
+     *                              The value to be normalized, which can be a coordinate or a vector. For more information, see the implementation
+     * @return v的标准化样式
+     * <p>
+     * Normalized style of v
+     */
+    @Override
+    public DoubleVector NormalizedSequence(FastRangeDoubleVector fastRangeDoubleVector) {
+        return NormalizedSequence(fastRangeDoubleVector.toVector());
     }
 }

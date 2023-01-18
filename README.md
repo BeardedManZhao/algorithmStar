@@ -26,7 +26,85 @@ can add it to your maven project, or you can download it from Releases and manua
 </dependencies>
 ```
 
-### Use API examples
+## Use API examples
+
+### Feature calculation algorithm component
+
+Feature computing components are often used in feature engineering, and are the main force of computing in machine
+learning tasks. Measurement algorithms, classification algorithms, etc. can use this component computing method. The
+feature engineering calculation in Arithmetic Star is component-based calculation. You can directly obtain component
+objects and call component functions, or use Arithmetic Star's portal class for feature engineering.
+
+Next is a simple example of feature engineering calculation using algorithmic star portal class
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.algorithm.distanceAlgorithm.EuclideanMetric;
+import zhao.algorithmMagic.algorithm.distanceAlgorithm.ManhattanDistance;
+import zhao.algorithmMagic.algorithm.featureExtraction.WordFrequency;
+import zhao.algorithmMagic.core.AlgorithmStar;
+import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
+
+public final class MAIN1 {
+    public static void main(String[] args) {
+        // Prepare an array of two texts, including two string statements that need to be processed into feature vectors.
+        String[] data = {
+                "Good evening, dear, don't forget the agreement between us. It's 9:00 tomorrow morning.",
+                "Good morning, dear, don't forget the agreement between us, at 9:00 in the morning."
+        };
+        AlgorithmStar<Object, ColumnIntegerMatrix> algorithmStar = AlgorithmStar.getInstance();
+        // Start feature extraction, and a matrix will be returned after the word frequency vector is successfully extracted
+        ColumnIntegerMatrix word = algorithmStar.extract(WordFrequency.getInstance("word"), data);
+        // Print the generated vector matrix
+        System.out.println(word);
+        // Start to obtain the vector corresponding to the two sentences in the matrix
+        int[] arrayByColIndex1 = word.getArrayByColIndex(0);
+        int[] arrayByRowIndex2 = word.getArrayByColIndex(1);
+        // Start to calculate the German distance between two vectors
+        double res = algorithmStar.getTrueDistance(EuclideanMetric.getInstance("e"), arrayByColIndex1, arrayByRowIndex2);
+        System.out.println(res);
+        // Start to calculate the Manhattan distance between two vectors
+        double res1 = algorithmStar.getTrueDistance(ManhattanDistance.getInstance("man"), arrayByColIndex1, arrayByRowIndex2);
+        System.out.println(res1);
+        AlgorithmStar.clear();
+    }
+}
+```
+
+- run results
+
+```
+[INFO][OperationAlgorithmManager][23-01-18:01]] : register OperationAlgorithm:word
+------------IntegerMatrixStart-----------
+Good evening, dear, don't forget the agreement between us. It's 9:00 tomorrow morning.	Good morning, dear, don't forget the agreement between us, at 9:00 in the morning.	rowColName
+[1, 1]	00
+[1, 1]	agreement
+[1, 1]	don't
+[0, 1]	in
+[1, 0]	tomorrow
+[1, 2]	morning
+[1, 2]	the
+[1, 1]	forget
+[0, 1]	at
+[1, 0]	It's
+[1, 1]	9
+[1, 1]	Good
+[1, 0]	evening
+[1, 1]	dear
+[1, 1]	between
+[1, 1]	us
+------------IntegerMatrixEnd------------
+
+[INFO][OperationAlgorithmManager][23-01-18:01]] : register OperationAlgorithm:e
+2.6457513110645907
+[INFO][OperationAlgorithmManager][23-01-18:01]] : register OperationAlgorithm:man
+7.0
+
+进程已结束,退出代码0
+```
+
+### Route generation integrator
 
 Here is an example of the use of "ZhaoCoordinateNet2D", which shows the analysis and prediction of the relationship
 between people. In the "ZhaoCoordinateNet" algorithm, the relationship network of people is analyzed, and at the same

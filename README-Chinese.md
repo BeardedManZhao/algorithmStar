@@ -10,7 +10,7 @@
 
 ### Maven 依赖
 
-您可以通过maven将算术之星（ASMB）集成到您的项目中，maven的配置如下所示。您可以将其添加到maven项目中，也可以从Releases下载并手动将其集成到项目中。
+您可以通过maven将算术之星（AS-MB）集成到您的项目中，maven的配置如下所示。您可以将其添加到maven项目中，也可以从Releases下载并手动将其集成到项目中。
 
 ```xml
     <dependencies>
@@ -22,7 +22,82 @@
     </dependencies>
 ```
 
-### API使用示例
+## API使用示例
+
+### 特征计算算法组件
+
+特征计算组件常用于特征工程，是机器学习任务中计算时的主力军，度量算法，分类算法等皆可以使用这种组件计算方式。在算法之星中的特征工程计算，就是基于组件的计算，您可以直接获取到组件对象，并调用组件函数，也可以使用算术之星的门户类进行特征工程。
+
+接下来就是展示的使用算法之星门户类进行特征工程计算的简单示例.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.algorithm.distanceAlgorithm.EuclideanMetric;
+import zhao.algorithmMagic.algorithm.distanceAlgorithm.ManhattanDistance;
+import zhao.algorithmMagic.algorithm.featureExtraction.WordFrequency;
+import zhao.algorithmMagic.core.AlgorithmStar;
+import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
+
+public final class MAIN1 {
+    public static void main(String[] args) {
+        // 准备两个文本组成的数组，其中是两个需要被处理成为特征向量的字符串语句。
+        String[] data = {
+                "Good evening, dear, don't forget the agreement between us. It's 9:00 tomorrow morning.",
+                "Good morning, dear, don't forget the agreement between us, at 9:00 in the morning."
+        };
+        AlgorithmStar<Object, ColumnIntegerMatrix> algorithmStar = AlgorithmStar.getInstance();
+        // 开始进行特征提取，生成词频向量 提取成功之后会返回一个矩阵
+        ColumnIntegerMatrix word = algorithmStar.extract(WordFrequency.getInstance("word"), data);
+        // 打印生成的向量矩阵
+        System.out.println(word);
+        // 开始将矩阵中的两句话对应的向量获取到
+        int[] arrayByColIndex1 = word.getArrayByColIndex(0);
+        int[] arrayByRowIndex2 = word.getArrayByColIndex(1);
+        // 开始计算两个向量之间的德式距离
+        double res = algorithmStar.getTrueDistance(EuclideanMetric.getInstance("e"), arrayByColIndex1, arrayByRowIndex2);
+        System.out.println(res);
+        // 开始计算两个向量之间的曼哈顿距离
+        double res1 = algorithmStar.getTrueDistance(ManhattanDistance.getInstance("man"), arrayByColIndex1, arrayByRowIndex2);
+        System.out.println(res1);
+        AlgorithmStar.clear();
+    }
+}
+```
+
+- 运行结果
+
+```
+[INFO][OperationAlgorithmManager][23-01-18:01]] : register OperationAlgorithm:word
+------------IntegerMatrixStart-----------
+Good evening, dear, don't forget the agreement between us. It's 9:00 tomorrow morning.	Good morning, dear, don't forget the agreement between us, at 9:00 in the morning.	rowColName
+[1, 1]	00
+[1, 1]	agreement
+[1, 1]	don't
+[0, 1]	in
+[1, 0]	tomorrow
+[1, 2]	morning
+[1, 2]	the
+[1, 1]	forget
+[0, 1]	at
+[1, 0]	It's
+[1, 1]	9
+[1, 1]	Good
+[1, 0]	evening
+[1, 1]	dear
+[1, 1]	between
+[1, 1]	us
+------------IntegerMatrixEnd------------
+
+[INFO][OperationAlgorithmManager][23-01-18:01]] : register OperationAlgorithm:e
+2.6457513110645907
+[INFO][OperationAlgorithmManager][23-01-18:01]] : register OperationAlgorithm:man
+7.0
+
+进程已结束,退出代码0
+```
+
+### 路线生成集成器
 
 这里是"ZhaoCoordinateNet2D"的使用示例,展示的是人与人之间的关系分析与预测,在"ZhaoCoordinateNet"算法中, 人的关系网络被分析了出来, 同时还可以进行该网络分析绘图的操作。
 
@@ -78,19 +153,19 @@ public class MAIN1 {
 
 ### KnowledgeDocument
 
-知识库文件归档用于ASMB系列知识文档的存储库，您可以通过主页上的文档直接访问它，这里不需要直接进去目录访问呢，因为目录内部比较乱。
+知识库文件归档用于AS-MB系列知识文档的存储库，您可以通过主页上的文档直接访问它，这里不需要直接进去目录访问呢，因为目录内部比较乱。
 
 ### src_code
 
-ASMB的源码存放目录，在这里可以查看ASMB的相关源码。当然这里是最新的源代码，你可以用它来编译，这样你就可以获得最新的版本。注意：最新版本往往不稳定，建议您使用已经发布很久的版本！
+AS-MB的源码存放目录，在这里可以查看AS-MB的相关源码。当然这里是最新的源代码，你可以用它来编译，这样你就可以获得最新的版本。注意：最新版本往往不稳定，建议您使用已经发布很久的版本！
 
 ### README-Chinese.md
 
-ASMB 主页文档的中文版。您可以在主页默认页面上切换语言以访问此文件。
+AS-MB 主页文档的中文版。您可以在主页默认页面上切换语言以访问此文件。
 
 ### README.md
 
-ASMB 主页文档的默认版本。您可以在主页上直接访问此文件！
+AS-MB 主页文档的默认版本。您可以在主页上直接访问此文件！
 
 - Switch to [English Document](https://github.com/BeardedManZhao/algorithmStar/blob/main/README.md)
 

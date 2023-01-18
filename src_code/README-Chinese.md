@@ -1,5 +1,6 @@
 # ![image](https://user-images.githubusercontent.com/113756063/194830221-abe24fcc-484b-4769-b3b7-ec6d8138f436.png) 算法之星-机器大脑
 
+- 重要更新！！！！
 - Switch to [English Document](https://github.com/BeardedManZhao/algorithmStar/blob/main/src_code/update/1.12_1.13.md)
 - knowledge base
   <a href="https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/knowledge%20base-Chinese.md">
@@ -260,5 +261,7 @@ public final class MAIN1 {
 ```
 
 * 增加了区间型向量，这种向量具有轻量快速的特点，能够满足大数据量下的计算需求。
+* 增加了门户类 zhao.algorithmMagic.core.AlgorithmStar ，可以通过该类进行所有计算函数的调用，当然，也可直接使用计算组件中的计算函数进行计算。
+* 增加了概率算法。
 
 ### Version update date : XX XX-XX-XX

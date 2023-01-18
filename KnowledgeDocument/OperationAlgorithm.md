@@ -282,10 +282,10 @@ specific classification components, see the following example.
 
 - Feature classification component list
 
-| Calculation component type                                                      | Supported versions | function           |
-|---------------------------------------------------------------------------------|-------|------------------------------|
-| zhao.algorithmMagic.algorithm.classificationAlgorithm.UDFDistanceClassification | v1.14 | 利用手动传入类别样本的方式，进行距离计算并分类      |
-| zhao.algorithmMagic.algorithm.classificationAlgorithm.KnnClassification         | v1.14 | 利用K 近邻算法将最近的K个特征进行距离计算，进行分类。 |
+| Calculation component type                                                      | Supported versions | function                     |
+|---------------------------------------------------------------------------------|--------------------|------------------------------|
+| zhao.algorithmMagic.algorithm.classificationAlgorithm.UDFDistanceClassification | v1.14              | 利用手动传入类别样本的方式，进行距离计算并分类      |
+| zhao.algorithmMagic.algorithm.classificationAlgorithm.KnnClassification         | v1.14              | 利用K 近邻算法将最近的K个特征进行距离计算，进行分类。 |
 
 ```java
 package zhao.algorithmMagic;
@@ -366,6 +366,82 @@ public final class MAIN1 {
 [INFO][OperationAlgorithmManager][23-01-16:08]] : register OperationAlgorithm:knn
 类别：爱情动作	[[ 181 90 ]]
 类别：爱情	[[ 18 90 ]]
+```
+
+### Probability calculation and classification
+
+Probability calculation is also a classification component in nature, such as naive Bayesian algorithm. All probability
+calculation components need to pass two user-defined event filter objects. It is a P (A | B) style calculation result.
+The first event filter in the calculation function plays the role of A event, and the second event filter plays the role
+of B event.
+
+- List of probability calculation components
+
+| Calculation component type                                      | Supported versions | function                       |
+|-----------------------------------------------------------------|--------------------|--------------------------------|
+| zhao.algorithmMagic.algorithm.probabilisticAlgorithm.NaiveBayes | v1.14              | 通过较小的计算量计算出形如”P(A\B)“事件发生的概率数值 |
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.algorithm.probabilisticAlgorithm.NaiveBayes;
+import zhao.algorithmMagic.core.AlgorithmStar;
+import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
+
+public final class MAIN1 {
+    public static void main(String[] args) {
+        String[] strings1 = {"职业", "体型", "喜欢"};
+        // 准备一个数据矩阵
+        // 职业：1-程序员  2-产品  3-美工
+        ColumnIntegerMatrix parse = ColumnIntegerMatrix.parse(
+                strings1,
+                null,
+                new int[]{1, 1, 0},
+                new int[]{2, 0, 1},
+                new int[]{1, 0, 1},
+                new int[]{1, 1, 1},
+                new int[]{3, 0, 0},
+                new int[]{3, 1, 0},
+                new int[]{2, 0, 1},
+                new int[]{2, 1, 1},
+                new int[]{2, 1, 0},
+                new int[]{2, 1, 0}
+        );
+        System.out.println(parse);
+        // 开始运行朴素贝叶斯算法 计算：在自己是产品同时超重的情况下，被喜欢的概率
+        AlgorithmStar<Object, Object> algorithmStar = AlgorithmStar.getInstance();
+        // 数据样本，是需要被计算的数据矩阵，注意该矩阵中需要至少包含3条有关 B事件 的数据。例如这里的数据样本中，(2,1,1)(2,1,0)(2,1,0) 是符合B事件的，正好有三条
+        // A事件(StatisticCondition1) 被喜欢，喜欢的列值为1
+        // B事件(StatisticCondition2) 职业是产品 同时还超重 是条件概率的前提
+        double[] bayes = algorithmStar.estimateGetFraction(NaiveBayes.getInstance("bayes"), parse, v -> v[2] == 1, v -> v[0] == 2 && v[1] == 1);
+        System.out.println(bayes[0]); // 获取到结果概率的分子
+        System.out.println(bayes[1]); // 获取到结果概率的分母
+        System.out.println(bayes[0] / bayes[1]); // 获取到结果概率
+    }
+}
+```
+
+```
+------------IntegerMatrixStart-----------
+职业	体型	喜欢	
+[1, 1, 0]
+[2, 0, 1]
+[1, 0, 1]
+[1, 1, 1]
+[3, 0, 0]
+[3, 1, 0]
+[2, 0, 1]
+[2, 1, 1]
+[2, 1, 0]
+[2, 1, 0]
+------------IntegerMatrixEnd------------
+
+[INFO][OperationAlgorithmManager][23-01-18:09]] : register OperationAlgorithm:bayes
+0.25
+0.3
+0.8333333333333334
+
+进程已结束,退出代码0
 ```
 
 - 切换到 [中文文档](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/OperationAlgorithm-Chinese.md)

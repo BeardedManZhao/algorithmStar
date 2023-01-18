@@ -9,8 +9,6 @@ import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASMath;
 import zhao.algorithmMagic.utils.filter.NumericalFilteringAndMAXorMIN;
 
-import java.util.concurrent.atomic.AtomicReference;
-
 /**
  * 最值计算组件，在该组件中能够对序列中的元素进行最值的聚合计算，提取出所有元素中的极值，需要注意的是，该组件支持极大与极小数值的计算，需要调用setMode函数来将极值计算模式进行变更。
  * <p>
@@ -240,29 +238,27 @@ public class ExtremumAggregation extends BatchAggregation implements RangeAggreg
         } else if (mode.equals(MIN)) {
             return rangeVector.getRangeStart().doubleValue();
         } else {
-            AtomicReference<Double> max = new AtomicReference<>(0.0);
             if (mode.isMax) {
-                rangeVector.forEach(number -> {
-                    if (mode.isComplianceEvents(number)) {
-                        double aDouble = max.get();
-                        double v = number.doubleValue();
-                        if (aDouble < v) {
-                            max.set(v);
-                        }
-                    }
-                });
+                // 查看最大值是否满足过滤器条件
+                double v = rangeVector.getRangeEnd().doubleValue();
+                if (mode.isComplianceEvents(v)) {
+                    // 如果满足就直接返回
+                    return v;
+                } else {
+                    // 如果不满足就直接返回上一个数值
+                    return v - 1;
+                }
             } else {
-                rangeVector.forEach(number -> {
-                    if (mode.isComplianceEvents(number)) {
-                        double aDouble = max.get();
-                        double v = number.doubleValue();
-                        if (aDouble > v) {
-                            max.set(v);
-                        }
-                    }
-                });
+                // 查看最小值是否满足过滤器条件
+                double v = rangeVector.getRangeStart().doubleValue();
+                if (mode.isComplianceEvents(v)) {
+                    // 如果满足就直接返回
+                    return v;
+                } else {
+                    // 如果不满足就直接返回下一个数值
+                    return v + 1;
+                }
             }
-            return max.get();
         }
     }
 }
