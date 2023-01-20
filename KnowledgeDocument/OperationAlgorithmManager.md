@@ -22,7 +22,7 @@ you obtain this class, you can obtain your target algorithm object through the a
 ```java
 package zhao.algorithmMagic;
 
-import zhao.algorithmMagic.algorithm.EuclideanMetric;
+import zhao.algorithmMagic.algorithm.distanceAlgorithm.EuclideanMetric;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo;

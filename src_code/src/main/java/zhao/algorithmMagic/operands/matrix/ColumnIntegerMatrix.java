@@ -71,6 +71,20 @@ public class ColumnIntegerMatrix extends IntegerMatrix implements RCNOperands<in
         }
     }
 
+    protected static void deleteRelatedFunction(double thresholdLeft, double thresholdRight, int[][] ints, int[] mid, ArrayList<int[]> res, ArrayList<String> res_f2, String[] field2) {
+        for (int i = 0; i < ints.length; i++) {
+            int[] anInt = ints[i];
+            double num = ASMath.correlationCoefficient(anInt, mid);
+            if (num < thresholdLeft || num > thresholdRight) {
+                // 这个情况代表是不符合删除区间的，也就是不需要被删除的
+                int[] res1 = new int[anInt.length];
+                System.arraycopy(anInt, 0, res1, 0, anInt.length);
+                res_f2.add(field2[i]);
+                res.add(res1);
+            }
+        }
+    }
+
     /**
      * @return 该矩阵中所对应的列名称
      */
@@ -207,59 +221,35 @@ public class ColumnIntegerMatrix extends IntegerMatrix implements RCNOperands<in
             int[][] ints = toArrays();
             // 获取到当前的相关系数中心序列
             int[] mid = ints[index];
-            ArrayList<int[]> res = new ArrayList<>(rowCount);
             boolean b1 = this.Field1.length != 0;
             boolean b2 = this.Field2.length != 0;
-            ArrayList<String> res_f1 = new ArrayList<>(b1 ? this.Field1.length : 16);
+            ArrayList<int[]> res = new ArrayList<>(rowCount);
             ArrayList<String> res_f2 = new ArrayList<>(b2 ? this.Field2.length : 16);
             // 开始进行计算
             if (b1 && b2) {
-                for (int i = 0; i < ints.length; i++) {
-                    int[] anInt = ints[i];
-                    double num = ASMath.correlationCoefficient(anInt, mid);
-                    if (num < thresholdLeft || num > thresholdRight) {
-                        // 这个情况代表是不符合删除区间的，也就是不需要被删除的
-                        int[] res1 = new int[anInt.length];
-                        System.arraycopy(anInt, 0, res1, 0, anInt.length);
-                        res_f1.add(this.Field1[i]);
-                        res_f2.add(this.Field2[i]);
-                        res.add(res1);
-                    }
-                }
+                deleteRelatedFunction(thresholdLeft, thresholdRight, ints, mid, res, res_f2, Field2);
                 return ColumnIntegerMatrix.parse(
-                        res_f1.toArray(new String[0]), res_f2.toArray(new String[0]), copyToNewArrays()
+                        this.Field1.clone(), res_f2.toArray(new String[0]), res.toArray(new int[0][])
                 );
             } else if (b2) {
                 // 说明第 1 字段不需要添加数据
-                for (int i = 0; i < ints.length; i++) {
-                    int[] anInt = ints[i];
-                    double num = ASMath.correlationCoefficient(anInt, mid);
-                    if (num < thresholdLeft || num > thresholdRight) {
-                        // 这个情况代表是不符合删除区间的，也就是不需要被删除的
-                        int[] res1 = new int[anInt.length];
-                        System.arraycopy(anInt, 0, res1, 0, anInt.length);
-                        res_f2.add(this.Field2[i]);
-                        res.add(res1);
-                    }
-                }
+                deleteRelatedFunction(thresholdLeft, thresholdRight, ints, mid, res, res_f2, Field2);
                 return ColumnIntegerMatrix.parse(
                         null, res_f2.toArray(new String[0]), res.toArray(new int[0][])
                 );
             } else if (b1) {
                 // 说明第二字段不需要加数据
-                for (int i = 0; i < ints.length; i++) {
-                    int[] anInt = ints[i];
+                for (int[] anInt : ints) {
                     double num = ASMath.correlationCoefficient(anInt, mid);
                     if (num < thresholdLeft || num > thresholdRight) {
                         // 这个情况代表是不符合删除区间的，也就是不需要被删除的
                         int[] res1 = new int[anInt.length];
                         System.arraycopy(anInt, 0, res1, 0, anInt.length);
-                        res_f1.add(this.Field1[i]);
                         res.add(res1);
                     }
                 }
                 return ColumnIntegerMatrix.parse(
-                        res_f1.toArray(new String[0]), null, res.toArray(new int[0][])
+                        this.Field1.clone(), null, res.toArray(new int[0][])
                 );
             } else {
                 // 说明都不需要字段名数据
@@ -379,5 +369,46 @@ public class ColumnIntegerMatrix extends IntegerMatrix implements RCNOperands<in
                 this.Field1.clone(),
                 super.transpose().toArrays()
         );
+    }
+
+    /**
+     * 将本对象中的所有数据进行洗牌打乱，随机分布数据行的排列。
+     * <p>
+     * Shuffle all the data in this object and randomly distribute the arrangement of data rows.
+     *
+     * @param seed 打乱算法中所需要的随机种子。
+     *             <p>
+     *             Disrupt random seeds required in the algorithm.
+     * @return 打乱之后的对象。
+     * <p>
+     * Objects after disruption.
+     */
+    @Override
+    public ColumnIntegerMatrix shuffle(long seed) {
+        // 行是否无字段
+        if (this.Field2.length == 0) {
+            return ColumnIntegerMatrix.parse(
+                    this.Field1.length == 0 ? null : this.Field1.clone(),
+                    null,
+                    ASMath.shuffle(this.copyToNewArrays(), seed, false));
+        } else {
+            // 带着行一起迭代
+            int[][] res = this.copyToNewArrays();
+            String[] rowNames = this.Field2.clone();
+            // 生成随机数对象
+            Random random = new Random();
+            int maxIndex = res.length - 1;
+            random.setSeed(seed);
+            for (int i = 0; i < res.length; i++) {
+                int i1 = random.nextInt(maxIndex);
+                int[] temp = res[i];
+                res[i] = res[i1];
+                res[i1] = temp;
+                String tempS = rowNames[i];
+                rowNames[i] = rowNames[i1];
+                rowNames[i1] = tempS;
+            }
+            return ColumnIntegerMatrix.parse(this.Field1.clone(), rowNames, res);
+        }
     }
 }

@@ -206,6 +206,23 @@ public class IntegerVector extends ASVector<IntegerVector, Integer, int[]> {
         return this.VectorArrayPrimitive.length;
     }
 
+    /**
+     * 将本对象中的所有数据进行洗牌打乱，随机分布数据行的排列。
+     * <p>
+     * Shuffle all the data in this object and randomly distribute the arrangement of data rows.
+     *
+     * @param seed 打乱算法中所需要的随机种子。
+     *             <p>
+     *             Disrupt random seeds required in the algorithm.
+     * @return 打乱之后的对象。
+     * <p>
+     * Objects after disruption.
+     */
+    @Override
+    public IntegerVector shuffle(long seed) {
+        return IntegerVector.parse(ASMath.shuffle(this.toArray(), seed, true));
+    }
+
     @Override
     public String toString() {
         return this.vectorStr;

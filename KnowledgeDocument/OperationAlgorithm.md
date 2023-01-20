@@ -385,8 +385,8 @@ of B event.
 package zhao.algorithmMagic;
 
 import zhao.algorithmMagic.algorithm.probabilisticAlgorithm.NaiveBayes;
-import zhao.algorithmMagic.core.AlgorithmStar;
 import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
+import zhao.algorithmMagic.utils.filter.ArrayIntegerFiltering;
 
 public final class MAIN1 {
     public static void main(String[] args) {
@@ -395,7 +395,7 @@ public final class MAIN1 {
         // 职业：1-程序员  2-产品  3-美工
         ColumnIntegerMatrix parse = ColumnIntegerMatrix.parse(
                 strings1,
-                null,
+                new String[]{"N1", "N2", "N3", "N4", "N5", "N6", "N7", "N8", "N9", "N10"},
                 new int[]{1, 1, 0},
                 new int[]{2, 0, 1},
                 new int[]{1, 0, 1},
@@ -408,37 +408,51 @@ public final class MAIN1 {
                 new int[]{2, 1, 0}
         );
         System.out.println(parse);
-        // 开始运行朴素贝叶斯算法 计算：在自己是产品同时超重的情况下，被喜欢的概率
-        AlgorithmStar<Object, Object> algorithmStar = AlgorithmStar.getInstance();
-        // 数据样本，是需要被计算的数据矩阵，注意该矩阵中需要至少包含3条有关 B事件 的数据。例如这里的数据样本中，(2,1,1)(2,1,0)(2,1,0) 是符合B事件的，正好有三条
-        // A事件(StatisticCondition1) 被喜欢，喜欢的列值为1
-        // B事件(StatisticCondition2) 职业是产品 同时还超重 是条件概率的前提
-        double[] bayes = algorithmStar.estimateGetFraction(NaiveBayes.getInstance("bayes"), parse, v -> v[2] == 1, v -> v[0] == 2 && v[1] == 1);
-        System.out.println(bayes[0]); // 获取到结果概率的分子
-        System.out.println(bayes[1]); // 获取到结果概率的分母
-        System.out.println(bayes[0] / bayes[1]); // 获取到结果概率
+        // 打乱样本 删除原先的矩阵，并打印新矩阵
+        parse = parse.shuffle(22);
+        System.out.println(parse);
+        // 开始获取朴素贝叶斯算法 计算目标：在自己是产品同时超重的情况下，被喜欢的概率 P(被喜欢|产品,超重)
+        NaiveBayes bayes = NaiveBayes.getInstance("bayes");
+        // 构造事件A 自己被喜欢
+        ArrayIntegerFiltering arrayIntegerFilteringA = v -> v[2] == 1;
+        // 构造事件B 自己是产品，同时超重
+        ArrayIntegerFiltering arrayIntegerFilteringB = v -> v[0] == 2 && v[1] == 1;
+        // 开始计算结果
+        System.out.println(bayes.estimate(parse, arrayIntegerFilteringA, arrayIntegerFilteringB));
     }
 }
 ```
-
+- Display of calculation results
 ```
 ------------IntegerMatrixStart-----------
-职业	体型	喜欢	
-[1, 1, 0]
-[2, 0, 1]
-[1, 0, 1]
-[1, 1, 1]
-[3, 0, 0]
-[3, 1, 0]
-[2, 0, 1]
-[2, 1, 1]
-[2, 1, 0]
-[2, 1, 0]
+职业	体型	喜欢	rowColName
+[1, 1, 0]	N1
+[2, 0, 1]	N2
+[1, 0, 1]	N3
+[1, 1, 1]	N4
+[3, 0, 0]	N5
+[3, 1, 0]	N6
+[2, 0, 1]	N7
+[2, 1, 1]	N8
+[2, 1, 0]	N9
+[2, 1, 0]	N10
 ------------IntegerMatrixEnd------------
 
-[INFO][OperationAlgorithmManager][23-01-18:09]] : register OperationAlgorithm:bayes
-0.25
-0.3
+------------IntegerMatrixStart-----------
+职业	体型	喜欢	rowColName
+[1, 0, 1]	N3
+[2, 0, 1]	N2
+[1, 1, 1]	N4
+[3, 0, 0]	N5
+[3, 1, 0]	N6
+[2, 1, 0]	N9
+[2, 0, 1]	N7
+[2, 1, 0]	N10
+[1, 1, 0]	N1
+[2, 1, 1]	N8
+------------IntegerMatrixEnd------------
+
+[INFO][OperationAlgorithmManager][23-01-19:12]] : register OperationAlgorithm:bayes
 0.8333333333333334
 
 进程已结束,退出代码0

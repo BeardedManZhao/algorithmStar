@@ -273,6 +273,25 @@ public class ComplexNumberMatrix extends Matrix<ComplexNumberMatrix, ComplexNumb
         return this.getRowCount() * this.getColCount();
     }
 
+    /**
+     * 将本对象中的所有数据进行洗牌打乱，随机分布数据行的排列。
+     * <p>
+     * Shuffle all the data in this object and randomly distribute the arrangement of data rows.
+     *
+     * @param seed 打乱算法中所需要的随机种子。
+     *             <p>
+     *             Disrupt random seeds required in the algorithm.
+     * @return 打乱之后的对象。
+     * <p>
+     * Objects after disruption.
+     */
+    @Override
+    public ComplexNumberMatrix shuffle(long seed) {
+        return ComplexNumberMatrix.parse(
+                ASMath.shuffle(this.copyToNewArrays(), seed, false)
+        );
+    }
+
     @Override
     public String toString() {
         return this.matrixStr;

@@ -10,8 +10,9 @@
 ### 更新日志
 
 * 框架版本：1.13 - xxx
-* 为整形向量提供了原数组的获取支持，可以使用toArray获取到向量或矩阵的数组对象。
-* 为整形向量之间的计算进行了优化，减少了在内部的toArray方法的调用，避免冗余。
+* 为向量与矩阵提供了原数组的获取支持，可以使用toArray获取到向量或矩阵的数组对象。
+* 为向量与矩阵之间的计算进行了优化，减少了在内部的toArray方法的调用，避免冗余。
+* 为向量与矩阵提供了洗牌随机分布函数，实现快速的随机打乱数据样本。
 * 针对路线对象与复数对象的字符串解析的逻辑进行了优化，减少操作的数量
 * 针对计算组件的计算日志打印，这是一个需要巨大性能的操作，因此在本次更新中，您可以手动干预计算日志的打印情况，具体操作方式如下所示。
 
@@ -218,7 +219,7 @@ public final class MAIN1 {
 
         ColumnIntegerMatrix parse = ColumnIntegerMatrix.parse(
                 new String[]{"科1", "科2", "科3", "科4", "科5", "科6"},
-                new String[]{"张三", "李四", "王五", "赵六", "鲁迅", "甲X", "黄X"},
+                new String[]{"张三", "李四", "王五", "赵六", "鲁X", "甲X", "黄X"},
                 new int[]{120, 120, 120, 100, 100, 100},
                 new int[]{80, 30, 80, 45, 67, 89},    // 未知类别
                 new int[]{59, 59, 59, 59, 59, 59},
@@ -250,7 +251,7 @@ public final class MAIN1 {
 [80, 30, 80, 45, 67, 89]	李四
 [59, 59, 59, 59, 59, 59]	王五
 [110, 100, 120, 90, 80, 90]	赵六
-[100, 100, 100, 90, 90, 90]	鲁迅
+[100, 100, 100, 90, 90, 90]	鲁X
 [90, 90, 90, 80, 80, 80]	甲X
 [60, 60, 60, 60, 60, 60]	黄X
 ------------MatrixEnd------------
@@ -262,6 +263,48 @@ public final class MAIN1 {
 
 * 增加了区间型向量，这种向量具有轻量快速的特点，能够满足大数据量下的计算需求。
 * 增加了门户类 zhao.algorithmMagic.core.AlgorithmStar ，可以通过该类进行所有计算函数的调用，当然，也可直接使用计算组件中的计算函数进行计算。
-* 增加了概率算法。
+* 增加了朴素贝叶斯算法，在这种假设事件相互独立的前提下，计算量大大减少。
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.algorithm.probabilisticAlgorithm.NaiveBayes;
+import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
+import zhao.algorithmMagic.utils.filter.ArrayIntegerFiltering;
+
+public final class MAIN1 {
+    public static void main(String[] args) {
+        String[] strings1 = {"职业", "体型", "喜欢"};
+        // 准备一个数据矩阵
+        // 职业：1-程序员  2-产品  3-美工
+        ColumnIntegerMatrix parse = ColumnIntegerMatrix.parse(
+                strings1,
+                new String[]{"N1", "N2", "N3", "N4", "N5", "N6", "N7", "N8", "N9", "N10"},
+                new int[]{1, 1, 0},
+                new int[]{2, 0, 1},
+                new int[]{1, 0, 1},
+                new int[]{1, 1, 1},
+                new int[]{3, 0, 0},
+                new int[]{3, 1, 0},
+                new int[]{2, 0, 1},
+                new int[]{2, 1, 1},
+                new int[]{2, 1, 0},
+                new int[]{2, 1, 0}
+        );
+        System.out.println(parse);
+        // 打乱样本 删除原先的矩阵，并打印新矩阵
+        parse = parse.shuffle(22);
+        System.out.println(parse);
+        // 开始获取朴素贝叶斯算法 计算目标：在自己是产品同时超重的情况下，被喜欢的概率 P(被喜欢|产品,超重)
+        NaiveBayes bayes = NaiveBayes.getInstance("bayes");
+        // 构造事件A 自己被喜欢
+        ArrayIntegerFiltering arrayIntegerFilteringA = v -> v[2] == 1;
+        // 构造事件B 自己是产品，同时超重
+        ArrayIntegerFiltering arrayIntegerFilteringB = v -> v[0] == 2 && v[1] == 1;
+        // 开始计算结果
+        System.out.println(bayes.estimate(parse, arrayIntegerFilteringA, arrayIntegerFilteringB));
+    }
+}
+```
 
 ### Version update date : XX XX-XX-XX

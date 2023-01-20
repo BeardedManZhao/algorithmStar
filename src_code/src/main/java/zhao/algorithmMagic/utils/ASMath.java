@@ -2,11 +2,12 @@ package zhao.algorithmMagic.utils;
 
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.operands.ComplexNumber;
+import zhao.algorithmMagic.utils.filter.ArrayDoubleFiltering;
+import zhao.algorithmMagic.utils.filter.ArrayIntegerFiltering;
+import zhao.algorithmMagic.utils.filter.DoubleEvent;
 import zhao.algorithmMagic.utils.filter.NumericalFiltering;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Java类于 2022/10/10 15:30:49 创建
@@ -21,6 +22,7 @@ public final class ASMath {
 
     public static final String MATHEMATICAL_SYMBOLS_PLUS = "+";
     public static final String MATHEMATICAL_SYMBOLS_SUBTRACT = "-";
+    public static final double THE_INDEX_OF_LOG_IS_2 = Math.log(2);
 
     /**
      * 计算一个序列的最大值与最小值
@@ -761,5 +763,303 @@ public final class ASMath {
         } else {
             throw new OperatorOperationException("计算相关系数时的两个序列中所包含的元素数量应相等哦！\nWhen calculating the correlation coefficient, the number of elements contained in the two sequences should be equal!");
         }
+    }
+
+    /**
+     * 将一个数组打乱
+     *
+     * @param doubles 需要被打乱的数组对象，需要注意的是，打乱操作就发生在本身对象中。
+     * @param Seed    打乱时的随机种子
+     * @param copy    如果设置为true，代表本次随机打乱操作需要作用于新数组
+     * @return 打乱之后的数组对象。
+     */
+    public static double[] shuffle(double[] doubles, final long Seed, final boolean copy) {
+        Random random = new Random();
+        random.setSeed(Seed);
+        if (copy) {
+            double[] res = new double[doubles.length];
+            System.arraycopy(doubles, 0, res, 0, doubles.length);
+            return shuffleFunction(random, doubles.length - 1, res);
+        } else {
+            return shuffleFunction(random, doubles.length - 1, doubles);
+        }
+    }
+
+    /**
+     * 将一个数组中的所有元素打乱顺序，其中被打乱顺序的是数组本身，打乱时不会返回一个新的数组。
+     *
+     * @param random   打乱数组时使用的随机数生成器。
+     * @param maxIndex 打乱数组时，随机索引的最大值。
+     * @param res      需要被打乱的数组对象，该对象本身会被打乱。
+     * @return 打乱之后的数组对象。
+     */
+    private static double[] shuffleFunction(Random random, int maxIndex, double[] res) {
+        for (int i = 0; i < res.length; i++) {
+            int i1 = random.nextInt(maxIndex);
+            double temp = res[i1];
+            res[i1] = res[i];
+            res[i] = temp;
+        }
+        return res;
+    }
+
+    /**
+     * 将一个数组打乱
+     *
+     * @param doubles 需要被打乱的数组对象，需要注意的是，打乱操作就发生在本身对象中。
+     * @param Seed    打乱时的随机种子
+     * @param copy    如果设置为true，代表本次随机打乱操作需要作用于新数组
+     * @return 打乱之后的数组对象。
+     */
+    public static int[] shuffle(int[] doubles, final long Seed, final boolean copy) {
+        Random random = new Random();
+        random.setSeed(Seed);
+        if (copy) {
+            int[] res = new int[doubles.length];
+            System.arraycopy(doubles, 0, res, 0, doubles.length);
+            return shuffleFunction(random, doubles.length - 1, res);
+        } else {
+            return shuffleFunction(random, doubles.length - 1, doubles);
+        }
+    }
+
+    /**
+     * 将一个数组中的所有元素打乱顺序，其中被打乱顺序的是数组本身，打乱时不会返回一个新的数组。
+     *
+     * @param random   打乱数组时使用的随机数生成器。
+     * @param maxIndex 打乱数组时，随机索引的最大值。
+     * @param res      需要被打乱的数组对象，该对象本身会被打乱。
+     * @return 打乱之后的数组对象。
+     */
+    private static int[] shuffleFunction(Random random, int maxIndex, int[] res) {
+        for (int i = 0; i < res.length; i++) {
+            int i1 = random.nextInt(maxIndex);
+            int temp = res[i1];
+            res[i1] = res[i];
+            res[i] = temp;
+        }
+        return res;
+    }
+
+    /**
+     * 将2维数组按照行打乱顺序。
+     *
+     * @param doubles 需要被打乱的二维数组
+     * @param Seed    洗牌打乱时的随即种子
+     * @param copy    是否使用拷贝新数组的方式进行打乱
+     * @return 打乱之后的数组对象，是否为新数组需要看copy函数的值
+     */
+    public static int[][] shuffle(int[][] doubles, final long Seed, final boolean copy) {
+        Random random = new Random();
+        random.setSeed(Seed);
+        if (copy) {
+            int[][] res = new int[doubles.length][];
+            ASClass.array2DCopy(doubles, res);
+            return shuffleFunction(random, doubles.length - 1, res);
+        } else {
+            return shuffleFunction(random, doubles.length - 1, doubles);
+        }
+    }
+
+    /**
+     * 将一个数组中的所有元素打乱顺序，其中被打乱顺序的是数组本身，打乱时不会返回一个新的数组。
+     *
+     * @param random   打乱数组时使用的随机数生成器。
+     * @param maxIndex 打乱数组时，随机索引的最大值。
+     * @param res      需要被打乱的数组对象，该对象本身会被打乱。
+     * @return 打乱之后的数组对象。
+     */
+    private static int[][] shuffleFunction(Random random, int maxIndex, int[][] res) {
+        for (int i = 0; i < res.length; i++) {
+            int i1 = random.nextInt(maxIndex);
+            int[] temp = res[i1];
+            res[i1] = res[i];
+            res[i] = temp;
+        }
+        return res;
+    }
+
+    /**
+     * 将2维数组按照行打乱顺序。
+     *
+     * @param doubles 需要被打乱的二维数组
+     * @param Seed    洗牌打乱时的随即种子
+     * @param copy    是否使用拷贝新数组的方式进行打乱
+     * @return 打乱之后的数组对象，是否为新数组需要看copy函数的值
+     */
+    public static double[][] shuffle(double[][] doubles, final long Seed, final boolean copy) {
+        Random random = new Random();
+        random.setSeed(Seed);
+        if (copy) {
+            double[][] res = new double[doubles.length][];
+            ASClass.array2DCopy(doubles, res);
+            return shuffleFunction(random, doubles.length - 1, res);
+        } else {
+            return shuffleFunction(random, doubles.length - 1, doubles);
+        }
+    }
+
+    /**
+     * 将一个数组中的所有元素打乱顺序，其中被打乱顺序的是数组本身，打乱时不会返回一个新的数组。
+     *
+     * @param random   打乱数组时使用的随机数生成器。
+     * @param maxIndex 打乱数组时，随机索引的最大值。
+     * @param res      需要被打乱的数组对象，该对象本身会被打乱。
+     * @return 打乱之后的数组对象。
+     */
+    private static double[][] shuffleFunction(Random random, int maxIndex, double[][] res) {
+        for (int i = 0; i < res.length; i++) {
+            int i1 = random.nextInt(maxIndex);
+            double[] temp = res[i1];
+            res[i1] = res[i];
+            res[i] = temp;
+        }
+        return res;
+    }
+
+    /**
+     * 将2维数组按照行打乱顺序。
+     *
+     * @param complexNumbers 需要被打乱的二维数组
+     * @param Seed           洗牌打乱时的随即种子
+     * @param copy           是否使用拷贝新数组的方式进行打乱
+     * @return 打乱之后的数组对象，是否为新数组需要看copy函数的值
+     */
+    public static ComplexNumber[][] shuffle(ComplexNumber[][] complexNumbers, final long Seed, final boolean copy) {
+        Random random = new Random();
+        random.setSeed(Seed);
+        if (copy) {
+            ComplexNumber[][] res = new ComplexNumber[complexNumbers.length][];
+            ASClass.array2DCopy(complexNumbers, res);
+            return shuffleFunction(random, complexNumbers.length - 1, res);
+        } else {
+            return shuffleFunction(random, complexNumbers.length - 1, complexNumbers);
+        }
+    }
+
+    /**
+     * 将一个数组中的所有元素打乱顺序，其中被打乱顺序的是数组本身，打乱时不会返回一个新的数组。
+     *
+     * @param random   打乱数组时使用的随机数生成器。
+     * @param maxIndex 打乱数组时，随机索引的最大值。
+     * @param res      需要被打乱的数组对象，该对象本身会被打乱。
+     * @return 打乱之后的数组对象。
+     */
+    private static ComplexNumber[][] shuffleFunction(Random random, int maxIndex, ComplexNumber[][] res) {
+        for (int i = 0; i < res.length; i++) {
+            int i1 = random.nextInt(maxIndex);
+            ComplexNumber[] temp = res[i1];
+            res[i1] = res[i];
+            res[i] = temp;
+        }
+        return res;
+    }
+
+    /**
+     * 计算log的数值
+     *
+     * @param base log中的底数
+     * @param x    log中的指数
+     * @return log 以 base为底，x为指数的结果数值
+     */
+    public static double log(double base, double x) {
+        if (base == 2) return Math.log(x) / THE_INDEX_OF_LOG_IS_2;
+        else return Math.log(x) / Math.log(base);
+    }
+
+    /**
+     * 一个样本中，先按照某个组进行样本切分，并计算出某个过滤条件下的信息熵。
+     * <p>
+     * In a sample, first segment the sample according to a certain group, and calculate the information entropy under a certain filtering condition.
+     *
+     * @param ints                  需要被计算的所有样本特征向量，其中按照行数据划分。
+     *                              <p>
+     *                              All sample feature vectors that need to be calculated are divided by row data.
+     * @param groupIndex            目标值对应的索引，也是会被作为分组字段的索引，按照该字段对样本进行划分。
+     *                              <p>
+     *                              The index corresponding to the target value will also be used as the index of the grouping field, and the samples will be divided according to this field.
+     * @param logBase               信息熵的对数底数，其会作为在信息熵计算过程中的一个参数，一般取值为2。
+     *                              <p>
+     *                              The logarithmic base of information entropy, which will be used as a parameter in the calculation of information entropy, is generally 2.
+     * @param arrayIntegerFiltering 行数据过滤器，在这里代表一个事件，计算的时候会将样本传递给该过滤器的函数，只需要实现其中的真事件逻辑即可。
+     *                              <p>
+     *                              The row data filter, which represents an event here, will pass the sample to the function of the filter during calculation, and only need to implement the true event logic.
+     * @return 整个数据样本中 在事件 arrayIntegerFiltering 的过滤下，所计算出来的信息熵。
+     * <p>
+     * The information entropy calculated in the whole data sample under the filtering of the event arrayIntegerFiltering.
+     */
+    public static double informationEntropy(int[][] ints, int groupIndex, int logBase, ArrayIntegerFiltering arrayIntegerFiltering) {
+        // 迭代出当前所有样本中的事件概率 下面的key代表被分组字段中的不同值，用于分组，value代表当前组中的事件概率的分子
+        double res = 0;
+        HashMap<Double, Integer> hashMap = new HashMap<>(ints.length + 10);
+        {
+            for (int[] doubles1 : ints) {
+                // 获取到当前的样本名称
+                double group = doubles1[groupIndex];
+                if (arrayIntegerFiltering.isComplianceEvents(doubles1)) {
+                    hashMap.put(group, hashMap.getOrDefault(group, 0) + 1);
+                }
+            }
+        }
+        // 开始计算信息熵
+        {
+            double length = ints.length;
+            for (int value : hashMap.values()) {
+                // 首先计算出当前的组概率
+                double p = value / length;
+                // 将当前的值汇总到结果，累加成为信息熵
+                res += p * log(logBase, p);
+            }
+        }
+        // 返回信息熵
+        return -res;
+    }
+
+    /**
+     * 一个样本中，先按照某个组进行样本切分，并计算出某个过滤条件下的信息熵。
+     * <p>
+     * In a sample, first segment the sample according to a certain group, and calculate the information entropy under a certain filtering condition.
+     *
+     * @param doubles              需要被计算的所有样本特征向量，其中按照行数据划分。
+     *                             <p>
+     *                             All sample feature vectors that need to be calculated are divided by row data.
+     * @param groupIndex           目标值对应的索引，也是会被作为分组字段的索引，按照该字段对样本进行划分。
+     *                             <p>
+     *                             The index corresponding to the target value will also be used as the index of the grouping field, and the samples will be divided according to this field.
+     * @param logBase              信息熵的对数底数，其会作为在信息熵计算过程中的一个参数，一般取值为2。
+     *                             <p>
+     *                             The logarithmic base of information entropy, which will be used as a parameter in the calculation of information entropy, is generally 2.
+     * @param arrayDoubleFiltering 行数据过滤器，在这里代表一个事件，计算的时候会将样本传递给该过滤器的函数，只需要实现其中的真事件逻辑即可。
+     *                             <p>
+     *                             The row data filter, which represents an event here, will pass the sample to the function of the filter during calculation, and only need to implement the true event logic.
+     * @return 整个数据样本中 在事件 arrayDoubleFiltering 的过滤下，所计算出来的信息熵。
+     * <p>
+     * The information entropy calculated in the whole data sample under the filtering of the event arrayDoubleFiltering.
+     */
+    public static double informationEntropy(double[][] doubles, int groupIndex, int logBase, ArrayDoubleFiltering arrayDoubleFiltering) {
+        // 迭代出当前所有样本中的事件概率 下面的key代表被分组字段中的不同值，用于分组，value代表当前组中的事件概率的分子
+        HashMap<Double, Integer> hashMap = new HashMap<>(doubles.length + 10);
+        {
+            for (double[] doubles1 : doubles) {
+                // 获取到当前的样本名称
+                double group = doubles1[groupIndex];
+                if (arrayDoubleFiltering.isComplianceEvents(doubles1)) {
+                    hashMap.put(group, hashMap.getOrDefault(group, 0) + 1);
+                }
+            }
+        }
+        // 开始计算信息熵
+        double res = 0;
+        {
+            double length = doubles.length;
+            for (int value : hashMap.values()) {
+                // 首先计算出当前的组概率
+                double p = value / length;
+                // 将当前的值汇总到结果，累加成为信息熵
+                res += p * log(logBase, p);
+            }
+        }
+        // 返回信息熵
+        return -res;
     }
 }

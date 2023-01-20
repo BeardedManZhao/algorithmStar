@@ -1,6 +1,7 @@
 package zhao.algorithmMagic.operands.matrix;
 
 import zhao.algorithmMagic.exception.OperatorOperationException;
+import zhao.algorithmMagic.operands.vector.IntegerVector;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASMath;
 
@@ -45,6 +46,29 @@ public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], i
     public static IntegerMatrix parse(int[]... ints) {
         if (ints.length > 0) {
             return new IntegerMatrix(ints);
+        } else {
+            throw new OperatorOperationException("The array of construction matrix cannot be empty");
+        }
+    }
+
+    /**
+     * 构造一个矩阵，矩阵的列数量以矩阵的第一行为准！
+     * <p>
+     * Construct a matrix, the number of columns of the matrix is based on the first row of the matrix!
+     *
+     * @param integerVectors 用于构造矩阵的二维数组
+     *                       <p>
+     *                       2D array for constructing the matrix
+     * @return matrix object
+     */
+    public static IntegerMatrix parse(IntegerVector... integerVectors) {
+        if (integerVectors.length > 0) {
+            int[][] res = new int[integerVectors.length][];
+            int count = -1;
+            for (IntegerVector integerVector : integerVectors) {
+                res[++count] = integerVector.toArray();
+            }
+            return new IntegerMatrix(res);
         } else {
             throw new OperatorOperationException("The array of construction matrix cannot be empty");
         }
@@ -290,6 +314,23 @@ public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], i
     @Override
     public int getNumberOfDimensions() {
         return getRowCount() * getColCount();
+    }
+
+    /**
+     * 将本对象中的所有数据进行洗牌打乱，随机分布数据行的排列。
+     * <p>
+     * Shuffle all the data in this object and randomly distribute the arrangement of data rows.
+     *
+     * @param seed 打乱算法中所需要的随机种子。
+     *             <p>
+     *             Disrupt random seeds required in the algorithm.
+     * @return 打乱之后的对象。
+     * <p>
+     * Objects after disruption.
+     */
+    @Override
+    public IntegerMatrix shuffle(long seed) {
+        return IntegerMatrix.parse(ASMath.shuffle(this.copyToNewArrays(), seed, false));
     }
 
     @Override

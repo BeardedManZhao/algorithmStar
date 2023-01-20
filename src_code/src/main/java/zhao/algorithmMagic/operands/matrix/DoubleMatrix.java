@@ -1,6 +1,7 @@
 package zhao.algorithmMagic.operands.matrix;
 
 import zhao.algorithmMagic.exception.OperatorOperationException;
+import zhao.algorithmMagic.operands.vector.DoubleVector;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASMath;
 
@@ -61,6 +62,19 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
                 res.add(res1);
             }
             res.add(anInt);
+        }
+    }
+
+    public static DoubleMatrix parse(DoubleVector... doubleVectors) {
+        if (doubleVectors.length > 0) {
+            double[][] res = new double[doubleVectors.length][];
+            int count = -1;
+            for (DoubleVector doubleVector : doubleVectors) {
+                res[++count] = doubleVector.toArray();
+            }
+            return new DoubleMatrix(res);
+        } else {
+            throw new OperatorOperationException("The array of construction matrix cannot be empty");
         }
     }
 
@@ -305,6 +319,23 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
     @Override
     public int getNumberOfDimensions() {
         return getRowCount() * getColCount();
+    }
+
+    /**
+     * 将本对象中的所有数据进行洗牌打乱，随机分布数据行的排列。
+     * <p>
+     * Shuffle all the data in this object and randomly distribute the arrangement of data rows.
+     *
+     * @param seed 打乱算法中所需要的随机种子。
+     *             <p>
+     *             Disrupt random seeds required in the algorithm.
+     * @return 打乱之后的对象。
+     * <p>
+     * Objects after disruption.
+     */
+    @Override
+    public DoubleMatrix shuffle(long seed) {
+        return DoubleMatrix.parse(ASMath.shuffle(this.copyToNewArrays(), seed, false));
     }
 
     @Override

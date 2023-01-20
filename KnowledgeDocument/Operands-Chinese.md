@@ -23,9 +23,9 @@
 ```java
 // Java api
 
-import zhao.algorithmMagic.operands.DoubleCoordinateMany;
-import zhao.algorithmMagic.operands.DoubleCoordinateThree;
-import zhao.algorithmMagic.operands.DoubleCoordinateTwo;
+import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateMany;
+import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateThree;
+import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo;
 
 public class MAIN1 {
     public static void main(String[] args) {
@@ -84,7 +84,8 @@ public class MAIN1 {
 ```scala
 // scala api
 
-import zhao.algorithmMagic.operands.DoubleCoordinateTwo
+//import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo TODO 从1.12版本之后，包结构变更，请使用下方的导包
+import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo
 
 object MAIN {
   def main(args: Array[String]): Unit = {
@@ -109,9 +110,9 @@ object MAIN {
 ```java
 // Java api
 
-import zhao.algorithmMagic.operands.IntegerCoordinateMany;
-import zhao.algorithmMagic.operands.IntegerCoordinateThree;
-import zhao.algorithmMagic.operands.IntegerCoordinateTwo;
+import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateMany;
+import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateThree;
+import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
 
 public class MAIN1 {
     public static void main(String[] args) {
@@ -172,8 +173,8 @@ public class MAIN1 {
 ```java
 // Java api
 
-import zhao.algorithmMagic.operands.DoubleCoordinateThree;
-import zhao.algorithmMagic.operands.DoubleVector;
+import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateThree;
+import zhao.algorithmMagic.operands.vector.DoubleVector;
 
 public class MAIN1 {
     public static void main(String[] args) {
@@ -201,8 +202,8 @@ public class MAIN1 {
 // Java api
 
 import zhao.algorithmMagic.operands.ComplexNumber;
-import zhao.algorithmMagic.operands.ComplexNumberMatrix;
-import zhao.algorithmMagic.operands.DoubleMatrix;
+import zhao.algorithmMagic.operands.matrix.ComplexNumberMatrix;
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
 
 public class MAIN1 {
     public static void main(String[] args) {

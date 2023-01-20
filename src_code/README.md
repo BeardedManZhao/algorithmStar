@@ -258,7 +258,7 @@ public final class MAIN1 {
 
         ColumnIntegerMatrix parse = ColumnIntegerMatrix.parse(
                 new String[]{"科1", "科2", "科3", "科4", "科5", "科6"},
-                new String[]{"张三", "李四", "王五", "赵六", "鲁迅", "甲X", "黄X"},
+                new String[]{"张三", "李四", "王五", "赵六", "鲁X", "甲X", "黄X"},
                 new int[]{120, 120, 120, 100, 100, 100},
                 new int[]{80, 30, 80, 45, 67, 89},    // 未知类别
                 new int[]{59, 59, 59, 59, 59, 59},
@@ -290,7 +290,7 @@ public final class MAIN1 {
 [80, 30, 80, 45, 67, 89]	李四
 [59, 59, 59, 59, 59, 59]	王五
 [110, 100, 120, 90, 80, 90]	赵六
-[100, 100, 100, 90, 90, 90]	鲁迅
+[100, 100, 100, 90, 90, 90]	鲁X
 [90, 90, 90, 80, 80, 80]	甲X
 [60, 60, 60, 60, 60, 60]	黄X
 ------------MatrixEnd------------
@@ -302,5 +302,51 @@ public final class MAIN1 {
 
 * The interval type vector is added, which is light and fast, and can meet the calculation requirements under large data
   volume.
+* The portal class zhao.algorithmMagic.core.AlgorithmStar has been added. You can use this class to call all calculation
+  functions. Of course, you can also directly use the calculation functions in the calculation component to calculate.
+* The naive Bayesian algorithm is added. Under the assumption that events are independent of each other, the calculation
+  amount is greatly reduced.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.algorithm.probabilisticAlgorithm.NaiveBayes;
+import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
+import zhao.algorithmMagic.utils.filter.ArrayIntegerFiltering;
+
+public final class MAIN1 {
+    public static void main(String[] args) {
+        String[] strings1 = {"职业", "体型", "喜欢"};
+        // 准备一个数据矩阵
+        // 职业：1-程序员  2-产品  3-美工
+        ColumnIntegerMatrix parse = ColumnIntegerMatrix.parse(
+                strings1,
+                new String[]{"N1", "N2", "N3", "N4", "N5", "N6", "N7", "N8", "N9", "N10"},
+                new int[]{1, 1, 0},
+                new int[]{2, 0, 1},
+                new int[]{1, 0, 1},
+                new int[]{1, 1, 1},
+                new int[]{3, 0, 0},
+                new int[]{3, 1, 0},
+                new int[]{2, 0, 1},
+                new int[]{2, 1, 1},
+                new int[]{2, 1, 0},
+                new int[]{2, 1, 0}
+        );
+        System.out.println(parse);
+        // 打乱样本 删除原先的矩阵，并打印新矩阵
+        parse = parse.shuffle(22);
+        System.out.println(parse);
+        // 开始获取朴素贝叶斯算法 计算目标：在自己是产品同时超重的情况下，被喜欢的概率 P(被喜欢|产品,超重)
+        NaiveBayes bayes = NaiveBayes.getInstance("bayes");
+        // 构造事件A 自己被喜欢
+        ArrayIntegerFiltering arrayIntegerFilteringA = v -> v[2] == 1;
+        // 构造事件B 自己是产品，同时超重
+        ArrayIntegerFiltering arrayIntegerFilteringB = v -> v[0] == 2 && v[1] == 1;
+        // 开始计算结果
+        System.out.println(bayes.estimate(parse, arrayIntegerFilteringA, arrayIntegerFilteringB));
+    }
+}
+```
 
 ### Version update date : XX XX-XX-XX

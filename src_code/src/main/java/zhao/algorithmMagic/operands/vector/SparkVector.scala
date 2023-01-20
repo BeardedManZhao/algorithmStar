@@ -1,5 +1,10 @@
 package zhao.algorithmMagic.operands.vector
 
+import org.apache.spark.SparkContext
+import org.apache.spark.rdd.RDD
+import zhao.algorithmMagic.exception.OperatorOperationException
+import zhao.algorithmMagic.utils.ASMath
+
 /**
  * Spark向量对象，通过该类可以将Spark的API接入到本框架中，能够很好的对接到分布式内存计算技术
  *
@@ -71,14 +76,6 @@ final class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mll
   }
 
   /**
-   *
-   * @return 将本对象中存储的向量序列数组拷贝到一个新数组并将新数组返回，这里返回的是一个新数组，支持修改等操作。
-   *
-   *         Copy the vector sequence array stored in this object to a new array and return the new array. Here, a new array is returned, which supports modification and other operations.
-   */
-  override def copyToNewArray(): Array[Double] = vector.toArray
-
-  /**
    * @return 该类的实现类对象，用于拓展该接口的子类
    */
   override def expand(): SparkVector = this
@@ -107,6 +104,14 @@ final class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mll
     }
     else throw new OperatorOperationException("'DoubleVector1 add DoubleVector2' 时，两个'DoubleVector'的向量所包含的数量不同，DoubleVector1=[" + numberOfDimensions1 + "]，DoubleVector2=[" + numberOfDimensions2 + "]\n" + "When 'DoubleVector1 add DoubleVector2', the two vectors of 'DoubleVector' contain different quantities, DoubleVector1=[" + numberOfDimensions1 + "], DoubleVector2=[" + numberOfDimensions2 + "]")
   }
+
+  /**
+   *
+   * @return 将本对象中存储的向量序列数组拷贝到一个新数组并将新数组返回，这里返回的是一个新数组，支持修改等操作。
+   *
+   *         Copy the vector sequence array stored in this object to a new array and return the new array. Here, a new array is returned, which supports modification and other operations.
+   */
+  override def copyToNewArray(): Array[Double] = vector.toArray
 
   /**
    * @return 向量中包含的维度数量
@@ -145,7 +150,21 @@ final class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mll
    *
    *         The vector sequence maintained in the third direction quantity. Through this function, you can directly obtain the objects in the third party library.
    */
-  override def toThirdArray: linalg.Vector = this.vector
+  override def toThirdArray: org.apache.spark.mllib.linalg.Vector = this.vector
+
+  /**
+   * 将本对象中的所有数据进行洗牌打乱，随机分布数据行的排列。
+   * <p>
+   * Shuffle all the data in this object and randomly distribute the arrangement of data rows.
+   *
+   * @param seed 打乱算法中所需要的随机种子。
+   *             <p>
+   *             Disrupt random seeds required in the algorithm.
+   * @return 打乱之后的对象。
+   *         <p>
+   *         Objects after disruption.
+   */
+  override def shuffle(seed: Long): SparkVector = SparkVector.parse(sparkContext, ASMath.shuffle(this.copyToNewArray(), seed, false))
 }
 
 object SparkVector {

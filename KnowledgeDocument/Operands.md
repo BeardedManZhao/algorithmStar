@@ -29,9 +29,9 @@ coordinate axis component values, and the calculation of the same type of coordi
 ```java
 // Java api
 
-import zhao.algorithmMagic.operands.DoubleCoordinateMany;
-import zhao.algorithmMagic.operands.DoubleCoordinateThree;
-import zhao.algorithmMagic.operands.DoubleCoordinateTwo;
+import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateMany;
+import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateThree;
+import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo;
 
 public class MAIN1 {
     public static void main(String[] args) {
@@ -92,7 +92,7 @@ public class MAIN1 {
 ```scala
 // scala api
 
-import zhao.algorithmMagic.operands.DoubleCoordinateTwo
+import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo
 
 object MAIN {
   def main(args: Array[String]): Unit = {
@@ -118,9 +118,9 @@ coordinates and have a common parent class, and only the name of the coordinate 
 ```java
 // Java api
 
-import zhao.algorithmMagic.operands.IntegerCoordinateMany;
-import zhao.algorithmMagic.operands.IntegerCoordinateThree;
-import zhao.algorithmMagic.operands.IntegerCoordinateTwo;
+import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateMany;
+import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateThree;
+import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
 
 public class MAIN1 {
     public static void main(String[] args) {
@@ -183,8 +183,8 @@ roughly as follows.
 ```java
 // Java api
 
-import zhao.algorithmMagic.operands.DoubleCoordinateThree;
-import zhao.algorithmMagic.operands.DoubleVector;
+import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateThree;
+import zhao.algorithmMagic.operands.vector.DoubleVector;
 
 public class MAIN1 {
     public static void main(String[] args) {
@@ -215,8 +215,8 @@ numeric matrix and a complex matrix. The following is a demonstration of the ope
 // Java api
 
 import zhao.algorithmMagic.operands.ComplexNumber;
-import zhao.algorithmMagic.operands.ComplexNumberMatrix;
-import zhao.algorithmMagic.operands.DoubleMatrix;
+import zhao.algorithmMagic.operands.matrix.ComplexNumberMatrix;
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
 
 public class MAIN1 {
     public static void main(String[] args) {

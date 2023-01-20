@@ -1,6 +1,7 @@
 package zhao.algorithmMagic.operands.vector;
 
 import java.util.HashMap;
+import java.util.Random;
 
 /**
  * 向量中的每一个维度的值都有对应的名称，该向量对象支持列名设置
@@ -79,5 +80,40 @@ public class ColumnIntegerVector extends IntegerVector {
      */
     public String vectorName() {
         return vectorName;
+    }
+
+    /**
+     * 将本对象中的所有数据进行洗牌打乱，随机分布数据行的排列。
+     * <p>
+     * Shuffle all the data in this object and randomly distribute the arrangement of data rows.
+     *
+     * @param seed 打乱算法中所需要的随机种子。
+     *             <p>
+     *             Disrupt random seeds required in the algorithm.
+     * @return 打乱之后的对象。
+     * <p>
+     * Objects after disruption.
+     */
+    @Override
+    public IntegerVector shuffle(long seed) {
+        if (this.Field.length == 0) {
+            return super.shuffle(seed);
+        } else {
+            Random random = new Random();
+            random.setSeed(seed);
+            int[] res = this.copyToNewArray();
+            String[] clone = this.Field.clone();
+            int maxIndex = res.length - 1;
+            for (int i = 0; i < res.length; i++) {
+                int i1 = random.nextInt(maxIndex);
+                String tempS = clone[i1];
+                clone[i1] = clone[i];
+                clone[i] = tempS;
+                int temp = res[i1];
+                res[i1] = res[i];
+                res[i] = temp;
+            }
+            return ColumnIntegerVector.parse(vectorName(), clone, res);
+        }
     }
 }
