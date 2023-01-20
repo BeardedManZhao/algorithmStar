@@ -16,7 +16,7 @@ import java.util.function.Consumer;
  */
 public abstract class RangeVector<ImplementationType, ElementType extends Number, ArrayType, VectorType> implements Operands<ImplementationType> {
     protected final int length;
-    ArrayType arrayType;
+    final ArrayType arrayType;
 
     public RangeVector(ArrayType arrayType, int length) {
         this.arrayType = arrayType;

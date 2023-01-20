@@ -367,40 +367,42 @@ import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
 import zhao.algorithmMagic.utils.filter.ArrayIntegerFiltering;
 
 public final class MAIN1 {
-  public static void main(String[] args) {
-    String[] strings1 = {"职业", "体型", "喜欢"};
-    // 准备一个数据矩阵
-    // 职业：1-程序员  2-产品  3-美工
-    ColumnIntegerMatrix parse = ColumnIntegerMatrix.parse(
-            strings1,
-            new String[]{"N1", "N2", "N3", "N4", "N5", "N6", "N7", "N8", "N9", "N10"},
-            new int[]{1, 1, 0},
-            new int[]{2, 0, 1},
-            new int[]{1, 0, 1},
-            new int[]{1, 1, 1},
-            new int[]{3, 0, 0},
-            new int[]{3, 1, 0},
-            new int[]{2, 0, 1},
-            new int[]{2, 1, 1},
-            new int[]{2, 1, 0},
-            new int[]{2, 1, 0}
-    );
-    System.out.println(parse);
-    // 打乱样本 删除原先的矩阵，并打印新矩阵
-    parse = parse.shuffle(22);
-    System.out.println(parse);
-    // 开始获取朴素贝叶斯算法 计算目标：在自己是产品同时超重的情况下，被喜欢的概率 P(被喜欢|产品,超重)
-    NaiveBayes bayes = NaiveBayes.getInstance("bayes");
-    // 构造事件A 自己被喜欢
-    ArrayIntegerFiltering arrayIntegerFilteringA = v -> v[2] == 1;
-    // 构造事件B 自己是产品，同时超重
-    ArrayIntegerFiltering arrayIntegerFilteringB = v -> v[0] == 2 && v[1] == 1;
-    // 开始计算结果
-    System.out.println(bayes.estimate(parse, arrayIntegerFilteringA, arrayIntegerFilteringB));
-  }
+    public static void main(String[] args) {
+        String[] strings1 = {"职业", "体型", "喜欢"};
+        // 准备一个数据矩阵
+        // 职业：1-程序员  2-产品  3-美工
+        ColumnIntegerMatrix parse = ColumnIntegerMatrix.parse(
+                strings1,
+                new String[]{"N1", "N2", "N3", "N4", "N5", "N6", "N7", "N8", "N9", "N10"},
+                new int[]{1, 1, 0},
+                new int[]{2, 0, 1},
+                new int[]{1, 0, 1},
+                new int[]{1, 1, 1},
+                new int[]{3, 0, 0},
+                new int[]{3, 1, 0},
+                new int[]{2, 0, 1},
+                new int[]{2, 1, 1},
+                new int[]{2, 1, 0},
+                new int[]{2, 1, 0}
+        );
+        System.out.println(parse);
+        // 打乱样本 删除原先的矩阵，并打印新矩阵
+        parse = parse.shuffle(22);
+        System.out.println(parse);
+        // 开始获取朴素贝叶斯算法 计算目标：在自己是产品同时超重的情况下，被喜欢的概率 P(被喜欢|产品,超重)
+        NaiveBayes bayes = NaiveBayes.getInstance("bayes");
+        // 构造事件A 自己被喜欢
+        ArrayIntegerFiltering arrayIntegerFilteringA = v -> v[2] == 1;
+        // 构造事件B 自己是产品，同时超重
+        ArrayIntegerFiltering arrayIntegerFilteringB = v -> v[0] == 2 && v[1] == 1;
+        // 开始计算结果
+        System.out.println(bayes.estimate(parse, arrayIntegerFilteringA, arrayIntegerFilteringB));
+    }
 }
 ```
+
 - 计算结果展示
+
 ```
 ------------IntegerMatrixStart-----------
 职业	体型	喜欢	rowColName
@@ -434,6 +436,115 @@ public final class MAIN1 {
 0.8333333333333334
 
 进程已结束,退出代码0
+```
+
+### 决策计算组件
+
+决策算法抽象类，是针对多种处理方案进行最优排列或优化等的优秀算法，在库中有着决策树等算法的实现，接下来就是展示的有关决策树的使用方式
+
+- 决策计算组件列表
+
+| 计算组件类型                                                     | 支持版本  | 功能                                         |
+|------------------------------------------------------------|-------|--------------------------------------------|
+| zhao.algorithmMagic.algorithm.schemeAlgorithm.DecisionTree | v1.14 | 决策树计算组件，计算出最有效率的筛选路径，并按照路径将传递进来的事件处理函数进行排列 |
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.algorithm.schemeAlgorithm.DecisionTree;
+import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
+import zhao.algorithmMagic.utils.filter.ArrayIntegerFiltering;
+
+import java.util.ArrayList;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 创建一个矩阵对象，其中包含一些相关联的数据，本次要求将与年龄相关联的数据全部删掉
+        ColumnIntegerMatrix columnDoubleMatrix = ColumnIntegerMatrix.parse(
+                new String[]{"颜值", "身高", "有钱"},
+                null,
+                new int[]{1, 1, 1},
+                new int[]{1, 0, 1},
+                new int[]{0, 1, 0},
+                new int[]{0, 0, 0},
+                new int[]{0, 1, 0},
+                new int[]{1, 0, 0},
+                new int[]{1, 1, 0},
+                new int[]{0, 1, 0}
+        );
+        System.out.println(columnDoubleMatrix);
+        // 构建一些事件过滤器
+        // 有钱选项为1
+        ArrayIntegerFiltering arrayIntegerFiltering1 = v -> v[2] == 1;
+        // 身高选项为1
+        ArrayIntegerFiltering arrayIntegerFiltering2 = v -> v[1] == 1;
+        // 颜值选项为1
+        ArrayIntegerFiltering arrayIntegerFiltering3 = v -> v[0] == 1;
+        System.out.println(arrayIntegerFiltering1);
+        System.out.println(arrayIntegerFiltering2);
+        System.out.println(arrayIntegerFiltering3);
+        // 获取到决策树
+        DecisionTree d = DecisionTree.getInstance("d");
+        // 设置精准模式
+        d.setAccurate(true);
+        // 设置中心字段索引
+        d.setGroupIndex(0);
+        // 开始计算最优方案
+        ArrayList<ArrayIntegerFiltering> decision = d.decision(columnDoubleMatrix, arrayIntegerFiltering1, arrayIntegerFiltering2, arrayIntegerFiltering3);
+        // 将最优方案传递给决策树执行，并接收返回的结果
+        String s = d.executeGetString(columnDoubleMatrix.toArrays(), decision);
+        System.out.println(s);
+    }
+}
+```
+
+```
+------------IntegerMatrixStart-----------
+颜值	身高	有钱	
+[1, 1, 1]
+[1, 0, 1]
+[0, 1, 0]
+[0, 0, 0]
+[0, 1, 0]
+[1, 0, 0]
+[1, 1, 0]
+[0, 1, 0]
+------------IntegerMatrixEnd------------
+
+zhao.algorithmMagic.MAIN1$$Lambda$1/8468976@372a00
+zhao.algorithmMagic.MAIN1$$Lambda$2/26887603@dd8dc3
+zhao.algorithmMagic.MAIN1$$Lambda$3/10069385@103e736
+[INFO][OperationAlgorithmManager][23-01-20:09]] : +============================== Welcome to [mathematical expression] ==============================+
+[INFO][OperationAlgorithmManager][23-01-20:09]] : + 	Start time Fri Jan 20 21:17:44 CST 2023
+[INFO][OperationAlgorithmManager][23-01-20:09]] : + 	version: 1.13
+[INFO][OperationAlgorithmManager][23-01-20:09]] : + 	Calculation component manager initialized successfully
+[INFO][OperationAlgorithmManager][23-01-20:09]] : + 	For more information, see: https://github.com/BeardedManZhao/algorithmStar.git
+[INFO][OperationAlgorithmManager][23-01-20:09]] : +--------------------------------------------------------------------------------------------------+
+[INFO][OperationAlgorithmManager][23-01-20:09]] : register OperationAlgorithm:d
+
+* >>> Tier 1 Decision
+True => [1, 1, 1]
+True => [1, 0, 1]
+True => [1, 0, 0]
+True => [1, 1, 0]
+False => [0, 1, 0]
+False => [0, 0, 0]
+False => [0, 1, 0]
+False => [0, 1, 0]
+
+* >>> Tier 2 Decision
+True => [1, 1, 1]
+True => [1, 0, 1]
+False => [1, 0, 0]
+False => [1, 1, 0]
+
+* >>> Tier 3 Decision
+True => [1, 1, 1]
+False => [1, 0, 1]
+
+
+进程已结束,退出代码0
+
 ```
 
 - Switch

@@ -10,4 +10,5 @@ import zhao.algorithmMagic.utils.Event;
  * @author zhao
  */
 public interface ArrayIntegerFiltering extends Event<int[]> {
+    ArrayIntegerFiltering TRUE = v -> true;
 }

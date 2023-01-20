@@ -21,7 +21,7 @@ can add it to your maven project, or you can download it from Releases and manua
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>algorithmStar</artifactId>
-        <version>1.13</version>
+        <version>1.14</version>
     </dependency>
 </dependencies>
 ```

@@ -10,4 +10,5 @@ import zhao.algorithmMagic.utils.Event;
  * @author zhao
  */
 public interface ArrayDoubleFiltering extends Event<double[]> {
+    ArrayDoubleFiltering TRUE = v -> true;
 }

@@ -93,14 +93,16 @@ public final class ASMath {
     /**
      * 计算一个序列的最大值与最小值
      *
-     * @param doubles 被计算的序列
+     * @param ints               被计算的序列
+     * @param isMax              如果为true，代表取出序列中的最大值，反之则是最小值。
+     * @param numericalFiltering 数据过滤器。
      * @return 计算结果，第一个参数是最大值，第二个参数是最小值
      */
-    public static int MaxOrMin(int[] doubles, boolean isMax, NumericalFiltering numericalFiltering) {
+    public static int MaxOrMin(int[] ints, boolean isMax, NumericalFiltering numericalFiltering) {
         // 计算最大值最小值
-        int res = doubles[0];
+        int res = ints[0];
         if (isMax) {
-            for (int aDouble : doubles) {
+            for (int aDouble : ints) {
                 if (numericalFiltering.isComplianceEvents(aDouble)) {
                     if (res < aDouble) {
                         res = aDouble;
@@ -108,7 +110,7 @@ public final class ASMath {
                 }
             }
         } else {
-            for (int aDouble : doubles) {
+            for (int aDouble : ints) {
                 if (numericalFiltering.isComplianceEvents(aDouble)) {
                     if (res > aDouble) {
                         res = aDouble;
@@ -247,13 +249,14 @@ public final class ASMath {
         return res;
     }
 
+/*
     /**
      * 计算一个数值的阶乘
      *
      * @param i              被计算的数值
      * @param factorialCount 阶乘的次数，该参数可以对阶乘进行一个限制，用于概率计算等操作
      * @return 阶乘结果
-     */
+     * /
     public static int Factorial(int i, int factorialCount) {
         int res = 1;
         int count = 0;
@@ -264,6 +267,7 @@ public final class ASMath {
         }
         return res;
     }
+*/
 
     /**
      * 将一个序列的方差计算出来
@@ -438,8 +442,9 @@ public final class ASMath {
     /**
      * 计算两个数组的叉乘，并返回结果
      *
-     * @param ints1 叉乘操作数组
-     * @param ints2 被叉乘的操作数组
+     * @param ints1     叉乘操作数组
+     * @param ints2     被叉乘的操作数组
+     * @param newLength 新数组的长度，该参数的提供是为了在外界可以减少重复计算新数组长度的操作。
      * @return 叉乘结果数组
      */
     public static int[] CrossMultiplication(int[] ints1, int[] ints2, int newLength) {
@@ -608,6 +613,7 @@ public final class ASMath {
         hashSet1.removeIf(elementType -> !set1.contains(elementType) || !set2.contains(elementType));
         return hashSet1;
     }
+/*
 
     /**
      * 将一个数组排序
@@ -615,7 +621,7 @@ public final class ASMath {
      * @param doubles 需要排序的数组
      * @param des     排序之后的数组
      * @return 排序之后的数组，注意这里的数组就是传入的数组
-     */
+     * /
     public static double[] sort(boolean des, double... doubles) {
         Arrays.sort(doubles);
         if (!des) {
@@ -623,6 +629,7 @@ public final class ASMath {
         }
         return doubles;
     }
+*/
 
     /**
      * 计算出两个字符串的并集
@@ -968,98 +975,210 @@ public final class ASMath {
     }
 
     /**
-     * 一个样本中，先按照某个组进行样本切分，并计算出某个过滤条件下的信息熵。
+     * 一个样本中，先按照某个组进行样本切分，并计算出某个过滤条件下的熵。
      * <p>
-     * In a sample, first segment the sample according to a certain group, and calculate the information entropy under a certain filtering condition.
+     * In a sample, first segment the sample according to a certain group, and calculate the entropy under a certain filtering condition.
      *
-     * @param ints                  需要被计算的所有样本特征向量，其中按照行数据划分。
-     *                              <p>
-     *                              All sample feature vectors that need to be calculated are divided by row data.
-     * @param groupIndex            目标值对应的索引，也是会被作为分组字段的索引，按照该字段对样本进行划分。
-     *                              <p>
-     *                              The index corresponding to the target value will also be used as the index of the grouping field, and the samples will be divided according to this field.
-     * @param logBase               信息熵的对数底数，其会作为在信息熵计算过程中的一个参数，一般取值为2。
-     *                              <p>
-     *                              The logarithmic base of information entropy, which will be used as a parameter in the calculation of information entropy, is generally 2.
-     * @param arrayIntegerFiltering 行数据过滤器，在这里代表一个事件，计算的时候会将样本传递给该过滤器的函数，只需要实现其中的真事件逻辑即可。
-     *                              <p>
-     *                              The row data filter, which represents an event here, will pass the sample to the function of the filter during calculation, and only need to implement the true event logic.
-     * @return 整个数据样本中 在事件 arrayIntegerFiltering 的过滤下，所计算出来的信息熵。
+     * @param ints                   需要被计算的所有样本特征向量，其中按照行数据划分，需要注意的是，在计算的时候，将会把整个特征作为一个组进行计算，不会细分小类别！！！
+     *                               <p>
+     *                               All sample feature vectors that need to be calculated are divided according to row data. It should be noted that the whole feature will be calculated as a group during calculation, and will not be subdivided into small categories!!!
+     * @param logBase                信息熵的对数底数，其会作为在信息熵计算过程中的一个参数，一般取值为2。
+     *                               <p>
+     *                               The logarithmic base of information entropy, which will be used as a parameter in the calculation of information entropy, is generally 2.
+     * @param arrayIntegerFiltering1 行数据过滤器，在这里代表一个事件，计算的时候会将样本传递给该过滤器的函数，只需要实现其中的真事件逻辑即可。
+     *                               <p>
+     *                               The row data filter, which represents an event here, will pass the sample to the function of the filter during calculation, and only need to implement the true event logic.
+     * @return 整个数据样本中 在事件 arrayIntegerFiltering1 的过滤下，所计算出来的信息熵。
      * <p>
-     * The information entropy calculated in the whole data sample under the filtering of the event arrayIntegerFiltering.
+     * The information entropy calculated in the whole data sample under the filtering of the event arrayIntegerFiltering1.
+     * <p>
+     * H(arrayIntegerFiltering1)
      */
-    public static double informationEntropy(int[][] ints, int groupIndex, int logBase, ArrayIntegerFiltering arrayIntegerFiltering) {
-        // 迭代出当前所有样本中的事件概率 下面的key代表被分组字段中的不同值，用于分组，value代表当前组中的事件概率的分子
-        double res = 0;
-        HashMap<Double, Integer> hashMap = new HashMap<>(ints.length + 10);
-        {
-            for (int[] doubles1 : ints) {
-                // 获取到当前的样本名称
-                double group = doubles1[groupIndex];
-                if (arrayIntegerFiltering.isComplianceEvents(doubles1)) {
-                    hashMap.put(group, hashMap.getOrDefault(group, 0) + 1);
-                }
+    public static double entropy(int[][] ints, int logBase, ArrayIntegerFiltering arrayIntegerFiltering1) {
+        int trueNum = 0, count = 0;
+        // 首先获取到当前符合样本条件的所有样本数据
+        for (int[] anInt : ints) {
+            // 进行真假统计
+            if (arrayIntegerFiltering1.isComplianceEvents(anInt)) {
+                ++trueNum;
             }
+            ++count;
         }
-        // 开始计算信息熵
-        {
-            double length = ints.length;
-            for (int value : hashMap.values()) {
-                // 首先计算出当前的组概率
-                double p = value / length;
-                // 将当前的值汇总到结果，累加成为信息熵
-                res += p * log(logBase, p);
-            }
-        }
+        // 获取到组内真假概率
+        double pTrue = trueNum / (double) count;
         // 返回信息熵
-        return -res;
+        return -(pTrue * log(logBase, pTrue));
     }
 
     /**
-     * 一个样本中，先按照某个组进行样本切分，并计算出某个过滤条件下的信息熵。
+     * 一个样本中，先按照某个组进行样本切分，并计算出某个过滤条件下的熵。
      * <p>
-     * In a sample, first segment the sample according to a certain group, and calculate the information entropy under a certain filtering condition.
+     * In a sample, first segment the sample according to a certain group, and calculate the entropy under a certain filtering condition.
      *
-     * @param doubles              需要被计算的所有样本特征向量，其中按照行数据划分。
+     * @param ints                 需要被计算的所有样本特征向量，其中按照行数据划分，需要注意的是，在计算的时候，将会把整个特征作为一个组进行计算，不会细分小类别！！！
      *                             <p>
-     *                             All sample feature vectors that need to be calculated are divided by row data.
-     * @param groupIndex           目标值对应的索引，也是会被作为分组字段的索引，按照该字段对样本进行划分。
-     *                             <p>
-     *                             The index corresponding to the target value will also be used as the index of the grouping field, and the samples will be divided according to this field.
+     *                             All sample feature vectors that need to be calculated are divided according to row data. It should be noted that the whole feature will be calculated as a group during calculation, and will not be subdivided into small categories!!!
      * @param logBase              信息熵的对数底数，其会作为在信息熵计算过程中的一个参数，一般取值为2。
      *                             <p>
      *                             The logarithmic base of information entropy, which will be used as a parameter in the calculation of information entropy, is generally 2.
-     * @param arrayDoubleFiltering 行数据过滤器，在这里代表一个事件，计算的时候会将样本传递给该过滤器的函数，只需要实现其中的真事件逻辑即可。
+     * @param arrayDoubleFiltering 行数据过滤器，在这里代表一个事件，计算的时候会将样本传递给该过滤器的函数，如果您希望计算出条件熵，那么只需要实现其中的真事件逻辑即可。
+     *                             <p>
+     *                             The row data filter, which represents an event here, will pass the sample to the function of the filter during calculation, and only need to implement the true event logic.
+     * @return 整个数据样本中 在事件 arrayDoubleFiltering 的过滤下，所计算出来的信息熵。
+     * <p>
+     * The information entropy calculated in the whole data sample under the filtering of the event arrayDoubleFiltering.
+     * <p>
+     * H(arrayDoubleFiltering)
+     */
+    public static double entropy(double[][] ints, int logBase, ArrayDoubleFiltering arrayDoubleFiltering) {
+        int trueNum = 0, count = 0;
+        // 首先获取到当前符合样本条件的所有样本数据
+        for (double[] anInt : ints) {
+            // 进行真假统计
+            if (arrayDoubleFiltering.isComplianceEvents(anInt)) {
+                ++trueNum;
+            }
+            ++count;
+        }
+        // 获取到组内真假概率
+        double pTrue = trueNum / (double) count;
+        // 返回信息熵
+        return -(pTrue * log(logBase, pTrue));
+    }
+
+    /**
+     * 计算出一个数据样本中的条件熵，同时删除不符合事件函数的所有行数据。
+     * <p>
+     * Calculate the conditional entropy in a data sample, and delete all row data that do not meet the event function.
+     *
+     * @param arrayList            需要被计算的数据样本，注意 该样本将会被修改，其中的假事件行数据会被删除
+     *                             <p>
+     *                             The data sample to be calculated. Note that the sample will be modified and the false event line data will be deleted
+     * @param logBase              信息熵的对数底数，其会作为在信息熵计算过程中的一个参数，一般取值为2。
+     *                             <p>
+     *                             The logarithmic base of information entropy, which will be used as a parameter in the calculation of information entropy, is generally 2.
+     * @param arrayDoubleFiltering 行数据过滤器，在这里代表一个事件，计算的时候会将样本传递给该过滤器的函数，如果您希望计算出条件熵，那么只需要实现其中的真事件逻辑即可。
      *                             <p>
      *                             The row data filter, which represents an event here, will pass the sample to the function of the filter during calculation, and only need to implement the true event logic.
      * @return 整个数据样本中 在事件 arrayDoubleFiltering 的过滤下，所计算出来的信息熵。
      * <p>
      * The information entropy calculated in the whole data sample under the filtering of the event arrayDoubleFiltering.
      */
-    public static double informationEntropy(double[][] doubles, int groupIndex, int logBase, ArrayDoubleFiltering arrayDoubleFiltering) {
-        // 迭代出当前所有样本中的事件概率 下面的key代表被分组字段中的不同值，用于分组，value代表当前组中的事件概率的分子
-        HashMap<Double, Integer> hashMap = new HashMap<>(doubles.length + 10);
-        {
-            for (double[] doubles1 : doubles) {
-                // 获取到当前的样本名称
-                double group = doubles1[groupIndex];
-                if (arrayDoubleFiltering.isComplianceEvents(doubles1)) {
-                    hashMap.put(group, hashMap.getOrDefault(group, 0) + 1);
-                }
-            }
+    public static double entropyAndDelete(ArrayList<double[]> arrayList, int logBase, ArrayDoubleFiltering arrayDoubleFiltering) {
+        int trueNum = 0, count = 0;
+        ArrayList<double[]> deleteList = new ArrayList<>();
+        // 首先获取到当前符合样本条件的所有样本数据
+        for (double[] anInt : arrayList) {
+            // 进行真假统计
+            if (arrayDoubleFiltering.isComplianceEvents(anInt)) {
+                ++trueNum;
+            } else deleteList.add(anInt);
+            ++count;
         }
-        // 开始计算信息熵
-        double res = 0;
-        {
-            double length = doubles.length;
-            for (int value : hashMap.values()) {
-                // 首先计算出当前的组概率
-                double p = value / length;
-                // 将当前的值汇总到结果，累加成为信息熵
-                res += p * log(logBase, p);
-            }
-        }
+        // 删除所有为假事件的行数据
+        arrayList.removeAll(deleteList);
+        // 获取到组内真假概率
+        double pTrue = trueNum / (double) count;
         // 返回信息熵
-        return -res;
+        return -(pTrue * log(logBase, pTrue));
+    }
+
+    /**
+     * 计算出一个数据样本中的条件熵，同时删除不符合事件函数的所有行数据。
+     * <p>
+     * Calculate the conditional entropy in a data sample, and delete all row data that do not meet the event function.
+     *
+     * @param arrayList             需要被计算的数据样本，注意 该样本将会被修改，其中的假事件行数据会被删除
+     *                              <p>
+     *                              The data sample to be calculated. Note that the sample will be modified and the false event line data will be deleted
+     * @param logBase               信息熵的对数底数，其会作为在信息熵计算过程中的一个参数，一般取值为2。
+     *                              <p>
+     *                              The logarithmic base of information entropy, which will be used as a parameter in the calculation of information entropy, is generally 2.
+     * @param arrayIntegerFiltering 行数据过滤器，在这里代表一个事件，计算的时候会将样本传递给该过滤器的函数，如果您希望计算出条件熵，那么只需要实现其中的真事件逻辑即可。
+     *                              <p>
+     *                              The row data filter, which represents an event here, will pass the sample to the function of the filter during calculation, and only need to implement the true event logic.
+     * @return 整个数据样本中 在事件 arrayIntegerFiltering 的过滤下，所计算出来的信息熵。
+     * <p>
+     * The information entropy calculated in the whole data sample under the filtering of the event arrayIntegerFiltering.
+     */
+    public static double entropyAndDelete(ArrayList<int[]> arrayList, int logBase, ArrayIntegerFiltering arrayIntegerFiltering) {
+        int trueNum = 0, count = 0;
+        ArrayList<int[]> deleteList = new ArrayList<>();
+        // 首先获取到当前符合样本条件的所有样本数据
+        for (int[] anInt : arrayList) {
+            // 进行真假统计
+            if (arrayIntegerFiltering.isComplianceEvents(anInt)) {
+                ++trueNum;
+            } else deleteList.add(anInt);
+            ++count;
+        }
+        // 删除所有为假事件的行数据
+        arrayList.removeAll(deleteList);
+        // 获取到组内真假概率
+        double pTrue = trueNum / (double) count;
+        // 返回信息熵
+        return -(pTrue * log(logBase, pTrue));
+    }
+
+    /**
+     * 按照某一列进行分组，并计算出该数据样本的信息熵
+     * <p>
+     * Group according to a column and calculate the information entropy of the data sample
+     *
+     * @param ints       需要被计算的所有数据行组成的数据样本
+     * @param logBase    信息熵的对数底数，其会作为在信息熵计算过程中的一个参数，一般取值为2。
+     *                   <p>
+     *                   The logarithmic base of information entropy, which will be used as a parameter in the calculation of information entropy, is generally 2.
+     * @param groupIndex 需要被分组的字段。
+     *                   <p>
+     *                   Fields to be grouped.
+     * @return 数据样本中按照 groupIndex 这一字段分组计算出来的信息熵数值。
+     * <p>
+     * The information entropy value in the data sample calculated by grouping according to the groupIndex field.
+     */
+    public static double entropy(double[][] ints, int logBase, int groupIndex) {
+        HashMap<Double, Integer> hashMap = new HashMap<>();
+        for (double[] anInt : ints) {
+            double group = anInt[groupIndex];
+            hashMap.put(group, hashMap.getOrDefault(group, 0) + 1);
+        }
+        double length = ints.length;
+        double res = 0;
+        for (int value : hashMap.values()) {
+            double p = value / length;
+            res -= (p * log(logBase, p));
+        }
+        return res;
+    }
+
+    /**
+     * 按照某一列进行分组，并计算出该数据样本的信息熵
+     * <p>
+     * Group according to a column and calculate the information entropy of the data sample
+     *
+     * @param ints       需要被计算的所有数据行组成的数据样本
+     * @param logBase    信息熵的对数底数，其会作为在信息熵计算过程中的一个参数，一般取值为2。
+     *                   <p>
+     *                   The logarithmic base of information entropy, which will be used as a parameter in the calculation of information entropy, is generally 2.
+     * @param groupIndex 需要被分组的字段。
+     *                   <p>
+     *                   Fields to be grouped.
+     * @return 数据样本中按照 groupIndex 这一字段分组计算出来的信息熵数值。
+     * <p>
+     * The information entropy value in the data sample calculated by grouping according to the groupIndex field.
+     */
+    public static double entropy(int[][] ints, int logBase, int groupIndex) {
+        HashMap<Integer, Integer> hashMap = new HashMap<>();
+        for (int[] anInt : ints) {
+            int group = anInt[groupIndex];
+            hashMap.put(group, hashMap.getOrDefault(group, 0) + 1);
+        }
+        double res = 0;
+        double length = ints.length;
+        for (int value : hashMap.values()) {
+            double p = value / length;
+            res -= (p * log(logBase, p));
+        }
+        return res;
     }
 }

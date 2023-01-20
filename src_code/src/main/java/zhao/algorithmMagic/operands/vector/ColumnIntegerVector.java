@@ -35,7 +35,12 @@ public class ColumnIntegerVector extends IntegerVector {
      * <p>
      * Construct a vector using the initial parameter pass method.
      *
-     * @param field       向量中的每一个维度的名称
+     * @param vectorName  向量名称，在该对象中，您可以为向量起一个名称。
+     *                    <p>
+     *                    Vector name. In this object, you can give a name to the vector.
+     * @param field       向量中的每一个维度的名称。
+     *                    <p>
+     *                    The name of each dimension in the vector.
      * @param vectorArray 向量中的数值序列集合
      *                    <p>
      *                    collection of numeric sequences in a vector

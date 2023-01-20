@@ -54,7 +54,6 @@ public class DictFeatureExtraction extends StringArrayFeature<ColumnIntegerMatri
      * @param data 需要被进行特征提取的数据，数据类型是字符串组成的数组。
      * @return 提取之后的结果对象，是包含字段的一种矩阵，同时其返回的矩阵可以直接转换为HashMap进行Map类的方式调用
      * <p>
-     * <p>
      * The extracted result object is a matrix containing fields. At the same time, the returned matrix can be directly converted into HashMap for map class calls
      */
     @Override

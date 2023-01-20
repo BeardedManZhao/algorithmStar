@@ -26,16 +26,16 @@ example. The use of the distance algorithm is as follows
 
 - List of distance calculation components
 
-| Calculation component type                                                    | Supported versions | function    |
-|-------------------------------------------------------------------------------|--------------------|-------------|
-| zhao.algorithmMagic.algorithm.distanceAlgorithm.EuclideanMetric               | v1.0               | 计算欧几里得距离    |
-| zhao.algorithmMagic.algorithm.distanceAlgorithm.CanberraDistance              | v1.0               | 计算堪培拉距离     |
-| zhao.algorithmMagic.algorithm.distanceAlgorithm.ChebyshevDistance             | v1.0               | 计算切比雪夫距离    |
-| zhao.algorithmMagic.algorithm.distanceAlgorithm.CosineDistance                | v1.0               | 计算向量余弦度量    |
-| zhao.algorithmMagic.algorithm.distanceAlgorithm.HausdorffDistance             | v1.0               | 计算豪斯多夫距离    |
-| zhao.algorithmMagic.algorithm.distanceAlgorithm.ManhattanDistance             | v1.0               | 计算曼哈顿距离     |
-| zhao.algorithmMagic.algorithm.distanceAlgorithm.MinkowskiDistance             | v1.0               | 计算闵可夫斯基距离   |
-| zhao.algorithmMagic.algorithm.distanceAlgorithm.StandardizedEuclideanDistance | v1.0               | 计算标准化欧几里得度量 |
+| Calculation component type                                                    | Supported versions | function                                   |
+|-------------------------------------------------------------------------------|--------------------|--------------------------------------------|
+| zhao.algorithmMagic.algorithm.distanceAlgorithm.EuclideanMetric               | v1.0               | Calculate Euclidean distance               |
+| zhao.algorithmMagic.algorithm.distanceAlgorithm.CanberraDistance              | v1.0               | Calculate Canberra distance                |
+| zhao.algorithmMagic.algorithm.distanceAlgorithm.ChebyshevDistance             | v1.0               | Calculate Chebyshev distance               |
+| zhao.algorithmMagic.algorithm.distanceAlgorithm.CosineDistance                | v1.0               | Calculate vector cosine measure            |
+| zhao.algorithmMagic.algorithm.distanceAlgorithm.HausdorffDistance             | v1.0               | Calculate Hausdorff distance               |
+| zhao.algorithmMagic.algorithm.distanceAlgorithm.ManhattanDistance             | v1.0               | Calculate Manhattan distance               |
+| zhao.algorithmMagic.algorithm.distanceAlgorithm.MinkowskiDistance             | v1.0               | Calculate Minkowski distance               |
+| zhao.algorithmMagic.algorithm.distanceAlgorithm.StandardizedEuclideanDistance | v1.0               | Calculate standardized Euclidean measures  |
 
 ```java
 import zhao.algorithmMagic.algorithm.EuclideanMetric;
@@ -66,13 +66,13 @@ differences!
 
 - List of variance calculation components
 
-| Calculation component type                                                      | Supported versions | function             |
-|---------------------------------------------------------------------------------|--------------------|----------------------|
-| zhao.algorithmMagic.algorithm.differenceAlgorithm.BrayCurtisDistance            | v1.0               | 计算两个数据样本之间的布雷柯蒂斯差异系数 |
-| zhao.algorithmMagic.algorithm.differenceAlgorithm.DiceCoefficient               | v1.0               | 计算两个数据样本之间的Dice差异系数  |
-| zhao.algorithmMagic.algorithm.differenceAlgorithm.EditDistance                  | v1.0               | 计算两个数据样本之间的最小编辑次数    |
-| zhao.algorithmMagic.algorithm.differenceAlgorithm.HammingDistance               | v1.0               | 计算两个数据样本之间的汉明差异系数    |
-| zhao.algorithmMagic.algorithm.differenceAlgorithm.JacquardSimilarityCoefficient | v1.0               | 计算两个数据样本之间的杰卡德相似系数   |
+| Calculation component type                                                      | Supported versions | function                                                                    |
+|---------------------------------------------------------------------------------|--------------------|-----------------------------------------------------------------------------|
+| zhao.algorithmMagic.algorithm.differenceAlgorithm.BrayCurtisDistance            | v1.0               | Calculate the Brecurtis coefficient of difference between two data samples  |
+| zhao.algorithmMagic.algorithm.differenceAlgorithm.DiceCoefficient               | v1.0               | Calculate the Dice difference coefficient between two data samples          |
+| zhao.algorithmMagic.algorithm.differenceAlgorithm.EditDistance                  | v1.0               | Calculate the minimum number of edits between two data samples              |
+| zhao.algorithmMagic.algorithm.differenceAlgorithm.HammingDistance               | v1.0               | Calculate the Hamming difference coefficient between two data samples       |
+| zhao.algorithmMagic.algorithm.differenceAlgorithm.JacquardSimilarityCoefficient | v1.0               | Calculate the Jakad similarity coefficient between two data samples         |
 
 ```java
 import zhao.algorithmMagic.algorithm.HammingDistance;
@@ -101,10 +101,10 @@ dimensions.
 
 - Standardized calculation component list
 
-| Calculation component type                                       | Supported versions | function              |
-|------------------------------------------------------------------|--------------------|-----------------------|
-| zhao.algorithmMagic.algorithm.normalization.LinearNormalization  | v1.0               | 将一个向量数据样本进行线性归一化      |
-| zhao.algorithmMagic.algorithm.normalization.Z_ScoreNormalization | v1.0               | 将一个向量数据样本进行正负均匀分配的标准化 |
+| Calculation component type                                       | Supported versions | function                                                                            |
+|------------------------------------------------------------------|--------------------|-------------------------------------------------------------------------------------|
+| zhao.algorithmMagic.algorithm.normalization.LinearNormalization  | v1.0               | Linear normalization of a vector data sample                                        |
+| zhao.algorithmMagic.algorithm.normalization.Z_ScoreNormalization | v1.0               | Standardize the positive and negative uniform distribution of a vector data sample  |
 
 ```java
 import zhao.algorithmMagic.algorithm.normalization.LinearNormalization;
@@ -135,13 +135,13 @@ in the homepage to conduct a personal and Relationship between people inferred!
 
 - 路径推导算法列表
 
-| Calculation component type                                              | Supported versions | function                     |
-|-------------------------------------------------------------------------|--------------------|------------------------------|
-| zhao.algorithmMagic.algorithm.generatingAlgorithm.Dijkstra              | v1.0               | 计算一个路线网站中的最小距离               |
-| zhao.algorithmMagic.algorithm.generatingAlgorithm.Dijkstra2D            | v1.0               | 计算一个路线网站中的最小距离               |
-| zhao.algorithmMagic.algorithm.generatingAlgorithm.DirectionalDijkstra2D | v1.0               | 计算一个路线网站中的最小距离               |
-| zhao.algorithmMagic.algorithm.generatingAlgorithm.ZhaoCoordinateNet     | v1.0               | 计算一个路线网站潜在联系，并生成对应的路线对象到路线网中 |
-| zhao.algorithmMagic.algorithm.generatingAlgorithm.ZhaoCoordinateNet2D   | v1.0               | 计算一个路线网站潜在联系，并生成对应的路线对象到路线网中 |
+| Calculation component type                                              | Supported versions | function                                                                                                               |
+|-------------------------------------------------------------------------|--------------------|------------------------------------------------------------------------------------------------------------------------|
+| zhao.algorithmMagic.algorithm.generatingAlgorithm.Dijkstra              | v1.0               | Calculate the minimum distance in a route website                                                                      |
+| zhao.algorithmMagic.algorithm.generatingAlgorithm.Dijkstra2D            | v1.0               | Calculate the minimum distance in a route website                                                                      |
+| zhao.algorithmMagic.algorithm.generatingAlgorithm.DirectionalDijkstra2D | v1.0               | Calculate the minimum distance in a route website                                                                      |
+| zhao.algorithmMagic.algorithm.generatingAlgorithm.ZhaoCoordinateNet     | v1.0               | Calculate the potential contact of a route website and generate the corresponding route object into the route network  |
+| zhao.algorithmMagic.algorithm.generatingAlgorithm.ZhaoCoordinateNet2D   | v1.0               | Calculate the potential contact of a route website and generate the corresponding route object into the route network  |
 
 ```java
 import zhao.algorithmMagic.algorithm.generatingAlgorithm.ZhaoCoordinateNet2D;
@@ -184,11 +184,11 @@ Various aggregation calculation components are described in the following table!
 
 - Aggregate Calculation Component List
 
-| Calculation component type                                             | Supported versions | function           |
-|------------------------------------------------------------------------|--------------------|--------------------|
-| zhao.algorithmMagic.algorithm.aggregationAlgorithm.ExtremumAggregation | v1.14              | 计算一些数值的极值          |
-| zhao.algorithmMagic.algorithm.aggregationAlgorithm.WeightedAverage     | v1.14              | 计算一些数值的加权平均数       |
-| zhao.algorithmMagic.algorithm.aggregationAlgorithm.ModularOperation    | v1.14              | 计算一个序列或多个序列聚合之后的模长 |
+| Calculation component type                                             | Supported versions | function                                                                |
+|------------------------------------------------------------------------|--------------------|-------------------------------------------------------------------------|
+| zhao.algorithmMagic.algorithm.aggregationAlgorithm.ExtremumAggregation | v1.14              | Calculate the extreme value of some values                              |
+| zhao.algorithmMagic.algorithm.aggregationAlgorithm.WeightedAverage     | v1.14              | Calculate the weighted average of some values                           |
+| zhao.algorithmMagic.algorithm.aggregationAlgorithm.ModularOperation    | v1.14              | Calculate the module length after aggregation of one or more sequences  |
 
 This time, the extreme value calculation of numerical value is taken as an example to show the functions of aggregation
 components
@@ -230,10 +230,10 @@ data into data that can be processed by computers, such as vectors.
 
 - Feature extraction component list
 
-| Calculation component type                                            | Supported versions | function           |
-|-----------------------------------------------------------------------|--------------------|--------------------|
-| zhao.algorithmMagic.algorithm.featureExtraction.DictFeatureExtraction | v1.14              | 对一些字符串数据进行子典特征提取   |
-| zhao.algorithmMagic.algorithm.featureExtraction.WordFrequency         | v1.14              | 对一些字符串数据进行词频向量特征提取 |
+| Calculation component type                                            | Supported versions | function                                                            |
+|-----------------------------------------------------------------------|--------------------|---------------------------------------------------------------------|
+| zhao.algorithmMagic.algorithm.featureExtraction.DictFeatureExtraction | v1.14              | Extract the sub-dictionary features of some string data             |
+| zhao.algorithmMagic.algorithm.featureExtraction.WordFrequency         | v1.14              | Extract the feature of word frequency vector from some string data  |
 
 ```java
 package zhao.algorithmMagic;
@@ -282,10 +282,10 @@ specific classification components, see the following example.
 
 - Feature classification component list
 
-| Calculation component type                                                      | Supported versions | function                     |
-|---------------------------------------------------------------------------------|--------------------|------------------------------|
-| zhao.algorithmMagic.algorithm.classificationAlgorithm.UDFDistanceClassification | v1.14              | 利用手动传入类别样本的方式，进行距离计算并分类      |
-| zhao.algorithmMagic.algorithm.classificationAlgorithm.KnnClassification         | v1.14              | 利用K 近邻算法将最近的K个特征进行距离计算，进行分类。 |
+| Calculation component type                                                      | Supported versions | function                                                                                                     |
+|---------------------------------------------------------------------------------|--------------------|--------------------------------------------------------------------------------------------------------------|
+| zhao.algorithmMagic.algorithm.classificationAlgorithm.UDFDistanceClassification | v1.14              | Calculate and classify the distance by manually passing in the category sample                               |
+| zhao.algorithmMagic.algorithm.classificationAlgorithm.KnnClassification         | v1.14              | K-nearest neighbor algorithm is used to calculate the distance of the nearest K features and classify them.  |
 
 ```java
 package zhao.algorithmMagic;
@@ -377,9 +377,9 @@ of B event.
 
 - List of probability calculation components
 
-| Calculation component type                                      | Supported versions | function                       |
-|-----------------------------------------------------------------|--------------------|--------------------------------|
-| zhao.algorithmMagic.algorithm.probabilisticAlgorithm.NaiveBayes | v1.14              | 通过较小的计算量计算出形如”P(A\B)“事件发生的概率数值 |
+| Calculation component type                                      | Supported versions | function                                                                                        |
+|-----------------------------------------------------------------|--------------------|-------------------------------------------------------------------------------------------------|
+| zhao.algorithmMagic.algorithm.probabilisticAlgorithm.NaiveBayes | v1.14              | Calculate the probability value of the event like "P (A B)" with a small amount of calculation  |
 
 ```java
 package zhao.algorithmMagic;
@@ -422,7 +422,9 @@ public final class MAIN1 {
     }
 }
 ```
+
 - Display of calculation results
+
 ```
 ------------IntegerMatrixStart-----------
 职业	体型	喜欢	rowColName
@@ -456,6 +458,115 @@ public final class MAIN1 {
 0.8333333333333334
 
 进程已结束,退出代码0
+```
+
+### 决策计算组件
+
+决策算法于1.14版本中加入到AS库，是针对多种处理方案进行最优排列或优化等的优秀算法，在库中有着决策树等算法的实现，接下来就是展示的有关决策树的使用方式
+
+- 决策计算组件列表
+
+| Calculation component type                                  | Supported versions | function                                                                                                                                                          |
+|-------------------------------------------------------------|-------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| zhao.algorithmMagic.algorithm.schemeAlgorithm.DecisionTree  | v1.14 | The decision tree calculation component calculates the most efficient filtering path and arranges the event processing functions passed in according to the path  |
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.algorithm.schemeAlgorithm.DecisionTree;
+import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
+import zhao.algorithmMagic.utils.filter.ArrayIntegerFiltering;
+
+import java.util.ArrayList;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 创建一个矩阵对象，其中包含一些相关联的数据，本次要求将与年龄相关联的数据全部删掉
+        ColumnIntegerMatrix columnDoubleMatrix = ColumnIntegerMatrix.parse(
+                new String[]{"颜值", "身高", "有钱"},
+                null,
+                new int[]{1, 1, 1},
+                new int[]{1, 0, 1},
+                new int[]{0, 1, 0},
+                new int[]{0, 0, 0},
+                new int[]{0, 1, 0},
+                new int[]{1, 0, 0},
+                new int[]{1, 1, 0},
+                new int[]{0, 1, 0}
+        );
+        System.out.println(columnDoubleMatrix);
+        // 构建一些事件过滤器
+        // 有钱选项为1
+        ArrayIntegerFiltering arrayIntegerFiltering1 = v -> v[2] == 1;
+        // 身高选项为1
+        ArrayIntegerFiltering arrayIntegerFiltering2 = v -> v[1] == 1;
+        // 颜值选项为1
+        ArrayIntegerFiltering arrayIntegerFiltering3 = v -> v[0] == 1;
+        System.out.println(arrayIntegerFiltering1);
+        System.out.println(arrayIntegerFiltering2);
+        System.out.println(arrayIntegerFiltering3);
+        // 获取到决策树
+        DecisionTree d = DecisionTree.getInstance("d");
+        // 设置精准模式
+        d.setAccurate(true);
+        // 设置中心字段索引
+        d.setGroupIndex(0);
+        // 开始计算最优方案
+        ArrayList<ArrayIntegerFiltering> decision = d.decision(columnDoubleMatrix, arrayIntegerFiltering1, arrayIntegerFiltering2, arrayIntegerFiltering3);
+        // 将最优方案传递给决策树执行，并接收返回的结果
+        String s = d.executeGetString(columnDoubleMatrix.toArrays(), decision);
+        System.out.println(s);
+    }
+}
+```
+
+```
+------------IntegerMatrixStart-----------
+颜值	身高	有钱	
+[1, 1, 1]
+[1, 0, 1]
+[0, 1, 0]
+[0, 0, 0]
+[0, 1, 0]
+[1, 0, 0]
+[1, 1, 0]
+[0, 1, 0]
+------------IntegerMatrixEnd------------
+
+zhao.algorithmMagic.MAIN1$$Lambda$1/8468976@372a00
+zhao.algorithmMagic.MAIN1$$Lambda$2/26887603@dd8dc3
+zhao.algorithmMagic.MAIN1$$Lambda$3/10069385@103e736
+[INFO][OperationAlgorithmManager][23-01-20:09]] : +============================== Welcome to [mathematical expression] ==============================+
+[INFO][OperationAlgorithmManager][23-01-20:09]] : + 	Start time Fri Jan 20 21:17:44 CST 2023
+[INFO][OperationAlgorithmManager][23-01-20:09]] : + 	version: 1.13
+[INFO][OperationAlgorithmManager][23-01-20:09]] : + 	Calculation component manager initialized successfully
+[INFO][OperationAlgorithmManager][23-01-20:09]] : + 	For more information, see: https://github.com/BeardedManZhao/algorithmStar.git
+[INFO][OperationAlgorithmManager][23-01-20:09]] : +--------------------------------------------------------------------------------------------------+
+[INFO][OperationAlgorithmManager][23-01-20:09]] : register OperationAlgorithm:d
+
+* >>> Tier 1 Decision
+True => [1, 1, 1]
+True => [1, 0, 1]
+True => [1, 0, 0]
+True => [1, 1, 0]
+False => [0, 1, 0]
+False => [0, 0, 0]
+False => [0, 1, 0]
+False => [0, 1, 0]
+
+* >>> Tier 2 Decision
+True => [1, 1, 1]
+True => [1, 0, 1]
+False => [1, 0, 0]
+False => [1, 1, 0]
+
+* >>> Tier 3 Decision
+True => [1, 1, 1]
+False => [1, 0, 1]
+
+
+进程已结束,退出代码0
+
 ```
 
 - 切换到 [中文文档](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/OperationAlgorithm-Chinese.md)
