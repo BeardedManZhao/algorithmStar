@@ -318,13 +318,14 @@ public final class AlgorithmStar<diffValue, featureReturn> {
      * 无样本的距离计算，您在此进行分类，不需要传递很多的数据样本，只需要由实现类按照自己的算法进行类别推断即可。
      * <p>
      * For distance calculation without samples, you can classify here. You don't need to pass a lot of data samples. You only need to infer the category by the implementation class according to its own algorithm.
+     *
      * @param noSampleClassification 无样本的分类算法计算组件对象。
-     * @param keys 指定的一些数据类别，按照索引与 ints 参数一一对应，其中如果为 ? 代表是未知类别
-     *             <p>
-     *             Some specified data categories correspond to the ints parameter one by one according to the index, in which, if it is? Represents an unknown category
-     * @param ints 指定的类别索引对应的数据特征本身，是需要分类的关键对象。
-     *             <p>
-     *             The data feature corresponding to the specified category index is the key object to be classified.
+     * @param keys                   指定的一些数据类别，按照索引与 ints 参数一一对应，其中如果为 ? 代表是未知类别
+     *                               <p>
+     *                               Some specified data categories correspond to the ints parameter one by one according to the index, in which, if it is? Represents an unknown category
+     * @param ints                   指定的类别索引对应的数据特征本身，是需要分类的关键对象。
+     *                               <p>
+     *                               The data feature corresponding to the specified category index is the key object to be classified.
      * @return 分类结果。
      * <p>
      * Classification results.
@@ -337,15 +338,16 @@ public final class AlgorithmStar<diffValue, featureReturn> {
      * 无样本的距离计算，您在此进行分类，不需要传递很多的数据样本，只需要由实现类按照自己的算法进行类别推断即可。
      * <p>
      * For distance calculation without samples, you can classify here. You don't need to pass a lot of data samples. You only need to infer the category by the implementation class according to its own algorithm.
-     * @param noSampleClassification 无需样本的分类算法，无监督学习的有效操作。
      *
+     * @param noSampleClassification 无需样本的分类算法，无监督学习的有效操作。
+     *                               <p>
      *                               The classification algorithm without samples and the effective operation of unsupervised learning.
-     * @param keys    指定的一些数据类别，按照索引与 ints 参数一一对应，其中如果为 ? 代表是未知类别
-     *                <p>
-     *                Some specified data categories correspond to the ints parameter one by one according to the index, in which, if it is? Represents an unknown category
-     * @param doubles 指定的类别索引对应的数据特征本身，是需要分类的关键对象。
-     *                <p>
-     *                The data feature corresponding to the specified category index is the key object to be classified.
+     * @param keys                   指定的一些数据类别，按照索引与 ints 参数一一对应，其中如果为 ? 代表是未知类别
+     *                               <p>
+     *                               Some specified data categories correspond to the ints parameter one by one according to the index, in which, if it is? Represents an unknown category
+     * @param doubles                指定的类别索引对应的数据特征本身，是需要分类的关键对象。
+     *                               <p>
+     *                               The data feature corresponding to the specified category index is the key object to be classified.
      * @return 分类结果。
      * <p>
      * Classification results.
@@ -360,14 +362,14 @@ public final class AlgorithmStar<diffValue, featureReturn> {
      * For distance calculation without samples, you can classify here. You don't need to pass a lot of data samples. You only need to infer the category by the implementation class according to its own algorithm.
      *
      * @param noSampleClassification 无需样本的分类算法，无监督学习的有效操作。
-     *
+     *                               <p>
      *                               The classification algorithm without samples and the effective operation of unsupervised learning.
-     * @param keys 指定的一些数据类别，按照索引与 ints 参数一一对应，其中如果为 ? 代表是未知类别
-     *             <p>
-     *             Some specified data categories correspond to the ints parameter one by one according to the index, in which, if it is? Represents an unknown category
-     * @param ints 指定的类别索引对应的数据特征本身，是需要分类的关键对象。
-     *             <p>
-     *             The data feature corresponding to the specified category index is the key object to be classified.
+     * @param keys                   指定的一些数据类别，按照索引与 ints 参数一一对应，其中如果为 ? 代表是未知类别
+     *                               <p>
+     *                               Some specified data categories correspond to the ints parameter one by one according to the index, in which, if it is? Represents an unknown category
+     * @param ints                   指定的类别索引对应的数据特征本身，是需要分类的关键对象。
+     *                               <p>
+     *                               The data feature corresponding to the specified category index is the key object to be classified.
      * @return 分类结果。
      * <p>
      * Classification results.
@@ -380,15 +382,16 @@ public final class AlgorithmStar<diffValue, featureReturn> {
      * 无样本的距离计算，您在此进行分类，不需要传递很多的数据样本，只需要由实现类按照自己的算法进行类别推断即可。
      * <p>
      * For distance calculation without samples, you can classify here. You don't need to pass a lot of data samples. You only need to infer the category by the implementation class according to its own algorithm.
-     * @param noSampleClassification 无需样本的分类算法，无监督学习的有效操作。
      *
+     * @param noSampleClassification 无需样本的分类算法，无监督学习的有效操作。
+     *                               <p>
      *                               The classification algorithm without samples and the effective operation of unsupervised learning.
-     * @param keys    指定的一些数据类别，按照索引与 ints 参数一一对应，其中如果为 ? 代表是未知类别
-     *                <p>
-     *                Some specified data categories correspond to the ints parameter one by one according to the index, in which, if it is? Represents an unknown category
-     * @param doubles 指定的类别索引对应的数据特征本身，是需要分类的关键对象。
-     *                <p>
-     *                The data feature corresponding to the specified category index is the key object to be classified.
+     * @param keys                   指定的一些数据类别，按照索引与 ints 参数一一对应，其中如果为 ? 代表是未知类别
+     *                               <p>
+     *                               Some specified data categories correspond to the ints parameter one by one according to the index, in which, if it is? Represents an unknown category
+     * @param doubles                指定的类别索引对应的数据特征本身，是需要分类的关键对象。
+     *                               <p>
+     *                               The data feature corresponding to the specified category index is the key object to be classified.
      * @return 分类结果。
      * <p>
      * Classification results.
@@ -401,15 +404,16 @@ public final class AlgorithmStar<diffValue, featureReturn> {
      * 无样本的距离计算，您在此进行分类，不需要传递很多的数据样本，只需要由实现类按照自己的算法进行类别推断即可。
      * <p>
      * For distance calculation without samples, you can classify here. You don't need to pass a lot of data samples. You only need to infer the category by the implementation class according to its own algorithm.
-     * @param noSampleClassification 无需样本的分类算法，无监督学习的有效操作。
      *
+     * @param noSampleClassification 无需样本的分类算法，无监督学习的有效操作。
+     *                               <p>
      *                               The classification algorithm without samples and the effective operation of unsupervised learning.
-     * @param keys                指定的一些数据类别，按照索引与 columnIntegerMatrix 参数一一对应，其中如果为 ? 代表是未知类别
-     *                            <p>
-     *                            Some specified data categories correspond to the columnIntegerMatrix parameter one by one according to the index, in which, if it is? Represents an unknown category
-     * @param columnIntegerMatrix 指定的类别索引对应的数据特征本身，是需要分类的关键对象。
-     *                            <p>
-     *                            The data feature corresponding to the specified category index is the key object to be classified.
+     * @param keys                   指定的一些数据类别，按照索引与 columnIntegerMatrix 参数一一对应，其中如果为 ? 代表是未知类别
+     *                               <p>
+     *                               Some specified data categories correspond to the columnIntegerMatrix parameter one by one according to the index, in which, if it is? Represents an unknown category
+     * @param columnIntegerMatrix    指定的类别索引对应的数据特征本身，是需要分类的关键对象。
+     *                               <p>
+     *                               The data feature corresponding to the specified category index is the key object to be classified.
      * @return 分类结果。
      * <p>
      * Classification results.
@@ -422,15 +426,16 @@ public final class AlgorithmStar<diffValue, featureReturn> {
      * 无样本的距离计算，您在此进行分类，不需要传递很多的数据样本，只需要由实现类按照自己的算法进行类别推断即可。
      * <p>
      * For distance calculation without samples, you can classify here. You don't need to pass a lot of data samples. You only need to infer the category by the implementation class according to its own algorithm.
-     * @param noSampleClassification 无需样本的分类算法，无监督学习的有效操作。
      *
+     * @param noSampleClassification 无需样本的分类算法，无监督学习的有效操作。
+     *                               <p>
      *                               The classification algorithm without samples and the effective operation of unsupervised learning.
-     * @param keys               指定的一些数据类别，按照索引与 columnDoubleMatrix 参数一一对应，其中如果为 ? 代表是未知类别
-     *                           <p>
-     *                           Some specified data categories correspond to the columnDoubleMatrix parameter one by one according to the index, in which, if it is? Represents an unknown category
-     * @param columnDoubleMatrix 指定的类别索引对应的数据特征本身，是需要分类的关键对象。
-     *                           <p>
-     *                           The data feature corresponding to the specified category index is the key object to be classified.
+     * @param keys                   指定的一些数据类别，按照索引与 columnDoubleMatrix 参数一一对应，其中如果为 ? 代表是未知类别
+     *                               <p>
+     *                               Some specified data categories correspond to the columnDoubleMatrix parameter one by one according to the index, in which, if it is? Represents an unknown category
+     * @param columnDoubleMatrix     指定的类别索引对应的数据特征本身，是需要分类的关键对象。
+     *                               <p>
+     *                               The data feature corresponding to the specified category index is the key object to be classified.
      * @return 分类结果。
      * <p>
      * Classification results.
@@ -446,16 +451,16 @@ public final class AlgorithmStar<diffValue, featureReturn> {
      * Calculate the data categories of all rows or columns in a matrix, and return the calculated data category samples.
      *
      * @param sampleClassification 有样本的分类计算组件，适用于具有标准的分类任务。
-     *
+     *                             <p>
      *                             Classification calculation components with samples are applicable to classification tasks with standards.
-     * @param data           需要被计算的特征数据组成的矩阵。
-     *                       <p>
-     *                       Matrix composed of characteristic data to be calculated.
-     * @param categorySample 本次类别计算的类别样本，用于区别各类数据样本，其中的key就是类别，value就是数据特征向量序列，例如：
-     *                       {"person", [1,2,3,4,5]},{"insect", [3, 2, 3, 4, 5]}
-     *                       <p>
-     *                       The category sample of this category calculation is used to distinguish various data samples. The key is the category, and the value is the data feature vector sequence, for example:
-     *                       {"person", [1,2,3,4,5]},{"insect", [3, 2, 3, 4, 5]}
+     * @param data                 需要被计算的特征数据组成的矩阵。
+     *                             <p>
+     *                             Matrix composed of characteristic data to be calculated.
+     * @param categorySample       本次类别计算的类别样本，用于区别各类数据样本，其中的key就是类别，value就是数据特征向量序列，例如：
+     *                             {"person", [1,2,3,4,5]},{"insect", [3, 2, 3, 4, 5]}
+     *                             <p>
+     *                             The category sample of this category calculation is used to distinguish various data samples. The key is the category, and the value is the data feature vector sequence, for example:
+     *                             {"person", [1,2,3,4,5]},{"insect", [3, 2, 3, 4, 5]}
      * @return 按照指定类别进行分类的数据，例如：
      * {"person", ["tom的特征向量", "zhao的特征向量"], "insect", ["蜘蛛的特征向量", "蜗牛的特征向量"]}
      * <p>
@@ -470,17 +475,18 @@ public final class AlgorithmStar<diffValue, featureReturn> {
      * 计算一个矩阵中所有行或列的数据类别，并将计算之后的数据类别样本返回出去。
      * <p>
      * Calculate the data categories of all rows or columns in a matrix, and return the calculated data category samples.
-     * @param sampleClassification 有样本的分类计算组件，适用于具有标准的分类任务。
      *
+     * @param sampleClassification 有样本的分类计算组件，适用于具有标准的分类任务。
+     *                             <p>
      *                             Classification calculation components with samples are applicable to classification tasks with standards.
-     * @param data           需要被计算的特征数据组成的矩阵。
-     *                       <p>
-     *                       Matrix composed of characteristic data to be calculated.
-     * @param categorySample 本次类别计算的类别样本，用于区别各类数据样本，其中的key就是类别，value就是数据特征向量序列，例如：
-     *                       {"person", [1,2,3,4,5]},{"insect", [3, 2, 3, 4, 5]}
-     *                       <p>
-     *                       The category sample of this category calculation is used to distinguish various data samples. The key is the category, and the value is the data feature vector sequence, for example:
-     *                       {"person", [1,2,3,4,5]},{"insect", [3, 2, 3, 4, 5]}
+     * @param data                 需要被计算的特征数据组成的矩阵。
+     *                             <p>
+     *                             Matrix composed of characteristic data to be calculated.
+     * @param categorySample       本次类别计算的类别样本，用于区别各类数据样本，其中的key就是类别，value就是数据特征向量序列，例如：
+     *                             {"person", [1,2,3,4,5]},{"insect", [3, 2, 3, 4, 5]}
+     *                             <p>
+     *                             The category sample of this category calculation is used to distinguish various data samples. The key is the category, and the value is the data feature vector sequence, for example:
+     *                             {"person", [1,2,3,4,5]},{"insect", [3, 2, 3, 4, 5]}
      * @return 按照指定类别进行分类的数据，例如：
      * {"person", ["tom的特征向量", "zhao的特征向量"], "insect", ["蜘蛛的特征向量", "蜗牛的特征向量"]}
      * <p>
@@ -495,17 +501,18 @@ public final class AlgorithmStar<diffValue, featureReturn> {
      * 计算一个矩阵中所有行或列的数据类别，并将计算之后的数据类别样本返回出去。
      * <p>
      * Calculate the data categories of all rows or columns in a matrix, and return the calculated data category samples.
-     * @param sampleClassification 有样本的分类计算组件，适用于具有标准的分类任务。
      *
+     * @param sampleClassification 有样本的分类计算组件，适用于具有标准的分类任务。
+     *                             <p>
      *                             Classification calculation components with samples are applicable to classification tasks with standards.
-     * @param data           需要被计算的特征数据组成的矩阵。
-     *                       <p>
-     *                       Matrix composed of characteristic data to be calculated.
-     * @param categorySample 本次类别计算的类别样本，用于区别各类数据样本，其中的key就是类别，value就是数据特征向量序列，例如：
-     *                       {"person", [1,2,3,4,5]},{"insect", [3, 2, 3, 4, 5]}
-     *                       <p>
-     *                       The category sample of this category calculation is used to distinguish various data samples. The key is the category, and the value is the data feature vector sequence, for example:
-     *                       {"person", [1,2,3,4,5]},{"insect", [3, 2, 3, 4, 5]}
+     * @param data                 需要被计算的特征数据组成的矩阵。
+     *                             <p>
+     *                             Matrix composed of characteristic data to be calculated.
+     * @param categorySample       本次类别计算的类别样本，用于区别各类数据样本，其中的key就是类别，value就是数据特征向量序列，例如：
+     *                             {"person", [1,2,3,4,5]},{"insect", [3, 2, 3, 4, 5]}
+     *                             <p>
+     *                             The category sample of this category calculation is used to distinguish various data samples. The key is the category, and the value is the data feature vector sequence, for example:
+     *                             {"person", [1,2,3,4,5]},{"insect", [3, 2, 3, 4, 5]}
      * @return 按照指定类别进行分类的数据，例如：
      * {"person", ["tom的特征向量", "zhao的特征向量"], "insect", ["蜘蛛的特征向量", "蜗牛的特征向量"]}
      * <p>
@@ -520,17 +527,18 @@ public final class AlgorithmStar<diffValue, featureReturn> {
      * 计算一个矩阵中所有行或列的数据类别，并将计算之后的数据类别样本返回出去。
      * <p>
      * Calculate the data categories of all rows or columns in a matrix, and return the calculated data category samples.
-     * @param sampleClassification 有样本的分类计算组件，适用于具有标准的分类任务。
      *
+     * @param sampleClassification 有样本的分类计算组件，适用于具有标准的分类任务。
+     *                             <p>
      *                             Classification calculation components with samples are applicable to classification tasks with standards.
-     * @param data           需要被计算的特征数据组成的矩阵。
-     *                       <p>
-     *                       Matrix composed of characteristic data to be calculated.
-     * @param categorySample 本次类别计算的类别样本，用于区别各类数据样本，其中的key就是类别，value就是数据特征向量序列，例如：
-     *                       {"person", [1,2,3,4,5]},{"insect", [3, 2, 3, 4, 5]}
-     *                       <p>
-     *                       The category sample of this category calculation is used to distinguish various data samples. The key is the category, and the value is the data feature vector sequence, for example:
-     *                       {"person", [1,2,3,4,5]},{"insect", [3, 2, 3, 4, 5]}
+     * @param data                 需要被计算的特征数据组成的矩阵。
+     *                             <p>
+     *                             Matrix composed of characteristic data to be calculated.
+     * @param categorySample       本次类别计算的类别样本，用于区别各类数据样本，其中的key就是类别，value就是数据特征向量序列，例如：
+     *                             {"person", [1,2,3,4,5]},{"insect", [3, 2, 3, 4, 5]}
+     *                             <p>
+     *                             The category sample of this category calculation is used to distinguish various data samples. The key is the category, and the value is the data feature vector sequence, for example:
+     *                             {"person", [1,2,3,4,5]},{"insect", [3, 2, 3, 4, 5]}
      * @return 按照指定类别进行分类的数据，例如：
      * {"person", ["tom的特征向量", "zhao的特征向量"], "insect", ["蜘蛛的特征向量", "蜗牛的特征向量"]}
      * <p>
@@ -553,9 +561,10 @@ public final class AlgorithmStar<diffValue, featureReturn> {
      * 计算两个事物之间从差异系数百分比
      * <p>
      * Calculate the percentage difference from the coefficient of difference between two things
+     *
      * @param differenceAlgorithm 距离算法计算组件对象。
-     * @param value1 差异参数1
-     * @param value2 差异参数2
+     * @param value1              差异参数1
+     * @param value2              差异参数2
      * @return 差异系数
      */
     public double getDifferenceRatio(DifferenceAlgorithm<diffValue> differenceAlgorithm, diffValue value1, diffValue value2) {
@@ -573,8 +582,9 @@ public final class AlgorithmStar<diffValue, featureReturn> {
      * 将很多字符串组合起来进行特征向量的提取，其中的每一个词都是一个特征值。
      * <p>
      * Combine many strings to extract feature vectors, and each word is a feature value.
+     *
      * @param stringArrayFeature 字符串特征提取组件对象
-     * @param data 需要被进行特征提取的数据，数据类型是不一定的，要看实现类的处理方式
+     * @param data               需要被进行特征提取的数据，数据类型是不一定的，要看实现类的处理方式
      * @return 提取之后的结果对象，类型不确定的，要看实现类的处理方式
      */
     public featureReturn extract(StringArrayFeature<featureReturn> stringArrayFeature, String... data) {
@@ -592,9 +602,9 @@ public final class AlgorithmStar<diffValue, featureReturn> {
      * 将一个序列进行标准化，具体的标准化有不同的实现
      *
      * @param dataStandardization 数据标准化/归一化组件对象
-     * @param v 需要被标准化的数值，可以是坐标或向量，更多信息需要查阅实现
-     *          <p>
-     *          The value to be normalized, which can be a coordinate or a vector. For more information, see the implementation
+     * @param v                   需要被标准化的数值，可以是坐标或向量，更多信息需要查阅实现
+     *                            <p>
+     *                            The value to be normalized, which can be a coordinate or a vector. For more information, see the implementation
      * @return v的标准化样式
      * <p>
      * Normalized style of v
@@ -605,10 +615,11 @@ public final class AlgorithmStar<diffValue, featureReturn> {
 
     /**
      * 将一个序列进行标准化，具体的标准化有不同的实现
+     *
      * @param dataStandardization 数据标准化/归一化组件对象
-     * @param v 需要被标准化的数值，可以是坐标或向量，更多信息需要查阅实现
-     *          <p>
-     *          The value to be normalized, which can be a coordinate or a vector. For more information, see the implementation
+     * @param v                   需要被标准化的数值，可以是坐标或向量，更多信息需要查阅实现
+     *                            <p>
+     *                            The value to be normalized, which can be a coordinate or a vector. For more information, see the implementation
      * @return v的标准化样式
      * <p>
      * Normalized style of v
@@ -619,10 +630,11 @@ public final class AlgorithmStar<diffValue, featureReturn> {
 
     /**
      * 将一个序列进行标准化，具体的标准化有不同的实现
+     *
      * @param dataStandardization 数据标准化/归一化组件对象
-     * @param doubleVector 需要被标准化的数值，可以是坐标或向量，更多信息需要查阅实现
-     *                     <p>
-     *                     The value to be normalized, which can be a coordinate or a vector. For more information, see the implementation
+     * @param doubleVector        需要被标准化的数值，可以是坐标或向量，更多信息需要查阅实现
+     *                            <p>
+     *                            The value to be normalized, which can be a coordinate or a vector. For more information, see the implementation
      * @return v的标准化样式
      * <p>
      * Normalized style of v
@@ -633,10 +645,11 @@ public final class AlgorithmStar<diffValue, featureReturn> {
 
     /**
      * 将一个序列进行标准化，具体的标准化有不同的实现
+     *
      * @param dataStandardization 数据标准化/归一化组件对象
-     * @param integerVector 需要被标准化的数值，可以是坐标或向量，更多信息需要查阅实现
-     *                      <p>
-     *                      The value to be normalized, which can be a coordinate or a vector. For more information, see the implementation
+     * @param integerVector       需要被标准化的数值，可以是坐标或向量，更多信息需要查阅实现
+     *                            <p>
+     *                            The value to be normalized, which can be a coordinate or a vector. For more information, see the implementation
      * @return v的标准化样式
      * <p>
      * Normalized style of v
@@ -647,12 +660,13 @@ public final class AlgorithmStar<diffValue, featureReturn> {
 
     /**
      * 将一个序列进行标准化，具体的标准化有不同的实现
+     *
      * @param rangeDataStandardization 数据预处理算法计算组件对象。
      *                                 <p>
      *                                 algorithms calculate component objects.
-     * @param fastRangeIntegerVector 需要被标准化的数值，可以是坐标或向量，更多信息需要查阅实现
-     *                               <p>
-     *                               The value to be normalized, which can be a coordinate or a vector. For more information, see the implementation
+     * @param fastRangeIntegerVector   需要被标准化的数值，可以是坐标或向量，更多信息需要查阅实现
+     *                                 <p>
+     *                                 The value to be normalized, which can be a coordinate or a vector. For more information, see the implementation
      * @return v的标准化样式
      * <p>
      * Normalized style of v

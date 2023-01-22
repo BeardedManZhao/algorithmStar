@@ -466,9 +466,10 @@ public final class MAIN1 {
 
 - 决策计算组件列表
 
-| Calculation component type                                  | Supported versions | function                                                                                                                                                          |
-|-------------------------------------------------------------|-------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| zhao.algorithmMagic.algorithm.schemeAlgorithm.DecisionTree  | v1.14 | The decision tree calculation component calculates the most efficient filtering path and arranges the event processing functions passed in according to the path  |
+| Calculation component type                                 | Supported versions | function                                                                                                                                                         |
+|------------------------------------------------------------|--------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| zhao.algorithmMagic.algorithm.schemeAlgorithm.DecisionTree | v1.14              | The decision tree calculation component calculates the most efficient filtering path and arranges the event processing functions passed in according to the path |
+| zhao.algorithmMagic.algorithm.schemeAlgorithm.RandomForest | v1.15              | Random forest computing component, randomly distributed samples automatically select the best solution                                                           |
 
 ```java
 package zhao.algorithmMagic;
@@ -514,7 +515,7 @@ public class MAIN1 {
         // 开始计算最优方案
         ArrayList<ArrayIntegerFiltering> decision = d.decision(columnDoubleMatrix, arrayIntegerFiltering1, arrayIntegerFiltering2, arrayIntegerFiltering3);
         // 将最优方案传递给决策树执行，并接收返回的结果
-        String s = d.executeGetString(columnDoubleMatrix.toArrays(), decision);
+        String s = DecisionTree.executeGetString(columnDoubleMatrix.toArrays(), decision);
         System.out.println(s);
     }
 }

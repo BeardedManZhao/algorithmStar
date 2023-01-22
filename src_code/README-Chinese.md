@@ -1,6 +1,5 @@
 # ![image](https://user-images.githubusercontent.com/113756063/194830221-abe24fcc-484b-4769-b3b7-ec6d8138f436.png) 算法之星-机器大脑
 
-- 重要更新！！！！
 - Switch to [English Document](https://github.com/BeardedManZhao/algorithmStar/blob/main/src_code/update/1.12_1.13.md)
 - knowledge base
   <a href="https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/knowledge%20base-Chinese.md">
@@ -9,318 +8,21 @@
 
 ### 更新日志
 
-* 框架版本：1.13 - 1.14
-* 为向量与矩阵提供了原数组的获取支持，可以使用toArray获取到向量或矩阵的数组对象。
-* 为向量与矩阵之间的计算进行了优化，减少了在内部的toArray方法的调用，避免冗余。
-* 为向量与矩阵提供了洗牌随机分布函数，实现快速的随机打乱数据样本。
-* 针对路线对象与复数对象的字符串解析的逻辑进行了优化，减少操作的数量
-* 针对计算组件的计算日志打印，这是一个需要巨大性能的操作，因此在本次更新中，您可以手动干预计算日志的打印情况，具体操作方式如下所示。
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
-import zhao.algorithmMagic.algorithm.distanceAlgorithm.CosineDistance;
-import zhao.algorithmMagic.operands.vector.DoubleVector;
-import zhao.algorithmMagic.operands.vector.IntegerVector;
-import zhao.algorithmMagic.operands.vector.Vector;
-
-public class MAIN1 {
-    public static void main(String[] args) {
-        // 打开日志输出 TODO 这是可选的，如果您不想要无用的计算日志，您可以直接在这里设置为false或是不进行该参数的设置，该参数默认为false
-        OperationAlgorithmManager.PrintCalculationComponentLog = true;
-        CosineDistance<Vector<DoubleVector, IntegerVector>> zhao = CosineDistance.getInstance("zhao");
-        double trueDistance = zhao.getTrueDistance(DoubleVector.parse(1.0, 2.0, 3.0, 4.0, 5.0), DoubleVector.parse(1.0, 2.0, 3.0, 4.0, 5.0));
-        System.out.println(trueDistance);
-    }
-}
-```
-
-* 增加了聚合计算模块，其中包含诸多聚合类计算组件，下面是有关加权平均值聚合运算的示例
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.algorithm.aggregationAlgorithm.WeightedAverage;
-import zhao.algorithmMagic.operands.vector.DoubleVector;
-
-public class MAIN1 {
-    public static void main(String[] args) {
-        // 聚合计算组件 加权平均值
-        WeightedAverage avg = WeightedAverage.getInstance("avg");
-        // 构建一个向量
-        DoubleVector doubleVector = DoubleVector.parse(20, 10, 40);
-        // 计算平均值并打印
-        System.out.println(avg.calculation(doubleVector));
-        // 设置权重数组 这样的设置使得 10 这个数值在本次计算中的影响占比会比较高
-        double[] doubles = {1, 2, 1};
-        // 计算加权平均值并打印
-        System.out.println(avg.calculation(doubles, doubleVector.toDoubleArray()));
-    }
-}
-```
-
-* 增加了特征提取组件
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.algorithm.featureExtraction.DictFeatureExtraction;
-import zhao.algorithmMagic.algorithm.featureExtraction.WordFrequency;
-import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
-
-public class MAIN1 {
-    public static void main(String[] args) {
-        // 获取到字典特征提取组件
-        DictFeatureExtraction dict = DictFeatureExtraction.getInstance("dict");
-        // 构造一个需要被提取的数组
-        String[] strings = {
-                "cat", "dog", "turtle", "fish", "cat"
-        };
-        // 开始提取特征矩阵
-        ColumnIntegerMatrix extract = dict.extract(strings);
-        // 打印矩阵
-        System.out.println(extract);
-        // 打印矩阵的hashMap形式
-        extract.toHashMap().forEach((key, value) -> System.out.println(value.toString() + '\t' + key));
-
-        System.out.println("================================================");
-
-        // 获取到词频特征提取组件
-        WordFrequency word = WordFrequency.getInstance("word");
-        // 构建一些被统计的文本
-        String[] data = {
-                "I love you, Because you are beautiful.",
-                "I need you. Because I'm trapped"
-        };
-        // 开始统计
-        ColumnIntegerMatrix extract1 = word.extract(data);
-        // 打印结果
-        System.out.println(extract1);
-    }
-}
-```
-
-```
-[INFO][dict][23-01-12:10]] : ColumnIntegerMatrix extract(String[] data)
-------------MatrixStart-----------
-cat	dog	turtle	fish	
-[1, 0, 0, 0]
-[0, 1, 0, 0]
-[0, 0, 1, 0]
-[0, 0, 0, 1]
-[1, 0, 0, 0]
-------------MatrixEnd------------
-
-[ 0 0 1 0 0 ]	turtle
-[ 1 0 0 0 1 ]	cat
-[ 0 0 0 1 0 ]	fish
-[ 0 1 0 0 0 ]	dog
-================================================
-[INFO][OperationAlgorithmManager][23-01-12:10]] : register OperationAlgorithm:word
-------------MatrixStart-----------
-I love you, Because you are beautiful.	I need you. Because I'm trapped	rowColName
-[1, 0]	love
-[0, 1]	trapped
-[0, 1]	need
-[1, 1]	I
-[0, 1]	I'm
-[1, 0]	beautiful
-[1, 1]	Because
-[1, 0]	are
-[2, 1]	you
-------------MatrixEnd------------
-```
-
-* 为所有的矩阵增加特征选择函数，能够按照指定的百分比去除指定数量的维度数据，并返回一个新矩阵
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
-import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
-
-public final class MAIN1 {
-    public static void main(String[] args) {
-        // 准备一个矩阵
-        IntegerMatrix parse = IntegerMatrix.parse(
-                new int[]{1, 2, 1, 1, 1, 1, 1, 1, 1},
-                new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9},
-                new int[]{10, 20, 30, 40, 50, 60, 70, 80, 90}
-        );
-        // 开始进行特征选择 去除掉其中的 40% 的维度
-        IntegerMatrix integerMatrix = parse.featureSelection(0.4);
-        System.out.println(integerMatrix);
-
-        // 准备一个矩阵 其中存储的是鸟的数据样本
-        IntegerMatrix parse1 = ColumnIntegerMatrix.parse(
-                new String[]{"1d", "2d", "3d", "4d", "5d", "6d", "7d", "8d", "9d"}, // 样本来源地区编号
-                new String[]{"羽毛", "羽毛的颜色", "种族"}, // 样本统计的三种维度
-                new int[]{1, 2, 1, 1, 1, 1, 1, 1, 1},
-                new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9},
-                new int[]{10, 20, 30, 40, 50, 60, 70, 80, 90}
-        );
-        // 开始进行特征选择 去除掉其中的 40% 的维度
-        IntegerMatrix integerMatrix1 = parse1.featureSelection(0.4);
-        System.out.println(integerMatrix1);
-    }
-}
-```
-
-```
-------------MatrixStart-----------
-[10, 20, 30, 40, 50, 60, 70, 80, 90]
-[1, 2, 3, 4, 5, 6, 7, 8, 9]
-------------MatrixEnd------------
-
-------------MatrixStart-----------
-1d  2d  3d  4d  5d  6d  7d  8d  9d  rowColName
-[10, 20, 30, 40, 50, 60, 70, 80, 90]	种族
-[1, 2, 3, 4, 5, 6, 7, 8, 9]	      羽毛的颜色
-------------MatrixEnd------------
-```
-
-* 为矩阵数据对象增加了计算函数 featureSelection 用于去除冗余的维度
-* 为矩阵数据对象增加了计算函数 deleteRelatedDimensions 用于去除指定维度的相关维度
-* 为矩阵体系中增加了一个新的矩阵类型，带有行列字段的矩阵对象 ColumnIntegerMatrix
-* 增加了分类计算组件，例如KNN
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.algorithm.classificationAlgorithm.KnnClassification;
-import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
-import zhao.algorithmMagic.operands.vector.IntegerVector;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-
-public final class MAIN1 {
-    public static void main(String[] args) {
-        // 开始进行近邻计算
-        KnnClassification knn = KnnClassification.getInstance("knn");
-        HashMap<String, ArrayList<IntegerVector>> classification = knn.classification(
-                // 这里代表类别名称 ? 是没有确定的类别
-                new String[]{"动作", "?", "爱情", "?", "爱情动作"},
-                // 这里是所有需要被确定的类别数据行
-                // 值得注意的是，需要保证类别名称数量和数据行数量一致
-                new int[][]{
-                        // 其中的第一列代表打斗次数 第二列代表接吻次数
-                        new int[]{101, 10},
-                        new int[]{18, 90},
-                        new int[]{1, 81},
-                        new int[]{181, 90},
-                        new int[]{101, 81}
-                }
-        );
-        // 开始打印类别
-        classification.forEach((key, value) -> System.out.println("类别：" + key + '\t' + value));
-
-
-        ColumnIntegerMatrix parse = ColumnIntegerMatrix.parse(
-                new String[]{"科1", "科2", "科3", "科4", "科5", "科6"},
-                new String[]{"张三", "李四", "王五", "赵六", "鲁X", "甲X", "黄X"},
-                new int[]{120, 120, 120, 100, 100, 100},
-                new int[]{80, 30, 80, 45, 67, 89},    // 未知类别
-                new int[]{59, 59, 59, 59, 59, 59},
-                new int[]{110, 100, 120, 90, 80, 90}, // 未知类别
-                new int[]{100, 100, 100, 90, 90, 90}, // 未知类别
-                new int[]{90, 90, 90, 80, 80, 80},
-                new int[]{60, 60, 60, 60, 60, 60}
-        );
-        System.out.println(parse);
-        // 开始进行近邻计算
-        HashMap<String, ArrayList<IntegerVector>> classification1 = knn.classification(
-                new String[]{"优秀", "?", "不及格", "?", "?", "良好", "及格"},
-                parse
-        );
-        // 开始打印类别
-        classification1.forEach((key, value) -> System.out.println("类别：" + key + '\t' + value));
-    }
-}
-```
-
-```
-[INFO][OperationAlgorithmManager][23-01-16:07]] : register OperationAlgorithm:EuclideanMetric
-[INFO][OperationAlgorithmManager][23-01-16:07]] : register OperationAlgorithm:knn
-类别：爱情动作	[[ 181 90 ]]
-类别：爱情	[[ 18 90 ]]
-------------MatrixStart-----------
-科1  科2  科3  科4  科5  科6	rowColName
-[120, 120, 120, 100, 100, 100]	张三
-[80, 30, 80, 45, 67, 89]	李四
-[59, 59, 59, 59, 59, 59]	王五
-[110, 100, 120, 90, 80, 90]	赵六
-[100, 100, 100, 90, 90, 90]	鲁X
-[90, 90, 90, 80, 80, 80]	甲X
-[60, 60, 60, 60, 60, 60]	黄X
-------------MatrixEnd------------
-
-类别：不及格	[[ 80 30 80 45 67 89 ]]
-类别：优秀	[[ 110 100 120 90 80 90 ]]
-类别：良好	[[ 100 100 100 90 90 90 ]]
-```
-
-* 增加了区间型向量，这种向量具有轻量快速的特点，能够满足大数据量下的计算需求。
-* 增加了门户类 zhao.algorithmMagic.core.AlgorithmStar ，可以通过该类进行所有计算函数的调用，当然，也可直接使用计算组件中的计算函数进行计算。
-* 增加了朴素贝叶斯算法，在这种假设事件相互独立的前提下，计算量大大减少。
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.algorithm.probabilisticAlgorithm.NaiveBayes;
-import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
-import zhao.algorithmMagic.utils.filter.ArrayIntegerFiltering;
-
-public final class MAIN1 {
-    public static void main(String[] args) {
-        String[] strings1 = {"职业", "体型", "喜欢"};
-        // 准备一个数据矩阵
-        // 职业：1-程序员  2-产品  3-美工
-        ColumnIntegerMatrix parse = ColumnIntegerMatrix.parse(
-                strings1,
-                new String[]{"N1", "N2", "N3", "N4", "N5", "N6", "N7", "N8", "N9", "N10"},
-                new int[]{1, 1, 0},
-                new int[]{2, 0, 1},
-                new int[]{1, 0, 1},
-                new int[]{1, 1, 1},
-                new int[]{3, 0, 0},
-                new int[]{3, 1, 0},
-                new int[]{2, 0, 1},
-                new int[]{2, 1, 1},
-                new int[]{2, 1, 0},
-                new int[]{2, 1, 0}
-        );
-        System.out.println(parse);
-        // 打乱样本 删除原先的矩阵，并打印新矩阵
-        parse = parse.shuffle(22);
-        System.out.println(parse);
-        // 开始获取朴素贝叶斯算法 计算目标：在自己是产品同时超重的情况下，被喜欢的概率 P(被喜欢|产品,超重)
-        NaiveBayes bayes = NaiveBayes.getInstance("bayes");
-        // 构造事件A 自己被喜欢
-        ArrayIntegerFiltering arrayIntegerFilteringA = v -> v[2] == 1;
-        // 构造事件B 自己是产品，同时超重
-        ArrayIntegerFiltering arrayIntegerFilteringB = v -> v[0] == 2 && v[1] == 1;
-        // 开始计算结果
-        System.out.println(bayes.estimate(parse, arrayIntegerFilteringA, arrayIntegerFilteringB));
-    }
-}
-```
-
-* 新增决策树，用于规划筛选路线的优秀计算组件
+* 框架版本：1.14 - x.xx
+* 新增随机森林计算组件，随机森林相较于决策树，可以让工作变的轻松，但计算量很大，因为森林中有很多决策树。
 
 ```java
 package zhao.algorithmMagic;
 
 import zhao.algorithmMagic.algorithm.schemeAlgorithm.DecisionTree;
+import zhao.algorithmMagic.algorithm.schemeAlgorithm.RandomForest;
 import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
+import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
 import zhao.algorithmMagic.utils.filter.ArrayIntegerFiltering;
 
-import java.util.ArrayList;
-
 public class MAIN1 {
-    public static void main(String[] args) {
-        // 创建一个矩阵对象，其中包含一些相关联的数据，本次要求将与年龄相关联的数据全部删掉
+    public static void main(String[] args) throws CloneNotSupportedException {
+        // 创建一个矩阵对象，其中包含一些数据，现在需要找到最块的筛选路线，并使用此路线将数据进行一次获取
         ColumnIntegerMatrix columnDoubleMatrix = ColumnIntegerMatrix.parse(
                 new String[]{"颜值", "身高", "有钱"},
                 null,
@@ -330,76 +32,49 @@ public class MAIN1 {
                 new int[]{0, 0, 0},
                 new int[]{0, 1, 0},
                 new int[]{1, 0, 0},
-                new int[]{1, 1, 0},
-                new int[]{0, 1, 0}
+                new int[]{1, 1, 9},
+                new int[]{0, 1, 0},
+                new int[]{2, 1, 0},
+                new int[]{0, 1, 0},
+                new int[]{1, 4, 0},
+                new int[]{0, 1, 1},
+                new int[]{5, 1, 1},
+                new int[]{0, 1, 0},
+                new int[]{7, 0, 1},
+                new int[]{1, 1, 1},
+                new int[]{7, 0, 3},
+                new int[]{7, 10, 0},
+                new int[]{5, 1, 2},
+                new int[]{5, 1, 2}
         );
-        System.out.println(columnDoubleMatrix);
-        // 构建一些事件过滤器
-        // 有钱选项为1
-        ArrayIntegerFiltering arrayIntegerFiltering1 = v -> v[2] == 1;
-        // 身高选项为1
-        ArrayIntegerFiltering arrayIntegerFiltering2 = v -> v[1] == 1;
-        // 颜值选项为1
-        ArrayIntegerFiltering arrayIntegerFiltering3 = v -> v[0] == 1;
-        System.out.println(arrayIntegerFiltering1);
-        System.out.println(arrayIntegerFiltering2);
-        System.out.println(arrayIntegerFiltering3);
-        // 获取到决策树
-        DecisionTree d = DecisionTree.getInstance("d");
-        // 设置精准模式
-        d.setAccurate(true);
-        // 设置中心字段索引
-        d.setGroupIndex(0);
-        // 开始计算最优方案
-        ArrayList<ArrayIntegerFiltering> decision = d.decision(columnDoubleMatrix, arrayIntegerFiltering1, arrayIntegerFiltering2, arrayIntegerFiltering3);
-        // 将最优方案传递给决策树执行，并接收返回的结果 TODO 您也可以使用该方案去做足够多的事情
-        String s = d.executeGetString(columnDoubleMatrix.toArrays(), decision);
-        System.out.println(s);
+        // 构建条件
+        ArrayIntegerFiltering arrayIntegerFiltering1 = v -> v[1] == 0;
+        ArrayIntegerFiltering arrayIntegerFiltering2 = v -> v[0] == 7;
+        ArrayIntegerFiltering arrayIntegerFiltering3 = v -> v[2] == 3;
+
+        // 开始进行决策树结果获取
+        DecisionTree decisionTree = DecisionTree.getInstance("DecisionTree");
+        IntegerMatrix integerMatrix = decisionTree.decisionAndGet(
+                // 设置需要被处理的矩阵对象以及调用熵运算时使用的log底数
+                columnDoubleMatrix, 2,
+                // 设置运行时的过滤事件
+                arrayIntegerFiltering2, arrayIntegerFiltering1, arrayIntegerFiltering3
+        );
+        System.out.println(integerMatrix);
+
+        // 开始进行随机森林结果获取
+        RandomForest randomForest = RandomForest.getInstance("RandomForest");
+        IntegerMatrix integerMatrix1 = randomForest.decisionAndGet(
+                // 设置需要被处理的矩阵对象以及调用熵运算时使用的log底数，同时设置了森林中的决策树数量3，以及决策树负责的样本量7
+                columnDoubleMatrix, 2, 3, 19,
+                // 设置运行时的过滤事件
+                arrayIntegerFiltering1, arrayIntegerFiltering2, arrayIntegerFiltering3
+        );
+        System.out.println(integerMatrix1);
     }
 }
 ```
 
-```
-------------IntegerMatrixStart-----------
-颜值	身高	有钱	
-[1, 1, 1]
-[1, 0, 1]
-[0, 1, 0]
-[0, 0, 0]
-[0, 1, 0]
-[1, 0, 0]
-[1, 1, 0]
-[0, 1, 0]
-------------IntegerMatrixEnd------------
-
-zhao.algorithmMagic.MAIN1$$Lambda$1/8468976@372a00
-zhao.algorithmMagic.MAIN1$$Lambda$2/26887603@dd8dc3
-zhao.algorithmMagic.MAIN1$$Lambda$3/10069385@103e736
-[INFO][OperationAlgorithmManager][23-01-20:09]] : register OperationAlgorithm:d
-
-* >>> Tier 1 Decision
-True => [1, 1, 1]
-True => [1, 0, 1]
-True => [1, 0, 0]
-True => [1, 1, 0]
-False => [0, 1, 0]
-False => [0, 0, 0]
-False => [0, 1, 0]
-False => [0, 1, 0]
-
-* >>> Tier 2 Decision
-True => [1, 1, 1]
-True => [1, 0, 1]
-False => [1, 0, 0]
-False => [1, 1, 0]
-
-* >>> Tier 3 Decision
-True => [1, 1, 1]
-False => [1, 0, 1]
-
-
-进程已结束,退出代码0
-
-```
+* 决策计算组件现在实现了方案计算与结果计算的合并，通过函数 decisionAndGet 可以在决策分析的同时获取到结果数值。
 
 ### Version update date : XX XX-XX-XX

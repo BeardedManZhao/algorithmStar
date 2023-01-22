@@ -4,6 +4,8 @@ import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
+import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASMath;
 import zhao.algorithmMagic.utils.filter.ArrayDoubleFiltering;
@@ -22,9 +24,9 @@ import java.util.List;
  */
 public class DecisionTree extends SchemeAlgorithm {
 
-    private final static OperatorOperationException OUT_OF_RANGE = new OperatorOperationException("The grouping index is out of range!!!");
-    private int groupIndex = 0;
-    private boolean accurate = false;
+    protected final static OperatorOperationException OUT_OF_RANGE = new OperatorOperationException("The grouping index is out of range!!!");
+    protected int groupIndex = 0;
+    protected boolean accurate = false;
 
     protected DecisionTree(String AlgorithmName) {
         super(AlgorithmName);
@@ -51,6 +53,76 @@ public class DecisionTree extends SchemeAlgorithm {
             OperationAlgorithmManager.getInstance().register(DecisionTree);
             return DecisionTree;
         }
+    }
+
+    /**
+     * 执行决策方案，并记录结果，同时生成过滤数据详情
+     *
+     * @param ints      需要被进行决策项的数据样本
+     * @param arrayList 决策方案
+     * @return 执行结果，是数据过滤的操作过程
+     */
+    public static String executeGetString(int[][] ints, ArrayList<ArrayIntegerFiltering> arrayList) {
+        StringBuilder stringBuilder = new StringBuilder(10 + (arrayList.size() << 2));
+        ArrayList<int[]> data = new ArrayList<>(Arrays.asList(ints));
+        int count = 0;
+        for (ArrayIntegerFiltering arrayIntegerFiltering : arrayList) {
+            // 开始进行提取
+            stringBuilder.append("\n* >>> Tier ").append(++count).append(" Decision\n");
+            StringBuilder stringBuilder1 = new StringBuilder();
+            ArrayList<int[]> deleteList = new ArrayList<>();
+            for (int[] anInt : data) {
+                if (arrayIntegerFiltering.isComplianceEvents(anInt)) {
+                    // 标记为真
+                    stringBuilder.append("True  => ").append(Arrays.toString(anInt)).append('\n');
+                } else {
+                    // 标记为假
+                    stringBuilder1.append("False => ").append(Arrays.toString(anInt)).append('\n');
+                    deleteList.add(anInt);
+                }
+            }
+            // 清空假值
+            data.removeAll(deleteList);
+            // 真假合并
+            stringBuilder.append(stringBuilder1);
+        }
+
+        return stringBuilder.toString();
+    }
+
+    /**
+     * 执行决策方案，并记录结果，同时生成dot图源代码
+     *
+     * @param ints      需要被进行决策项的数据样本
+     * @param arrayList 决策方案
+     * @return 执行结果，是dot图的源代码。
+     */
+    public static String executeGetString(double[][] ints, ArrayList<ArrayDoubleFiltering> arrayList) {
+        StringBuilder stringBuilder = new StringBuilder(10 + (arrayList.size() << 2));
+        ArrayList<double[]> data = new ArrayList<>(Arrays.asList(ints));
+        int count = 0;
+        for (ArrayDoubleFiltering arrayIntegerFiltering : arrayList) {
+            // 开始进行提取
+            stringBuilder.append("\n* >>> Tier ").append(++count).append(" Decision\n");
+            StringBuilder stringBuilder1 = new StringBuilder();
+            ArrayList<double[]> deleteList = new ArrayList<>();
+            for (double[] anInt : data) {
+                if (arrayIntegerFiltering.isComplianceEvents(anInt)) {
+                    // 标记为真
+                    stringBuilder.append("True  => ").append(Arrays.toString(anInt)).append('\n');
+                } else {
+                    // 标记为假
+                    stringBuilder1.append("False => ").append(Arrays.toString(anInt)).append('\n');
+                    deleteList.add(anInt);
+                }
+            }
+            // 清空假值
+            data.removeAll(deleteList);
+            // 真假合并
+            stringBuilder.append(stringBuilder1);
+        }
+
+        return stringBuilder.toString();
     }
 
     /**
@@ -127,76 +199,6 @@ public class DecisionTree extends SchemeAlgorithm {
     }
 
     /**
-     * 执行决策方案，并记录结果，同时生成过滤数据详情
-     *
-     * @param ints      需要被进行决策项的数据样本
-     * @param arrayList 决策方案
-     * @return 执行结果，是数据过滤的操作过程
-     */
-    public String executeGetString(int[][] ints, ArrayList<ArrayIntegerFiltering> arrayList) {
-        StringBuilder stringBuilder = new StringBuilder(10 + (arrayList.size() << 2));
-        ArrayList<int[]> data = new ArrayList<>(Arrays.asList(ints));
-        int count = 0;
-        for (ArrayIntegerFiltering arrayIntegerFiltering : arrayList) {
-            // 开始进行提取
-            stringBuilder.append("\n* >>> Tier ").append(++count).append(" Decision\n");
-            StringBuilder stringBuilder1 = new StringBuilder();
-            ArrayList<int[]> deleteList = new ArrayList<>();
-            for (int[] anInt : data) {
-                if (arrayIntegerFiltering.isComplianceEvents(anInt)) {
-                    // 标记为真
-                    stringBuilder.append("True  => ").append(Arrays.toString(anInt)).append('\n');
-                } else {
-                    // 标记为假
-                    stringBuilder1.append("False => ").append(Arrays.toString(anInt)).append('\n');
-                    deleteList.add(anInt);
-                }
-            }
-            // 清空假值
-            data.removeAll(deleteList);
-            // 真假合并
-            stringBuilder.append(stringBuilder1);
-        }
-
-        return stringBuilder.toString();
-    }
-
-    /**
-     * 执行决策方案，并记录结果，同时生成dot图源代码
-     *
-     * @param ints      需要被进行决策项的数据样本
-     * @param arrayList 决策方案
-     * @return 执行结果，是dot图的源代码。
-     */
-    public String executeGetString(double[][] ints, ArrayList<ArrayDoubleFiltering> arrayList) {
-        StringBuilder stringBuilder = new StringBuilder(10 + (arrayList.size() << 2));
-        ArrayList<double[]> data = new ArrayList<>(Arrays.asList(ints));
-        int count = 0;
-        for (ArrayDoubleFiltering arrayIntegerFiltering : arrayList) {
-            // 开始进行提取
-            stringBuilder.append("\n* >>> Tier ").append(++count).append(" Decision\n");
-            StringBuilder stringBuilder1 = new StringBuilder();
-            ArrayList<double[]> deleteList = new ArrayList<>();
-            for (double[] anInt : data) {
-                if (arrayIntegerFiltering.isComplianceEvents(anInt)) {
-                    // 标记为真
-                    stringBuilder.append("True  => ").append(Arrays.toString(anInt)).append('\n');
-                } else {
-                    // 标记为假
-                    stringBuilder1.append("False => ").append(Arrays.toString(anInt)).append('\n');
-                    deleteList.add(anInt);
-                }
-            }
-            // 清空假值
-            data.removeAll(deleteList);
-            // 真假合并
-            stringBuilder.append(stringBuilder1);
-        }
-
-        return stringBuilder.toString();
-    }
-
-    /**
      * 通过决策树，对传进进来的决策序列重新排列，使其成为最优解。
      * <p>
      * Through the decision tree, the incoming decision sequence is rearranged to become the optimal solution.
@@ -214,7 +216,7 @@ public class DecisionTree extends SchemeAlgorithm {
      * <p>
      * The rearranged ArrayDoubleFiltering decision scheme, in which the decision is made from 0, is the best way to deal with it.
      */
-    private ArrayList<ArrayDoubleFiltering> decision(double[][] ints, int logBase, List<ArrayDoubleFiltering> arrayIntegerFiltering, int max) {
+    protected ArrayList<ArrayDoubleFiltering> decision(double[][] ints, int logBase, List<ArrayDoubleFiltering> arrayIntegerFiltering, int max) {
         ArrayList<ArrayDoubleFiltering> res = new ArrayList<>(arrayIntegerFiltering.size() + 4);
         // 计算出样本中的信息熵 以 groupIndex列为分组索引
         double h = ASMath.entropy(ints, logBase, groupIndex);
@@ -277,7 +279,7 @@ public class DecisionTree extends SchemeAlgorithm {
      * <p>
      * The rearranged ArrayDoubleFiltering decision scheme, in which the decision is made from 0, is the best way to deal with it.
      */
-    private ArrayList<ArrayIntegerFiltering> decision(int[][] ints, int logBase, List<ArrayIntegerFiltering> arrayIntegerFiltering, int max) {
+    protected ArrayList<ArrayIntegerFiltering> decision(int[][] ints, int logBase, List<ArrayIntegerFiltering> arrayIntegerFiltering, int max) {
         ArrayList<ArrayIntegerFiltering> res = new ArrayList<>(arrayIntegerFiltering.size() + 4);
         // 计算出样本中的信息熵 以 groupIndex列为分组索引
         double h = ASMath.entropy(ints, logBase, groupIndex);
@@ -320,5 +322,103 @@ public class DecisionTree extends SchemeAlgorithm {
             }
         }
         return res;
+    }
+
+    /**
+     * 使用决策树的精准决策模式，获取到本次数据过滤之后的结果矩阵数值。
+     *
+     * @param ints                  当前需要计算的样本矩阵数组
+     *                              <p>
+     *                              Sample matrix array to be calculated currently
+     * @param logBase               本次决策运算中需要使用的对数底数值
+     *                              <p>
+     *                              The logarithmic base value to be used in this decision operation
+     * @param arrayIntegerFiltering 本次需要被决策树重新排列的决策方案，这是一个数组，其中每一个都是一个事件判断函数的实现，最终会通过决策树算法计算出结果数值
+     *                              <p>
+     *                              The decision scheme that needs to be rearranged by the decision tree this time is an array, each of which is the implementation of an event judgment function. Finally, the result value will be calculated by the decision tree algorithm
+     * @return 由决策树使用精准模式进行决策选择之后，符合条件的所有数据行组成的矩阵对象。
+     * <p>
+     * A matrix object composed of all data rows that meet the criteria after the decision tree uses the precise mode for decision selection.
+     */
+    public IntegerMatrix decisionAndGet(int[][] ints, int logBase, List<ArrayIntegerFiltering> arrayIntegerFiltering) {
+        // 计算出样本中的信息熵 以 groupIndex列为分组索引
+        double h = ASMath.entropy(ints, logBase, groupIndex);
+        ArrayList<int[]> arrayList = new ArrayList<>(Arrays.asList(ints));
+        while (arrayList.size() != 0) {
+            ArrayIntegerFiltering arrayIntegerFiltering_max = null;
+            {
+                double max_value = Double.MIN_VALUE;
+                // 开始迭代每一个方案数据对象
+                for (ArrayIntegerFiltering doubleFiltering : arrayIntegerFiltering) {
+                    // 计算出当前事件的最大信息增益
+                    double temp = h - ASMath.entropyAndDelete(arrayList, logBase, doubleFiltering);
+                    if (temp > max_value) {
+                        max_value = temp;
+                        arrayIntegerFiltering_max = doubleFiltering;
+                    }
+                }
+            }
+            if (arrayIntegerFiltering_max != null) {
+                arrayIntegerFiltering.remove(arrayIntegerFiltering_max);
+                // 使用本层最有效的组件进行数据过滤
+                ArrayList<int[]> deleteList = new ArrayList<>();
+                for (int[] ints1 : arrayList) {
+                    if (!arrayIntegerFiltering_max.isComplianceEvents(ints1)) {
+                        deleteList.add(ints1);
+                    }
+                }
+                arrayList.removeAll(deleteList);
+            } else break;
+        }
+        return IntegerMatrix.parse(arrayList.size() != 0 ? arrayList.toArray(new int[0][]) : new int[1][1]);
+    }
+
+    /**
+     * 使用决策树的精准决策模式，获取到本次数据过滤之后的结果矩阵数值。
+     *
+     * @param doubles               当前需要计算的样本矩阵数组
+     *                              <p>
+     *                              Sample matrix array to be calculated currently
+     * @param logBase               本次决策运算中需要使用的对数底数值
+     *                              <p>
+     *                              The logarithmic base value to be used in this decision operation
+     * @param arrayIntegerFiltering 本次需要被决策树重新排列的决策方案，这是一个数组，其中每一个都是一个事件判断函数的实现，最终会通过决策树算法计算出结果数值
+     *                              <p>
+     *                              The decision scheme that needs to be rearranged by the decision tree this time is an array, each of which is the implementation of an event judgment function. Finally, the result value will be calculated by the decision tree algorithm
+     * @return 由决策树使用精准模式进行决策选择之后，符合条件的所有数据行组成的矩阵对象。
+     * <p>
+     * A matrix object composed of all data rows that meet the criteria after the decision tree uses the precise mode for decision selection.
+     */
+    public DoubleMatrix decisionAndGet(double[][] doubles, int logBase, List<ArrayDoubleFiltering> arrayIntegerFiltering) {
+        // 计算出样本中的信息熵 以 groupIndex列为分组索引
+        double h = ASMath.entropy(doubles, logBase, groupIndex);
+        ArrayList<double[]> arrayList = new ArrayList<>(Arrays.asList(doubles));
+        while (arrayList.size() != 0) {
+            ArrayDoubleFiltering arrayDoubleFiltering = null;
+            {
+                double max_value = Double.MIN_VALUE;
+                // 开始迭代每一个方案数据对象
+                for (ArrayDoubleFiltering doubleFiltering : arrayIntegerFiltering) {
+                    // 计算出当前事件的最大信息增益
+                    double temp = h - ASMath.entropyAndDelete(arrayList, logBase, doubleFiltering);
+                    if (temp > max_value) {
+                        max_value = temp;
+                        arrayDoubleFiltering = doubleFiltering;
+                    }
+                }
+            }
+            if (arrayDoubleFiltering != null) {
+                arrayIntegerFiltering.remove(arrayDoubleFiltering);
+                // 使用本层最有效的组件进行数据过滤
+                ArrayList<double[]> deleteList = new ArrayList<>();
+                for (double[] doubles1 : arrayList) {
+                    if (!arrayDoubleFiltering.isComplianceEvents(doubles1)) {
+                        deleteList.add(doubles1);
+                    }
+                }
+                arrayList.removeAll(deleteList);
+            } else break;
+        }
+        return DoubleMatrix.parse(arrayList.size() == 0 ? arrayList.toArray(new double[0][]) : new double[1][1]);
     }
 }

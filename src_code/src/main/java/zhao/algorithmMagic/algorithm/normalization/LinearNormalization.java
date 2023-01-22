@@ -63,6 +63,7 @@ public class LinearNormalization extends DataStandardization implements RangeDat
      * 将一个多维序列标准化，标准化手段就是序列v中的每一个数值进行运算：Xn = （Xn - min(x)）/ max(x) - min(x)
      * <p>
      * To normalize a multidimensional sequence, the normalization method is to operate on each value in the sequence v: x = (x - min(x)) max(x) - min(x)
+     *
      * @param max1    归一化之后的每一个元素的允许的最小值
      * @param min1    归一化之后的每一个元素的允许的最大值
      * @param doubles 需要被标准化的一个序列
@@ -107,8 +108,9 @@ public class LinearNormalization extends DataStandardization implements RangeDat
      * 将一个多维序列标准化，标准化手段就是序列v中的每一个数值进行运算：Xn = （Xn - min(x)）/ max(x) - min(x)
      * <p>
      * To normalize a multidimensional sequence, the normalization method is to operate on each value in the sequence v: x = (x - min(x)) max(x) - min(x)
-     * @param max1    归一化之后的每一个元素的允许的最小值
-     * @param min1    归一化之后的每一个元素的允许的最大值
+     *
+     * @param max1 归一化之后的每一个元素的允许的最小值
+     * @param min1 归一化之后的每一个元素的允许的最大值
      * @param ints 需要被标准化的一个序列
      * @return 标准化的结果
      */

@@ -12,6 +12,8 @@ import java.util.Arrays;
  *
  * @param <ImplementationType> 实现类的数据类型  The data type of the implementing class
  * @param <ElementType>        向量中的元素类型  element type in the vector
+ * @param <ArrayType>          矩阵中的行向量数组类型
+ * @param <ArraysType>         矩阵转换成功之后的数组类型
  * @author zhao
  * 该类为抽象，其中包含最基本的定义与类型管控
  * <p>
@@ -69,8 +71,14 @@ public abstract class Matrix<ImplementationType extends Matrix<?, ?, ?, ?>, Elem
      * 获取到矩阵中指定坐标点的数值
      *
      * @param row 行编号 从0开始
+     *            <p>
+     *            Line number starts from 0
      * @param col 列编号 从0开始
-     * @return 矩阵中的数值
+     *            <p>
+     *            Column number starts from 0
+     * @return 矩阵中指定行列坐标的数值
+     * <p>
+     * The value of the specified row and column coordinates in the matrix
      */
     public abstract ElementType get(int row, int col);
 
@@ -94,7 +102,7 @@ public abstract class Matrix<ImplementationType extends Matrix<?, ?, ?, ?>, Elem
      * <p>
      * Whether the row pointer is moved down successfully, if it does not return false, it means that it cannot continue to move.
      */
-    boolean MovePointerDown() {
+    final boolean MovePointerDown() {
         if (this.RowPointer <= MaximumRowPointerCount) {
             this.RowPointer++;
             return true;
@@ -112,7 +120,7 @@ public abstract class Matrix<ImplementationType extends Matrix<?, ?, ?, ?>, Elem
      * <p>
      * Whether the row pointer is moved up successfully, if it does not return false, it means that it cannot continue to move.
      */
-    boolean MovePointerUp() {
+    final boolean MovePointerUp() {
         if (this.RowPointer >= MinimumRowPointerCount) {
             this.RowPointer--;
             return true;
@@ -128,7 +136,7 @@ public abstract class Matrix<ImplementationType extends Matrix<?, ?, ?, ?>, Elem
      *
      * @return 链式 chain
      */
-    ImplementationType PointerReset() {
+    final ImplementationType PointerReset() {
         return PointerReset(-1);
     }
 
@@ -140,7 +148,7 @@ public abstract class Matrix<ImplementationType extends Matrix<?, ?, ?, ?>, Elem
      *
      * @return 链式 chain
      */
-    ImplementationType PointerReset(int n) {
+    final ImplementationType PointerReset(int n) {
         this.RowPointer = n;
         return this.expand();
     }
@@ -269,7 +277,7 @@ public abstract class Matrix<ImplementationType extends Matrix<?, ?, ?, ?>, Elem
     /**
      * @return 当前矩阵对象是否被其他的线程所占用，如果返回false，就代表当前矩阵对象可以参与多线程的计算工作
      */
-    public boolean isUnlock() {
+    public final boolean isUnlock() {
         return Unlock;
     }
 

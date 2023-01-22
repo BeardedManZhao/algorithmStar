@@ -2,6 +2,10 @@ package zhao.algorithmMagic.utils;
 
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.operands.ComplexNumber;
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
+import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
+import zhao.algorithmMagic.operands.matrix.block.DoubleMatrixBlock;
+import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixBlock;
 import zhao.algorithmMagic.utils.filter.ArrayDoubleFiltering;
 import zhao.algorithmMagic.utils.filter.ArrayIntegerFiltering;
 import zhao.algorithmMagic.utils.filter.DoubleEvent;
@@ -862,9 +866,9 @@ public final class ASMath {
         if (copy) {
             int[][] res = new int[doubles.length][];
             ASClass.array2DCopy(doubles, res);
-            return shuffleFunction(random, doubles.length - 1, res);
+            return shuffleFunction(random, doubles.length - 1, res, res.length);
         } else {
-            return shuffleFunction(random, doubles.length - 1, doubles);
+            return shuffleFunction(random, doubles.length - 1, doubles, doubles.length);
         }
     }
 
@@ -876,8 +880,8 @@ public final class ASMath {
      * @param res      需要被打乱的数组对象，该对象本身会被打乱。
      * @return 打乱之后的数组对象。
      */
-    private static int[][] shuffleFunction(Random random, int maxIndex, int[][] res) {
-        for (int i = 0; i < res.length; i++) {
+    private static int[][] shuffleFunction(Random random, int maxIndex, int[][] res, int length) {
+        for (int i = 0; i < length; i++) {
             int i1 = random.nextInt(maxIndex);
             int[] temp = res[i1];
             res[i1] = res[i];
@@ -900,9 +904,9 @@ public final class ASMath {
         if (copy) {
             double[][] res = new double[doubles.length][];
             ASClass.array2DCopy(doubles, res);
-            return shuffleFunction(random, doubles.length - 1, res);
+            return shuffleFunction(random, doubles.length - 1, res, res.length);
         } else {
-            return shuffleFunction(random, doubles.length - 1, doubles);
+            return shuffleFunction(random, doubles.length - 1, doubles, doubles.length);
         }
     }
 
@@ -914,8 +918,8 @@ public final class ASMath {
      * @param res      需要被打乱的数组对象，该对象本身会被打乱。
      * @return 打乱之后的数组对象。
      */
-    private static double[][] shuffleFunction(Random random, int maxIndex, double[][] res) {
-        for (int i = 0; i < res.length; i++) {
+    private static double[][] shuffleFunction(Random random, int maxIndex, double[][] res, int length) {
+        for (int i = 0; i < length; i++) {
             int i1 = random.nextInt(maxIndex);
             double[] temp = res[i1];
             res[i1] = res[i];
@@ -944,6 +948,47 @@ public final class ASMath {
         }
     }
 
+
+    /**
+     * 将任意类型的数组打乱顺序
+     *
+     * @param complexNumbers 需要被打乱的二维数组
+     * @param Seed           洗牌打乱时的随即种子
+     * @param copy           是否使用拷贝新数组的方式进行打乱
+     * @return 打乱之后的数组对象，是否为新数组需要看copy函数的值
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T[] shuffle(T[] complexNumbers, final long Seed, final boolean copy) {
+        Random random = new Random();
+        random.setSeed(Seed);
+        if (copy) {
+            Object[] res = new Object[complexNumbers.length];
+            System.arraycopy(complexNumbers, 0, res, 0, res.length);
+            return (T[]) shuffleFunction(random, complexNumbers.length - 1, res);
+        } else {
+            return shuffleFunction(random, complexNumbers.length - 1, complexNumbers);
+        }
+    }
+
+    /**
+     * 将一个数组中的所有元素打乱顺序，其中被打乱顺序的是数组本身，打乱时不会返回一个新的数组。
+     *
+     * @param random   打乱数组时使用的随机数生成器。
+     * @param maxIndex 打乱数组时，随机索引的最大值。
+     * @param res      需要被打乱的数组对象，该对象本身会被打乱。
+     * @return 打乱之后的数组对象。
+     */
+    private static <T> T[] shuffleFunction(Random random, int maxIndex, T[] res) {
+        for (int i = 0; i < res.length; i++) {
+            int i1 = random.nextInt(maxIndex);
+            T temp = res[i1];
+            res[i1] = res[i];
+            res[i] = temp;
+        }
+        return res;
+    }
+
+
     /**
      * 将一个数组中的所有元素打乱顺序，其中被打乱顺序的是数组本身，打乱时不会返回一个新的数组。
      *
@@ -960,6 +1005,96 @@ public final class ASMath {
             res[i] = temp;
         }
         return res;
+    }
+
+    /**
+     * 将一个矩阵中的数据按照行使用随机算法打乱，打乱之后会生成一个新矩阵，从新矩阵中获取到layer行元素，然后再一次打乱，直到原矩阵中的数据遍历结束。
+     *
+     * @param doubleMatrix 需要被随机打乱的原矩阵对象
+     * @param seed         打乱数据的时候使用的随机种子
+     * @param layer        矩阵快中所包含的矩阵层数
+     * @param rowOfLayer   每一层包含多少行数据
+     * @return 一个由doubleMatrix拆分出来的layer个子矩阵所组成的矩阵块。
+     */
+    public static DoubleMatrixBlock shuffleAndSplit(DoubleMatrix doubleMatrix, long seed, int layer, int rowOfLayer) {
+        return shuffleAndSplit(doubleMatrix.copyToNewArrays(), seed, layer, rowOfLayer);
+    }
+
+    /**
+     * 将一个矩阵中的数据按照行使用随机算法打乱，打乱之后会生成一个新矩阵，从新矩阵中获取到layer行元素，然后再一次打乱，直到原矩阵中的数据遍历结束。
+     *
+     * @param integerMatrix 需要被随机打乱的原矩阵对象
+     * @param seed          打乱数据的时候使用的随机种子
+     * @param layer         矩阵快中所包含的矩阵层数
+     * @param rowOfLayer    每一层包含多少行数据
+     * @return 一个由doubleMatrix拆分出来的layer个子矩阵所组成的矩阵块。
+     */
+    public static IntegerMatrixBlock shuffleAndSplit(IntegerMatrix integerMatrix, long seed, int layer, int rowOfLayer) {
+        return shuffleAndSplit(integerMatrix.copyToNewArrays(), seed, layer, rowOfLayer);
+    }
+
+    /**
+     * 将一个矩阵中的数据按照行使用随机算法打乱，打乱之后会生成一个新矩阵，从新矩阵中获取到layer行元素，然后再一次打乱，直到原矩阵中的数据遍历结束。
+     *
+     * @param doubleMatrix 需要被随机打乱的原矩阵对象
+     * @param seed         打乱数据的时候使用的随机种子
+     * @param layer        矩阵快中所包含的矩阵层数
+     * @param rowOfLayer   每一层包含多少行数据
+     * @return 一个由doubleMatrix拆分出来的layer个子矩阵所组成的矩阵块。
+     */
+    public static DoubleMatrixBlock shuffleAndSplit(double[][] doubleMatrix, long seed, int layer, int rowOfLayer) {
+        Random random = new Random();
+        random.setSeed(seed);
+        // 构造子矩阵容器
+        int count = -1, max = layer - 1;
+        DoubleMatrix[] doubleMatrices = new DoubleMatrix[layer];
+        // 获取到矩阵中的数组对象
+        final int max1 = rowOfLayer - 1;
+        while (count != max) {
+            // 开始进行迭代，依次获取到矩阵中的rowOfLayer个元素，直到层数满足layer
+            double[][] temp = new double[rowOfLayer][];
+            int count1 = -1;
+            for (int i = 0; i <= max1; i++) {
+                temp[++count1] = doubleMatrix[i];
+            }
+            doubleMatrices[++count] = DoubleMatrix.parse(temp);
+            // 重新打乱
+            shuffleFunction(random, doubleMatrix.length, doubleMatrix, rowOfLayer);
+            random.setSeed(seed = (seed << 1) - 2);
+        }
+        return DoubleMatrixBlock.parse(doubleMatrices);
+    }
+
+    /**
+     * 将一个矩阵中的数据按照行使用随机算法打乱，打乱之后会生成一个新矩阵，从新矩阵中获取到layer行元素，然后再一次打乱，直到原矩阵中的数据遍历结束。
+     *
+     * @param integerMatrix 需要被随机打乱的原矩阵对象
+     * @param seed          打乱数据的时候使用的随机种子
+     * @param layer         矩阵快中所包含的矩阵层数
+     * @param rowOfLayer    每一层包含多少行数据
+     * @return 一个由doubleMatrix拆分出来的layer个子矩阵所组成的矩阵块。
+     */
+    public static IntegerMatrixBlock shuffleAndSplit(int[][] integerMatrix, long seed, int layer, int rowOfLayer) {
+        Random random = new Random();
+        random.setSeed(seed);
+        // 构造子矩阵容器
+        int count = -1, max = layer - 1;
+        IntegerMatrix[] doubleMatrices = new IntegerMatrix[layer];
+        // 获取到矩阵中的数组对象
+        final int max1 = rowOfLayer - 1;
+        while (count != max) {
+            // 开始进行迭代，依次获取到矩阵中的rowOfLayer个元素，直到层数满足layer
+            int[][] temp = new int[rowOfLayer][];
+            int count1 = -1;
+            for (int i = 0; i <= max1; i++) {
+                temp[++count1] = integerMatrix[i];
+            }
+            doubleMatrices[++count] = IntegerMatrix.parse(temp);
+            // 重新打乱
+            shuffleFunction(random, integerMatrix.length, integerMatrix, rowOfLayer);
+            random.setSeed(seed = (seed << 1) - 2);
+        }
+        return IntegerMatrixBlock.parse(doubleMatrices);
     }
 
     /**

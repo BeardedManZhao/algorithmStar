@@ -13,10 +13,12 @@ import java.util.HashSet;
  */
 public final class DependentAlgorithmNameLibrary {
     public static final String EUCLIDEAN_METRIC_NAME = "EuclideanMetric";
+    public static final String DECISION_TREE_NAME = "DecisionTree";
     private final static HashSet<String> DEPENDENT_ALGORITHM_NAME_ARRAY = new HashSet<>();
 
     static {
         DEPENDENT_ALGORITHM_NAME_ARRAY.add(EUCLIDEAN_METRIC_NAME);
+        DEPENDENT_ALGORITHM_NAME_ARRAY.add(DECISION_TREE_NAME);
     }
 
     /**

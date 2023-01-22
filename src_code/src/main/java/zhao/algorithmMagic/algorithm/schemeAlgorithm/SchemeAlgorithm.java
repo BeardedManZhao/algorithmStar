@@ -10,6 +10,8 @@ import zhao.algorithmMagic.utils.filter.ArrayDoubleFiltering;
 import zhao.algorithmMagic.utils.filter.ArrayIntegerFiltering;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 决策算法抽象类，是针对多种处理方案进行最优排列或优化等的优秀算法，所有的决策算法都应实现与本抽象类。
@@ -174,4 +176,120 @@ public abstract class SchemeAlgorithm implements OperationAlgorithm {
      * The rearranged ArrayDoubleFiltering decision scheme, in which the decision is made from 0, is the best way to deal with it.
      */
     public abstract ArrayList<ArrayIntegerFiltering> decision(int[][] ints, int logBase, ArrayIntegerFiltering... arrayIntegerFiltering);
+
+    /**
+     * 使用决策树的精准决策模式，获取到本次数据过滤之后的结果矩阵数值。
+     *
+     * @param ints                  当前需要计算的样本矩阵数组
+     *                              <p>
+     *                              Sample matrix array to be calculated currently
+     * @param logBase               本次决策运算中需要使用的对数底数值
+     *                              <p>
+     *                              The logarithmic base value to be used in this decision operation
+     * @param arrayIntegerFiltering 本次需要被决策树重新排列的决策方案，这是一个数组，其中每一个都是一个事件判断函数的实现，最终会通过决策树算法计算出结果数值
+     *                              <p>
+     *                              The decision scheme that needs to be rearranged by the decision tree this time is an array, each of which is the implementation of an event judgment function. Finally, the result value will be calculated by the decision tree algorithm
+     * @return 由决策树使用精准模式进行决策选择之后，符合条件的所有数据行组成的矩阵对象。
+     * <p>
+     * A matrix object composed of all data rows that meet the criteria after the decision tree uses the precise mode for decision selection.
+     */
+    public final IntegerMatrix decisionAndGet(IntegerMatrix ints, int logBase, ArrayIntegerFiltering... arrayIntegerFiltering) {
+        return decisionAndGet(ints.toArrays(), logBase, new ArrayList<>(Arrays.asList(arrayIntegerFiltering)));
+    }
+
+    /**
+     * 使用决策树的精准决策模式，获取到本次数据过滤之后的结果矩阵数值。
+     *
+     * @param doubles               当前需要计算的样本矩阵数组
+     *                              <p>
+     *                              Sample matrix array to be calculated currently
+     * @param logBase               本次决策运算中需要使用的对数底数值
+     *                              <p>
+     *                              The logarithmic base value to be used in this decision operation
+     * @param arrayIntegerFiltering 本次需要被决策树重新排列的决策方案，这是一个数组，其中每一个都是一个事件判断函数的实现，最终会通过决策树算法计算出结果数值
+     *                              <p>
+     *                              The decision scheme that needs to be rearranged by the decision tree this time is an array, each of which is the implementation of an event judgment function. Finally, the result value will be calculated by the decision tree algorithm
+     * @return 由决策树使用精准模式进行决策选择之后，符合条件的所有数据行组成的矩阵对象。
+     * <p>
+     * A matrix object composed of all data rows that meet the criteria after the decision tree uses the precise mode for decision selection.
+     */
+    public final DoubleMatrix decisionAndGet(DoubleMatrix doubles, int logBase, ArrayDoubleFiltering... arrayIntegerFiltering) {
+        return decisionAndGet(doubles.toArrays(), logBase, new ArrayList<>(Arrays.asList(arrayIntegerFiltering)));
+    }
+
+    /**
+     * 使用决策树的精准决策模式，获取到本次数据过滤之后的结果矩阵数值。
+     *
+     * @param ints                  当前需要计算的样本矩阵数组
+     *                              <p>
+     *                              Sample matrix array to be calculated currently
+     * @param logBase               本次决策运算中需要使用的对数底数值
+     *                              <p>
+     *                              The logarithmic base value to be used in this decision operation
+     * @param arrayIntegerFiltering 本次需要被决策树重新排列的决策方案，这是一个数组，其中每一个都是一个事件判断函数的实现，最终会通过决策树算法计算出结果数值
+     *                              <p>
+     *                              The decision scheme that needs to be rearranged by the decision tree this time is an array, each of which is the implementation of an event judgment function. Finally, the result value will be calculated by the decision tree algorithm
+     * @return 由决策树使用精准模式进行决策选择之后，符合条件的所有数据行组成的矩阵对象。
+     * <p>
+     * A matrix object composed of all data rows that meet the criteria after the decision tree uses the precise mode for decision selection.
+     */
+    protected final IntegerMatrix decisionAndGet(IntegerMatrix ints, int logBase, List<ArrayIntegerFiltering> arrayIntegerFiltering) {
+        return decisionAndGet(ints.toArrays(), logBase, arrayIntegerFiltering);
+    }
+
+    /**
+     * 使用决策树的精准决策模式，获取到本次数据过滤之后的结果矩阵数值。
+     *
+     * @param doubles               当前需要计算的样本矩阵数组
+     *                              <p>
+     *                              Sample matrix array to be calculated currently
+     * @param logBase               本次决策运算中需要使用的对数底数值
+     *                              <p>
+     *                              The logarithmic base value to be used in this decision operation
+     * @param arrayIntegerFiltering 本次需要被决策树重新排列的决策方案，这是一个数组，其中每一个都是一个事件判断函数的实现，最终会通过决策树算法计算出结果数值
+     *                              <p>
+     *                              The decision scheme that needs to be rearranged by the decision tree this time is an array, each of which is the implementation of an event judgment function. Finally, the result value will be calculated by the decision tree algorithm
+     * @return 由决策树使用精准模式进行决策选择之后，符合条件的所有数据行组成的矩阵对象。
+     * <p>
+     * A matrix object composed of all data rows that meet the criteria after the decision tree uses the precise mode for decision selection.
+     */
+    protected final DoubleMatrix decisionAndGet(DoubleMatrix doubles, int logBase, List<ArrayDoubleFiltering> arrayIntegerFiltering) {
+        return decisionAndGet(doubles.toArrays(), logBase, arrayIntegerFiltering);
+    }
+
+    /**
+     * 使用决策树的精准决策模式，获取到本次数据过滤之后的结果矩阵数值。
+     *
+     * @param ints                  当前需要计算的样本矩阵数组
+     *                              <p>
+     *                              Sample matrix array to be calculated currently
+     * @param logBase               本次决策运算中需要使用的对数底数值
+     *                              <p>
+     *                              The logarithmic base value to be used in this decision operation
+     * @param arrayIntegerFiltering 本次需要被决策树重新排列的决策方案，这是一个数组，其中每一个都是一个事件判断函数的实现，最终会通过决策树算法计算出结果数值
+     *                              <p>
+     *                              The decision scheme that needs to be rearranged by the decision tree this time is an array, each of which is the implementation of an event judgment function. Finally, the result value will be calculated by the decision tree algorithm
+     * @return 由决策树使用精准模式进行决策选择之后，符合条件的所有数据行组成的矩阵对象。
+     * <p>
+     * A matrix object composed of all data rows that meet the criteria after the decision tree uses the precise mode for decision selection.
+     */
+    protected abstract IntegerMatrix decisionAndGet(int[][] ints, int logBase, List<ArrayIntegerFiltering> arrayIntegerFiltering);
+
+    /**
+     * 使用决策树的精准决策模式，获取到本次数据过滤之后的结果矩阵数值。
+     *
+     * @param doubles               当前需要计算的样本矩阵数组
+     *                              <p>
+     *                              Sample matrix array to be calculated currently
+     * @param logBase               本次决策运算中需要使用的对数底数值
+     *                              <p>
+     *                              The logarithmic base value to be used in this decision operation
+     * @param arrayIntegerFiltering 本次需要被决策树重新排列的决策方案，这是一个数组，其中每一个都是一个事件判断函数的实现，最终会通过决策树算法计算出结果数值
+     *                              <p>
+     *                              The decision scheme that needs to be rearranged by the decision tree this time is an array, each of which is the implementation of an event judgment function. Finally, the result value will be calculated by the decision tree algorithm
+     * @return 由决策树使用精准模式进行决策选择之后，符合条件的所有数据行组成的矩阵对象。
+     * <p>
+     * A matrix object composed of all data rows that meet the criteria after the decision tree uses the precise mode for decision selection.
+     */
+    protected abstract DoubleMatrix decisionAndGet(double[][] doubles, int logBase, List<ArrayDoubleFiltering> arrayIntegerFiltering);
 }
