@@ -11,7 +11,7 @@ import zhao.algorithmMagic.utils.ASMath;
  *
  * @author zhao
  */
-public class IntegerMatrixBlock extends MatrixBlock<IntegerMatrixBlock, Integer, int[], IntegerMatrix> {
+public class IntegerMatrixSpace extends MatrixSpace<IntegerMatrixSpace, Integer, int[], IntegerMatrix> {
 
     /**
      * 构造一个空的矩阵，指定其矩阵的行列数
@@ -25,11 +25,11 @@ public class IntegerMatrixBlock extends MatrixBlock<IntegerMatrixBlock, Integer,
      *                        <p>
      * @param integerMatrices 该矩阵对象中的二维数组对象。
      */
-    protected IntegerMatrixBlock(int rowCount, int colCount, IntegerMatrix[] integerMatrices) {
+    protected IntegerMatrixSpace(int rowCount, int colCount, IntegerMatrix[] integerMatrices) {
         super(rowCount, colCount, integerMatrices);
     }
 
-    public static IntegerMatrixBlock parse(IntegerMatrix... integerMatrices) {
+    public static IntegerMatrixSpace parse(IntegerMatrix... integerMatrices) {
         if (integerMatrices.length != 0) {
             int back_Row = integerMatrices[0].getRowCount();
             int back_Col = integerMatrices[0].getColCount();
@@ -42,9 +42,9 @@ public class IntegerMatrixBlock extends MatrixBlock<IntegerMatrixBlock, Integer,
                                     "=> expect : " + "row=" + back_Row + "\tcol=" + back_Col + "\n=> but now: row=" + rowCount1 + "\tcol=" + colCount1);
                 }
             }
-            return new IntegerMatrixBlock(back_Row, back_Col, integerMatrices);
+            return new IntegerMatrixSpace(back_Row, back_Col, integerMatrices);
         }
-        return new IntegerMatrixBlock(0, 0, integerMatrices);
+        return new IntegerMatrixSpace(0, 0, integerMatrices);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class IntegerMatrixBlock extends MatrixBlock<IntegerMatrixBlock, Integer,
     }
 
     @Override
-    public IntegerMatrixBlock expand() {
+    public IntegerMatrixSpace expand() {
         return this;
     }
 
@@ -81,8 +81,8 @@ public class IntegerMatrixBlock extends MatrixBlock<IntegerMatrixBlock, Integer,
     }
 
     @Override
-    public IntegerMatrixBlock shuffle(long seed) {
-        return IntegerMatrixBlock.parse(ASMath.shuffle(toArrays(), seed, true));
+    public IntegerMatrixSpace shuffle(long seed) {
+        return IntegerMatrixSpace.parse(ASMath.shuffle(toArrays(), seed, true));
     }
 
     @Override
@@ -104,7 +104,7 @@ public class IntegerMatrixBlock extends MatrixBlock<IntegerMatrixBlock, Integer,
      * There is no description for the super interface, please refer to the subclass documentation
      */
     @Override
-    public IntegerMatrixBlock add(IntegerMatrixBlock value) {
+    public IntegerMatrixSpace add(IntegerMatrixSpace value) {
         int length = this.getNumberOfDimensions();
         IntegerMatrix[] integerMatrices = new IntegerMatrix[length];
         int count = -1;
@@ -113,11 +113,11 @@ public class IntegerMatrixBlock extends MatrixBlock<IntegerMatrixBlock, Integer,
             integerMatrices[++count] = this.get(i).add(value.get(i));
         }
         // 返回结果
-        return new IntegerMatrixBlock(this.getRowCount(), this.getColCount(), integerMatrices);
+        return new IntegerMatrixSpace(this.getRowCount(), this.getColCount(), integerMatrices);
     }
 
     @Override
-    public IntegerMatrixBlock diff(IntegerMatrixBlock value) {
+    public IntegerMatrixSpace diff(IntegerMatrixSpace value) {
         int length = this.getNumberOfDimensions();
         IntegerMatrix[] integerMatrices = new IntegerMatrix[length];
         int count = -1;
@@ -126,11 +126,11 @@ public class IntegerMatrixBlock extends MatrixBlock<IntegerMatrixBlock, Integer,
             integerMatrices[++count] = this.get(i).diff(value.get(i));
         }
         // 返回结果
-        return new IntegerMatrixBlock(this.getRowCount(), this.getColCount(), integerMatrices);
+        return new IntegerMatrixSpace(this.getRowCount(), this.getColCount(), integerMatrices);
     }
 
     @Override
-    public IntegerMatrixBlock multiply(IntegerMatrixBlock value) {
+    public IntegerMatrixSpace multiply(IntegerMatrixSpace value) {
         int length = this.getNumberOfDimensions();
         IntegerMatrix[] integerMatrices = new IntegerMatrix[length];
         int count = -1;
@@ -139,11 +139,11 @@ public class IntegerMatrixBlock extends MatrixBlock<IntegerMatrixBlock, Integer,
             integerMatrices[++count] = this.get(i).multiply(value.get(i));
         }
         // 返回结果
-        return new IntegerMatrixBlock(this.getRowCount(), this.getColCount(), integerMatrices);
+        return new IntegerMatrixSpace(this.getRowCount(), this.getColCount(), integerMatrices);
     }
 
     @Override
-    public Integer innerProduct(IntegerMatrixBlock value) {
+    public Integer innerProduct(IntegerMatrixSpace value) {
         // 获取到维度长度
         int length1 = this.getNumberOfDimensions();
         int res = 0;
@@ -157,7 +157,7 @@ public class IntegerMatrixBlock extends MatrixBlock<IntegerMatrixBlock, Integer,
     }
 
     @Override
-    public IntegerMatrixBlock transpose() {
+    public IntegerMatrixSpace transpose() {
         IntegerMatrix[] integerMatrices1 = toArrays();
         IntegerMatrix[] integerMatrices2 = new IntegerMatrix[integerMatrices1.length];
         int count = -1;

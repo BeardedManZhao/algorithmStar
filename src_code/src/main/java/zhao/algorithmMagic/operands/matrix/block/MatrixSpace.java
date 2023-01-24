@@ -20,10 +20,11 @@ import zhao.algorithmMagic.operands.matrix.Matrix;
  *                             <p>
  *                             Matrix fast, the matrix type in each layer of matrix.
  */
-public abstract class MatrixBlock<ImplementationType extends Matrix<?, ?, ?, ?>, ElementType, ArrayType, MatrixType
+public abstract class MatrixSpace<ImplementationType extends Matrix<?, ?, ?, ?>, ElementType, ArrayType, MatrixType
         extends Matrix<?, ElementType, ?, ?>>
         extends Matrix<ImplementationType, ElementType, ArrayType, MatrixType[]> {
     private final int layer;
+
 
     /**
      * 构造一个空的矩阵，指定其矩阵的行列数
@@ -37,7 +38,7 @@ public abstract class MatrixBlock<ImplementationType extends Matrix<?, ?, ?, ?>,
      *                    <p>
      * @param matrixTypes 该矩阵对象中的二维数组对象。
      */
-    protected MatrixBlock(int rowCount, int colCount, MatrixType[] matrixTypes) {
+    protected MatrixSpace(int rowCount, int colCount, MatrixType[] matrixTypes) {
         super(rowCount, colCount, matrixTypes);
         this.layer = matrixTypes.length;
     }
@@ -101,4 +102,40 @@ public abstract class MatrixBlock<ImplementationType extends Matrix<?, ?, ?, ?>,
      * new matrix after matrix transpose
      */
     public abstract ImplementationType transpose();
+
+    /**
+     * 获取到指定索引编号的行数组
+     * <p>
+     * Get the row array with the specified index
+     *
+     * @param index 指定的行目标索引值
+     *              <p>
+     *              Specified row index number
+     * @return 一个包含当前行元素的新数组，是支持修改的。
+     * <p>
+     * A new array containing the elements of the current row supports modification.
+     */
+    @Override
+    protected ArrayType getArrayByRowIndex(int index) {
+        throw new UnsupportedOperationException("请您不要在矩阵空间中调用 'getArrayByRowIndex' 方法，您需要先将矩阵从空间中获取到。\n" +
+                "Please do not call the 'getArrayByRowIndex' method in the matrix space. You need to get the matrix from the space first.");
+    }
+
+    /**
+     * 获取到指定索引编号的列数组
+     * <p>
+     * Get the col array with the specified index
+     *
+     * @param index 指定的列目标索引值
+     *              <p>
+     *              Specified col index number
+     * @return 一个包含当前列元素的新数组，是支持修改的。
+     * <p>
+     * A new array containing the elements of the current col supports modification.
+     */
+    @Override
+    protected ArrayType getArrayByColIndex(int index) {
+        throw new UnsupportedOperationException("请您不要在矩阵空间中调用 'getArrayByColIndex' 方法，您需要先将矩阵从空间中获取到。\n" +
+                "Please do not call the 'getArrayByColIndex' method in the matrix space. You need to get the matrix from the space first.");
+    }
 }

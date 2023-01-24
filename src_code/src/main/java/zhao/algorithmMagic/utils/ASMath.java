@@ -4,8 +4,8 @@ import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.operands.ComplexNumber;
 import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
 import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
-import zhao.algorithmMagic.operands.matrix.block.DoubleMatrixBlock;
-import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixBlock;
+import zhao.algorithmMagic.operands.matrix.block.DoubleMatrixSpace;
+import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixSpace;
 import zhao.algorithmMagic.utils.filter.ArrayDoubleFiltering;
 import zhao.algorithmMagic.utils.filter.ArrayIntegerFiltering;
 import zhao.algorithmMagic.utils.filter.DoubleEvent;
@@ -382,7 +382,7 @@ public final class ASMath {
      * @return d的二次方
      */
     public static int Power2(int d) {
-        return d * d;
+        return d == 2 ? d << 1 : d * d;
     }
 
     /**
@@ -392,11 +392,7 @@ public final class ASMath {
      * @return d的二次方
      */
     public static double Power2(double d) {
-        if (d - (int) d == 0) {
-            return Power2((int) d);
-        } else {
-            return d * d;
-        }
+        return d * d;
     }
 
     /**
@@ -1016,33 +1012,7 @@ public final class ASMath {
      * @param rowOfLayer   每一层包含多少行数据
      * @return 一个由doubleMatrix拆分出来的layer个子矩阵所组成的矩阵块。
      */
-    public static DoubleMatrixBlock shuffleAndSplit(DoubleMatrix doubleMatrix, long seed, int layer, int rowOfLayer) {
-        return shuffleAndSplit(doubleMatrix.copyToNewArrays(), seed, layer, rowOfLayer);
-    }
-
-    /**
-     * 将一个矩阵中的数据按照行使用随机算法打乱，打乱之后会生成一个新矩阵，从新矩阵中获取到layer行元素，然后再一次打乱，直到原矩阵中的数据遍历结束。
-     *
-     * @param integerMatrix 需要被随机打乱的原矩阵对象
-     * @param seed          打乱数据的时候使用的随机种子
-     * @param layer         矩阵快中所包含的矩阵层数
-     * @param rowOfLayer    每一层包含多少行数据
-     * @return 一个由doubleMatrix拆分出来的layer个子矩阵所组成的矩阵块。
-     */
-    public static IntegerMatrixBlock shuffleAndSplit(IntegerMatrix integerMatrix, long seed, int layer, int rowOfLayer) {
-        return shuffleAndSplit(integerMatrix.copyToNewArrays(), seed, layer, rowOfLayer);
-    }
-
-    /**
-     * 将一个矩阵中的数据按照行使用随机算法打乱，打乱之后会生成一个新矩阵，从新矩阵中获取到layer行元素，然后再一次打乱，直到原矩阵中的数据遍历结束。
-     *
-     * @param doubleMatrix 需要被随机打乱的原矩阵对象
-     * @param seed         打乱数据的时候使用的随机种子
-     * @param layer        矩阵快中所包含的矩阵层数
-     * @param rowOfLayer   每一层包含多少行数据
-     * @return 一个由doubleMatrix拆分出来的layer个子矩阵所组成的矩阵块。
-     */
-    public static DoubleMatrixBlock shuffleAndSplit(double[][] doubleMatrix, long seed, int layer, int rowOfLayer) {
+    public static DoubleMatrixSpace shuffleAndSplit(double[][] doubleMatrix, long seed, int layer, int rowOfLayer) {
         Random random = new Random();
         random.setSeed(seed);
         // 构造子矩阵容器
@@ -1062,7 +1032,7 @@ public final class ASMath {
             shuffleFunction(random, doubleMatrix.length, doubleMatrix, rowOfLayer);
             random.setSeed(seed = (seed << 1) - 2);
         }
-        return DoubleMatrixBlock.parse(doubleMatrices);
+        return DoubleMatrixSpace.parse(doubleMatrices);
     }
 
     /**
@@ -1074,7 +1044,7 @@ public final class ASMath {
      * @param rowOfLayer    每一层包含多少行数据
      * @return 一个由doubleMatrix拆分出来的layer个子矩阵所组成的矩阵块。
      */
-    public static IntegerMatrixBlock shuffleAndSplit(int[][] integerMatrix, long seed, int layer, int rowOfLayer) {
+    public static IntegerMatrixSpace shuffleAndSplit(int[][] integerMatrix, long seed, int layer, int rowOfLayer) {
         Random random = new Random();
         random.setSeed(seed);
         // 构造子矩阵容器
@@ -1094,7 +1064,7 @@ public final class ASMath {
             shuffleFunction(random, integerMatrix.length, integerMatrix, rowOfLayer);
             random.setSeed(seed = (seed << 1) - 2);
         }
-        return IntegerMatrixBlock.parse(doubleMatrices);
+        return IntegerMatrixSpace.parse(doubleMatrices);
     }
 
     /**
@@ -1315,5 +1285,58 @@ public final class ASMath {
             res -= (p * log(logBase, p));
         }
         return res;
+    }
+
+    /**
+     * 计算两个样本之间的一元线性回归模型系数。
+     *
+     * @param features 模型中的自变量数值组成的数组
+     * @param targets  模型中的因变量数值组成的数组
+     * @return 一个包含回归系数与线性偏置值的数组。
+     */
+    public static double[] linearRegression(int[] features, int[] targets) {
+        int n = 0;
+        int sum_features = 0, sum_targets = 0;
+        while (n < features.length) {
+            sum_features += features[n];
+            sum_targets += targets[n++];
+        }
+        double avg_features = sum_features / (double) n, avg_targets = sum_targets / (double) n;
+        double xxbar = 0, xybar = 0;
+        int i = 0;
+        while (i < n) {
+            double f_avg_diff = features[i] - avg_features;
+            xxbar += Power2(f_avg_diff);
+            xybar += (f_avg_diff) * (targets[i++] - avg_targets);
+        }
+        // 将 回归系数 与 偏置值 封装起来。
+        double regressionCoefficient = xybar / xxbar;
+        return new double[]{regressionCoefficient, avg_targets - regressionCoefficient * avg_features};
+    }
+
+    /**
+     * 计算两个样本之间的一元线性回归模型系数。
+     *
+     * @param features 模型中的自变量数值组成的数组
+     * @param targets  模型中的因变量数值组成的数组
+     * @return 一个包含回归系数与线性偏置值的数组。
+     */
+    public static double[] linearRegression(double[] features, double[] targets) {
+        int n = 0;
+        double sum_features = 0.0, sum_targets = 0.0;
+        while (n < features.length) {
+            sum_features += features[n];
+            sum_targets += targets[n++];
+        }
+        double avg_features = sum_features / n, avg_targets = sum_targets / n;
+        double xxbar = 0.0, xybar = 0.0;
+        for (int i = 0; i < n; i++) {
+            double f_avg_diff = features[i] - avg_features;
+            xxbar += Power2(f_avg_diff);
+            xybar += (f_avg_diff) * (targets[i] - avg_targets);
+        }
+        // 将 回归系数 与 偏置值 封装起来。
+        double regressionCoefficient = xybar / xxbar;
+        return new double[]{regressionCoefficient, avg_targets - regressionCoefficient * avg_features};
     }
 }

@@ -5,8 +5,8 @@ import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
 import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
 import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
-import zhao.algorithmMagic.operands.matrix.block.DoubleMatrixBlock;
-import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixBlock;
+import zhao.algorithmMagic.operands.matrix.block.DoubleMatrixSpace;
+import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixSpace;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASMath;
 import zhao.algorithmMagic.utils.filter.ArrayDoubleFiltering;
@@ -146,7 +146,7 @@ public class RandomForest extends DecisionTree {
         // 创建结果决策方案集合 其中key是是决策编号拼接的值，value是决策结果
         HashMap<String, ArrayList<ArrayDoubleFiltering>> hashMap2 = new HashMap<>();
         // 将矩阵使用随机算法拆分成矩阵块
-        DoubleMatrixBlock doubleMatrixBlock = ASMath.shuffleAndSplit(ints, seed, layer, rowOfLayer);
+        DoubleMatrixSpace doubleMatrixBlock = ASMath.shuffleAndSplit(ints, seed, layer, rowOfLayer);
         for (DoubleMatrix doubleMatrix : doubleMatrixBlock.toArrays()) {
             // 将每一个矩阵块的决策树结果的编号拼接值添加到计数集合中
             String key;
@@ -217,7 +217,7 @@ public class RandomForest extends DecisionTree {
         // 创建结果决策方案集合 其中key是是决策编号拼接的值，value是决策结果
         HashMap<String, ArrayList<ArrayIntegerFiltering>> hashMap2 = new HashMap<>();
         // 将矩阵使用随机算法拆分成矩阵块
-        IntegerMatrixBlock doubleMatrixBlock = ASMath.shuffleAndSplit(ints, seed, layer, rowOfLayer);
+        IntegerMatrixSpace doubleMatrixBlock = ASMath.shuffleAndSplit(ints, seed, layer, rowOfLayer);
         for (IntegerMatrix doubleMatrix : doubleMatrixBlock.toArrays()) {
             // 将每一个矩阵块的决策树结果的编号拼接值添加到计数集合中
             String key;
@@ -369,7 +369,7 @@ public class RandomForest extends DecisionTree {
         // 首先开始构造一个结果存储空间，其中存储每一颗树的结果值
         IntegerMatrix[] integerMatrices = new IntegerMatrix[layer];
         // 将矩阵使用随机算法分开
-        IntegerMatrixBlock integerMatrixBlock = ASMath.shuffleAndSplit(ints, seed, layer, rowOfLayer);
+        IntegerMatrixSpace integerMatrixBlock = ASMath.shuffleAndSplit(ints, seed, layer, rowOfLayer);
         // 开始进行每棵树的结果计算
         {
             int count = -1;
@@ -432,7 +432,7 @@ public class RandomForest extends DecisionTree {
         // 首先开始构造一个结果存储空间，其中存储每一颗树的结果值
         DoubleMatrix[] doubleMatrices = new DoubleMatrix[layer];
         // 将矩阵使用随机算法分开
-        DoubleMatrixBlock doubleMatrixBlock = ASMath.shuffleAndSplit(ints, seed, layer, rowOfLayer);
+        DoubleMatrixSpace doubleMatrixBlock = ASMath.shuffleAndSplit(ints, seed, layer, rowOfLayer);
         // 开始进行每棵树的结果计算
         {
             int count = -1;

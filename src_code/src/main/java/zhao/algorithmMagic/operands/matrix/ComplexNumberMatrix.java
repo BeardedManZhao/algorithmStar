@@ -336,6 +336,46 @@ public class ComplexNumberMatrix extends Matrix<ComplexNumberMatrix, ComplexNumb
     }
 
     /**
+     * 获取到指定索引编号的行数组
+     * <p>
+     * Get the row array with the specified index
+     *
+     * @param index 指定的行目标索引值
+     *              <p>
+     *              Specified row index number
+     * @return 一个包含当前行元素的新数组，是支持修改的。
+     * <p>
+     * A new array containing the elements of the current row supports modification.
+     */
+    @Override
+    public ComplexNumber[] getArrayByRowIndex(int index) {
+        return toArrays()[index];
+    }
+
+    /**
+     * 获取到指定索引编号的列数组
+     * <p>
+     * Get the col array with the specified index
+     *
+     * @param index 指定的列目标索引值
+     *              <p>
+     *              Specified col index number
+     * @return 一个包含当前列元素的新数组，是支持修改的。
+     * <p>
+     * A new array containing the elements of the current col supports modification.
+     */
+    @Override
+    public ComplexNumber[] getArrayByColIndex(int index) {
+        ComplexNumber[][] complexNumbers1 = this.toArrays();
+        ComplexNumber[] complexNumbers = new ComplexNumber[complexNumbers1.length];
+        int count = -1;
+        for (ComplexNumber[] numbers : complexNumbers1) {
+            complexNumbers[++count] = numbers[index];
+        }
+        return complexNumbers;
+    }
+
+    /**
      * 对复数矩阵进行共轭运算，矩阵中的每一个复数都将会被共轭。
      * <p>
      * Conjugate the complex number matrix, each complex number in the matrix will be conjugated.

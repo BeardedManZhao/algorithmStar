@@ -313,48 +313,6 @@ public class ColumnDoubleMatrix extends DoubleMatrix implements RCNOperands<doub
     }
 
     /**
-     * 获取到指定索引编号的行数组
-     * <p>
-     * Get the row array with the specified index
-     *
-     * @param index 指定的行目标索引值
-     *              <p>
-     *              Specified row index number
-     * @return 一个包含当前行元素的新数组，是支持修改的。
-     * <p>
-     * A new array containing the elements of the current row supports modification.
-     */
-    @Override
-    public double[] getArrayByRowIndex(int index) {
-        double[] doubles = toArrays()[index];
-        double[] res = new double[doubles.length];
-        System.arraycopy(doubles, 0, res, 0, doubles.length);
-        return res;
-    }
-
-    /**
-     * 获取到指定索引编号的列数组
-     * <p>
-     * Get the col array with the specified index
-     *
-     * @param index 指定的列目标索引值
-     *              <p>
-     *              Specified col index number
-     * @return 一个包含当前列元素的新数组，是支持修改的。
-     * <p>
-     * A new array containing the elements of the current col supports modification.
-     */
-    @Override
-    public double[] getArrayByColIndex(int index) {
-        int count = -1;
-        double[] res = new double[getRowCount()];
-        for (double[] ints : toArrays()) {
-            res[++count] = ints[index];
-        }
-        return res;
-    }
-
-    /**
      * 将现有矩阵的转置矩阵获取到
      * <p>
      * Get the transpose of an existing matrix into

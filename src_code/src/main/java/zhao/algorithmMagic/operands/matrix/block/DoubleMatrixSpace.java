@@ -11,7 +11,7 @@ import zhao.algorithmMagic.utils.ASMath;
  *
  * @author zhao
  */
-public class DoubleMatrixBlock extends MatrixBlock<DoubleMatrixBlock, Double, double[], DoubleMatrix> {
+public class DoubleMatrixSpace extends MatrixSpace<DoubleMatrixSpace, Double, double[], DoubleMatrix> {
     /**
      * 构造一个空的矩阵，指定其矩阵的行列数
      * <p>
@@ -24,11 +24,11 @@ public class DoubleMatrixBlock extends MatrixBlock<DoubleMatrixBlock, Double, do
      *                        <p>
      * @param integerMatrices 该矩阵对象中的二维数组对象。
      */
-    protected DoubleMatrixBlock(int rowCount, int colCount, DoubleMatrix[] integerMatrices) {
+    protected DoubleMatrixSpace(int rowCount, int colCount, DoubleMatrix[] integerMatrices) {
         super(rowCount, colCount, integerMatrices);
     }
 
-    public static DoubleMatrixBlock parse(DoubleMatrix... doubleMatrices) {
+    public static DoubleMatrixSpace parse(DoubleMatrix... doubleMatrices) {
         if (doubleMatrices.length != 0) {
             int back_Row = doubleMatrices[0].getRowCount();
             int back_Col = doubleMatrices[0].getColCount();
@@ -41,9 +41,9 @@ public class DoubleMatrixBlock extends MatrixBlock<DoubleMatrixBlock, Double, do
                                     "=> expect: " + "row=" + back_Row + "\tcol=" + back_Col + "but now: row=" + rowCount1 + "\tcol=" + colCount1);
                 }
             }
-            return new DoubleMatrixBlock(back_Row, back_Col, doubleMatrices);
+            return new DoubleMatrixSpace(back_Row, back_Col, doubleMatrices);
         }
-        return new DoubleMatrixBlock(0, 0, doubleMatrices);
+        return new DoubleMatrixSpace(0, 0, doubleMatrices);
     }
 
     /**
@@ -56,7 +56,7 @@ public class DoubleMatrixBlock extends MatrixBlock<DoubleMatrixBlock, Double, do
      * new matrix after matrix transpose
      */
     @Override
-    public DoubleMatrixBlock transpose() {
+    public DoubleMatrixSpace transpose() {
         DoubleMatrix[] integerMatrices1 = toArrays();
         DoubleMatrix[] integerMatrices2 = new DoubleMatrix[integerMatrices1.length];
         int count = -1;
@@ -119,7 +119,7 @@ public class DoubleMatrixBlock extends MatrixBlock<DoubleMatrixBlock, Double, do
      * @return 该类的实现类对象，用于拓展该接口的子类
      */
     @Override
-    public DoubleMatrixBlock expand() {
+    public DoubleMatrixSpace expand() {
         return this;
     }
 
@@ -149,8 +149,8 @@ public class DoubleMatrixBlock extends MatrixBlock<DoubleMatrixBlock, Double, do
      * Objects after disruption.
      */
     @Override
-    public DoubleMatrixBlock shuffle(long seed) {
-        return DoubleMatrixBlock.parse(ASMath.shuffle(toArrays(), seed, true));
+    public DoubleMatrixSpace shuffle(long seed) {
+        return DoubleMatrixSpace.parse(ASMath.shuffle(toArrays(), seed, true));
     }
 
     /**
@@ -181,7 +181,7 @@ public class DoubleMatrixBlock extends MatrixBlock<DoubleMatrixBlock, Double, do
      * There is no description for the super interface, please refer to the subclass documentation
      */
     @Override
-    public DoubleMatrixBlock add(DoubleMatrixBlock value) {
+    public DoubleMatrixSpace add(DoubleMatrixSpace value) {
         if (this.getNumberOfDimensions() < value.getNumberOfDimensions()) {
             // 获取到最小层与最大层
             int length1 = this.getNumberOfDimensions();
@@ -198,7 +198,7 @@ public class DoubleMatrixBlock extends MatrixBlock<DoubleMatrixBlock, Double, do
                 doubleMatrixBlock[++count] = value.get(i);
             }
             // 返回结果
-            return new DoubleMatrixBlock(this.getRowCount(), this.getColCount(), doubleMatrixBlock);
+            return new DoubleMatrixSpace(this.getRowCount(), this.getColCount(), doubleMatrixBlock);
         } else {
             // 获取到最小层与最大层
             int length1 = value.getNumberOfDimensions();
@@ -215,7 +215,7 @@ public class DoubleMatrixBlock extends MatrixBlock<DoubleMatrixBlock, Double, do
                 doubleMatrixBlock[++count] = this.get(i);
             }
             // 返回结果
-            return new DoubleMatrixBlock(this.getRowCount(), this.getColCount(), doubleMatrixBlock);
+            return new DoubleMatrixSpace(this.getRowCount(), this.getColCount(), doubleMatrixBlock);
         }
     }
 
@@ -229,7 +229,7 @@ public class DoubleMatrixBlock extends MatrixBlock<DoubleMatrixBlock, Double, do
      * There is no description for the super interface, please refer to the subclass documentation
      */
     @Override
-    public DoubleMatrixBlock diff(DoubleMatrixBlock value) {
+    public DoubleMatrixSpace diff(DoubleMatrixSpace value) {
         if (this.getNumberOfDimensions() < value.getNumberOfDimensions()) {
             // 获取到最小层与最大层
             int length1 = this.getNumberOfDimensions();
@@ -246,7 +246,7 @@ public class DoubleMatrixBlock extends MatrixBlock<DoubleMatrixBlock, Double, do
                 doubleMatrixBlock[++count] = value.get(i);
             }
             // 返回结果
-            return new DoubleMatrixBlock(this.getRowCount(), this.getColCount(), doubleMatrixBlock);
+            return new DoubleMatrixSpace(this.getRowCount(), this.getColCount(), doubleMatrixBlock);
         } else {
             // 获取到最小层与最大层
             int length1 = value.getNumberOfDimensions();
@@ -263,7 +263,7 @@ public class DoubleMatrixBlock extends MatrixBlock<DoubleMatrixBlock, Double, do
                 doubleMatrixBlock[++count] = this.get(i);
             }
             // 返回结果
-            return new DoubleMatrixBlock(this.getRowCount(), this.getColCount(), doubleMatrixBlock);
+            return new DoubleMatrixSpace(this.getRowCount(), this.getColCount(), doubleMatrixBlock);
         }
     }
 
@@ -278,7 +278,7 @@ public class DoubleMatrixBlock extends MatrixBlock<DoubleMatrixBlock, Double, do
      * waiting to be realized
      */
     @Override
-    public DoubleMatrixBlock multiply(DoubleMatrixBlock vector) {
+    public DoubleMatrixSpace multiply(DoubleMatrixSpace vector) {
         return null;
     }
 
@@ -294,7 +294,7 @@ public class DoubleMatrixBlock extends MatrixBlock<DoubleMatrixBlock, Double, do
      * waiting to be realized
      */
     @Override
-    public Double innerProduct(DoubleMatrixBlock vector) {
+    public Double innerProduct(DoubleMatrixSpace vector) {
         return null;
     }
 }

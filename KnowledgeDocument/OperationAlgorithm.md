@@ -460,11 +460,11 @@ public final class MAIN1 {
 进程已结束,退出代码0
 ```
 
-### 决策计算组件
+### Decision calculation component
 
-决策算法于1.14版本中加入到AS库，是针对多种处理方案进行最优排列或优化等的优秀算法，在库中有着决策树等算法的实现，接下来就是展示的有关决策树的使用方式
+The decision algorithm was added to the AS database in version 1.14. It is an excellent algorithm for optimal arrangement or optimization of multiple processing schemes. There are algorithms such as decision trees in the database. Next is the usage of decision trees.
 
-- 决策计算组件列表
+- Decision calculation component list
 
 | Calculation component type                                 | Supported versions | function                                                                                                                                                         |
 |------------------------------------------------------------|--------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -539,7 +539,7 @@ zhao.algorithmMagic.MAIN1$$Lambda$2/26887603@dd8dc3
 zhao.algorithmMagic.MAIN1$$Lambda$3/10069385@103e736
 [INFO][OperationAlgorithmManager][23-01-20:09]] : +============================== Welcome to [mathematical expression] ==============================+
 [INFO][OperationAlgorithmManager][23-01-20:09]] : + 	Start time Fri Jan 20 21:17:44 CST 2023
-[INFO][OperationAlgorithmManager][23-01-20:09]] : + 	version: 1.13
+[INFO][OperationAlgorithmManager][23-01-20:09]] : + 	version: 1.14
 [INFO][OperationAlgorithmManager][23-01-20:09]] : + 	Calculation component manager initialized successfully
 [INFO][OperationAlgorithmManager][23-01-20:09]] : + 	For more information, see: https://github.com/BeardedManZhao/algorithmStar.git
 [INFO][OperationAlgorithmManager][23-01-20:09]] : +--------------------------------------------------------------------------------------------------+
@@ -570,6 +570,53 @@ False => [1, 0, 1]
 
 ```
 
+### Model calculation component
+In addition to using integrators for model calculation, algorithms can also be used to calculate many models in the AS library. The existing model calculation components are shown here, and the unary linear regression algorithm component is used for an API demonstration example.
+
+- Model calculation component list
+
+| Calculation component type                                    | Supported versions | function                                                                 |
+|---------------------------------------------------------------|--------------------|--------------------------------------------------------------------------|
+| zhao.algorithmMagic.algorithm.modelAlgorithm.LinearRegression | v1.15              | The calculation component can realize fast linear regression calculation |
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.algorithm.modelAlgorithm.LinearRegression;
+import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 创建一个矩阵对象，其中包含一些数据，现在需要找到最块的筛选路线，并使用此路线将数据进行一次获取
+        ColumnIntegerMatrix columnDoubleMatrix = ColumnIntegerMatrix.parse(
+                new String[]{"x", "y"},
+                null,
+                new int[]{1, 50},
+                new int[]{2, 100},
+                new int[]{3, 150},
+                new int[]{4, 200}
+        );
+        // 获取到线性回归
+        LinearRegression line = LinearRegression.getInstance("line");
+        // 开始计算线性回归 计算x 与 y 之间的关系 其中 x 为自变量  y 为因变量
+        // 设置自变量的列编号
+        line.setFeatureIndex(0);
+        // 设置因变量的列编号
+        line.setTargetIndex(1);
+        // 计算出回归系数与结果值
+        double[] doubles = line.modelInference(columnDoubleMatrix);
+        // 获取到线性回归计算之后的权重数组，并将权重数组插入到公式打印出来
+        System.out.println("数据特征：");
+        System.out.println("y = x * " + doubles[0] + " + " + doubles[1]);
+    }
+}
+
+```
+```
+[INFO][OperationAlgorithmManager][23-01-24:09]] : register OperationAlgorithm:line
+数据特征：
+y = x * 50.0 + 0.0
+```
 - 切换到 [中文文档](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/OperationAlgorithm-Chinese.md)
 
 <hr>
