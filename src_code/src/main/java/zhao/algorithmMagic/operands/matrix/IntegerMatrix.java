@@ -32,6 +32,16 @@ public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], i
         super(ints.length, ints[0].length, ints);
     }
 
+    /**
+     * 指定行列值的方式拷贝出一个矩阵
+     *
+     * @param rowCount 矩阵行数
+     * @param colCount 矩阵列数
+     * @param ints     矩阵数据
+     */
+    protected IntegerMatrix(int rowCount, int colCount, int[][] ints) {
+        super(rowCount, colCount, ints);
+    }
 
     /**
      * 构造一个矩阵，矩阵的列数量以矩阵的第一行为准！
@@ -49,6 +59,61 @@ public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], i
         } else {
             throw new OperatorOperationException("The array of construction matrix cannot be empty");
         }
+    }
+
+    /**
+     * 使用稀疏矩阵的数据构造一个完整的矩阵对象。
+     * <p>
+     * Use the data of sparse matrix to construct a complete matrix object.
+     *
+     * @param ints 稀疏矩阵数值，是一个二维数组，其中每一个数组中包含三个元素，第一个是值本身，第二，三个是值的横纵坐标。
+     * @return 由稀疏矩阵所构造出来的矩阵对象
+     */
+    public static IntegerMatrix sparse(int[]... ints) {
+        if (ints.length > 0) {
+            if (ints[0].length == 3) {
+                // 获取到最大的行列数值
+                int rowMax = Integer.MIN_VALUE;
+                int colMax = Integer.MIN_VALUE;
+                for (int[] anInt : ints) {
+                    int rowNum = anInt[2];
+                    int colNum = anInt[1];
+                    // 获取最大横坐标
+                    if (rowMax < rowNum) rowMax = rowNum;
+                    // 获取最大列坐标
+                    if (colMax < colNum) colMax = colNum;
+                }
+                // 开始进行矩阵构造
+                int[][] res = new int[rowMax + 1][colMax + 1];
+                for (int[] anInt : ints) {
+                    res[anInt[1]][anInt[2]] = anInt[0];
+                }
+                return new IntegerMatrix(res);
+            } else {
+                throw new OperatorOperationException("The array you pass should conform to the representation: Array (data, x, y).");
+            }
+        } else {
+            throw new OperatorOperationException("The array of construction matrix cannot be empty.");
+        }
+    }
+
+    /**
+     * 将一个矩阵对象复制拷贝出来一个新的矩阵对象。
+     * <p>
+     * Copy a matrix object to a new matrix object.
+     *
+     * @param matrix 需要被拷贝的矩阵对象，该对象中的数据将会是数据源。
+     *               <p>
+     *               The data in the matrix object to be copied will be the data source.
+     * @param copy   如果设置为true，那么代表使用深拷贝的方式将矩阵拷贝出来一份，反之则是使用浅拷贝。
+     *               <p>
+     *               If it is set to true, it means that a copy of the matrix will be made using the deep copy method, and vice versa.
+     * @return 按照深拷贝或浅拷贝的方式，将integerMatrix 复制出一份，并返回到外界。
+     * <p>
+     * Make a copy of the integerMatrix and return it to the outside world in the form of deep copy or light copy.
+     */
+    public static IntegerMatrix parse(IntegerMatrix matrix, boolean copy) {
+        return new IntegerMatrix(matrix.getRowCount(), matrix.getColCount(), copy ? matrix.copyToNewArrays() : matrix.toArrays());
     }
 
     /**

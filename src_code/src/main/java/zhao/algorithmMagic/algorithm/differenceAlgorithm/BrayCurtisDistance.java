@@ -18,6 +18,8 @@ import zhao.algorithmMagic.utils.ASMath;
  * <p>
  * Bray Curtis Distance is mainly used in ecology and environmental science to calculate the distance between coordinates. The distance is between [ 0 , 1 ] [0,1][0,1] and can also be used to calculate the difference between samples.
  *
+ * @param <I> 该距离计算组件能够支持计算的整形坐标数据类型，这是一个泛型。
+ * @param <D> 该距离计算组件能够支持计算的浮点坐标数据类型，这是一个泛型。
  * @author zhao
  */
 public class BrayCurtisDistance<I extends IntegerCoordinates<I> & Coordinate<I>, D extends FloatingPointCoordinates<?>> implements DifferenceAlgorithm<D> {
@@ -195,7 +197,7 @@ public class BrayCurtisDistance<I extends IntegerCoordinates<I> & Coordinate<I>,
      * @param ints2 Calculate difference array 2
      * @return Coefficient of Difference
      */
-    public int getDifferenceRatio(int[] ints1, int[] ints2) {
+    public double getDifferenceRatio(int[] ints1, int[] ints2) {
         int molecule = 0;
         int denominator = 0;
         for (int i = 0; i < ints1.length; i++) {
@@ -207,6 +209,6 @@ public class BrayCurtisDistance<I extends IntegerCoordinates<I> & Coordinate<I>,
         if (OperationAlgorithmManager.PrintCalculationComponentLog) {
             logger.info("(ⁿ∑₁ |(V1(n) - V2(n))| / ⁿ∑₁ V1(n) + ⁿ∑₁ V2(n)) = (" + molecule + " / " + denominator + ")");
         }
-        return molecule >= denominator ? 1 : molecule / denominator;
+        return molecule >= denominator ? 1 : molecule / (double) denominator;
     }
 }

@@ -154,7 +154,7 @@ public class IntegerRouteNet implements RouteNet<IntegerCoordinateMany, IntegerC
      */
     @Override
     public boolean addRoute(IntegerConsanguinityRoute IntegerConsanguinityRoute) {
-        this.integerConsanguinityRouteHashMap.put(IntegerConsanguinityRoute.getStartingCoordinateName() + " -> " + IntegerConsanguinityRoute.getEndPointCoordinateName(), IntegerConsanguinityRoute);
+        this.integerConsanguinityRouteHashMap.put(IntegerConsanguinityRoute.getRouteName(), IntegerConsanguinityRoute);
         return true;
     }
 
@@ -175,7 +175,7 @@ public class IntegerRouteNet implements RouteNet<IntegerCoordinateMany, IntegerC
      *                                  For the setting and obtaining of the sign color, please call "set Sign Color" for viewing!
      */
     public void addMasterTagRoute(IntegerConsanguinityRoute integerConsanguinityRoute) {
-        String s = integerConsanguinityRoute.getStartingCoordinateName() + " -> " + integerConsanguinityRoute.getEndPointCoordinateName();
+        String s = integerConsanguinityRoute.getRouteName();
         this.integerConsanguinityRoute2DHashMap_MasterTag.put(s, integerConsanguinityRoute);
         this.integerConsanguinityRoute2DHashMap_SubMark.remove(s);
         this.integerConsanguinityRouteHashMap.remove(s);
@@ -193,7 +193,7 @@ public class IntegerRouteNet implements RouteNet<IntegerCoordinateMany, IntegerC
      *                                  For the setting and obtaining of the sign color, please call "set Sign Color" for viewing!
      */
     public void addSubMarkRoute(IntegerConsanguinityRoute integerConsanguinityRoute) {
-        String s = integerConsanguinityRoute.getStartingCoordinateName() + " -> " + integerConsanguinityRoute.getEndPointCoordinateName();
+        String s = integerConsanguinityRoute.getRouteName();
         this.integerConsanguinityRoute2DHashMap_SubMark.put(s, integerConsanguinityRoute);
         this.integerConsanguinityRouteHashMap.remove(s);
         this.integerConsanguinityRoute2DHashMap_MasterTag.remove(s);

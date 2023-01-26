@@ -948,21 +948,21 @@ public final class ASMath {
     /**
      * 将任意类型的数组打乱顺序
      *
-     * @param complexNumbers 需要被打乱的二维数组
-     * @param Seed           洗牌打乱时的随即种子
-     * @param copy           是否使用拷贝新数组的方式进行打乱
+     * @param ts   需要被打乱的二维数组
+     * @param Seed 洗牌打乱时的随即种子
+     * @param copy 是否使用拷贝新数组的方式进行打乱
      * @return 打乱之后的数组对象，是否为新数组需要看copy函数的值
      */
     @SuppressWarnings("unchecked")
-    public static <T> T[] shuffle(T[] complexNumbers, final long Seed, final boolean copy) {
+    public static <T> T[] shuffle(T[] ts, final long Seed, final boolean copy) {
         Random random = new Random();
         random.setSeed(Seed);
         if (copy) {
-            Object[] res = new Object[complexNumbers.length];
-            System.arraycopy(complexNumbers, 0, res, 0, res.length);
-            return (T[]) shuffleFunction(random, complexNumbers.length - 1, res);
+            Object[] res = new Object[ts.length];
+            System.arraycopy(ts, 0, res, 0, res.length);
+            return (T[]) shuffleFunction(random, ts.length - 1, res);
         } else {
-            return shuffleFunction(random, complexNumbers.length - 1, complexNumbers);
+            return shuffleFunction(random, ts.length - 1, ts);
         }
     }
 

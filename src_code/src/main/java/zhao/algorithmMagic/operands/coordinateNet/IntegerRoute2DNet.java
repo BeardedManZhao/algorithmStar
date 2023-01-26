@@ -61,7 +61,7 @@ public class IntegerRoute2DNet implements RouteNet<IntegerCoordinateTwo, Integer
     public static IntegerRoute2DNet parse(Collection<IntegerConsanguinityRoute2D> route2DCollection) {
         LinkedHashMap<String, IntegerConsanguinityRoute2D> linkedHashMap = new LinkedHashMap<>(route2DCollection.size());
         for (IntegerConsanguinityRoute2D integerConsanguinityRoute2D : route2DCollection) {
-            linkedHashMap.put(integerConsanguinityRoute2D.getStartingCoordinateName() + " -> " + integerConsanguinityRoute2D.getEndPointCoordinateName(), integerConsanguinityRoute2D);
+            linkedHashMap.put(integerConsanguinityRoute2D.getRouteName(), integerConsanguinityRoute2D);
         }
         return new IntegerRoute2DNet(linkedHashMap);
     }
@@ -75,7 +75,7 @@ public class IntegerRoute2DNet implements RouteNet<IntegerCoordinateTwo, Integer
     public static IntegerRoute2DNet parse(IntegerConsanguinityRoute2D... integerConsanguinityRoute2DS) {
         LinkedHashMap<String, IntegerConsanguinityRoute2D> linkedHashMap = new LinkedHashMap<>(integerConsanguinityRoute2DS.length);
         for (IntegerConsanguinityRoute2D integerConsanguinityRoute2D : integerConsanguinityRoute2DS) {
-            linkedHashMap.put(integerConsanguinityRoute2D.getStartingCoordinateName() + " -> " + integerConsanguinityRoute2D.getEndPointCoordinateName(), integerConsanguinityRoute2D);
+            linkedHashMap.put(integerConsanguinityRoute2D.getRouteName(), integerConsanguinityRoute2D);
         }
         return new IntegerRoute2DNet(linkedHashMap);
     }
@@ -83,7 +83,7 @@ public class IntegerRoute2DNet implements RouteNet<IntegerCoordinateTwo, Integer
     public static IntegerRoute2DNet parse(DoubleConsanguinityRoute2D... doubleConsanguinityRoute2DS) {
         LinkedHashMap<String, IntegerConsanguinityRoute2D> linkedHashMap = new LinkedHashMap<>(doubleConsanguinityRoute2DS.length);
         for (DoubleConsanguinityRoute2D doubleConsanguinityRoute2D : doubleConsanguinityRoute2DS) {
-            String s = doubleConsanguinityRoute2D.getStartingCoordinateName() + " -> " + doubleConsanguinityRoute2D.getEndPointCoordinateName();
+            String s = doubleConsanguinityRoute2D.getRouteName();
             linkedHashMap.put(s, ASClass.DoubleConsanguinityRoute2D_To_IntegerConsanguinityRoute2D(s, doubleConsanguinityRoute2D));
         }
         return new IntegerRoute2DNet(linkedHashMap);
@@ -117,7 +117,7 @@ public class IntegerRoute2DNet implements RouteNet<IntegerCoordinateTwo, Integer
      *                                    For the setting and obtaining of the sign color, please call "set Sign Color" for viewing!
      */
     public void addMasterTagRoute(IntegerConsanguinityRoute2D integerConsanguinityRoute2D) {
-        String s = integerConsanguinityRoute2D.getStartingCoordinateName() + " -> " + integerConsanguinityRoute2D.getEndPointCoordinateName();
+        String s = integerConsanguinityRoute2D.getRouteName();
         this.integerConsanguinityRoute2DHashMap_MasterTag.put(s, integerConsanguinityRoute2D);
         this.integerConsanguinityRoute2DHashMap_SubMark.remove(s);
         this.integerConsanguinityRoute2DHashMap.remove(s);
@@ -135,7 +135,7 @@ public class IntegerRoute2DNet implements RouteNet<IntegerCoordinateTwo, Integer
      *                                    For the setting and obtaining of the sign color, please call "set Sign Color" for viewing!
      */
     public void addSubMarkRoute(IntegerConsanguinityRoute2D integerConsanguinityRoute2D) {
-        String s = integerConsanguinityRoute2D.getStartingCoordinateName() + " -> " + integerConsanguinityRoute2D.getEndPointCoordinateName();
+        String s = integerConsanguinityRoute2D.getRouteName();
         this.integerConsanguinityRoute2DHashMap_SubMark.put(s, integerConsanguinityRoute2D);
         this.integerConsanguinityRoute2DHashMap.remove(s);
         this.integerConsanguinityRoute2DHashMap_MasterTag.remove(s);
@@ -223,7 +223,7 @@ public class IntegerRoute2DNet implements RouteNet<IntegerCoordinateTwo, Integer
      */
     @Override
     public boolean addRoute(IntegerConsanguinityRoute2D integerConsanguinityRoute2D) {
-        this.integerConsanguinityRoute2DHashMap.put(integerConsanguinityRoute2D.getStartingCoordinateName() + " -> " + integerConsanguinityRoute2D.getEndPointCoordinateName(), integerConsanguinityRoute2D);
+        this.integerConsanguinityRoute2DHashMap.put(integerConsanguinityRoute2D.getRouteName(), integerConsanguinityRoute2D);
         return true;
     }
 
@@ -232,7 +232,7 @@ public class IntegerRoute2DNet implements RouteNet<IntegerCoordinateTwo, Integer
      * @return 是否添加成功
      */
     public boolean addRoute(DoubleConsanguinityRoute2D doubleConsanguinityRoute2D) {
-        String s = doubleConsanguinityRoute2D.getStartingCoordinateName() + " -> " + doubleConsanguinityRoute2D.getEndPointCoordinateName();
+        String s = doubleConsanguinityRoute2D.getRouteName();
         this.integerConsanguinityRoute2DHashMap.put(s, ASClass.DoubleConsanguinityRoute2D_To_IntegerConsanguinityRoute2D(s, doubleConsanguinityRoute2D));
         return true;
     }

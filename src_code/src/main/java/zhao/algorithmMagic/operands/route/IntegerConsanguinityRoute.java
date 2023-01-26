@@ -20,9 +20,9 @@ public class IntegerConsanguinityRoute implements NameRoute<IntegerConsanguinity
 
     private final String StartingCoordinateName;
     private final String EndPointCoordinateName;
+    private final String RouteName;
     private final IntegerCoordinateMany StartingCoordinate;
     private final IntegerCoordinateMany EndPointCoordinate;
-    private final DoubleVector doubleVector;
 
     protected IntegerConsanguinityRoute(String startingCoordinateName, String endPointCoordinateName, IntegerCoordinateMany startingCoordinate, IntegerCoordinateMany endPointCoordinate) {
         double numberOfDimensions1 = startingCoordinate.getNumberOfDimensions();
@@ -30,20 +30,33 @@ public class IntegerConsanguinityRoute implements NameRoute<IntegerConsanguinity
         if (numberOfDimensions1 == numberOfDimensions2) {
             StartingCoordinate = startingCoordinate;
             EndPointCoordinate = endPointCoordinate;
+            this.RouteName = startingCoordinateName + " -> " + endPointCoordinateName;
             StartingCoordinateName = startingCoordinateName;
             EndPointCoordinateName = endPointCoordinateName;
-            int[] ints1 = startingCoordinate.toArray();
-            int[] ints2 = EndPointCoordinate.toArray();
-            double[] res = new double[ints1.length];
-            for (int i = 0; i < ints1.length; i++) {
-                res[i] = ints2[i] - ints1[i];
-            }
-            doubleVector = DoubleVector.parse(res);
         } else {
             throw new OperatorOperationException("您在构造血亲坐标的时候发生了异常，具有血亲的起始坐标与终止坐标的维度数量不一致！\n" +
                     "An exception occurred when you constructed the blood relative coordinates, the number of dimensions of the starting coordinates with blood relatives and the ending coordinates are inconsistent!\n" +
                     "Dimensions of two coordinates => startingCoordinate[" + numberOfDimensions1 + "]  endPointCoordinate[" + numberOfDimensions2 + "]");
         }
+    }
+
+    /**
+     * 通过一个已经构造出来的线路对象构造出来新的线路对象，其中的数据直接浅拷贝于源路线对象。
+     * <p>
+     * A new route object is constructed from a constructed route object, and the data in it is directly and shallowly copied to the source route object.
+     *
+     * @param integerConsanguinityRoute 源路线对象，作为拷贝的来源。
+     */
+    protected IntegerConsanguinityRoute(IntegerConsanguinityRoute integerConsanguinityRoute) {
+        this.StartingCoordinate = integerConsanguinityRoute.StartingCoordinate;
+        this.EndPointCoordinate = integerConsanguinityRoute.EndPointCoordinate;
+        this.StartingCoordinateName = integerConsanguinityRoute.StartingCoordinateName;
+        this.EndPointCoordinateName = integerConsanguinityRoute.EndPointCoordinateName;
+        this.RouteName = integerConsanguinityRoute.RouteName;
+    }
+
+    public static IntegerConsanguinityRoute parse(IntegerConsanguinityRoute integerConsanguinityRoute) {
+        return new IntegerConsanguinityRoute(integerConsanguinityRoute);
     }
 
     /**
@@ -78,6 +91,20 @@ public class IntegerConsanguinityRoute implements NameRoute<IntegerConsanguinity
     }
 
     /**
+     * 获取到线路的字符串表现形式
+     * <p>
+     * Get the string representation of the line
+     *
+     * @return 线路的字符窜名称。
+     * <p>
+     * The character name of the line..
+     */
+    @Override
+    public String getRouteName() {
+        return this.RouteName;
+    }
+
+    /**
      * @return 起始坐标对象
      */
     public IntegerCoordinateMany getStartingCoordinate() {
@@ -95,7 +122,13 @@ public class IntegerConsanguinityRoute implements NameRoute<IntegerConsanguinity
      * @return 两坐标之间的向量
      */
     public DoubleVector toDoubleVector() {
-        return doubleVector;
+        int[] ints1 = StartingCoordinate.toArray();
+        int[] ints2 = EndPointCoordinate.toArray();
+        double[] res = new double[ints1.length];
+        for (int i = 0; i < ints1.length; i++) {
+            res[i] = ints2[i] - ints1[i];
+        }
+        return DoubleVector.parse(res);
     }
 
     /**
@@ -112,7 +145,6 @@ public class IntegerConsanguinityRoute implements NameRoute<IntegerConsanguinity
     public double getAlgorithmDistance(String algorithmName) {
         OperationAlgorithm operationAlgorithm = OperationAlgorithmManager.getInstance().get(algorithmName);
         if (operationAlgorithm instanceof DistanceAlgorithm) {
-//            return ((DistanceAlgorithm) operationAlgorithm).getTrueDistance(doubleVector);
             return ((DistanceAlgorithm) operationAlgorithm).getTrueDistance(this);
         } else {
             throw new OperatorOperationException("您在血亲坐标中使用算法[" + algorithmName + "]的时候发生了异常，您提取的不属于距离算法！或者该算法没有注册!\n" +

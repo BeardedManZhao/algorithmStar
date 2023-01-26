@@ -14,9 +14,9 @@ import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 public interface DifferenceAlgorithm<value> extends OperationAlgorithm {
 
     /**
-     * 计算两个事物之间从差异系数百分比
+     * 计算两个事物之间的差异系数百分比
      * <p>
-     * Calculate the percentage difference from the coefficient of difference between two things
+     * Calculate the percentage difference the coefficient of difference between two things
      *
      * @param value1 差异参数1
      * @param value2 差异参数2

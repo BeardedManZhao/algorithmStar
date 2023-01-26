@@ -14,9 +14,20 @@ import zhao.algorithmMagic.operands.Operands;
 public interface Coordinate<ImplementationType> extends Operands<ImplementationType> {
 
     /**
-     * @return 该坐标的维度
+     * 获取到该坐标对象的维度
+     *
+     * @return 该坐标的维度，一般就是返回该坐标有多少轴的标志。
+     * <p>
+     * The dimension of the coordinate is generally a sign of how many axes the coordinate has.
      */
     int getNumberOfDimensions();
 
+    /**
+     * 安全的显式子类拓展函数
+     *
+     * @return 该坐标拓展到子类的函数，通过该函数可以显式并自动的将父类转换成子类对象，不需要考虑类型强转带来的问题等。
+     * <p>
+     * This coordinate is extended to the function of the subclass. Through this function, the parent class can be explicitly and automatically converted to the subclass object, without considering the problems caused by strong type conversion.
+     */
     ImplementationType extend();
 }

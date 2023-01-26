@@ -16,6 +16,7 @@ import zhao.algorithmMagic.utils.DependentAlgorithmNameLibrary;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Java类于 2022/10/17 08:07:54 创建
@@ -148,7 +149,8 @@ public class Dijkstra implements GeneratingAlgorithmMany {
                 }
             }
             // 找到最小距离对应的结束点是谁, 如果找到了就将该路线添加到网的主标记中，并将线路返回出去
-            for (String end : hashMap.keySet()) {
+            for (Map.Entry<String, Double> entry : hashMap.entrySet()) {
+                String end = entry.getKey();
                 if (hashMap.get(end) == dis) {
                     doubleRouteNet.addMasterTagRoute(stringDoubleConsanguinityRouteHashMap.get(CentralCoordinateName + " -> " + end));
                     return doubleRouteNet;

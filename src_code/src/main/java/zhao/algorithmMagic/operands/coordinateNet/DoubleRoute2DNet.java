@@ -181,7 +181,7 @@ public class DoubleRoute2DNet implements RouteNet<DoubleCoordinateTwo, DoubleCon
      *                                   For the setting and obtaining of the sign color, please call "set Sign Color" for viewing!
      */
     public void addSubMarkRoute(DoubleConsanguinityRoute2D doubleConsanguinityRoute2D) {
-        String s = doubleConsanguinityRoute2D.getStartingCoordinateName() + " -> " + doubleConsanguinityRoute2D.getEndPointCoordinateName();
+        String s = doubleConsanguinityRoute2D.getRouteName();
         this.doubleConsanguinityRoute2DHashMap_SubMark.put(s, doubleConsanguinityRoute2D);
         this.doubleConsanguinityRoute2DHashMap.remove(s);
         this.doubleConsanguinityRoute2DHashMap_MasterTag.remove(s);
@@ -200,7 +200,7 @@ public class DoubleRoute2DNet implements RouteNet<DoubleCoordinateTwo, DoubleCon
      *                                   For the setting and obtaining of the sign color, please call "set Sign Color" for viewing!
      */
     public void addMasterTagRoute(DoubleConsanguinityRoute2D doubleConsanguinityRoute2D) {
-        String s = doubleConsanguinityRoute2D.getStartingCoordinateName() + " -> " + doubleConsanguinityRoute2D.getEndPointCoordinateName();
+        String s = doubleConsanguinityRoute2D.getRouteName();
         this.doubleConsanguinityRoute2DHashMap_MasterTag.put(s, doubleConsanguinityRoute2D);
         this.doubleConsanguinityRoute2DHashMap_SubMark.remove(s);
         this.doubleConsanguinityRoute2DHashMap.remove(s);
@@ -223,7 +223,7 @@ public class DoubleRoute2DNet implements RouteNet<DoubleCoordinateTwo, DoubleCon
      */
     @Override
     public boolean addRoute(DoubleConsanguinityRoute2D doubleConsanguinityRoute2D) {
-        this.doubleConsanguinityRoute2DHashMap.put(doubleConsanguinityRoute2D.getStartingCoordinateName() + " -> " + doubleConsanguinityRoute2D.getEndPointCoordinateName(), doubleConsanguinityRoute2D);
+        this.doubleConsanguinityRoute2DHashMap.put(doubleConsanguinityRoute2D.getRouteName(), doubleConsanguinityRoute2D);
         return true;
     }
 

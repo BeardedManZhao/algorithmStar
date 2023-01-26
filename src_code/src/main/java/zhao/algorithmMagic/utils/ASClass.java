@@ -104,7 +104,7 @@ public final class ASClass {
      */
     public static DoubleConsanguinityRoute2D IntegerConsanguinityRoute2D_To_DoubleConsanguinityRoute2D(IntegerConsanguinityRoute2D integerConsanguinityRoute2D) {
         return IntegerConsanguinityRoute2D_To_DoubleConsanguinityRoute2D(
-                integerConsanguinityRoute2D.getStartingCoordinateName() + " -> " + integerConsanguinityRoute2D.getEndPointCoordinateName(),
+                integerConsanguinityRoute2D.getRouteName(),
                 integerConsanguinityRoute2D);
     }
 
@@ -140,7 +140,7 @@ public final class ASClass {
      */
     public static DoubleConsanguinityRoute IntegerConsanguinityRoute_To_DoubleConsanguinityRoute(IntegerConsanguinityRoute integerConsanguinityRoute) {
         return IntegerConsanguinityRoute_To_DoubleConsanguinityRoute(
-                integerConsanguinityRoute.getStartingCoordinateName() + " -> " + integerConsanguinityRoute.getEndPointCoordinateName(),
+                integerConsanguinityRoute.getRouteName(),
                 integerConsanguinityRoute
         );
     }

@@ -20,9 +20,9 @@ public class DoubleConsanguinityRoute implements NameRoute<DoubleConsanguinityRo
 
     private final String StartingCoordinateName;
     private final String EndPointCoordinateName;
+    private final String RouteName;
     private final DoubleCoordinateMany StartingCoordinate;
     private final DoubleCoordinateMany EndPointCoordinate;
-    private final DoubleVector doubleVector;
 
     protected DoubleConsanguinityRoute(String startingCoordinateName, String endPointCoordinateName, DoubleCoordinateMany startingCoordinate, DoubleCoordinateMany endPointCoordinate) {
         double numberOfDimensions1 = startingCoordinate.getNumberOfDimensions();
@@ -32,12 +32,27 @@ public class DoubleConsanguinityRoute implements NameRoute<DoubleConsanguinityRo
             EndPointCoordinate = endPointCoordinate;
             StartingCoordinateName = startingCoordinateName;
             EndPointCoordinateName = endPointCoordinateName;
-            doubleVector = DoubleVector.parse(this.StartingCoordinate, this.EndPointCoordinate);
+            this.RouteName = startingCoordinateName + " -> " + endPointCoordinateName;
         } else {
             throw new OperatorOperationException("您在构造血亲坐标的时候发生了异常，具有血亲的起始坐标与终止坐标的维度数量不一致！\n" +
                     "An exception occurred when you constructed the blood relative coordinates, the number of dimensions of the starting coordinates with blood relatives and the ending coordinates are inconsistent!\n" +
                     "Dimensions of two coordinates => startingCoordinate[" + numberOfDimensions1 + "]  endPointCoordinate[" + numberOfDimensions2 + "]");
         }
+    }
+
+    /**
+     * 通过一个已经构造出来的线路对象构造出来新的线路对象，其中的数据直接浅拷贝于源路线对象。
+     * <p>
+     * A new route object is constructed from a constructed route object, and the data in it is directly and shallowly copied to the source route object.
+     *
+     * @param DoubleConsanguinityRoute 源路线对象，作为拷贝的来源。
+     */
+    protected DoubleConsanguinityRoute(DoubleConsanguinityRoute DoubleConsanguinityRoute) {
+        this.StartingCoordinate = DoubleConsanguinityRoute.StartingCoordinate;
+        this.EndPointCoordinate = DoubleConsanguinityRoute.EndPointCoordinate;
+        this.StartingCoordinateName = DoubleConsanguinityRoute.StartingCoordinateName;
+        this.EndPointCoordinateName = DoubleConsanguinityRoute.EndPointCoordinateName;
+        this.RouteName = DoubleConsanguinityRoute.RouteName;
     }
 
     /**
@@ -57,6 +72,10 @@ public class DoubleConsanguinityRoute implements NameRoute<DoubleConsanguinityRo
         }
     }
 
+    public static DoubleConsanguinityRoute parse(DoubleConsanguinityRoute doubleConsanguinityRoute) {
+        return new DoubleConsanguinityRoute(doubleConsanguinityRoute);
+    }
+
     /**
      * @return 起始坐标的名字
      */
@@ -69,6 +88,20 @@ public class DoubleConsanguinityRoute implements NameRoute<DoubleConsanguinityRo
      */
     public String getEndPointCoordinateName() {
         return EndPointCoordinateName;
+    }
+
+    /**
+     * 获取到线路的字符串表现形式
+     * <p>
+     * Get the string representation of the line
+     *
+     * @return 线路的字符窜名称。
+     * <p>
+     * The character name of the line..
+     */
+    @Override
+    public String getRouteName() {
+        return this.RouteName;
     }
 
     /**
@@ -89,7 +122,7 @@ public class DoubleConsanguinityRoute implements NameRoute<DoubleConsanguinityRo
      * @return 两坐标之间的向量
      */
     public DoubleVector toDoubleVector() {
-        return doubleVector;
+        return DoubleVector.parse(this.StartingCoordinate, this.EndPointCoordinate);
     }
 
     /**

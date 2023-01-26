@@ -210,7 +210,7 @@ public class DoubleRouteNet implements RouteNet<DoubleCoordinateMany, DoubleCons
      */
     @Override
     public boolean addRoute(DoubleConsanguinityRoute doubleConsanguinityRoute) {
-        this.doubleConsanguinityRouteHashMap.put(doubleConsanguinityRoute.getStartingCoordinateName() + " -> " + doubleConsanguinityRoute.getEndPointCoordinateName(), doubleConsanguinityRoute);
+        this.doubleConsanguinityRouteHashMap.put(doubleConsanguinityRoute.getRouteName(), doubleConsanguinityRoute);
         return true;
     }
 
@@ -232,7 +232,7 @@ public class DoubleRouteNet implements RouteNet<DoubleCoordinateMany, DoubleCons
      *                                 For the setting and obtaining of the sign color, please call "set Sign Color" for viewing!
      */
     public void addSubMarkRoute(DoubleConsanguinityRoute doubleConsanguinityRoute) {
-        String s = doubleConsanguinityRoute.getStartingCoordinateName() + " -> " + doubleConsanguinityRoute.getEndPointCoordinateName();
+        String s = doubleConsanguinityRoute.getRouteName();
         this.doubleConsanguinityRouteHashMap_SubMark.put(s, doubleConsanguinityRoute);
         this.doubleConsanguinityRouteHashMap.remove(s);
         this.doubleConsanguinityRouteHashMap_MasterTag.remove(s);
@@ -250,7 +250,7 @@ public class DoubleRouteNet implements RouteNet<DoubleCoordinateMany, DoubleCons
      *                                 For the setting and obtaining of the sign color, please call "set Sign Color" for viewing!
      */
     public void addMasterTagRoute(DoubleConsanguinityRoute doubleConsanguinityRoute) {
-        String s = doubleConsanguinityRoute.getStartingCoordinateName() + " -> " + doubleConsanguinityRoute.getEndPointCoordinateName();
+        String s = doubleConsanguinityRoute.getRouteName();
         this.doubleConsanguinityRouteHashMap_MasterTag.put(s, doubleConsanguinityRoute);
         this.doubleConsanguinityRouteHashMap_SubMark.remove(s);
         this.doubleConsanguinityRouteHashMap.remove(s);

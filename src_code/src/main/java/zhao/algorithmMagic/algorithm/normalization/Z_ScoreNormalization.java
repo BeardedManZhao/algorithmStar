@@ -103,7 +103,7 @@ public class Z_ScoreNormalization extends DataStandardization implements RangeDa
      * Normalized style of v
      */
     @Override
-    public FloatingPointCoordinates<DoubleCoordinateMany> NormalizedSequence(DoubleCoordinateMany v) {
+    public FloatingPointCoordinates<DoubleCoordinateMany> pretreatment(DoubleCoordinateMany v) {
         return new DoubleCoordinateMany(StandardizedSequence(v.toArray()));
     }
 
@@ -118,7 +118,7 @@ public class Z_ScoreNormalization extends DataStandardization implements RangeDa
      * Normalized style of v
      */
     @Override
-    public IntegerCoordinates<IntegerCoordinateMany> NormalizedSequence(IntegerCoordinateMany v) {
+    public IntegerCoordinates<IntegerCoordinateMany> pretreatment(IntegerCoordinateMany v) {
         return new IntegerCoordinateMany(StandardizedSequence(v.toArray()));
     }
 
@@ -133,7 +133,7 @@ public class Z_ScoreNormalization extends DataStandardization implements RangeDa
      * Normalized style of v
      */
     @Override
-    public DoubleVector NormalizedSequence(DoubleVector doubleVector) {
+    public DoubleVector pretreatment(DoubleVector doubleVector) {
         return new DoubleVector(StandardizedSequence(doubleVector.toArray()));
     }
 
@@ -148,7 +148,7 @@ public class Z_ScoreNormalization extends DataStandardization implements RangeDa
      * Normalized style of v
      */
     @Override
-    public IntegerVector NormalizedSequence(IntegerVector integerVector) {
+    public IntegerVector pretreatment(IntegerVector integerVector) {
         return new IntegerVector(StandardizedSequence(integerVector.toArray()));
     }
 
@@ -164,7 +164,7 @@ public class Z_ScoreNormalization extends DataStandardization implements RangeDa
      */
     @Override
     public IntegerVector NormalizedSequence(FastRangeIntegerVector fastRangeIntegerVector) {
-        return NormalizedSequence(fastRangeIntegerVector.toVector());
+        return pretreatment(fastRangeIntegerVector);
     }
 
     /**
@@ -179,6 +179,36 @@ public class Z_ScoreNormalization extends DataStandardization implements RangeDa
      */
     @Override
     public DoubleVector NormalizedSequence(FastRangeDoubleVector fastRangeDoubleVector) {
-        return NormalizedSequence(fastRangeDoubleVector.toVector());
+        return pretreatment(fastRangeDoubleVector);
+    }
+
+    /**
+     * 将一个序列进行标准化，具体的标准化有不同的实现
+     *
+     * @param fastRangeIntegerVector 需要被标准化的数值，可以是坐标或向量，更多信息需要查阅实现
+     *                               <p>
+     *                               The value to be normalized, which can be a coordinate or a vector. For more information, see the implementation
+     * @return v的标准化样式
+     * <p>
+     * Normalized style of v
+     */
+    @Override
+    public IntegerVector pretreatment(FastRangeIntegerVector fastRangeIntegerVector) {
+        return pretreatment(fastRangeIntegerVector.toVector());
+    }
+
+    /**
+     * 将一个序列进行标准化，具体的标准化有不同的实现
+     *
+     * @param fastRangeDoubleVector 需要被标准化的数值，可以是坐标或向量，更多信息需要查阅实现
+     *                              <p>
+     *                              The value to be normalized, which can be a coordinate or a vector. For more information, see the implementation
+     * @return v的标准化样式
+     * <p>
+     * Normalized style of v
+     */
+    @Override
+    public DoubleVector pretreatment(FastRangeDoubleVector fastRangeDoubleVector) {
+        return pretreatment(fastRangeDoubleVector.toVector());
     }
 }

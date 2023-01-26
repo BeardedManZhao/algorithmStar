@@ -610,7 +610,7 @@ public final class AlgorithmStar<diffValue, featureReturn> {
      * Normalized style of v
      */
     public FloatingPointCoordinates<DoubleCoordinateMany> NormalizedSequence(DataStandardization dataStandardization, DoubleCoordinateMany v) {
-        return dataStandardization.NormalizedSequence(v);
+        return dataStandardization.pretreatment(v);
     }
 
     /**
@@ -625,7 +625,7 @@ public final class AlgorithmStar<diffValue, featureReturn> {
      * Normalized style of v
      */
     public IntegerCoordinates<IntegerCoordinateMany> NormalizedSequence(DataStandardization dataStandardization, IntegerCoordinateMany v) {
-        return dataStandardization.NormalizedSequence(v);
+        return dataStandardization.pretreatment(v);
     }
 
     /**
@@ -640,7 +640,7 @@ public final class AlgorithmStar<diffValue, featureReturn> {
      * Normalized style of v
      */
     public DoubleVector NormalizedSequence(DataStandardization dataStandardization, DoubleVector doubleVector) {
-        return dataStandardization.NormalizedSequence(doubleVector);
+        return dataStandardization.pretreatment(doubleVector);
     }
 
     /**
@@ -655,7 +655,7 @@ public final class AlgorithmStar<diffValue, featureReturn> {
      * Normalized style of v
      */
     public IntegerVector NormalizedSequence(DataStandardization dataStandardization, IntegerVector integerVector) {
-        return dataStandardization.NormalizedSequence(integerVector);
+        return dataStandardization.pretreatment(integerVector);
     }
 
     /**
@@ -672,7 +672,7 @@ public final class AlgorithmStar<diffValue, featureReturn> {
      * Normalized style of v
      */
     public IntegerVector NormalizedSequence(RangeDataStandardization rangeDataStandardization, FastRangeIntegerVector fastRangeIntegerVector) {
-        return rangeDataStandardization.NormalizedSequence(fastRangeIntegerVector);
+        return rangeDataStandardization.pretreatment(fastRangeIntegerVector);
     }
 
     /**
@@ -689,7 +689,7 @@ public final class AlgorithmStar<diffValue, featureReturn> {
      * Normalized style of v
      */
     public DoubleVector NormalizedSequence(RangeDataStandardization rangeDataStandardization, FastRangeDoubleVector fastRangeDoubleVector) {
-        return rangeDataStandardization.NormalizedSequence(fastRangeDoubleVector);
+        return rangeDataStandardization.pretreatment(fastRangeDoubleVector);
     }
 
     /*

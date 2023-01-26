@@ -34,6 +34,10 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
         super(doubles.length, doubles[0].length, doubles);
     }
 
+    public DoubleMatrix(int rowCount, int colCount, double[][] doubles) {
+        super(rowCount, colCount, doubles);
+    }
+
     /**
      * 构造一个矩阵，矩阵的列数量以矩阵的第一行为准！
      * <p>
@@ -52,17 +56,59 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
         }
     }
 
-    protected static void ex(double thresholdLeft, double thresholdRight, double[][] ints, double[] mid, ArrayList<double[]> res) {
-        for (double[] anInt : ints) {
-            double num = ASMath.correlationCoefficient(anInt, mid);
-            if (num >= thresholdLeft || num <= thresholdRight) {
-                // 这个情况代表是不符合删除区间的，也就是不需要被删除的
-                double[] res1 = new double[anInt.length];
-                System.arraycopy(anInt, 0, res1, 0, anInt.length);
-                res.add(res1);
+    /**
+     * 使用稀疏矩阵的数据构造一个完整的矩阵对象。
+     * <p>
+     * Use the data of sparse matrix to construct a complete matrix object.
+     *
+     * @param ints 稀疏矩阵数值，是一个二维数组，其中每一个数组中包含三个元素，第一个是值本身，第二，三个是值的横纵坐标。
+     * @return 由稀疏矩阵所构造出来的矩阵对象
+     */
+    public static DoubleMatrix sparse(double[]... ints) {
+        if (ints.length > 0) {
+            if (ints[0].length == 3) {
+                // 获取到最大的行列数值
+                int rowMax = Integer.MIN_VALUE;
+                int colMax = Integer.MIN_VALUE;
+                for (double[] anInt : ints) {
+                    int rowNum = (int) anInt[2];
+                    int colNum = (int) anInt[1];
+                    // 获取最大横坐标
+                    if (rowMax < rowNum) rowMax = rowNum;
+                    // 获取最大列坐标
+                    if (colMax < colNum) colMax = colNum;
+                }
+                // 开始进行矩阵构造
+                double[][] res = new double[rowMax + 1][colMax + 1];
+                for (double[] anInt : ints) {
+                    res[(int) anInt[1]][(int) anInt[2]] = anInt[0];
+                }
+                return new DoubleMatrix(res);
+            } else {
+                throw new OperatorOperationException("The array you pass should conform to the representation: Array (data, x, y).");
             }
-            res.add(anInt);
+        } else {
+            throw new OperatorOperationException("The array of construction matrix cannot be empty.");
         }
+    }
+
+    /**
+     * 将一个矩阵对象复制拷贝出来一个新的矩阵对象。
+     * <p>
+     * Copy a matrix object to a new matrix object.
+     *
+     * @param matrix 需要被拷贝的矩阵对象，该对象中的数据将会是数据源。
+     *               <p>
+     *               The data in the matrix object to be copied will be the data source.
+     * @param copy   如果设置为true，那么代表使用深拷贝的方式将矩阵拷贝出来一份，反之则是使用浅拷贝。
+     *               <p>
+     *               If it is set to true, it means that a copy of the matrix will be made using the deep copy method, and vice versa.
+     * @return 按照深拷贝或浅拷贝的方式，将integerMatrix 复制出一份，并返回到外界。
+     * <p>
+     * Make a copy of the integerMatrix and return it to the outside world in the form of deep copy or light copy.
+     */
+    public static DoubleMatrix parse(DoubleMatrix matrix, boolean copy) {
+        return new DoubleMatrix(matrix.getRowCount(), matrix.getColCount(), copy ? matrix.copyToNewArrays() : matrix.toArrays());
     }
 
     public static DoubleMatrix parse(DoubleVector... doubleVectors) {
@@ -75,6 +121,19 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
             return new DoubleMatrix(res);
         } else {
             throw new OperatorOperationException("The array of construction matrix cannot be empty");
+        }
+    }
+
+    protected static void ex(double thresholdLeft, double thresholdRight, double[][] ints, double[] mid, ArrayList<double[]> res) {
+        for (double[] anInt : ints) {
+            double num = ASMath.correlationCoefficient(anInt, mid);
+            if (num >= thresholdLeft || num <= thresholdRight) {
+                // 这个情况代表是不符合删除区间的，也就是不需要被删除的
+                double[] res1 = new double[anInt.length];
+                System.arraycopy(anInt, 0, res1, 0, anInt.length);
+                res.add(res1);
+            }
+            res.add(anInt);
         }
     }
 

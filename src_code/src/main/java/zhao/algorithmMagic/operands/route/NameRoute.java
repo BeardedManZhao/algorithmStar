@@ -12,4 +12,16 @@ public interface NameRoute<ImplementationType, CoordinateType extends Coordinate
      * @return 终止坐标的名字
      */
     String getEndPointCoordinateName();
+
+
+    /**
+     * 获取到线路的字符串表现形式
+     * <p>
+     * Get the string representation of the line
+     *
+     * @return 线路的字符窜名称。
+     * <p>
+     * The character name of the line.
+     */
+    String getRouteName();
 }
