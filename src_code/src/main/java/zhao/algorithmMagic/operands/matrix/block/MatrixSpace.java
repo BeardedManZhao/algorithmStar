@@ -25,7 +25,6 @@ public abstract class MatrixSpace<ImplementationType extends Matrix<?, ?, ?, ?>,
         extends Matrix<ImplementationType, ElementType, ArrayType, MatrixType[]> {
     private final int layer;
 
-
     /**
      * 构造一个空的矩阵，指定其矩阵的行列数
      * <p>
@@ -81,6 +80,22 @@ public abstract class MatrixSpace<ImplementationType extends Matrix<?, ?, ?, ?>,
      */
     public final MatrixType get(int layer) {
         return this.toArrays()[layer];
+    }
+
+    /**
+     * 通过指定的空间转换函数获取到指定的矩阵空间不同的面所组成的新矩阵。
+     * <p>
+     * Obtain a new matrix composed of different faces in the specified matrix space through the specified space conversion function.
+     *
+     * @param spaceTransformation 指定的矩阵面所对应的空间转换函数接口。
+     *                            <p>
+     *                            The space conversion function interface corresponding to the specified matrix face.
+     * @return 指定的矩阵面多组成的新矩阵对象。
+     * <p>
+     * A new matrix object composed of multiple specified matrix faces.
+     */
+    public final MatrixType get(SpaceTransformation<MatrixType[], MatrixType> spaceTransformation) {
+        return spaceTransformation.function(toArrays());
     }
 
     /**

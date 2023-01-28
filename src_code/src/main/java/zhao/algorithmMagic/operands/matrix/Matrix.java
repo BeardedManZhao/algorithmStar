@@ -348,4 +348,44 @@ public abstract class Matrix<ImplementationType extends Matrix<?, ?, ?, ?>, Elem
      * A new array containing the elements of the current col supports modification.
      */
     protected abstract ArrayType getArrayByColIndex(int index);
+
+    /**
+     * 将数据所维护的数组左移n个位置，并获取到结果数值
+     * <p>
+     * Move the array maintained by the data to the left n positions and get the result value
+     *
+     * @param n    被左移的次数，该数值应取值于 [0, getRowCount]
+     *             <p>
+     *             The number of times it is moved to the left. The value should be [0, getRowCount]
+     * @param copy 本次左移的作用参数，如果设置为true，代表本次位移会创建出一个新的数组，于当前数组毫无关联。
+     *             <p>
+     *             If the action parameter of this left shift is set to true, it means that this shift will create a new array, which has no association with the current array.
+     * @return 位移之后的AS操作数对象，其类型与调用者数据类型一致。
+     * <p>
+     * The AS operand object after displacement has the same type as the caller data type.
+     */
+    @Override
+    public ImplementationType leftShift(int n, boolean copy) {
+        throw new OperatorOperationException("The matrix does not support displacement operation");
+    }
+
+    /**
+     * 将数据所维护的数组右移n个位置，并获取到结果数值
+     * <p>
+     * Move the array maintained by the data to the right n positions and get the result value
+     *
+     * @param n    被右移的次数，该数值应取值于 [0, getRowCount]
+     *             <p>
+     *             The number of times it is moved to the right. The value should be [0, getRowCount]
+     * @param copy 本次右移的作用参数，如果设置为true，代表本次位移会创建出一个新的数组，于当前数组毫无关联。
+     *             <p>
+     *             If the action parameter of this right shift is set to true, it means that this shift will create a new array, which has no association with the current array.
+     * @return 位移之后的AS操作数对象，其类型与调用者数据类型一致。
+     * <p>
+     * The AS operand object after displacement has the same type as the caller data type.
+     */
+    @Override
+    public ImplementationType rightShift(int n, boolean copy) {
+        throw new OperatorOperationException("The matrix does not support displacement operation");
+    }
 }

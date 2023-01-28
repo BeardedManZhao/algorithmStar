@@ -282,11 +282,11 @@ specific classification components, see the following example.
 
 - Feature classification component list
 
-| Calculation component type                                                      | Supported versions | function                                                                                                     |
-|---------------------------------------------------------------------------------|--------------------|--------------------------------------------------------------------------------------------------------------|
-| zhao.algorithmMagic.algorithm.classificationAlgorithm.UDFDistanceClassification | v1.14              | Calculate and classify the distance by manually passing in the category sample                               |
-| zhao.algorithmMagic.algorithm.classificationAlgorithm.KnnClassification         | v1.14              | K-nearest neighbor algorithm is used to calculate the distance of the nearest K features and classify them.  |
-
+| Calculation component type                                                      | Supported versions | function                                                                                                    |
+|---------------------------------------------------------------------------------|--------------------|-------------------------------------------------------------------------------------------------------------|
+| zhao.algorithmMagic.algorithm.classificationAlgorithm.UDFDistanceClassification | v1.14              | Calculate and classify the distance by manually passing in the category sample                              |
+| zhao.algorithmMagic.algorithm.classificationAlgorithm.KnnClassification         | v1.14              | K-nearest neighbor algorithm is used to calculate the distance of the nearest K features and classify them. |
+| zhao.algorithmMagic.algorithm.classificationAlgorithm.KMeans                    | v1.15              | K-means algorithm is used for unsupervised calculation and unsupervised classification.                     |
 ```java
 package zhao.algorithmMagic;
 

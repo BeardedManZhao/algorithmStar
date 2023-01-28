@@ -1,29 +1,44 @@
 package zhao.algorithmMagic;
 
-import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
-import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
+import zhao.algorithmMagic.algorithm.classificationAlgorithm.KMeans;
+import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
+import zhao.algorithmMagic.operands.vector.ColumnIntegerVector;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MAIN1 {
     public static void main(String[] args) {
-        // 创建一个二维数组，其中每一个元素代表一个坐标点的位置与值
-        int[][] ints = {
-                // 第一个值代表坐标点的数值 后面的两个值代表横纵坐标
-                new int[]{1, 1, 1}, new int[]{2, 2, 1}, new int[]{3, 2, 2}
-        };
-        // 根据稀疏坐标点描述创建矩阵对象
-        IntegerMatrix sparse1 = IntegerMatrix.sparse(ints);
-        // 打印矩阵
-        System.out.println(sparse1);
-
-        // 浮点矩阵也是可以这样使用的
-        // 首先准备稀疏矩阵数据
-        double[][] doubles = {
-                // 第一个值代表坐标点的数值 后面的两个值代表横纵坐标
-                new double[]{1, 1, 1}, new double[]{2, 2, 1}, new double[]{3, 2, 2}
-        };
-        // 创建矩阵
-        DoubleMatrix sparse2 = DoubleMatrix.sparse(doubles);
-        // 打印矩阵
-        System.out.println(sparse2);
+        // 创建一个矩阵，接下来对矩阵中的数据进行KMeans算法聚类
+        ColumnIntegerMatrix parse = ColumnIntegerMatrix.parse(
+                new String[]{"说话熟练度", "工具熟练度", "觅食熟练度", "飞翔熟练度"},
+                null,
+                new int[]{100, 100, 20, 0},
+                new int[]{110, 150, 30, 0},
+                new int[]{120, 130, 30, 0},
+                new int[]{10, 1, 100, 100},
+                new int[]{10, 0, 80, 0},
+                new int[]{0, 0, 90, 50},
+                new int[]{0, 10, 70, 0},
+                new int[]{11, 11, 80, 0}
+        );
+        // 获取到KMeans计算组件
+        KMeans kMeans = KMeans.getInstance("KMeans");
+        // 设置随机种子
+        kMeans.setSeed(2048);
+        // 打印矩阵数据
+        System.out.println(parse);
+        // 开始进行聚类 并获取结果集合 其中key是空间名称 value是类别数据对象
+        HashMap<String, ArrayList<ColumnIntegerVector>> classification = kMeans.classification(
+                new String[]{"标签1", "标签2"}, // 这里设置K个空间的名称
+                parse
+        );
+        // 打印聚类结果
+        for (ArrayList<ColumnIntegerVector> value : classification.values()) {
+            // 打印集合中的所有数据对象，由于分类的是带有字段的矩阵，因此每一个向量的类别也可通过字段获取
+            System.out.print(value.get(0).vectorName());
+            System.out.print('\t');
+            System.out.println(value);
+        }
     }
 }

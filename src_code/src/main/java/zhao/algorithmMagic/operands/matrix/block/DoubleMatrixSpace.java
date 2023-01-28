@@ -297,4 +297,13 @@ public class DoubleMatrixSpace extends MatrixSpace<DoubleMatrixSpace, Double, do
     public Double innerProduct(DoubleMatrixSpace vector) {
         return null;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder(100);
+        for (DoubleMatrix doubleMatrix : toArrays()) {
+            stringBuilder.append(doubleMatrix);
+        }
+        return stringBuilder.toString();
+    }
 }

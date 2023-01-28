@@ -37,6 +37,12 @@ public class DoubleVector extends ASVector<DoubleVector, Double, double[]> {
         reFresh();
     }
 
+    protected DoubleVector(double[] vectorArrayPrimitive, String vectorStr, double moduleLength) {
+        VectorArrayPrimitive = vectorArrayPrimitive;
+        this.vectorStr = vectorStr;
+        this.moduleLength = moduleLength;
+    }
+
     /**
      * 使用包装Double序列构建出一个向量
      * <p>
@@ -117,7 +123,7 @@ public class DoubleVector extends ASVector<DoubleVector, Double, double[]> {
      * Return the array of vector sequences stored in this object directly. Note that the returned value is an array being maintained. Therefore, it is recommended to ensure that the returned value is used as a read-only variable.
      */
     @Override
-    public double[] toArray() {
+    public final double[] toArray() {
         return this.VectorArrayPrimitive;
     }
 
@@ -438,6 +444,74 @@ public class DoubleVector extends ASVector<DoubleVector, Double, double[]> {
                     "'DoubleVector1 multiply DoubleVector2' 时，两个'DoubleVector'的向量所包含的数量不同，DoubleVector1=[" + length1 + "]，DoubleVector2=[" + length2 + "]\n" +
                             "When 'DoubleVector1 multiply DoubleVector2', the two vectors of 'DoubleVector' contain different quantities, DoubleVector1=[" + length1 + "], DoubleVector2=[" + length2 + "]"
             );
+        }
+    }
+
+    /**
+     * 将数据所维护的数组左移n个位置，并获取到结果数值
+     * <p>
+     * Move the array maintained by the data to the left n positions and get the result value
+     *
+     * @param n    被左移的次数，该数值应取值于 [0, getNumberOfDimensions]
+     *             <p>
+     *             The number of times it is moved to the left. The value should be [0, getNumberOfDimensions]
+     * @param copy 本次左移的作用参数，如果设置为true，代表本次位移会创建出一个新的数组，于当前数组毫无关联。
+     *             <p>
+     *             If the action parameter of this left shift is set to true, it means that this shift will create a new array, which has no association with the current array.
+     * @return 位移之后的AS操作数对象，其类型与调用者数据类型一致。
+     * <p>
+     * The AS operand object after displacement has the same type as the caller data type.
+     */
+    @Override
+    public DoubleVector leftShift(int n, boolean copy) {
+        if (copy) {
+            double[] ints = toArray();
+            if (n < 0) {
+                try {
+                    return (DoubleVector) this.clone();
+                } catch (CloneNotSupportedException e) {
+                    return DoubleVector.parse(copyToNewArray());
+                }
+            } else if (ints.length == 0 || n >= ints.length) return DoubleVector.parse(new double[ints.length]);
+            else return DoubleVector.parse(ASMath.leftShiftNv(copyToNewArray(), n));
+        } else {
+            ASMath.leftShift(toArray(), n);
+            reFresh();
+            return this;
+        }
+    }
+
+    /**
+     * 将数据所维护的数组右移n个位置，并获取到结果数值
+     * <p>
+     * Move the array maintained by the data to the right n positions and get the result value
+     *
+     * @param n    被右移的次数，该数值应取值于 [0, getNumberOfDimensions]
+     *             <p>
+     *             The number of times it is moved to the right. The value should be [0, getNumberOfDimensions]
+     * @param copy 本次右移的作用参数，如果设置为true，代表本次位移会创建出一个新的数组，于当前数组毫无关联。
+     *             <p>
+     *             If the action parameter of this right shift is set to true, it means that this shift will create a new array, which has no association with the current array.
+     * @return 位移之后的AS操作数对象，其类型与调用者数据类型一致。
+     * <p>
+     * The AS operand object after displacement has the same type as the caller data type.
+     */
+    @Override
+    public DoubleVector rightShift(int n, boolean copy) {
+        if (copy) {
+            double[] ints = toArray();
+            if (n < 0) {
+                try {
+                    return (DoubleVector) this.clone();
+                } catch (CloneNotSupportedException e) {
+                    return DoubleVector.parse(copyToNewArray());
+                }
+            } else if (ints.length == 0 || n >= ints.length) return DoubleVector.parse(new double[ints.length]);
+            else return DoubleVector.parse(ASMath.rightShiftNv(copyToNewArray(), n));
+        } else {
+            ASMath.rightShift(toArray(), n);
+            reFresh();
+            return this;
         }
     }
 }

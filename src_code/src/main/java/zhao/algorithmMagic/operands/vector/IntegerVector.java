@@ -31,6 +31,12 @@ public class IntegerVector extends ASVector<IntegerVector, Integer, int[]> {
         reFresh();
     }
 
+    public IntegerVector(int[] vectorArrayPrimitive, String vectorStr, int moduleLength) {
+        VectorArrayPrimitive = vectorArrayPrimitive;
+        this.vectorStr = vectorStr;
+        this.moduleLength = moduleLength;
+    }
+
     /**
      * 使用多维始末坐标构建出来一个证书向量！
      *
@@ -248,7 +254,7 @@ public class IntegerVector extends ASVector<IntegerVector, Integer, int[]> {
      * Return the array of vector sequences stored in this object directly. Note that the returned value is an array being maintained. Therefore, it is recommended to ensure that the returned value is used as a read-only variable.
      */
     @Override
-    public int[] toArray() {
+    public final int[] toArray() {
         return this.VectorArrayPrimitive;
     }
 
@@ -367,6 +373,74 @@ public class IntegerVector extends ASVector<IntegerVector, Integer, int[]> {
                     "'IntegerVector1 multiply IntegerVector2' 时，两个'IntegerVector'的向量所包含的数量不同，IntegerVector1=[" + length1 + "]，IntegerVector2=[" + length2 + "]\n" +
                             "When 'IntegerVector1 multiply IntegerVector2', the two vectors of 'IntegerVector' contain different quantities, IntegerVector1=[" + length1 + "], IntegerVector2=[" + length2 + "]"
             );
+        }
+    }
+
+    /**
+     * 将数据所维护的数组左移n个位置，并获取到结果数值
+     * <p>
+     * Move the array maintained by the data to the left n positions and get the result value
+     *
+     * @param n    被左移的次数，该数值应取值于 [0, getNumberOfDimensions]
+     *             <p>
+     *             The number of times it is moved to the left. The value should be [0, getNumberOfDimensions]
+     * @param copy 本次左移的作用参数，如果设置为true，代表本次位移会创建出一个新的数组，于当前数组毫无关联。
+     *             <p>
+     *             If the action parameter of this left shift is set to true, it means that this shift will create a new array, which has no association with the current array.
+     * @return 位移之后的AS操作数对象，其类型与调用者数据类型一致。
+     * <p>
+     * The AS operand object after displacement has the same type as the caller data type.
+     */
+    @Override
+    public IntegerVector leftShift(int n, boolean copy) {
+        if (copy) {
+            int[] ints = toArray();
+            if (n < 0) {
+                try {
+                    return (IntegerVector) this.clone();
+                } catch (CloneNotSupportedException e) {
+                    return IntegerVector.parse(copyToNewArray());
+                }
+            } else if (ints.length == 0 || n >= ints.length) return IntegerVector.parse(new int[ints.length]);
+            else return IntegerVector.parse(ASMath.leftShiftNv(copyToNewArray(), n));
+        } else {
+            ASMath.leftShift(toArray(), n);
+            reFresh();
+            return this;
+        }
+    }
+
+    /**
+     * 将数据所维护的数组右移n个位置，并获取到结果数值
+     * <p>
+     * Move the array maintained by the data to the right n positions and get the result value
+     *
+     * @param n    被右移的次数，该数值应取值于 [0, getNumberOfDimensions]
+     *             <p>
+     *             The number of times it is moved to the right. The value should be [0, getNumberOfDimensions]
+     * @param copy 本次右移的作用参数，如果设置为true，代表本次位移会创建出一个新的数组，于当前数组毫无关联。
+     *             <p>
+     *             If the action parameter of this right shift is set to true, it means that this shift will create a new array, which has no association with the current array.
+     * @return 位移之后的AS操作数对象，其类型与调用者数据类型一致。
+     * <p>
+     * The AS operand object after displacement has the same type as the caller data type.
+     */
+    @Override
+    public IntegerVector rightShift(int n, boolean copy) {
+        if (copy) {
+            int[] ints = toArray();
+            if (n < 0) {
+                try {
+                    return (IntegerVector) this.clone();
+                } catch (CloneNotSupportedException e) {
+                    return IntegerVector.parse(copyToNewArray());
+                }
+            } else if (ints.length == 0 || n >= ints.length) return IntegerVector.parse(new int[ints.length]);
+            else return IntegerVector.parse(ASMath.rightShiftNv(copyToNewArray(), n));
+        } else {
+            ASMath.rightShift(toArray(), n);
+            reFresh();
+            return this;
         }
     }
 }

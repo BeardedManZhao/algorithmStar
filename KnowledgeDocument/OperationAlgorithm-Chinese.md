@@ -267,6 +267,7 @@ public class MAIN1 {
 |---------------------------------------------------------------------------------|-------|------------------------------|
 | zhao.algorithmMagic.algorithm.classificationAlgorithm.UDFDistanceClassification | v1.14 | 利用手动传入类别样本的方式，进行距离计算并分类      |
 | zhao.algorithmMagic.algorithm.classificationAlgorithm.KnnClassification         | v1.14 | 利用K 近邻算法将最近的K个特征进行距离计算，进行分类。 |
+| zhao.algorithmMagic.algorithm.classificationAlgorithm.KMeans                    | v1.15 | 采用K 均值算法进行无监督计算，进行无监督分类。     |
 
 ```java
 package zhao.algorithmMagic;
@@ -564,7 +565,7 @@ import zhao.algorithmMagic.algorithm.modelAlgorithm.LinearRegression;
 import zhao.algorithmMagic.operands.matrix.ColumnDoubleMatrix;
 
 public class MAIN1 {
-  public static void main(String[] args) throws CloneNotSupportedException {
+  public static void main(String[] args) {
     // 创建一个矩阵对象，其中包含一些数据，现在需要找到最块的筛选路线，并使用此路线将数据进行一次获取
     ColumnDoubleMatrix columnDoubleMatrix = ColumnDoubleMatrix.parse(
             new String[]{"x", "y"},

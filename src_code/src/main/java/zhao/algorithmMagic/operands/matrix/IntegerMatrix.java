@@ -565,4 +565,68 @@ public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], i
             return IntegerMatrix.parse(copyToNewArrays());
         }
     }
+
+    /**
+     * 将数据所维护的数组左移n个位置，并获取到结果数值
+     * <p>
+     * Move the array maintained by the data to the left n positions and get the result value
+     *
+     * @param n    被左移的次数，该数值应取值于 [0, getRowCount]
+     *             <p>
+     *             The number of times it is moved to the left. The value should be [0, getRowCount]
+     * @param copy 本次左移的作用参数，如果设置为true，代表本次位移会创建出一个新的数组，于当前数组毫无关联。
+     *             <p>
+     *             If the action parameter of this left shift is set to true, it means that this shift will create a new array, which has no association with the current array.
+     * @return 位移之后的AS操作数对象，其类型与调用者数据类型一致。
+     * <p>
+     * The AS operand object after displacement has the same type as the caller data type.
+     */
+    @Override
+    public IntegerMatrix leftShift(int n, boolean copy) {
+        if (copy) {
+            int[][] copyToNewArrays = this.copyToNewArrays();
+            for (int[] copyToNewArray : copyToNewArrays) {
+                ASMath.leftShiftNv(copyToNewArray, n);
+            }
+            return IntegerMatrix.parse(copyToNewArrays);
+        } else {
+            int[][] ints = this.toArrays();
+            for (int[] anInt : ints) {
+                ASMath.leftShift(anInt, n);
+            }
+            return this;
+        }
+    }
+
+    /**
+     * 将数据所维护的数组右移n个位置，并获取到结果数值
+     * <p>
+     * Move the array maintained by the data to the right n positions and get the result value
+     *
+     * @param n    被右移的次数，该数值应取值于 [0, getRowCount]
+     *             <p>
+     *             The number of times it is moved to the right. The value should be [0, getRowCount]
+     * @param copy 本次右移的作用参数，如果设置为true，代表本次位移会创建出一个新的数组，于当前数组毫无关联。
+     *             <p>
+     *             If the action parameter of this right shift is set to true, it means that this shift will create a new array, which has no association with the current array.
+     * @return 位移之后的AS操作数对象，其类型与调用者数据类型一致。
+     * <p>
+     * The AS operand object after displacement has the same type as the caller data type.
+     */
+    @Override
+    public IntegerMatrix rightShift(int n, boolean copy) {
+        if (copy) {
+            int[][] copyToNewArrays = this.copyToNewArrays();
+            for (int[] copyToNewArray : copyToNewArrays) {
+                ASMath.rightShift(copyToNewArray, n);
+            }
+            return IntegerMatrix.parse(copyToNewArrays);
+        } else {
+            int[][] ints = this.toArrays();
+            for (int[] anInt : ints) {
+                ASMath.rightShift(anInt, n);
+            }
+            return this;
+        }
+    }
 }

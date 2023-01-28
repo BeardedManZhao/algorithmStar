@@ -851,20 +851,19 @@ public final class ASMath {
     /**
      * 将2维数组按照行打乱顺序。
      *
-     * @param doubles 需要被打乱的二维数组
-     * @param Seed    洗牌打乱时的随即种子
-     * @param copy    是否使用拷贝新数组的方式进行打乱
+     * @param ints 需要被打乱的二维数组
+     * @param Seed 洗牌打乱时的随即种子
+     * @param copy 是否使用拷贝新数组的方式进行打乱
      * @return 打乱之后的数组对象，是否为新数组需要看copy函数的值
      */
-    public static int[][] shuffle(int[][] doubles, final long Seed, final boolean copy) {
+    public static int[][] shuffle(int[][] ints, final long Seed, final boolean copy) {
         Random random = new Random();
         random.setSeed(Seed);
         if (copy) {
-            int[][] res = new int[doubles.length][];
-            ASClass.array2DCopy(doubles, res);
-            return shuffleFunction(random, doubles.length - 1, res, res.length);
+            int[][] res = ints.clone();
+            return shuffleFunction(random, ints.length - 1, res, res.length);
         } else {
-            return shuffleFunction(random, doubles.length - 1, doubles, doubles.length);
+            return shuffleFunction(random, ints.length - 1, ints, ints.length);
         }
     }
 
@@ -898,8 +897,7 @@ public final class ASMath {
         Random random = new Random();
         random.setSeed(Seed);
         if (copy) {
-            double[][] res = new double[doubles.length][];
-            ASClass.array2DCopy(doubles, res);
+            double[][] res = doubles.clone();
             return shuffleFunction(random, doubles.length - 1, res, res.length);
         } else {
             return shuffleFunction(random, doubles.length - 1, doubles, doubles.length);
@@ -1338,5 +1336,236 @@ public final class ASMath {
         // 将 回归系数 与 偏置值 封装起来。
         double regressionCoefficient = xybar / xxbar;
         return new double[]{regressionCoefficient, avg_targets - regressionCoefficient * avg_features};
+    }
+
+    /**
+     * 不创建新数组的情况下，在原数组上进行修改，并像左整体移动n位的函数。
+     * <p>
+     * Without creating a new array, modify it on the original array and move it n bits as a whole.
+     *
+     * @param arrayType 需要被进行左移操作的数组
+     *                  <p>
+     *                  The Array of left-shift operations to be performed
+     * @param n         需要被进行左移操作的数量
+     *                  <p>
+     *                  The number of left-shift operations to be performed
+     */
+    public static void leftShift(int[] arrayType, int n) {
+        if (n < 0) return;
+        if (n >= arrayType.length) {
+            Arrays.fill(arrayType, 0);
+        } else {
+            leftShiftNv(arrayType, n);
+        }
+    }
+
+    /**
+     * 无校验的数组左移函数，其直接作用于形参数组对象所在的内存空间，该函数的调用需要在外界有校验的条件下进行调用性能会更佳，否则将会带来异常！
+     *
+     * @param arrayType 需要被进行左移操作的函数
+     * @param n         左移位的数值
+     */
+    public static int[] leftShiftNv(int[] arrayType, int n) {
+        int diff = arrayType.length - n;
+        // 将每一个不会溢出的元素都向前移动n位
+        System.arraycopy(arrayType, n, arrayType, 0, diff);
+        for (int i = diff; i < arrayType.length; i++) {
+            // 将剩余的所有元素赋值0
+            arrayType[i] = 0;
+        }
+        return arrayType;
+    }
+
+    /**
+     * 不创建新数组的情况下，在原数组上进行修改，并像左整体移动n位的函数。
+     * <p>
+     * Without creating a new array, modify it on the original array and move it n bits as a whole.
+     *
+     * @param arrayType 需要被进行左移操作的数组
+     *                  <p>
+     *                  The Array of left-shift operations to be performed
+     * @param n         需要被进行左移操作的数量
+     *                  <p>
+     *                  The number of left-shift operations to be performed
+     */
+    public static void leftShift(double[] arrayType, int n) {
+        if (n < 0) return;
+        if (n >= arrayType.length) {
+            Arrays.fill(arrayType, 0);
+        } else {
+            leftShiftNv(arrayType, n);
+        }
+    }
+
+    /**
+     * 无校验的数组左移函数，其直接作用于形参数组对象所在的内存空间，该函数的调用需要在外界有校验的条件下进行调用性能会更佳，否则将会带来异常！
+     *
+     * @param arrayType 需要被进行左移操作的函数
+     * @param n         左移位的数值
+     */
+    public static double[] leftShiftNv(double[] arrayType, int n) {
+        int diff = arrayType.length - n;
+        // 将每一个不会溢出的元素都向前移动n位
+        System.arraycopy(arrayType, n, arrayType, 0, diff);
+        for (int i = diff; i < arrayType.length; i++) {
+            // 将剩余的所有元素赋值0
+            arrayType[i] = 0.0;
+        }
+        return arrayType;
+    }
+
+    /**
+     * 不创建新数组的情况下，在原数组上进行修改，并像左整体移动n位的函数。
+     * <p>
+     * Without creating a new array, modify it on the original array and move it n bits as a whole.
+     *
+     * @param arrayType 需要被进行左移操作的数组
+     *                  <p>
+     *                  The Array of left-shift operations to be performed
+     * @param n         需要被进行左移操作的数量
+     *                  <p>
+     *                  The number of left-shift operations to be performed
+     * @return 左移之后的数组
+     */
+    public static <data> data[] leftShift(data[] arrayType, int n) {
+        if (n < 0) return arrayType;
+        if (n >= arrayType.length) {
+            Arrays.fill(arrayType, null);
+        } else {
+            return leftShiftNv(arrayType, n);
+        }
+        return arrayType;
+    }
+
+    /**
+     * 无校验的数组左移函数，其直接作用于形参数组对象所在的内存空间，该函数的调用需要在外界有校验的条件下进行调用性能会更佳，否则将会带来异常！
+     *
+     * @param arrayType 需要被进行左移操作的函数
+     * @param n         左移位的数值
+     */
+    public static <data> data[] leftShiftNv(data[] arrayType, int n) {
+        int diff = arrayType.length - n;
+        // 将每一个不会溢出的元素都向前移动n位
+        System.arraycopy(arrayType, n, arrayType, 0, diff);
+        for (int i = diff; i < arrayType.length; i++) {
+            // 将剩余的所有元素赋值 null
+            arrayType[i] = null;
+        }
+        return arrayType;
+    }
+
+    /**
+     * 不创建新数组的情况下，在原数组上进行修改，并像左整体移动n位的函数。
+     * <p>
+     * Without creating a new array, modify it on the original array and move it n bits as a whole.
+     *
+     * @param arrayType 需要被进行左移操作的数组
+     *                  <p>
+     *                  The Array of left-shift operations to be performed
+     * @param n         需要被进行左移操作的数量
+     *                  <p>
+     *                  The number of left-shift operations to be performed
+     */
+    public static int[] rightShift(int[] arrayType, int n) {
+        if (n < 0) return arrayType;
+        if (n >= arrayType.length) {
+            Arrays.fill(arrayType, 0);
+        } else {
+            rightShiftNv(arrayType, n);
+        }
+        return arrayType;
+    }
+
+    /**
+     * 无校验的数组左移函数，其直接作用于形参数组对象所在的内存空间，该函数的调用需要在外界有校验的条件下进行调用性能会更佳，否则将会带来异常！
+     *
+     * @param arrayType 需要被进行左移操作的函数
+     * @param n         左移位的数值
+     */
+    public static int[] rightShiftNv(int[] arrayType, int n) {
+        // 将每一个不会溢出的元素向后移动n位
+        System.arraycopy(arrayType, 0, arrayType, n, arrayType.length - n);
+        // 将前面的所有剩余位赋予 0
+        for (int i = 0; i < n; i++) {
+            arrayType[i] = 0;
+        }
+        return arrayType;
+    }
+
+    /**
+     * 不创建新数组的情况下，在原数组上进行修改，并像左整体移动n位的函数。
+     * <p>
+     * Without creating a new array, modify it on the original array and move it n bits as a whole.
+     *
+     * @param arrayType 需要被进行左移操作的数组
+     *                  <p>
+     *                  The Array of left-shift operations to be performed
+     * @param n         需要被进行左移操作的数量
+     *                  <p>
+     *                  The number of left-shift operations to be performed
+     */
+    public static double[] rightShift(double[] arrayType, int n) {
+        if (n < 0) return arrayType;
+        if (n >= arrayType.length) {
+            Arrays.fill(arrayType, 0);
+        } else {
+            rightShiftNv(arrayType, n);
+        }
+        return arrayType;
+    }
+
+    /**
+     * 无校验的数组右移函数，其直接作用于形参数组对象所在的内存空间，该函数的调用需要在外界有校验的条件下进行调用性能会更佳，否则将会带来异常！
+     *
+     * @param arrayType 需要被进行右移操作的函数
+     * @param n         左移位的数值
+     */
+    public static double[] rightShiftNv(double[] arrayType, int n) {
+        // 将每一个不会溢出的元素向后移动n位
+        System.arraycopy(arrayType, 0, arrayType, n, arrayType.length - n);
+        // 将前面的所有剩余位赋予 0
+        for (int i = 0; i < n; i++) {
+            arrayType[i] = 0;
+        }
+        return arrayType;
+    }
+
+    /**
+     * 不创建新数组的情况下，在原数组上进行修改，并像左整体移动n位的函数。
+     * <p>
+     * Without creating a new array, modify it on the original array and move it n bits as a whole.
+     *
+     * @param arrayType 需要被进行左移操作的数组
+     *                  <p>
+     *                  The Array of left-shift operations to be performed
+     * @param n         需要被进行左移操作的数量
+     *                  <p>
+     *                  The number of left-shift operations to be performed
+     * @return 左移之后的数组
+     */
+    public static <data> data[] rightShift(data[] arrayType, int n) {
+        if (n < 0) return arrayType;
+        if (n >= arrayType.length) {
+            Arrays.fill(arrayType, 0);
+        } else {
+            return rightShiftNv(arrayType, n);
+        }
+        return arrayType;
+    }
+
+    /**
+     * 无校验的数组左移函数，其直接作用于形参数组对象所在的内存空间，该函数的调用需要在外界有校验的条件下进行调用性能会更佳，否则将会带来异常！
+     *
+     * @param arrayType 需要被进行左移操作的函数
+     * @param n         左移位的数值
+     */
+    public static <data> data[] rightShiftNv(data[] arrayType, int n) {
+        // 将每一个不会溢出的元素向后移动n位
+        System.arraycopy(arrayType, 0, arrayType, n, arrayType.length - n);
+        // 将前面的所有剩余位赋予 0
+        for (int i = 0; i < n; i++) {
+            arrayType[i] = null;
+        }
+        return arrayType;
     }
 }

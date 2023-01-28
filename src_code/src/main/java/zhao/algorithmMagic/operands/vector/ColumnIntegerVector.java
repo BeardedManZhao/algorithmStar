@@ -1,5 +1,7 @@
 package zhao.algorithmMagic.operands.vector;
 
+import zhao.algorithmMagic.utils.ASMath;
+
 import java.util.HashMap;
 import java.util.Random;
 
@@ -30,6 +32,12 @@ public class ColumnIntegerVector extends IntegerVector {
         this.Field = field;
     }
 
+    protected ColumnIntegerVector(int[] vectorArrayPrimitive, String vectorStr, int moduleLength, String[] field, String vectorName) {
+        super(vectorArrayPrimitive, vectorStr, moduleLength);
+        Field = field;
+        this.vectorName = vectorName;
+    }
+
     /**
      * 使用初始传参的方式构建出来一个向量
      * <p>
@@ -50,6 +58,28 @@ public class ColumnIntegerVector extends IntegerVector {
      */
     public static ColumnIntegerVector parse(String vectorName, String[] field, int... vectorArray) {
         return new ColumnIntegerVector(vectorName, field, vectorArray);
+    }
+
+    /**
+     * 使用初始传参的方式构建出来一个向量
+     * <p>
+     * Construct a vector using the initial parameter pass method.
+     *
+     * @param vectorName    向量名称，在该对象中，您可以为向量起一个名称。
+     *                      <p>
+     *                      Vector name. In this object, you can give a name to the vector.
+     * @param field         向量中的每一个维度的名称。
+     *                      <p>
+     *                      The name of each dimension in the vector.
+     * @param integerVector 向量中的数值序列集合
+     *                      <p>
+     *                      collection of numeric sequences in a vector
+     * @return 带有列名字段的向量对象
+     * <p>
+     * Vector object with column name field
+     */
+    public static ColumnIntegerVector parse(String vectorName, String[] field, IntegerVector integerVector) {
+        return new ColumnIntegerVector(integerVector.toArray(), integerVector.toString(), integerVector.moduleLength(), field, vectorName);
     }
 
     /**
@@ -119,6 +149,71 @@ public class ColumnIntegerVector extends IntegerVector {
                 res[i] = temp;
             }
             return ColumnIntegerVector.parse(vectorName(), clone, res);
+        }
+    }
+
+    /**
+     * 将数据所维护的数组左移n个位置，并获取到结果数值
+     * <p>
+     * Move the array maintained by the data to the left n positions and get the result value
+     *
+     * @param n    被左移的次数，该数值应取值于 [0, getNumberOfDimensions]
+     *             <p>
+     *             The number of times it is moved to the left. The value should be [0, getNumberOfDimensions]
+     * @param copy 本次左移的作用参数，如果设置为true，代表本次位移会创建出一个新的数组，于当前数组毫无关联。
+     *             <p>
+     *             If the action parameter of this left shift is set to true, it means that this shift will create a new array, which has no association with the current array.
+     * @return 位移之后的AS操作数对象，其类型与调用者数据类型一致。
+     * <p>
+     * The AS operand object after displacement has the same type as the caller data type.
+     */
+    @Override
+    public IntegerVector leftShift(int n, boolean copy) {
+        if (copy) {
+            String[] fieldNames = this.getFieldNames().clone();
+            int[] doubles = this.copyToNewArray();
+            return ColumnIntegerVector.parse(
+                    this.vectorName,
+                    ASMath.leftShift(fieldNames, n),
+                    ASMath.leftShiftNv(doubles, n)
+            );
+        } else {
+            ASMath.leftShift(this.getFieldNames(), n);
+            ASMath.leftShiftNv(this.toArray(), n);
+            reFresh();
+            return this;
+        }
+    }
+
+    /**
+     * 将数据所维护的数组右移n个位置，并获取到结果数值
+     * <p>
+     * Move the array maintained by the data to the right n positions and get the result value
+     *
+     * @param n    被右移的次数，该数值应取值于 [0, getNumberOfDimensions]
+     *             <p>
+     *             The number of times it is moved to the right. The value should be [0, getNumberOfDimensions]
+     * @param copy 本次右移的作用参数，如果设置为true，代表本次位移会创建出一个新的数组，于当前数组毫无关联。
+     *             <p>
+     *             If the action parameter of this right shift is set to true, it means that this shift will create a new array, which has no association with the current array.
+     * @return 位移之后的AS操作数对象，其类型与调用者数据类型一致。
+     * <p>
+     * The AS operand object after displacement has the same type as the caller data type.
+     */
+    @Override
+    public IntegerVector rightShift(int n, boolean copy) {
+        if (copy) {
+            String[] fieldNames = this.getFieldNames().clone();
+            return ColumnIntegerVector.parse(
+                    this.vectorName,
+                    ASMath.rightShift(fieldNames, n),
+                    ASMath.rightShift(this.copyToNewArray(), n)
+            );
+        } else {
+            ASMath.leftShift(this.getFieldNames(), n);
+            ASMath.leftShiftNv(this.toArray(), n);
+            reFresh();
+            return this;
         }
     }
 }
