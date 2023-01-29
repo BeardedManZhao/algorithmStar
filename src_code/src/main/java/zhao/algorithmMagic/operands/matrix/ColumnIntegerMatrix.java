@@ -85,6 +85,16 @@ public class ColumnIntegerMatrix extends IntegerMatrix implements RCNOperands<in
         }
     }
 
+    protected static void ex(Random random1, int[][] res, String[] rowNames, int maxIndex, int i) {
+        int i1 = random1.nextInt(maxIndex);
+        int[] temp = res[i];
+        res[i] = res[i1];
+        res[i1] = temp;
+        String tempS = rowNames[i];
+        rowNames[i] = rowNames[i1];
+        rowNames[i1] = tempS;
+    }
+
     /**
      * @return 该矩阵中所对应的列名称
      */
@@ -184,13 +194,21 @@ public class ColumnIntegerMatrix extends IntegerMatrix implements RCNOperands<in
             // 开始获取到前 num 个数组
             int index = -1;
             // 构建列与数据的存储控件
-            String[] rowNames = new String[num];
+            String[] rowNames = this.Field2.length == 0 ? null : new String[num];
             int[][] res = new int[num][getColCount()];
-            for (IntegerAndInts value : treeMap.values()) {
-                System.arraycopy(value.ints, 0, res[++index], 0, value.ints.length);
-                rowNames[index] = this.Field2[value.anInt];
-                --num;
-                if (num == 0) break;
+            if (rowNames == null) {
+                for (IntegerAndInts value : treeMap.values()) {
+                    System.arraycopy(value.ints, 0, res[++index], 0, value.ints.length);
+                    --num;
+                    if (num == 0) break;
+                }
+            } else {
+                for (IntegerAndInts value : treeMap.values()) {
+                    System.arraycopy(value.ints, 0, res[++index], 0, value.ints.length);
+                    rowNames[index] = this.Field2[value.anInt];
+                    --num;
+                    if (num == 0) break;
+                }
             }
             return ColumnIntegerMatrix.parse(getColFieldNames(), rowNames, res);
         }
@@ -351,20 +369,59 @@ public class ColumnIntegerMatrix extends IntegerMatrix implements RCNOperands<in
                     ASMath.shuffle(this.copyToNewArrays(), seed, false));
         } else {
             // 带着行一起迭代
-            int[][] res = this.copyToNewArrays();
             String[] rowNames = this.Field2.clone();
+            int[][] res = this.copyToNewArrays();
             // 生成随机数对象
             Random random = new Random();
             int maxIndex = res.length - 1;
             random.setSeed(seed);
             for (int i = 0; i < res.length; i++) {
-                int i1 = random.nextInt(maxIndex);
-                int[] temp = res[i];
-                res[i] = res[i1];
-                res[i1] = temp;
-                String tempS = rowNames[i];
-                rowNames[i] = rowNames[i1];
-                rowNames[i1] = tempS;
+                ex(random, res, rowNames, maxIndex, i);
+            }
+            return ColumnIntegerMatrix.parse(this.Field1.clone(), rowNames, res);
+        }
+    }
+
+    /**
+     * 将本对象中的所有数据进行洗牌打乱，随机分布数据行的排列。
+     * <p>
+     * Shuffle all the data in this object and randomly distribute the arrangement of data rows.
+     *
+     * @param random1 打乱算法中所需要的随机种子。
+     *                <p>
+     *                Disrupt random seeds required in the algorithm.
+     * @param copy    打乱时是否需要产生一个新矩阵对象，与当前对象完全脱离关系。
+     *                <p>
+     *                Whether it is necessary to generate a new matrix object when disrupting, which is completely separated from the current object.
+     * @param length  打乱时注重的打乱次数，最终打乱会导致最多 length * 2 个元素发生位置变化。
+     *                <p>
+     *                The number of disruptions that should be paid attention to when disrupting, and the final disruption will result in the position change of up to 2 elements of length *.
+     * @return 打乱之后的对象。
+     * <p>
+     * Objects after disruption.
+     */
+    public ColumnIntegerMatrix shuffle(Random random1, boolean copy, int length) {
+        // 行是否无字段
+        if (this.Field2.length == 0) {
+            return ColumnIntegerMatrix.parse(
+                    this.Field1.length == 0 ? null : this.Field1.clone(),
+                    null,
+                    ASMath.shuffleFunction(random1, this.getRowCount(), copy ? this.copyToNewArrays() : this.toArrays(), length));
+        } else {
+            // 带着行一起迭代
+            int[][] res;
+            String[] rowNames;
+            if (!copy) {
+                res = this.toArrays();
+                rowNames = this.Field2;
+            } else {
+                res = this.copyToNewArrays();
+                rowNames = this.Field2.clone();
+            }
+            // 生成随机数对象
+            int maxIndex = res.length - 1;
+            for (int i = 0; i < length; i++) {
+                ex(random1, res, rowNames, maxIndex, i);
             }
             return ColumnIntegerMatrix.parse(this.Field1.clone(), rowNames, res);
         }

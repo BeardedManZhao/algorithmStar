@@ -873,9 +873,10 @@ public final class ASMath {
      * @param random   打乱数组时使用的随机数生成器。
      * @param maxIndex 打乱数组时，随机索引的最大值。
      * @param res      需要被打乱的数组对象，该对象本身会被打乱。
+     * @param length   需要被打乱的随机次数
      * @return 打乱之后的数组对象。
      */
-    private static int[][] shuffleFunction(Random random, int maxIndex, int[][] res, int length) {
+    public static int[][] shuffleFunction(Random random, int maxIndex, int[][] res, int length) {
         for (int i = 0; i < length; i++) {
             int i1 = random.nextInt(maxIndex);
             int[] temp = res[i1];
@@ -912,7 +913,7 @@ public final class ASMath {
      * @param res      需要被打乱的数组对象，该对象本身会被打乱。
      * @return 打乱之后的数组对象。
      */
-    private static double[][] shuffleFunction(Random random, int maxIndex, double[][] res, int length) {
+    public static double[][] shuffleFunction(Random random, int maxIndex, double[][] res, int length) {
         for (int i = 0; i < length; i++) {
             int i1 = random.nextInt(maxIndex);
             double[] temp = res[i1];
@@ -972,7 +973,7 @@ public final class ASMath {
      * @param res      需要被打乱的数组对象，该对象本身会被打乱。
      * @return 打乱之后的数组对象。
      */
-    private static <T> T[] shuffleFunction(Random random, int maxIndex, T[] res) {
+    public static <T> T[] shuffleFunction(Random random, int maxIndex, T[] res) {
         for (int i = 0; i < res.length; i++) {
             int i1 = random.nextInt(maxIndex);
             T temp = res[i1];
@@ -991,7 +992,7 @@ public final class ASMath {
      * @param res      需要被打乱的数组对象，该对象本身会被打乱。
      * @return 打乱之后的数组对象。
      */
-    private static ComplexNumber[][] shuffleFunction(Random random, int maxIndex, ComplexNumber[][] res) {
+    public static ComplexNumber[][] shuffleFunction(Random random, int maxIndex, ComplexNumber[][] res) {
         for (int i = 0; i < res.length; i++) {
             int i1 = random.nextInt(maxIndex);
             ComplexNumber[] temp = res[i1];

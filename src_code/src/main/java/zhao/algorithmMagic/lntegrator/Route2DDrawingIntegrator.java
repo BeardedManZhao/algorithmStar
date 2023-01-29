@@ -1,6 +1,7 @@
 package zhao.algorithmMagic.lntegrator;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.exception.OperatorOperationException;
@@ -52,7 +53,7 @@ public class Route2DDrawingIntegrator implements AlgorithmIntegrator<Route2DDraw
      */
     public Route2DDrawingIntegrator(String integratorName, String AlgorithmLauncherName) {
         IntegratorName = integratorName;
-        logger = Logger.getLogger(integratorName);
+        logger = LoggerFactory.getLogger(integratorName);
         logger.info("+======================================= << " + this.IntegratorName + " >> started =============================================+");
         logger.info("+--------------------------------------- << Extract the algorithm required by the integrator >> ---------------------------------------+");
         OperationAlgorithm operationAlgorithm = OperationAlgorithmManager.getInstance().get(AlgorithmLauncherName);
@@ -71,7 +72,7 @@ public class Route2DDrawingIntegrator implements AlgorithmIntegrator<Route2DDraw
     public Route2DDrawingIntegrator(String integratorName, Route2DDrawingLauncher route2DDrawingLauncher) {
         this.IntegratorName = integratorName;
         this.route2DDrawingStarter = route2DDrawingLauncher;
-        logger = Logger.getLogger(integratorName);
+        logger = LoggerFactory.getLogger(integratorName);
         logger.info("+======================================= << " + this.IntegratorName + " >> started =============================================+");
         logger.info("+--------------------------------------- << Extract the algorithm required by the integrator >> ---------------------------------------+");
     }

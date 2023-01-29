@@ -306,6 +306,8 @@ public class MAIN1 {
         KMeans kMeans = KMeans.getInstance("KMeans");
         // 设置随机种子
         kMeans.setSeed(2048);
+        // 设置随机打乱时不需要拷贝 TODO 这个也是默认的模式
+        kMeans.setCopy(false);
         // 打印矩阵数据
         System.out.println(parse);
         // 开始进行聚类 并获取结果集合 其中key是空间名称 value是类别数据对象
@@ -323,5 +325,8 @@ public class MAIN1 {
     }
 }
 ```
+
+* Fix the problem that the specified class cannot be found due to the log facade in the integrator. At present, the log
+  in the integrator has been replaced with log4j2
 
 ### Version update date : XX XX-XX-XX

@@ -1,6 +1,7 @@
 package zhao.algorithmMagic.utils;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -15,7 +16,7 @@ import java.io.*;
  */
 public final class ASIO {
 
-    private final static Logger LOGGER = Logger.getLogger("ASIO");
+    private final static Logger LOGGER = LoggerFactory.getLogger("ASIO");
 
     /**
      * 将一个图片输出到指定的路径
@@ -29,7 +30,7 @@ public final class ASIO {
             ImageIO.write(image, "JPEG", new File(outPath));
             return true;
         } catch (IOException e) {
-            LOGGER.error(e);
+            LOGGER.error("ERROR", e);
             return false;
         }
     }
@@ -60,19 +61,19 @@ public final class ASIO {
             bufferedOutputStream.write(d);
             return true;
         } catch (IOException e) {
-            LOGGER.error(e);
+            LOGGER.error("ERROR", e);
             return false;
         } finally {
             if (bufferedOutputStream != null) {
                 try {
                     bufferedOutputStream.flush();
                 } catch (IOException e) {
-                    LOGGER.error(e);
+                    LOGGER.error("ERROR", e);
                 }
                 try {
                     bufferedOutputStream.close();
                 } catch (IOException e) {
-                    LOGGER.error(e);
+                    LOGGER.error("ERROR", e);
                 }
             }
         }

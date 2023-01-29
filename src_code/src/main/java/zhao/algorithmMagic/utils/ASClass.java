@@ -14,7 +14,6 @@ import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute;
 import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute2D;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 
 /**
@@ -85,7 +84,7 @@ public final class ASClass {
      */
     public static IntegerConsanguinityRoute2D DoubleConsanguinityRoute2D_To_IntegerConsanguinityRoute2D(DoubleConsanguinityRoute2D doubleConsanguinityRoute2D) {
         return DoubleConsanguinityRoute2D_To_IntegerConsanguinityRoute2D(
-                doubleConsanguinityRoute2D.getStartingCoordinateName() + " -> " + doubleConsanguinityRoute2D.getEndPointCoordinateName(),
+                doubleConsanguinityRoute2D.getRouteName(),
                 doubleConsanguinityRoute2D);
     }
 
@@ -207,7 +206,7 @@ public final class ASClass {
         ArrayList<DoubleConsanguinityRoute> arrayList = new ArrayList<>(netDataSet.size());
         for (IntegerConsanguinityRoute integerConsanguinityRoute : netDataSet) {
             arrayList.add(DoubleConsanguinityRoute.parse(
-                            integerConsanguinityRoute.getStartingCoordinateName() + " -> " + integerConsanguinityRoute.getEndPointCoordinateName(),
+                            integerConsanguinityRoute.getRouteName(),
                             new DoubleCoordinateMany(integerConsanguinityRoute.getStartingCoordinate().toArray()),
                             new DoubleCoordinateMany(integerConsanguinityRoute.getEndPointCoordinate().toArray())
                     )
@@ -260,21 +259,9 @@ public final class ASClass {
      * @param src  需要被拷贝的原数组
      * @param dest 需要被拷贝的目标数组
      */
-    public static void array2DCopy(Collection<int[]> src, int[][] dest) {
-        int count = -1;
-        for (int[] integers : src) {
-            System.arraycopy(integers, 0, dest[++count], 0, integers.length);
-        }
-    }
-
-    /**
-     * 将一个二维数组中的数据原样拷贝到新的二维数组中
-     *
-     * @param src  需要被拷贝的原数组
-     * @param dest 需要被拷贝的目标数组
-     */
-    public static void array2DCopy(int[][] src, int[][] dest) {
+    public static int[][] array2DCopy(int[][] src, int[][] dest) {
         array2DCopy(src, dest, Math.min(src.length, dest.length));
+        return dest;
     }
 
     /**
@@ -284,9 +271,7 @@ public final class ASClass {
      * @param dest 需要被拷贝的目标数组
      */
     private static void array2DCopy(int[][] src, int[][] dest, int length) {
-        for (int i = 0; i < length; i++) {
-            System.arraycopy(src[i], 0, dest[i], 0, src[i].length);
-        }
+        System.arraycopy(src, 0, dest, 0, length);
     }
 
     /**
@@ -295,8 +280,9 @@ public final class ASClass {
      * @param src  需要被拷贝的原数组
      * @param dest 需要被拷贝的目标数组
      */
-    public static void array2DCopy(double[][] src, double[][] dest) {
+    public static double[][] array2DCopy(double[][] src, double[][] dest) {
         array2DCopy(src, dest, Math.min(src.length, dest.length));
+        return dest;
     }
 
     /**
@@ -306,9 +292,7 @@ public final class ASClass {
      * @param dest 需要被拷贝的目标数组
      */
     private static void array2DCopy(double[][] src, double[][] dest, int length) {
-        for (int i = 0; i < length; i++) {
-            System.arraycopy(src[i], 0, dest[i], 0, dest[i].length);
-        }
+        System.arraycopy(src, 0, dest, 0, length);
     }
 
     /**
@@ -318,8 +302,6 @@ public final class ASClass {
      * @param dest 需要被拷贝的目标数组
      */
     public static void array2DCopy(Object[][] src, Object[][] dest) {
-        for (int i = 0; i < src.length; i++) {
-            System.arraycopy(src[i], 0, dest[i], 0, dest[i].length);
-        }
+        System.arraycopy(src, 0, dest, 0, Math.min(src.length, dest.length));
     }
 }

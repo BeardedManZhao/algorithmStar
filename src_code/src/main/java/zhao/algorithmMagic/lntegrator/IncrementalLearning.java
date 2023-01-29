@@ -1,6 +1,7 @@
 package zhao.algorithmMagic.lntegrator;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.exception.OperatorOperationException;
@@ -39,7 +40,7 @@ public class IncrementalLearning implements AlgorithmIntegrator<IncrementalLearn
 
     public IncrementalLearning(String integratorName, IncrementalLearningLauncher incrementalLearningLauncher) {
         IntegratorName = integratorName;
-        logger = Logger.getLogger(integratorName);
+        logger = LoggerFactory.getLogger(integratorName);
         logger.info("+======================================= << " + this.IntegratorName + " >> started =============================================+");
         this.incrementalLearning = incrementalLearningLauncher;
     }
@@ -56,7 +57,7 @@ public class IncrementalLearning implements AlgorithmIntegrator<IncrementalLearn
      */
     public IncrementalLearning(String integratorName, String AlgorithmLauncherName) {
         IntegratorName = integratorName;
-        logger = Logger.getLogger(integratorName);
+        logger = LoggerFactory.getLogger(integratorName);
         logger.info("+======================================= << " + this.IntegratorName + " >> started =============================================+");
         logger.info("+--------------------------------------- << Extract the algorithm required by the integrator >> ---------------------------------------+");
         OperationAlgorithm operationAlgorithm = OperationAlgorithmManager.getInstance().get(AlgorithmLauncherName);

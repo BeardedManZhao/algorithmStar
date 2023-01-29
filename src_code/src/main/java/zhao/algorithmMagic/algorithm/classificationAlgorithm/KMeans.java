@@ -26,7 +26,8 @@ import java.util.*;
  */
 public class KMeans extends DistanceClassification implements NoSampleClassification {
 
-    protected int seed = 1024;
+    protected final Random random = new Random();
+    protected boolean copy = false;
 
     protected KMeans(String name) {
         super(name);
@@ -69,7 +70,20 @@ public class KMeans extends DistanceClassification implements NoSampleClassifica
      *             Random seed value.
      */
     public final void setSeed(int seed) {
-        this.seed = seed;
+        this.random.setSeed(seed);
+    }
+
+    /**
+     * 在进行随机打乱样本的时候，随机打乱操作是否要作用于实参操作数，以便减少冗余内存占用。
+     * <p>
+     * When randomly scrambling samples, whether the random scrambling operation should act on the real parameter operands in order to reduce the redundant memory occupation.
+     *
+     * @param copy 如果设置为true 代表不作用于实参，而是拷贝出一个新数组，反之则直接作用与实参对象上。
+     *             <p>
+     *             If set to true, it will not affect the actual parameter, but will copy a new array, otherwise it will directly affect the actual parameter object.
+     */
+    public final void setCopy(boolean copy) {
+        this.copy = copy;
     }
 
     /**
@@ -94,8 +108,10 @@ public class KMeans extends DistanceClassification implements NoSampleClassifica
             throw new OperatorOperationException("您设置的空间数值过小，针对您的数据样本，您应满足 keys.length < " + length +
                     "\nThe space value you set is too small. For your data sample, you should meet the requirements of : keys.length < " + length);
         }
-        // 随机打乱
-        int[][] shuffle = ASMath.shuffle(ints, this.seed, true);
+        // 使用行数据浅拷贝同时进行随机打乱 前keys.length个元素
+        int[][] shuffle = copy ?
+                ASMath.shuffleFunction(this.random, ints.length, ASClass.array2DCopy(ints, new int[ints.length][]), keys.length) :
+                ASMath.shuffleFunction(this.random, ints.length, ints, keys.length);
         // 将每一个key 以及其样本提供至Map集合中
         HashMap<String, ArrayList<IntegerVector>> hashMap = new HashMap<>(keys.length + 4);
         int index = -1;
@@ -151,8 +167,10 @@ public class KMeans extends DistanceClassification implements NoSampleClassifica
             throw new OperatorOperationException("您设置的空间数值过小，针对您的数据样本，您应满足 keys.length < " + length +
                     "\nThe space value you set is too small. For your data sample, you should meet the requirements of : keys.length < " + length);
         }
-        // 随机打乱
-        double[][] shuffle = ASMath.shuffle(doubles, this.seed, true);
+        // 使用行数据浅拷贝同时进行随机打乱 前keys.length个元素
+        double[][] shuffle = copy ?
+                ASMath.shuffleFunction(this.random, doubles.length, ASClass.array2DCopy(doubles, new double[doubles.length][]), keys.length) :
+                ASMath.shuffleFunction(this.random, doubles.length, doubles, keys.length);
         // 将每一个key 以及其样本提供至Map集合中
         HashMap<String, ArrayList<DoubleVector>> hashMap = new HashMap<>(keys.length + 4);
         int index = -1;
@@ -249,7 +267,7 @@ public class KMeans extends DistanceClassification implements NoSampleClassifica
                     "\nThe space value you set is too small. For your data sample, you should meet the requirements of : keys.length < " + length);
         }
         // 随机打乱
-        int[][] shuffle = ASMath.shuffle(columnIntegerMatrix.toArrays(), this.seed, true);
+        int[][] shuffle = columnIntegerMatrix.shuffle(random, this.copy, keys.length).toArrays();
         // 将每一个key 以及其样本提供至Map集合中
         HashMap<String, ArrayList<ColumnIntegerVector>> hashMap = new HashMap<>(keys.length + 4);
         int index = -1;
@@ -310,7 +328,7 @@ public class KMeans extends DistanceClassification implements NoSampleClassifica
                     "\nThe space value you set is too small. For your data sample, you should meet the requirements of : keys.length < " + length);
         }
         // 随机打乱
-        double[][] shuffle = ASMath.shuffle(columnDoubleMatrix.toArrays(), this.seed, true);
+        double[][] shuffle = columnDoubleMatrix.shuffle(random, this.copy, keys.length).toArrays();
         // 将每一个key 以及其样本提供至Map集合中
         HashMap<String, ArrayList<ColumnDoubleVector>> hashMap = new HashMap<>(keys.length + 4);
         int index = -1;
