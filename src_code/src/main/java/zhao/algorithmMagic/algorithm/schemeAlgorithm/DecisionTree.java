@@ -8,6 +8,7 @@ import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
 import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASMath;
+import zhao.algorithmMagic.utils.ASStr;
 import zhao.algorithmMagic.utils.filter.ArrayDoubleFiltering;
 import zhao.algorithmMagic.utils.filter.ArrayIntegerFiltering;
 
@@ -56,72 +57,254 @@ public class DecisionTree extends SchemeAlgorithm {
     }
 
     /**
-     * 执行决策方案，并记录结果，同时生成过滤数据详情
+     * 执行决策方案，并将结果以Markdown流程图代码的方式返回出去，其可以被用来生成各种决策树执行流程图。
+     * <p>
+     * Execute the decision scheme and return the results in the form of Markdown flowchart code, which can be used to generate various decision tree execution flowchart.
      *
      * @param ints      需要被进行决策项的数据样本
-     * @param arrayList 决策方案
-     * @return 执行结果，是数据过滤的操作过程
+     *                  <p>
+     *                  Data sample of decision items to be made
+     * @param arrayList 决策方案列表，其中每一个元素是一个事件过滤器，其代表的就是节点之间的过滤通道，在流程图中将会以过滤器的toString返回值作为通道名称！
+     *                  <p>
+     *                  In the decision scheme list, each element is an event filter, which represents the filtering channel between nodes. In the flow chart, the return value of the filter toString will be used as the channel name!
+     * @return 执行结果，是数据过滤的操作过程，其是一个Markdown流程图代码的字符串，您可以将其以 Markdown 语法解析出流程图！
+     * <p>
+     * The execution result is the operation process of data filtering. It is a string of Markdown flowchart code. You can parse it out of the flowchart with Markdown syntax!
      */
     public static String executeGetString(int[][] ints, ArrayList<ArrayIntegerFiltering> arrayList) {
-        StringBuilder stringBuilder = new StringBuilder(10 + (arrayList.size() << 2));
+        return executeGetString(ints, arrayList, false, false);
+    }
+
+
+    /**
+     * 执行决策方案，并将结果以Markdown流程图代码的方式返回出去，其可以被用来生成各种决策树执行流程图。
+     * <p>
+     * Execute the decision scheme and return the results in the form of Markdown flowchart code, which can be used to generate various decision tree execution flowchart.
+     *
+     * @param ints       需要被进行决策项的数据样本
+     *                   <p>
+     *                   Data sample of decision items to be made
+     * @param arrayList  决策方案列表，其中每一个元素是一个事件过滤器，其代表的就是节点之间的过滤通道，在流程图中将会以过滤器的toString返回值作为通道名称！
+     *                   <p>
+     *                   In the decision scheme list, each element is an event filter, which represents the filtering channel between nodes. In the flow chart, the return value of the filter toString will be used as the channel name!
+     * @param isLR       流程图是否以左右的布局排版，如果设置为true代表从左到右排版，反之则代表从上到下排版。
+     *                   <p>
+     *                   Whether the flow chart is typeset in left and right layout. If set to true, it means typesetting from left to right, otherwise it means typesetting from top to bottom.
+     * @param isDetailed 流程图中的节点显示设置，如果设置为true，在节点位置将显示所有的数据，如果设置为false 节点显示概述信息。
+     *                   <p>
+     *                   The node display settings in the flowchart. If set to true, all data will be displayed at the node location. If set to false, the node will display overview information.
+     * @return 执行结果，是数据过滤的操作过程，其是一个Markdown流程图代码的字符串，您可以将其以 Markdown 语法解析出流程图！
+     * <p>
+     * The execution result is the operation process of data filtering. It is a string of Markdown flowchart code. You can parse it out of the flowchart with Markdown syntax!
+     */
+    public static String executeGetString(int[][] ints, ArrayList<ArrayIntegerFiltering> arrayList, boolean isLR, boolean isDetailed) {
+        StringBuilder stringBuilder = new StringBuilder(Math.max(10 + (arrayList.size() << 4), 100));
         ArrayList<int[]> data = new ArrayList<>(Arrays.asList(ints));
         int count = 0;
-        for (ArrayIntegerFiltering arrayIntegerFiltering : arrayList) {
-            // 开始进行提取
-            stringBuilder.append("\n* >>> Tier ").append(++count).append(" Decision\n");
-            StringBuilder stringBuilder1 = new StringBuilder();
-            ArrayList<int[]> deleteList = new ArrayList<>();
-            for (int[] anInt : data) {
-                if (arrayIntegerFiltering.isComplianceEvents(anInt)) {
-                    // 标记为真
-                    stringBuilder.append("True  => ").append(Arrays.toString(anInt)).append('\n');
-                } else {
-                    // 标记为假
-                    stringBuilder1.append("False => ").append(Arrays.toString(anInt)).append('\n');
-                    deleteList.add(anInt);
+        stringBuilder.append(isLR ? "graph LR\n" : "graph TB\n");
+        String back = "AllData";
+        if (isDetailed) {
+            for (ArrayIntegerFiltering arrayIntegerFiltering : arrayList) {
+                // 获取当前决策的字符串编号
+                String filter = ASStr.replaceCharFirst(arrayIntegerFiltering.toString(), '@', '-');
+                // 开始进行提取 准备真假列表
+                StringBuilder stringBuilder1 = new StringBuilder(back);
+                StringBuilder stringBuilder2 = new StringBuilder(back);
+                // 更新当前节点的名称
+                back = "TrueData" + (++count);
+                stringBuilder2.append(" -. ").append(filter).append("=false .-> FalseData").append(count).append('[');
+                stringBuilder1.append(" -- ").append(filter).append("=true --> ").append(back).append('[');
+                ArrayList<int[]> deleteList = new ArrayList<>();
+                for (int[] anInt : data) {
+                    if (arrayIntegerFiltering.isComplianceEvents(anInt)) {
+                        // 标记为真 这里生成真的所有数据
+                        stringBuilder1.append(ASStr.arrayToMarkdownStr(anInt)).append("<br>");
+                    } else {
+                        // 标记为假
+                        stringBuilder2.append(ASStr.arrayToMarkdownStr(anInt)).append("<br>");
+                        deleteList.add(anInt);
+                    }
+                }
+                // 清空假值
+                data.removeAll(deleteList);
+                // 真假合并
+                stringBuilder.append(stringBuilder1).append(']').append('\n').append(stringBuilder2).append(']').append('\n');
+            }
+        } else {
+            for (ArrayIntegerFiltering arrayIntegerFiltering : arrayList) {
+                // 获取当前决策的字符串编号
+                String filter = ASStr.replaceCharFirst(arrayIntegerFiltering.toString(), '@', '-');
+                // 开始进行提取 准备真假列表
+                StringBuilder stringBuilder1 = new StringBuilder(back), stringBuilder2 = new StringBuilder(back);
+                // 更新当前节点的名称
+                back = "TrueData" + (++count);
+                stringBuilder2.append(" -. ").append(filter).append("=false .-> FalseData").append(count).append('[');
+                stringBuilder1.append(" -- ").append(filter).append("=true --> ").append(back).append('[');
+                int okCount = 0;
+                ArrayList<int[]> deleteList = new ArrayList<>();
+                for (int[] anInt : data) {
+                    if (arrayIntegerFiltering.isComplianceEvents(anInt)) {
+                        // 标记为真 这里生成真的所有数据
+                        ++okCount;
+                    } else {
+                        // 标记为假
+                        deleteList.add(anInt);
+                    }
+                }
+                int size = deleteList.size();
+                boolean b = size != 0;
+                {
+                    final double RemainP = (okCount / (double) data.size()) * 100;
+                    stringBuilder1
+                            .append("Int True Node No.").append(count).append("<br>")
+                            .append("Remaining quantity = ").append(okCount).append("<br>")
+                            .append("Remaining percentage = ").append(RemainP).append("%<br>");
+                    if (b) {
+                        stringBuilder2
+                                .append("Int False Node No.").append(count).append("<br>")
+                                .append("Removal quantity = ").append(size).append("<br>")
+                                .append("Removal percentage = ").append(100 - RemainP).append("%<br>");
+                    }
+                }
+                if (b) {
+                    // 清空假值
+                    data.removeAll(deleteList);
+                }
+                // 真假合并
+                stringBuilder.append(stringBuilder1).append(']').append('\n');
+                if (b) {
+                    stringBuilder.append(stringBuilder2).append(']').append('\n');
                 }
             }
-            // 清空假值
-            data.removeAll(deleteList);
-            // 真假合并
-            stringBuilder.append(stringBuilder1);
         }
-
         return stringBuilder.toString();
     }
 
     /**
-     * 执行决策方案，并记录结果，同时生成dot图源代码
+     * 执行决策方案，并将结果以Markdown流程图代码的方式返回出去，其可以被用来生成各种决策树执行流程图。
+     * <p>
+     * Execute the decision scheme and return the results in the form of Markdown flowchart code, which can be used to generate various decision tree execution flowchart.
      *
-     * @param ints      需要被进行决策项的数据样本
-     * @param arrayList 决策方案
-     * @return 执行结果，是dot图的源代码。
+     * @param doubles   需要被进行决策项的数据样本
+     *                  <p>
+     *                  Data sample of decision items to be made
+     * @param arrayList 决策方案列表，其中每一个元素是一个事件过滤器，其代表的就是节点之间的过滤通道，在流程图中将会以过滤器的toString返回值作为通道名称！
+     *                  <p>
+     *                  In the decision scheme list, each element is an event filter, which represents the filtering channel between nodes. In the flow chart, the return value of the filter toString will be used as the channel name!
+     * @return 执行结果，是数据过滤的操作过程，其是一个Markdown流程图代码的字符串，您可以将其以 Markdown 语法解析出流程图！
+     * <p>
+     * The execution result is the operation process of data filtering. It is a string of Markdown flowchart code. You can parse it out of the flowchart with Markdown syntax!
      */
-    public static String executeGetString(double[][] ints, ArrayList<ArrayDoubleFiltering> arrayList) {
-        StringBuilder stringBuilder = new StringBuilder(10 + (arrayList.size() << 2));
-        ArrayList<double[]> data = new ArrayList<>(Arrays.asList(ints));
+    public static String executeGetString(double[][] doubles, ArrayList<ArrayDoubleFiltering> arrayList) {
+        return executeGetString(doubles, arrayList, false, false);
+    }
+
+
+    /**
+     * 执行决策方案，并将结果以Markdown流程图代码的方式返回出去，其可以被用来生成各种决策树执行流程图。
+     * <p>
+     * Execute the decision scheme and return the results in the form of Markdown flowchart code, which can be used to generate various decision tree execution flowchart.
+     *
+     * @param doubles    需要被进行决策项的数据样本
+     *                   <p>
+     *                   Data sample of decision items to be made
+     * @param arrayList  决策方案列表，其中每一个元素是一个事件过滤器，其代表的就是节点之间的过滤通道，在流程图中将会以过滤器的toString返回值作为通道名称！
+     *                   <p>
+     *                   In the decision scheme list, each element is an event filter, which represents the filtering channel between nodes. In the flow chart, the return value of the filter toString will be used as the channel name!
+     * @param isLR       流程图是否以左右的布局排版，如果设置为true代表从左到右排版，反之则代表从上到下排版。
+     *                   <p>
+     *                   Whether the flow chart is typeset in left and right layout. If set to true, it means typesetting from left to right, otherwise it means typesetting from top to bottom.
+     * @param isDetailed 流程图中的节点显示设置，如果设置为true，在节点位置将显示所有的数据，如果设置为false 节点显示概述信息。
+     *                   <p>
+     *                   The node display settings in the flowchart. If set to true, all data will be displayed at the node location. If set to false, the node will display overview information.
+     * @return 执行结果，是数据过滤的操作过程，其是一个Markdown流程图代码的字符串，您可以将其以 Markdown 语法解析出流程图！
+     * <p>
+     * The execution result is the operation process of data filtering. It is a string of Markdown flowchart code. You can parse it out of the flowchart with Markdown syntax!
+     */
+    public static String executeGetString(double[][] doubles, ArrayList<ArrayDoubleFiltering> arrayList, boolean isLR, boolean isDetailed) {
+        StringBuilder stringBuilder = new StringBuilder(Math.max(10 + (arrayList.size() << 4), 100));
+        ArrayList<double[]> data = new ArrayList<>(Arrays.asList(doubles));
         int count = 0;
-        for (ArrayDoubleFiltering arrayIntegerFiltering : arrayList) {
-            // 开始进行提取
-            stringBuilder.append("\n* >>> Tier ").append(++count).append(" Decision\n");
-            StringBuilder stringBuilder1 = new StringBuilder();
-            ArrayList<double[]> deleteList = new ArrayList<>();
-            for (double[] anInt : data) {
-                if (arrayIntegerFiltering.isComplianceEvents(anInt)) {
-                    // 标记为真
-                    stringBuilder.append("True  => ").append(Arrays.toString(anInt)).append('\n');
+        stringBuilder.append(isLR ? "graph LR\n" : "graph TB\n");
+        String back = "AllData";
+        if (isDetailed) {
+            for (ArrayDoubleFiltering arrayDoubleFiltering : arrayList) {
+                // 获取当前决策的字符串编号
+                final String filter = ASStr.replaceCharFirst(arrayDoubleFiltering.toString(), '@', '-');
+                // 开始进行提取 准备真假列表
+                final StringBuilder stringBuilder1 = new StringBuilder(back);
+                final StringBuilder stringBuilder2 = new StringBuilder(back);
+                // 更新当前节点的名称
+                back = "TrueData" + (++count);
+                stringBuilder2.append(" -. ").append(filter).append("=false .-> FalseData").append(count).append('[');
+                stringBuilder1.append(" -- ").append(filter).append("=true --> ").append(back).append('[');
+                ArrayList<double[]> deleteList = new ArrayList<>();
+                for (double[] doubles1 : data) {
+                    if (arrayDoubleFiltering.isComplianceEvents(doubles1)) {
+                        // 标记为真 这里生成真的所有数据
+                        stringBuilder1.append(ASStr.arrayToMarkdownStr(doubles1)).append("<br>");
+                    } else {
+                        // 标记为假
+                        stringBuilder2.append(ASStr.arrayToMarkdownStr(doubles1)).append("<br>");
+                        deleteList.add(doubles1);
+                    }
+                }
+                if (deleteList.size() != 0) {
+                    // 清空假值
+                    data.removeAll(deleteList);
+                    // 真假合并
+                    stringBuilder.append(stringBuilder1).append(']').append('\n').append(stringBuilder2).append(']').append('\n');
                 } else {
-                    // 标记为假
-                    stringBuilder1.append("False => ").append(Arrays.toString(anInt)).append('\n');
-                    deleteList.add(anInt);
+                    stringBuilder.append(stringBuilder1).append(']').append('\n');
                 }
             }
-            // 清空假值
-            data.removeAll(deleteList);
-            // 真假合并
-            stringBuilder.append(stringBuilder1);
+        } else {
+            for (ArrayDoubleFiltering arrayIntegerFiltering : arrayList) {
+                // 获取当前决策的字符串编号
+                String filter = ASStr.replaceCharFirst(arrayIntegerFiltering.toString(), '@', '-');
+                // 开始进行提取 准备真假列表
+                final StringBuilder stringBuilder1 = new StringBuilder(back), stringBuilder2 = new StringBuilder(back);
+                // 更新当前节点的名称
+                back = "TrueData" + (++count);
+                stringBuilder2.append(" -. ").append(filter).append("=false .-> FalseData").append(count).append('[');
+                stringBuilder1.append(" -- ").append(filter).append("=true --> ").append(back).append('[');
+                int okCount = 0;
+                ArrayList<double[]> deleteList = new ArrayList<>();
+                for (double[] anInt : data) {
+                    if (arrayIntegerFiltering.isComplianceEvents(anInt)) {
+                        // 标记为真 这里生成真的所有数据
+                        ++okCount;
+                    } else {
+                        // 标记为假
+                        deleteList.add(anInt);
+                    }
+                }
+                int size = deleteList.size();
+                boolean b = size != 0;
+                {
+                    final double RemainP = (okCount / (double) data.size()) * 100;
+                    stringBuilder1
+                            .append("Double True Node No.").append(count).append("<br>")
+                            .append("Remaining quantity = ").append(okCount).append("<br>")
+                            .append("Remaining percentage = ").append(RemainP).append("%<br>");
+                    if (b) {
+                        stringBuilder2
+                                .append("Double False Node No.").append(count).append("<br>")
+                                .append("Removal quantity = ").append(size).append("<br>")
+                                .append("Removal percentage = ").append(100 - RemainP).append("%<br>");
+                    }
+                }
+                if (b) {
+                    // 清空假值
+                    data.removeAll(deleteList);
+                }
+                // 真假合并
+                stringBuilder.append(stringBuilder1).append(']').append('\n');
+                if (b) {
+                    stringBuilder.append(stringBuilder2).append(']').append('\n');
+                }
+            }
         }
-
         return stringBuilder.toString();
     }
 
@@ -394,7 +577,7 @@ public class DecisionTree extends SchemeAlgorithm {
         double h = ASMath.entropy(doubles, logBase, groupIndex);
         ArrayList<double[]> arrayList = new ArrayList<>(Arrays.asList(doubles));
         while (arrayList.size() != 0) {
-            ArrayDoubleFiltering arrayDoubleFiltering = null;
+            ArrayDoubleFiltering arrayIntegerFiltering_max = null;
             {
                 double max_value = Double.MIN_VALUE;
                 // 开始迭代每一个方案数据对象
@@ -403,22 +586,22 @@ public class DecisionTree extends SchemeAlgorithm {
                     double temp = h - ASMath.entropyAndDelete(arrayList, logBase, doubleFiltering);
                     if (temp > max_value) {
                         max_value = temp;
-                        arrayDoubleFiltering = doubleFiltering;
+                        arrayIntegerFiltering_max = doubleFiltering;
                     }
                 }
             }
-            if (arrayDoubleFiltering != null) {
-                arrayIntegerFiltering.remove(arrayDoubleFiltering);
+            if (arrayIntegerFiltering_max != null) {
+                arrayIntegerFiltering.remove(arrayIntegerFiltering_max);
                 // 使用本层最有效的组件进行数据过滤
                 ArrayList<double[]> deleteList = new ArrayList<>();
                 for (double[] doubles1 : arrayList) {
-                    if (!arrayDoubleFiltering.isComplianceEvents(doubles1)) {
+                    if (!arrayIntegerFiltering_max.isComplianceEvents(doubles1)) {
                         deleteList.add(doubles1);
                     }
                 }
                 arrayList.removeAll(deleteList);
             } else break;
         }
-        return DoubleMatrix.parse(arrayList.size() == 0 ? arrayList.toArray(new double[0][]) : new double[1][1]);
+        return DoubleMatrix.parse(arrayList.size() != 0 ? arrayList.toArray(new double[0][]) : new double[1][1]);
     }
 }

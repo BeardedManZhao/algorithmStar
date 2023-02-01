@@ -15,7 +15,7 @@ import java.util.*;
  *
  * @author zhao
  */
-public class ColumnIntegerMatrix extends IntegerMatrix implements RCNOperands<int[]> {
+public class ColumnIntegerMatrix extends IntegerMatrix implements RCNOperands<IntegerVector, int[]> {
     private final String[] Field1;
     private final String[] Field2;
 
@@ -109,11 +109,7 @@ public class ColumnIntegerMatrix extends IntegerMatrix implements RCNOperands<in
         return Field2.clone();
     }
 
-    /**
-     * @return 将当前的矩阵转换成列名与向量的键值对。
-     * <p>
-     * Converts the current matrix into a key-value pair of column names and vectors.
-     */
+    @Override
     public HashMap<String, IntegerVector> toHashMap() {
         HashMap<String, IntegerVector> hashMap = new HashMap<>(getRowCount() + 10);
         int[][] ints = toArrays();
@@ -424,6 +420,70 @@ public class ColumnIntegerMatrix extends IntegerMatrix implements RCNOperands<in
                 ex(random1, res, rowNames, maxIndex, i);
             }
             return ColumnIntegerMatrix.parse(this.Field1.clone(), rowNames, res);
+        }
+    }
+
+    /**
+     * 将数据所维护的数组左移n个位置，并获取到结果数值
+     * <p>
+     * Move the array maintained by the data to the left n positions and get the result value
+     *
+     * @param n    被左移的次数，该数值应取值于 [0, getRowCount]
+     *             <p>
+     *             The number of times it is moved to the left. The value should be [0, getRowCount]
+     * @param copy 本次左移的作用参数，如果设置为true，代表本次位移会创建出一个新的数组，于当前数组毫无关联。
+     *             <p>
+     *             If the action parameter of this left shift is set to true, it means that this shift will create a new array, which has no association with the current array.
+     * @return 位移之后的AS操作数对象，其类型与调用者数据类型一致。
+     * <p>
+     * The AS operand object after displacement has the same type as the caller data type.
+     */
+    @Override
+    public IntegerMatrix leftShift(int n, boolean copy) {
+        if (copy) {
+            return ColumnIntegerMatrix.parse(
+                    this.Field1.length == 0 ? null : this.Field1.clone(),
+                    this.Field2.length == 0 ? null : ASMath.leftShift(this.Field2.clone(), n),
+                    ASMath.leftShift(this.copyToNewArrays(), n)
+            );
+        } else {
+            if (this.Field2.length != 0) {
+                ASMath.leftShift(this.Field2, n);
+            }
+            ASMath.leftShift(this.toArrays(), n);
+            return this;
+        }
+    }
+
+    /**
+     * 将数据所维护的数组右移n个位置，并获取到结果数值
+     * <p>
+     * Move the array maintained by the data to the right n positions and get the result value
+     *
+     * @param n    被右移的次数，该数值应取值于 [0, getRowCount]
+     *             <p>
+     *             The number of times it is moved to the right. The value should be [0, getRowCount]
+     * @param copy 本次右移的作用参数，如果设置为true，代表本次位移会创建出一个新的数组，于当前数组毫无关联。
+     *             <p>
+     *             If the action parameter of this right shift is set to true, it means that this shift will create a new array, which has no association with the current array.
+     * @return 位移之后的AS操作数对象，其类型与调用者数据类型一致。
+     * <p>
+     * The AS operand object after displacement has the same type as the caller data type.
+     */
+    @Override
+    public IntegerMatrix rightShift(int n, boolean copy) {
+        if (copy) {
+            return ColumnIntegerMatrix.parse(
+                    this.Field1.length == 0 ? null : this.Field1.clone(),
+                    this.Field2.length == 0 ? null : ASMath.rightShift(this.Field2.clone(), n),
+                    ASMath.rightShift(this.copyToNewArrays(), n)
+            );
+        } else {
+            if (this.Field2.length != 0) {
+                ASMath.rightShift(this.Field2, n);
+            }
+            ASMath.rightShift(this.toArrays(), n);
+            return this;
         }
     }
 }

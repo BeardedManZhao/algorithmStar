@@ -2,7 +2,7 @@ package zhao.algorithmMagic.operands.matrix;
 
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.operands.RCNOperands;
-import zhao.algorithmMagic.operands.vector.IntegerVector;
+import zhao.algorithmMagic.operands.vector.DoubleVector;
 import zhao.algorithmMagic.utils.ASMath;
 import zhao.algorithmMagic.utils.dataContainer.IntegerAndDoubles;
 
@@ -15,7 +15,7 @@ import java.util.*;
  *
  * @author zhao
  */
-public class ColumnDoubleMatrix extends DoubleMatrix implements RCNOperands<double[]> {
+public class ColumnDoubleMatrix extends DoubleMatrix implements RCNOperands<DoubleVector, double[]> {
     private final String[] Field1;
     private final String[] Field2;
 
@@ -109,13 +109,9 @@ public class ColumnDoubleMatrix extends DoubleMatrix implements RCNOperands<doub
         return Field2.clone();
     }
 
-    /**
-     * @return 将当前的矩阵转换成列名与向量的键值对。
-     * <p>
-     * Converts the current matrix into a key-value pair of column names and vectors.
-     */
-    public HashMap<String, IntegerVector> toHashMap() {
-        HashMap<String, IntegerVector> hashMap = new HashMap<>(getRowCount() + 10);
+    @Override
+    public HashMap<String, DoubleVector> toHashMap() {
+        HashMap<String, DoubleVector> hashMap = new HashMap<>(getRowCount() + 10);
         double[][] ints = toArrays();
         // 开始添加数据
         for (int i = 0; i < this.Field1.length; i++) {
@@ -125,7 +121,7 @@ public class ColumnDoubleMatrix extends DoubleMatrix implements RCNOperands<doub
             for (double[] anInt : ints) {
                 tempCol[++count] = anInt[i];
             }
-            hashMap.put(this.Field1[i], IntegerVector.parse(tempCol));
+            hashMap.put(this.Field1[i], DoubleVector.parse(tempCol));
         }
         return hashMap;
     }
@@ -133,28 +129,30 @@ public class ColumnDoubleMatrix extends DoubleMatrix implements RCNOperands<doub
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        String[] colFieldNames = this.getColFieldNames();
-        if (colFieldNames.length != 0) {
-            // 添加列字段
-            for (String colFieldName : colFieldNames) {
-                stringBuilder.append(colFieldName).append('\t');
+        {
+            String[] colFieldNames = this.getColFieldNames();
+            if (colFieldNames.length != 0) {
+                // 添加列字段
+                for (String colFieldName : colFieldNames) {
+                    stringBuilder.append(colFieldName).append('\t');
+                }
+                if (this.Field2.length != 0) {
+                    stringBuilder.append("rowColName\n");
+                } else stringBuilder.append('\n');
             }
-            if (this.Field2.length != 0) {
-                stringBuilder.append("rowColName\n");
-            } else stringBuilder.append('\n');
-        }
-        // 添加行字段与行数据
-        String[] rowFieldNames = this.getRowFieldNames();
-        double[][] doubles = this.toArrays();
-        if (rowFieldNames.length != 0) {
-            for (int i = 0; i < doubles.length; i++) {
-                stringBuilder
-                        .append(Arrays.toString(doubles[i])).append('\t')
-                        .append(rowFieldNames[i]).append('\n');
-            }
-        } else {
-            for (double[] doubles1 : doubles) {
-                stringBuilder.append(Arrays.toString(doubles1)).append("\n");
+            // 添加行字段与行数据
+            String[] rowFieldNames = this.getRowFieldNames();
+            double[][] doubles = this.toArrays();
+            if (rowFieldNames.length != 0) {
+                for (int i = 0; i < doubles.length; i++) {
+                    stringBuilder
+                            .append(Arrays.toString(doubles[i])).append('\t')
+                            .append(rowFieldNames[i]).append('\n');
+                }
+            } else {
+                for (double[] doubles1 : doubles) {
+                    stringBuilder.append(Arrays.toString(doubles1)).append("\n");
+                }
             }
         }
         return "------------DoubleMatrixStart-----------\n" +
@@ -425,6 +423,70 @@ public class ColumnDoubleMatrix extends DoubleMatrix implements RCNOperands<doub
                 ex(random1, res, rowNames, maxIndex, i);
             }
             return ColumnDoubleMatrix.parse(this.Field1.clone(), rowNames, res);
+        }
+    }
+
+    /**
+     * 将数据所维护的数组左移n个位置，并获取到结果数值
+     * <p>
+     * Move the array maintained by the data to the left n positions and get the result value
+     *
+     * @param n    被左移的次数，该数值应取值于 [0, getRowCount]
+     *             <p>
+     *             The number of times it is moved to the left. The value should be [0, getRowCount]
+     * @param copy 本次左移的作用参数，如果设置为true，代表本次位移会创建出一个新的数组，于当前数组毫无关联。
+     *             <p>
+     *             If the action parameter of this left shift is set to true, it means that this shift will create a new array, which has no association with the current array.
+     * @return 位移之后的AS操作数对象，其类型与调用者数据类型一致。
+     * <p>
+     * The AS operand object after displacement has the same type as the caller data type.
+     */
+    @Override
+    public ColumnDoubleMatrix leftShift(int n, boolean copy) {
+        if (copy) {
+            return ColumnDoubleMatrix.parse(
+                    this.Field1.length == 0 ? null : this.Field1.clone(),
+                    this.Field2.length == 0 ? null : ASMath.leftShift(this.Field2.clone(), n),
+                    ASMath.leftShift(this.copyToNewArrays(), n)
+            );
+        } else {
+            if (this.Field2.length != 0) {
+                ASMath.leftShift(this.Field2, n);
+            }
+            ASMath.leftShift(this.toArrays(), n);
+            return this;
+        }
+    }
+
+    /**
+     * 将数据所维护的数组右移n个位置，并获取到结果数值
+     * <p>
+     * Move the array maintained by the data to the right n positions and get the result value
+     *
+     * @param n    被右移的次数，该数值应取值于 [0, getRowCount]
+     *             <p>
+     *             The number of times it is moved to the right. The value should be [0, getRowCount]
+     * @param copy 本次右移的作用参数，如果设置为true，代表本次位移会创建出一个新的数组，于当前数组毫无关联。
+     *             <p>
+     *             If the action parameter of this right shift is set to true, it means that this shift will create a new array, which has no association with the current array.
+     * @return 位移之后的AS操作数对象，其类型与调用者数据类型一致。
+     * <p>
+     * The AS operand object after displacement has the same type as the caller data type.
+     */
+    @Override
+    public ColumnDoubleMatrix rightShift(int n, boolean copy) {
+        if (copy) {
+            return ColumnDoubleMatrix.parse(
+                    this.Field1.length == 0 ? null : this.Field1.clone(),
+                    this.Field2.length == 0 ? null : ASMath.rightShift(this.Field2.clone(), n),
+                    ASMath.rightShift(this.copyToNewArrays(), n)
+            );
+        } else {
+            if (this.Field2.length != 0) {
+                ASMath.rightShift(this.Field2, n);
+            }
+            ASMath.rightShift(this.toArrays(), n);
+            return this;
         }
     }
 }

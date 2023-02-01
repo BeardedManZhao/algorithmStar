@@ -2,6 +2,8 @@ package zhao.algorithmMagic.operands.vector;
 
 import zhao.algorithmMagic.operands.Operands;
 
+import java.io.Serializable;
+
 /**
  * 向量的抽象类，其中包含一个向量的数据容器，以及向量的基本运算函数，这个向量中数值的类型等待实现，具体请参阅API说明。
  * <p>
@@ -16,7 +18,7 @@ import zhao.algorithmMagic.operands.Operands;
  *                             <p>
  *                             The vector array type maintained in the implementation class is the type of data in this object obtained from the implementation class.
  */
-public abstract class Vector<ImplementationType, ElementType, ArrayType> implements Operands<ImplementationType> {
+public abstract class Vector<ImplementationType, ElementType, ArrayType> implements Operands<ImplementationType>, Serializable {
 
     /**
      * 构造一个空向量，注意，如果您使用了此方法，那么您要在子类中调用"setVectorArrayPacking"

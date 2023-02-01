@@ -7,9 +7,9 @@ package zhao.algorithmMagic.operands.matrix;
  *
  * @author zhao
  */
-public abstract class NumberMatrix<ImplementationType extends Matrix<?, ?, ?, ?>, ElementType extends Number, ArrayType, ArraysType>
+public abstract class NumberMatrix<ImplementationType extends Matrix<?, ?, ?, ?, ?>, ElementType extends Number, ArrayType, ArraysType>
         extends
-        Matrix<ImplementationType, ElementType, ArrayType, ArraysType> {
+        Matrix<ImplementationType, ElementType, ArrayType, ArrayType, ArraysType> {
     /**
      * 构造一个空的矩阵，指定其矩阵的行列数
      * <p>
@@ -24,6 +24,20 @@ public abstract class NumberMatrix<ImplementationType extends Matrix<?, ?, ?, ?>
      */
     protected NumberMatrix(int rowCount, int colCount, ArraysType arraysType) {
         super(rowCount, colCount, arraysType);
+    }
+
+    /**
+     * 这里应代表行指针所指向的元素，指针就是行数据，行指针的最大索引值为 MaximumRowPointerCount 该参数可以通过特别的构造函数构造出来。
+     * <p>
+     * This should represent the element that the row pointer points to. The pointer is the row data. The maximum index value of the row pointer is MaximumRowPointerCount. This parameter can be constructed through a special constructor.
+     *
+     * @return 当hashNext返回true的时候，当前行指针将会返回具体的数值对象，如果hashNext为false的情况下调用此函数，将会发生异常！
+     * <p>
+     * When hashNext returns true, the current row pointer will return the specific numeric object. If this function is called when hashNext is false, an exception will occur!
+     */
+    @Override
+    public ArrayType next() {
+        return toArray();
     }
 
     /**

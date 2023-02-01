@@ -76,14 +76,6 @@ final class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mll
   }
 
   /**
-   *
-   * @return 将本对象中存储的向量序列数组拷贝到一个新数组并将新数组返回，这里返回的是一个新数组，支持修改等操作。
-   *
-   *         Copy the vector sequence array stored in this object to a new array and return the new array. Here, a new array is returned, which supports modification and other operations.
-   */
-  override def copyToNewArray(): Array[Double] = vector.toArray
-
-  /**
    * @return 该类的实现类对象，用于拓展该接口的子类
    */
   override def expand(): SparkVector = this
@@ -165,6 +157,14 @@ final class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mll
    *         Objects after disruption.
    */
   override def shuffle(seed: Long): SparkVector = SparkVector.parse(sparkContext, ASMath.shuffle(this.copyToNewArray(), seed, false))
+
+  /**
+   *
+   * @return 将本对象中存储的向量序列数组拷贝到一个新数组并将新数组返回，这里返回的是一个新数组，支持修改等操作。
+   *
+   *         Copy the vector sequence array stored in this object to a new array and return the new array. Here, a new array is returned, which supports modification and other operations.
+   */
+  override def copyToNewArray(): Array[Double] = vector.toArray
 }
 
 object SparkVector {

@@ -4,6 +4,8 @@ package zhao.algorithmMagic.algorithm;
  * 运算算法接口，是所有算法的抽象，具体实现请您查阅api node
  * <p>
  * The operation algorithm interface is the abstraction of all algorithms. For the specific implementation, please refer to the api node
+ *
+ * @author Ling Yu Zhao
  */
 public interface OperationAlgorithm {
     /**

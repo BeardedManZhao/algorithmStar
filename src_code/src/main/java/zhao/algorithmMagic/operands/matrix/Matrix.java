@@ -4,6 +4,9 @@ import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.operands.vector.ASVector;
 
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Spliterator;
+import java.util.function.Consumer;
 
 /**
  * Java类于 2022/10/11 18:14:54 创建
@@ -19,7 +22,10 @@ import java.util.Arrays;
  * <p>
  * This class is abstract and contains the most basic definitions and type controls.
  */
-public abstract class Matrix<ImplementationType extends Matrix<?, ?, ?, ?>, ElementType, ArrayType, ArraysType> extends ASVector<ImplementationType, ElementType, ArrayType> {
+public abstract class Matrix<ImplementationType
+        extends Matrix<?, ?, ?, ?, ?>, ElementType, ArrayType, IteratorType, ArraysType>
+        extends ASVector<ImplementationType, ElementType, ArrayType>
+        implements Iterator<IteratorType>, Iterable<IteratorType> {
 
     protected final static OperatorOperationException OPERATOR_OPERATION_EXCEPTION = new OperatorOperationException("您不能将所有的维度都去掉！！！！\nYou cannot remove all dimensions!!!!");
     private final int rowCount;
@@ -31,21 +37,47 @@ public abstract class Matrix<ImplementationType extends Matrix<?, ?, ?, ?>, Elem
     protected int RowPointer = MinimumRowPointerCount;
 
     /**
-     * 构造一个空的矩阵，指定其矩阵的行列数
+     * 构造一个指定行列数据的矩阵对象，其中的行指针最大值将会默认使用行数量。
      * <p>
-     * Constructs an empty matrix, specifying the number of rows and columns of its matrix
+     * Construct a matrix object with specified row and column data. The maximum value of row pointer will use the number of rows by default.
      *
      * @param rowCount   矩阵中的行数量
      *                   <p>
      *                   the number of rows in the matrix
      * @param colCount   矩阵中的列数量
      *                   <p>
+     *                   the number of cols in the matrix
      * @param arraysType 该矩阵对象中的二维数组对象。
      */
     protected Matrix(int rowCount, int colCount, ArraysType arraysType) {
         this.rowCount = rowCount;
         this.colCount = colCount;
         this.MaximumRowPointerCount = rowCount - 0b10;
+        this.arraysType = arraysType;
+    }
+
+    /**
+     * 构造一个指定行列数据的矩阵对象，该函数中支持根据需求指定行指针的最大值。
+     * <p>
+     * Construct a matrix object with specified row and column data. The maximum value of row pointer will use the number of rows by default.
+     *
+     * @param rowCount               矩阵中的行数量
+     *                               <p>
+     *                               the number of rows in the matrix
+     * @param colCount               矩阵中的列数量
+     *                               <p>
+     *                               the number of cols in the matrix
+     * @param maximumRowPointerCount 行指针的最大值，需要注意的是，行指针使用索引定位，因此从0开始计数！
+     *                               <p>
+     *                               The maximum value of the row pointer. It should be noted that the row pointer uses index positioning, so counting starts from 0!
+     * @param arraysType             该矩阵对象中的二维数组对象。
+     *                               <p>
+     *                               The two-dimensional array object in the matrix object.
+     */
+    protected Matrix(int rowCount, int colCount, int maximumRowPointerCount, ArraysType arraysType) {
+        this.rowCount = rowCount;
+        this.colCount = colCount;
+        this.MaximumRowPointerCount = maximumRowPointerCount;
         this.arraysType = arraysType;
     }
 
@@ -104,9 +136,10 @@ public abstract class Matrix<ImplementationType extends Matrix<?, ?, ?, ?>, Elem
      */
     final boolean MovePointerDown() {
         if (this.RowPointer <= MaximumRowPointerCount) {
-            this.RowPointer++;
+            ++this.RowPointer;
             return true;
         } else {
+            PointerReset();
             return false;
         }
     }
@@ -122,7 +155,7 @@ public abstract class Matrix<ImplementationType extends Matrix<?, ?, ?, ?>, Elem
      */
     final boolean MovePointerUp() {
         if (this.RowPointer >= MinimumRowPointerCount) {
-            this.RowPointer--;
+            --this.RowPointer;
             return true;
         } else {
             return false;
@@ -136,7 +169,7 @@ public abstract class Matrix<ImplementationType extends Matrix<?, ?, ?, ?>, Elem
      *
      * @return 链式 chain
      */
-    final ImplementationType PointerReset() {
+    public final ImplementationType PointerReset() {
         return PointerReset(-1);
     }
 
@@ -148,7 +181,7 @@ public abstract class Matrix<ImplementationType extends Matrix<?, ?, ?, ?>, Elem
      *
      * @return 链式 chain
      */
-    final ImplementationType PointerReset(int n) {
+    public final ImplementationType PointerReset(int n) {
         this.RowPointer = n;
         return this.expand();
     }
@@ -187,8 +220,8 @@ public abstract class Matrix<ImplementationType extends Matrix<?, ?, ?, ?>, Elem
                 value.Unlock = true;
                 return res;
             } else {
-                throw new OperatorOperationException("您不能将一个正在进行计算的矩阵提供给其它线程进行计算，因为矩阵计算依赖行指针，行指针是共用的。\n" +
-                        "You cannot provide a matrix being calculated to other threads for calculation, because matrix calculation depends on row pointers, which are shared.");
+                throw new OperatorOperationException("您不能将一个正在进行计算的矩阵提供给其它线程进行计算，因为矩阵计算时上了锁，等到矩阵计算结束锁才会解开。\n" +
+                        "You cannot provide a matrix that is being calculated to other threads for calculation, because the lock is locked during matrix calculation and will not be unlocked until the matrix calculation is completed.");
             }
         }
         return this.add(value);
@@ -214,8 +247,8 @@ public abstract class Matrix<ImplementationType extends Matrix<?, ?, ?, ?>, Elem
                 value.Unlock = true;
                 return res;
             } else {
-                throw new OperatorOperationException("您不能将一个正在进行计算的矩阵提供给其它线程进行计算，因为矩阵计算依赖行指针，行指针是共用的。\n" +
-                        "You cannot provide a matrix being calculated to other threads for calculation, because matrix calculation depends on row pointers, which are shared.");
+                throw new OperatorOperationException("您不能将一个正在进行计算的矩阵提供给其它线程进行计算，因为矩阵计算时上了锁，等到矩阵计算结束锁才会解开。\n" +
+                        "You cannot provide a matrix that is being calculated to other threads for calculation, because the lock is locked during matrix calculation and will not be unlocked until the matrix calculation is completed.");
             }
         }
         return this.diff(value);
@@ -233,7 +266,7 @@ public abstract class Matrix<ImplementationType extends Matrix<?, ?, ?, ?>, Elem
     @Override
     public ImplementationType multiply(ImplementationType value, boolean lock) {
         if (lock) {
-            if (this.Unlock && value.Unlock) {
+            if (isUnlock() && value.Unlock) {
                 this.Unlock = false;
                 value.Unlock = false;
                 ImplementationType res = this.multiply(value);
@@ -241,8 +274,8 @@ public abstract class Matrix<ImplementationType extends Matrix<?, ?, ?, ?>, Elem
                 value.Unlock = true;
                 return res;
             } else {
-                throw new OperatorOperationException("您不能将一个正在进行计算的矩阵提供给其它线程进行计算，因为矩阵计算依赖行指针，行指针是共用的。\n" +
-                        "You cannot provide a matrix being calculated to other threads for calculation, because matrix calculation depends on row pointers, which are shared.");
+                throw new OperatorOperationException("您不能将一个正在进行计算的矩阵提供给其它线程进行计算，因为矩阵计算时上了锁，等到矩阵计算结束锁才会解开。\n" +
+                        "You cannot provide a matrix that is being calculated to other threads for calculation, because the lock is locked during matrix calculation and will not be unlocked until the matrix calculation is completed.");
             }
         }
         return this.multiply(value);
@@ -259,7 +292,7 @@ public abstract class Matrix<ImplementationType extends Matrix<?, ?, ?, ?>, Elem
      */
     public ElementType innerProduct(ImplementationType value, boolean lock) {
         if (lock) {
-            if (this.Unlock && value.Unlock) {
+            if (isUnlock() && value.Unlock) {
                 this.Unlock = false;
                 value.Unlock = false;
                 ElementType res = this.innerProduct(value);
@@ -267,8 +300,8 @@ public abstract class Matrix<ImplementationType extends Matrix<?, ?, ?, ?>, Elem
                 value.Unlock = true;
                 return res;
             } else {
-                throw new OperatorOperationException("您不能将一个正在进行计算的矩阵提供给其它线程进行计算，因为矩阵计算依赖行指针，行指针是共用的。\n" +
-                        "You cannot provide a matrix being calculated to other threads for calculation, because matrix calculation depends on row pointers, which are shared.");
+                throw new OperatorOperationException("您不能将一个正在进行计算的矩阵提供给其它线程进行计算，因为矩阵计算时上了锁，等到矩阵计算结束锁才会解开。\n" +
+                        "You cannot provide a matrix that is being calculated to other threads for calculation, because the lock is locked during matrix calculation and will not be unlocked until the matrix calculation is completed.");
             }
         }
         return this.innerProduct(value);
@@ -276,6 +309,8 @@ public abstract class Matrix<ImplementationType extends Matrix<?, ?, ?, ?>, Elem
 
     /**
      * @return 当前矩阵对象是否被其他的线程所占用，如果返回false，就代表当前矩阵对象可以参与多线程的计算工作
+     * <p>
+     * Whether the current matrix object is occupied by other threads. If false is returned, it means that the current matrix object can participate in multi-thread calculation
      */
     public final boolean isUnlock() {
         return Unlock;
@@ -366,7 +401,7 @@ public abstract class Matrix<ImplementationType extends Matrix<?, ?, ?, ?>, Elem
      */
     @Override
     public ImplementationType leftShift(int n, boolean copy) {
-        throw new OperatorOperationException("The matrix does not support displacement operation");
+        throw new UnsupportedOperationException("The matrix does not support displacement operation");
     }
 
     /**
@@ -386,6 +421,77 @@ public abstract class Matrix<ImplementationType extends Matrix<?, ?, ?, ?>, Elem
      */
     @Override
     public ImplementationType rightShift(int n, boolean copy) {
-        throw new OperatorOperationException("The matrix does not support displacement operation");
+        throw new UnsupportedOperationException("The matrix does not support displacement operation");
+    }
+
+    /**
+     * 将当前迭代器迭代过的所有元素删除，同时将剩余元素向前移动，并将指针复位。
+     * <p>
+     * Delete all elements iterated by the current iterator, move the remaining elements forward, and reset the pointer
+     *
+     * @throws UnsupportedOperationException if the {@code remove}
+     *                                       operation is not supported by this iterator
+     * @throws IllegalStateException         if the {@code next} method has not
+     *                                       yet been called, or the {@code remove} method has already
+     *                                       been called after the last call to the {@code next}
+     *                                       method
+     * @implSpec The default implementation throws an instance of
+     * {@link UnsupportedOperationException} and performs no other action.
+     */
+    @Override
+    public void remove() {
+        // 如果可以删除就将当前迭代过的所有元素删除，并将剩余元素向前移动。
+        if (this.MovePointerUp()) {
+            expand().leftShift(++RowPointer, false);
+        } else {
+            Iterator.super.remove();
+        }
+        this.PointerReset();
+    }
+
+    @Override
+    public final void forEachRemaining(Consumer<? super IteratorType> action) {
+        Iterator.super.forEachRemaining(action);
+    }
+
+    /**
+     * 更改指针当前的指向，将指针移动到下一个位置，如果有数据就返回true，如果没有数据就复位指针。
+     * <p>
+     * Change the current direction of the pointer, move the pointer to the next position, return true if there is data, and reset the pointer if there is no data.
+     *
+     * @return 如果返回true代表当前还有数据，可以调用 next 获取到数据对象，如果返回false，指针将会复位，等待下一次hashNext的调用。
+     * <p>
+     * If true is returned, it means that there is still data. Next can be called to get the data object. If false is returned, the pointer will be reset and wait for the next call of hashNext.
+     */
+    @Override
+    public final boolean hasNext() {
+        return this.MovePointerDown();
+    }
+
+    /**
+     * 这里应代表行指针所指向的元素，指针就是行数据，行指针的最大索引值为 MaximumRowPointerCount 该参数可以通过特别的构造函数构造出来。
+     * <p>
+     * This should represent the element that the row pointer points to. The pointer is the row data. The maximum index value of the row pointer is MaximumRowPointerCount. This parameter can be constructed through a special constructor.
+     *
+     * @return 当hashNext返回true的时候，当前行指针将会返回具体的数值对象，如果hashNext为false的情况下调用此函数，将会发生异常！
+     * <p>
+     * When hashNext returns true, the current row pointer will return the specific numeric object. If this function is called when hashNext is false, an exception will occur!
+     */
+    @Override
+    public abstract IteratorType next();
+
+    @Override
+    public final void forEach(Consumer<? super IteratorType> action) {
+        Iterable.super.forEach(action);
+    }
+
+    @Override
+    public final Spliterator<IteratorType> spliterator() {
+        return Iterable.super.spliterator();
+    }
+
+    @Override
+    public final Iterator<IteratorType> iterator() {
+        return this;
     }
 }

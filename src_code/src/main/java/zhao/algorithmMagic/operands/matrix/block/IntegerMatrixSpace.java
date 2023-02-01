@@ -11,7 +11,7 @@ import zhao.algorithmMagic.utils.ASMath;
  *
  * @author zhao
  */
-public class IntegerMatrixSpace extends MatrixSpace<IntegerMatrixSpace, Integer, int[], IntegerMatrix> {
+public class IntegerMatrixSpace extends MatrixSpace<IntegerMatrixSpace, Integer, int[][], IntegerMatrix> {
 
     /**
      * 构造一个空的矩阵，指定其矩阵的行列数
@@ -58,8 +58,8 @@ public class IntegerMatrixSpace extends MatrixSpace<IntegerMatrixSpace, Integer,
     }
 
     @Override
-    public int[] toArray() {
-        return toMatrix().toArray();
+    public final int[][] toArray() {
+        return toMatrix().toArrays();
     }
 
     @Override
@@ -73,11 +73,8 @@ public class IntegerMatrixSpace extends MatrixSpace<IntegerMatrixSpace, Integer,
     }
 
     @Override
-    public int[] copyToNewArray() {
-        int[] temp = toArray();
-        int[] res = new int[temp.length];
-        System.arraycopy(temp, 0, res, 0, res.length);
-        return res;
+    public final int[][] copyToNewArray() {
+        return this.toMatrix().toArrays();
     }
 
     @Override
@@ -91,6 +88,20 @@ public class IntegerMatrixSpace extends MatrixSpace<IntegerMatrixSpace, Integer,
         IntegerMatrix[] integerMatrix2 = new IntegerMatrix[integerMatrix1.length];
         System.arraycopy(integerMatrix1, 0, integerMatrix2, 0, integerMatrix2.length);
         return integerMatrix2;
+    }
+
+    /**
+     * 这里应代表行指针所指向的元素，指针就是行数据，行指针的最大索引值为 MaximumRowPointerCount 该参数可以通过特别的构造函数构造出来。
+     * <p>
+     * This should represent the element that the row pointer points to. The pointer is the row data. The maximum index value of the row pointer is MaximumRowPointerCount. This parameter can be constructed through a special constructor.
+     *
+     * @return 当hashNext返回true的时候，当前行指针将会返回具体的数值对象，如果hashNext为false的情况下调用此函数，将会发生异常！
+     * <p>
+     * When hashNext returns true, the current row pointer will return the specific numeric object. If this function is called when hashNext is false, an exception will occur!
+     */
+    @Override
+    public IntegerMatrix next() {
+        return toMatrix();
     }
 
     /**

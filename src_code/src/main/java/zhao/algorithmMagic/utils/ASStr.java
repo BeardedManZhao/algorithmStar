@@ -160,6 +160,35 @@ public final class ASStr {
     }
 
     /**
+     * 将一个字符串数据按照指定的字符进行拆分，拆分出很多数据。
+     *
+     * @param data 需要被拆分的字符串数据
+     * @param c    分隔符
+     * @return 拆分之后的字符串数据
+     */
+    public static String[] splitByChar(String data, char c) {
+        ArrayList<String> arrayList = new ArrayList<>();
+        StringBuilder stringBuilder = new StringBuilder();
+        int length = data.length();
+        for (int i = 0; i < length; i++) {
+            char at = data.charAt(i);
+            if (at == c) {
+                if (stringBuilder.length() != 0) {
+                    arrayList.add(stringBuilder.toString());
+                    stringBuilder.delete(0, stringBuilder.length());
+                }
+            } else {
+                stringBuilder.append(at);
+            }
+        }
+        if (stringBuilder.length() != 0) {
+            arrayList.add(stringBuilder.toString());
+            stringBuilder.delete(0, stringBuilder.length());
+        }
+        return arrayList.toArray(new String[0]);
+    }
+
+    /**
      * 检查并构造出一个大小适合的字符串建造者对象
      *
      * @param data 目标字符串
@@ -174,6 +203,41 @@ public final class ASStr {
             arrayList = new ArrayList<>(i1);
         }
         return arrayList;
+    }
+
+    /**
+     * 替换一个字符串中首个出现的字符 old 变为新字符
+     *
+     * @param s       需要被替换的字符串
+     * @param old     需要被替换的字符
+     * @param newChar 替换之后的字符串
+     * @return 替换之后的新字符串
+     */
+    public static String replaceCharFirst(String s, char old, char newChar) {
+        char[] charArray = s.toCharArray();
+        for (int i = 0; i < charArray.length; i++) {
+            if (charArray[i] == old) {
+                charArray[i] = newChar;
+                return new String(charArray);
+            }
+        }
+        return s;
+    }
+
+    public static String arrayToMarkdownStr(int[] ints) {
+        StringBuilder stringBuilder = new StringBuilder(ints.length << 1);
+        for (int anInt : ints) {
+            stringBuilder.append(anInt).append('\t');
+        }
+        return stringBuilder.toString();
+    }
+
+    public static String arrayToMarkdownStr(double[] ints) {
+        StringBuilder stringBuilder = new StringBuilder(ints.length << 1);
+        for (double anInt : ints) {
+            stringBuilder.append(anInt).append('\t');
+        }
+        return stringBuilder.toString();
     }
 
     /**

@@ -199,8 +199,8 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
             int rowPointer1 = value.RowPointer;
             while (this.MovePointerDown() && value.MovePointerDown()) {
                 double[] line = new double[colCount1];
-                double[] doubles1 = this.toDoubleArray();
-                double[] doubles2 = value.toDoubleArray();
+                double[] doubles1 = this.toArray();
+                double[] doubles2 = value.toArray();
                 for (int i = 0; i < colCount1; i++) {
                     line[i] = doubles1[i] + doubles2[i];
                 }
@@ -239,8 +239,8 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
             int rowPointer2 = value.RowPointer;
             while (this.MovePointerDown() && value.MovePointerDown()) {
                 double[] line = new double[colCount1];
-                double[] doubles1 = toDoubleArray();
-                double[] doubles2 = value.toDoubleArray();
+                double[] doubles1 = this.toArray();
+                double[] doubles2 = value.toArray();
                 for (int i = 0; i < colCount1; i++) {
                     line[i] = doubles1[i] - doubles2[i];
                 }
@@ -270,7 +270,7 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
         int rowPointer = this.RowPointer;
         PointerReset();
         while (this.MovePointerDown()) {
-            double[] doubles1 = toDoubleArray();
+            double[] doubles1 = this.toArray();
             for (double v : doubles1) {
                 res += ASMath.Power2(v);
             }
@@ -297,14 +297,12 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
         int newLength = (colCount1 - 1) * colCount2;
         if (rowCount1 == rowCount2 && colCount1 == colCount2) {
             double[][] doubles = new double[rowCount1][newLength];
-            int rowPointer1 = this.RowPointer;
-            int rowPointer2 = matrix.RowPointer;
+            double[][] doubles1 = this.toArrays();
+            double[][] doubles2 = matrix.toArrays();
             // 迭代每一行
-            while (this.MovePointerDown() && matrix.MovePointerDown()) {
-                doubles[this.RowPointer] = ASMath.CrossMultiplication(this.toDoubleArray(), matrix.toDoubleArray(), newLength);
+            for (int i = 0; i < doubles1.length; i++) {
+                doubles[i] = ASMath.CrossMultiplication(doubles1[i], doubles2[i], newLength);
             }
-            this.RowPointer = rowPointer1;
-            matrix.RowPointer = rowPointer2;
             return new DoubleMatrix(doubles).PointerReset();
         } else {
             throw new OperatorOperationException("您在'DoubleMatrix1 multiply DoubleMatrix2'的时候发生了错误，原因是两个矩阵的行列数不一致！\n" +
@@ -337,8 +335,8 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
             int rowPointer1 = this.RowPointer;
             int rowPointer2 = matrix.RowPointer;
             while (this.MovePointerDown() && matrix.MovePointerDown()) {
-                double[] doubles1 = this.toDoubleArray();
-                double[] doubles2 = matrix.toDoubleArray();
+                double[] doubles1 = this.toArray();
+                double[] doubles2 = matrix.toArray();
                 for (int i = 0; i < doubles1.length; i++) {
                     res += doubles1[i] * doubles2[i];
                 }
@@ -365,9 +363,13 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
      * @return 获取到本矩阵中的某一行数据，按照行指针获取，通过调整外界行指针的变化，来获取到对应行数据，需要注意的是，该函数获取到的数据矩阵对象中正在使用的，如果返回值被更改，那么会导致一些不可意料的情况发生。
      * <p>
      * Get the data of a certain row in this matrix according to the row pointer, and get the data of the corresponding row by adjusting the changes of the external row pointer. Note that if the return value of the data matrix object obtained by this function is being used, it will lead to some unexpected situations.
+     * @deprecated 使用toArray函数可达到替代效果
+     * <p>
+     * Use the toArray function to achieve the substitution effect
      */
+    @Deprecated
     public double[] toDoubleArray() {
-        return toArrays()[super.RowPointer];
+        return toArray();
     }
 
     /**
@@ -427,7 +429,7 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
     @Override
     public double[] copyToNewArray() {
         final double[] res = new double[this.getColCount()];
-        System.arraycopy(this.toDoubleArray(), 0, res, 0, res.length);
+        System.arraycopy(this.toArray(), 0, res, 0, res.length);
         return res;
     }
 
@@ -566,5 +568,65 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
     @Override
     protected void reFresh() {
         this.PointerReset();
+    }
+
+    /**
+     * @return 矩阵的行数量
+     * <p>
+     * the number of rows in the matrix
+     */
+    @Override
+    public int getRowCount() {
+        return super.getRowCount();
+    }
+
+    /**
+     * 将数据所维护的数组左移n个位置，并获取到结果数值
+     * <p>
+     * Move the array maintained by the data to the left n positions and get the result value
+     *
+     * @param n    被左移的次数，该数值应取值于 [0, getRowCount]
+     *             <p>
+     *             The number of times it is moved to the left. The value should be [0, getRowCount]
+     * @param copy 本次左移的作用参数，如果设置为true，代表本次位移会创建出一个新的数组，于当前数组毫无关联。
+     *             <p>
+     *             If the action parameter of this left shift is set to true, it means that this shift will create a new array, which has no association with the current array.
+     * @return 位移之后的AS操作数对象，其类型与调用者数据类型一致。
+     * <p>
+     * The AS operand object after displacement has the same type as the caller data type.
+     */
+    @Override
+    public DoubleMatrix leftShift(int n, boolean copy) {
+        if (copy) {
+            return DoubleMatrix.parse(ASMath.leftShift(this.copyToNewArrays(), n));
+        } else {
+            ASMath.leftShift(this.toArrays(), n);
+            return this;
+        }
+    }
+
+    /**
+     * 将数据所维护的数组右移n个位置，并获取到结果数值
+     * <p>
+     * Move the array maintained by the data to the right n positions and get the result value
+     *
+     * @param n    被右移的次数，该数值应取值于 [0, getRowCount]
+     *             <p>
+     *             The number of times it is moved to the right. The value should be [0, getRowCount]
+     * @param copy 本次右移的作用参数，如果设置为true，代表本次位移会创建出一个新的数组，于当前数组毫无关联。
+     *             <p>
+     *             If the action parameter of this right shift is set to true, it means that this shift will create a new array, which has no association with the current array.
+     * @return 位移之后的AS操作数对象，其类型与调用者数据类型一致。
+     * <p>
+     * The AS operand object after displacement has the same type as the caller data type.
+     */
+    @Override
+    public DoubleMatrix rightShift(int n, boolean copy) {
+        if (copy) {
+            return DoubleMatrix.parse(ASMath.rightShift(this.copyToNewArrays(), n));
+        } else {
+            ASMath.rightShift(this.toArrays(), n);
+            return this;
+        }
     }
 }

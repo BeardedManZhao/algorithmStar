@@ -20,9 +20,9 @@ import zhao.algorithmMagic.operands.matrix.Matrix;
  *                             <p>
  *                             Matrix fast, the matrix type in each layer of matrix.
  */
-public abstract class MatrixSpace<ImplementationType extends Matrix<?, ?, ?, ?>, ElementType, ArrayType, MatrixType
-        extends Matrix<?, ElementType, ?, ?>>
-        extends Matrix<ImplementationType, ElementType, ArrayType, MatrixType[]> {
+public abstract class MatrixSpace<ImplementationType extends Matrix<?, ?, ?, ?, ?>, ElementType, ArrayType, MatrixType
+        extends Matrix<?, ElementType, ?, ?, ?>>
+        extends Matrix<ImplementationType, ElementType, ArrayType, MatrixType, MatrixType[]> {
     private final int layer;
 
     /**
@@ -38,10 +38,9 @@ public abstract class MatrixSpace<ImplementationType extends Matrix<?, ?, ?, ?>,
      * @param matrixTypes 该矩阵对象中的二维数组对象。
      */
     protected MatrixSpace(int rowCount, int colCount, MatrixType[] matrixTypes) {
-        super(rowCount, colCount, matrixTypes);
+        super(rowCount, colCount, matrixTypes.length - 2, matrixTypes);
         this.layer = matrixTypes.length;
     }
-
 
     /**
      * @return 向量中包含的维度数量，在这里代表的是矩阵块中的矩阵层数。
@@ -104,7 +103,7 @@ public abstract class MatrixSpace<ImplementationType extends Matrix<?, ?, ?, ?>,
      * Gets the matrix object pointed to by the current row pointer in the matrix.
      */
     public final MatrixType toMatrix() {
-        return this.toArrays()[Math.max(RowPointer, 0)];
+        return this.toArrays()[RowPointer];
     }
 
     /**

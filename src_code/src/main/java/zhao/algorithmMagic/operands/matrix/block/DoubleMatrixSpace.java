@@ -2,6 +2,7 @@ package zhao.algorithmMagic.operands.matrix.block;
 
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
+import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASMath;
 
 /**
@@ -11,7 +12,7 @@ import zhao.algorithmMagic.utils.ASMath;
  *
  * @author zhao
  */
-public class DoubleMatrixSpace extends MatrixSpace<DoubleMatrixSpace, Double, double[], DoubleMatrix> {
+public class DoubleMatrixSpace extends MatrixSpace<DoubleMatrixSpace, Double, double[][], DoubleMatrix> {
     /**
      * 构造一个空的矩阵，指定其矩阵的行列数
      * <p>
@@ -98,8 +99,8 @@ public class DoubleMatrixSpace extends MatrixSpace<DoubleMatrixSpace, Double, do
      * Return the array of vector sequences stored in this object directly. Note that the returned value is an array being maintained. Therefore, it is recommended to ensure that the returned value is used as a read-only variable.
      */
     @Override
-    public double[] toArray() {
-        return toMatrix().toArray();
+    public final double[][] toArray() {
+        return toMatrix().toArrays();
     }
 
     /**
@@ -129,11 +130,9 @@ public class DoubleMatrixSpace extends MatrixSpace<DoubleMatrixSpace, Double, do
      * Copy the vector sequence array stored in this object to a new array and return the new array. Here, a new array is returned, which supports modification and other operations.
      */
     @Override
-    public double[] copyToNewArray() {
-        double[] temp = toArray();
-        double[] res = new double[temp.length];
-        System.arraycopy(temp, 0, res, 0, res.length);
-        return res;
+    public final double[][] copyToNewArray() {
+        double[][] doubles = this.toArray();
+        return ASClass.array2DCopy(doubles, new double[doubles.length][]);
     }
 
     /**
@@ -168,6 +167,20 @@ public class DoubleMatrixSpace extends MatrixSpace<DoubleMatrixSpace, Double, do
         DoubleMatrix[] doubleMatrices2 = new DoubleMatrix[doubleMatrices1.length];
         System.arraycopy(doubleMatrices1, 0, doubleMatrices2, 0, doubleMatrices2.length);
         return doubleMatrices2;
+    }
+
+    /**
+     * 这里应代表行指针所指向的元素，指针就是行数据，行指针的最大索引值为 MaximumRowPointerCount 该参数可以通过特别的构造函数构造出来。
+     * <p>
+     * This should represent the element that the row pointer points to. The pointer is the row data. The maximum index value of the row pointer is MaximumRowPointerCount. This parameter can be constructed through a special constructor.
+     *
+     * @return 当hashNext返回true的时候，当前行指针将会返回具体的数值对象，如果hashNext为false的情况下调用此函数，将会发生异常！
+     * <p>
+     * When hashNext returns true, the current row pointer will return the specific numeric object. If this function is called when hashNext is false, an exception will occur!
+     */
+    @Override
+    public DoubleMatrix next() {
+        return toMatrix();
     }
 
     /**

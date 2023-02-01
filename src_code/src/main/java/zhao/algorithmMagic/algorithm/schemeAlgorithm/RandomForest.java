@@ -9,10 +9,13 @@ import zhao.algorithmMagic.operands.matrix.block.DoubleMatrixSpace;
 import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixSpace;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASMath;
+import zhao.algorithmMagic.utils.ASStr;
 import zhao.algorithmMagic.utils.filter.ArrayDoubleFiltering;
 import zhao.algorithmMagic.utils.filter.ArrayIntegerFiltering;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 随机森林计算组件，此组件依赖决策树计算组件，能够实现从诸多决策树中找到最优解。
@@ -22,6 +25,11 @@ import java.util.*;
  * @author zhao
  */
 public class RandomForest extends DecisionTree {
+
+    /**
+     * 节点分割器正则，其中的流程图生成代码需要使用该正则。
+     */
+    protected final static Pattern PATTERN = Pattern.compile("[.-]->\\s+");
 
     protected long seed = 1024;
 
@@ -49,6 +57,107 @@ public class RandomForest extends DecisionTree {
             RandomForest RandomForest = new RandomForest(Name);
             OperationAlgorithmManager.getInstance().register(RandomForest);
             return RandomForest;
+        }
+    }
+
+    /**
+     * 执行决策方案，并将结果以Markdown流程图代码的方式返回出去，其可以被用来生成各种决策树执行流程图。
+     * <p>
+     * Execute the decision scheme and return the results in the form of Markdown flowchart code, which can be used to generate various decision tree execution flowchart.
+     *
+     * @param ints       需要被进行决策项的数据样本
+     *                   <p>
+     *                   Data sample of decision items to be made
+     * @param arrayList  决策方案列表，其中每一个元素是一个事件过滤器，其代表的就是节点之间的过滤通道，在流程图中将会以过滤器的toString返回值作为通道名称！
+     *                   <p>
+     *                   In the decision scheme list, each element is an event filter, which represents the filtering channel between nodes. In the flow chart, the return value of the filter toString will be used as the channel name!
+     * @param isLR       流程图是否以左右的布局排版，如果设置为true代表从左到右排版，反之则代表从上到下排版。
+     *                   <p>
+     *                   Whether the flow chart is typeset in left and right layout. If set to true, it means typesetting from left to right, otherwise it means typesetting from top to bottom.
+     * @param isDetailed 流程图中的节点显示设置，如果设置为true，在节点位置将显示所有的数据，如果设置为false 节点显示概述信息。
+     *                   <p>
+     *                   The node display settings in the flowchart. If set to true, all data will be displayed at the node location. If set to false, the node will display overview information.
+     * @return 执行结果，是数据过滤的操作过程，其是一个Markdown流程图代码的字符串，您可以将其以 Markdown 语法解析出流程图！
+     * <p>
+     * The execution result is the operation process of data filtering. It is a string of Markdown flowchart code. You can parse it out of the flowchart with Markdown syntax!
+     */
+    public static String executeGetString(int[][] ints, ArrayList<ArrayIntegerFiltering> arrayList, boolean isLR, boolean isDetailed, int seed, int layer, int rowOfLayer) {
+        // 将矩阵使用随机算法分开
+        IntegerMatrixSpace doubleMatrixBlock = ASMath.shuffleAndSplit(ints, seed, layer, rowOfLayer);
+        // 对每一个矩阵使用决策树计算，最终将所有的树合并到一个根节点
+        StringBuilder stringBuilder = new StringBuilder(isLR ? "graph LR\n" : "graph TB\n");
+        int count = -1;
+        for (IntegerMatrix integerMatrix : doubleMatrixBlock) {
+            String[] splitByChar = ASStr.splitByChar(DecisionTree.executeGetString(integerMatrix.toArrays(), arrayList, isLR, isDetailed), '\n');
+            stringBuilder.append("\nroot == ")
+                    .append("double Tree").append(" ==> ")
+                    .append(++count).append("AllData").append('\n');
+            exGetString(stringBuilder, count, splitByChar);
+        }
+        return stringBuilder.toString();
+    }
+
+    /**
+     * 执行决策方案，并将结果以Markdown流程图代码的方式返回出去，其可以被用来生成各种决策树执行流程图。
+     * <p>
+     * Execute the decision scheme and return the results in the form of Markdown flowchart code, which can be used to generate various decision tree execution flowchart.
+     *
+     * @param doubles    需要被进行决策项的数据样本
+     *                   <p>
+     *                   Data sample of decision items to be made
+     * @param arrayList  决策方案列表，其中每一个元素是一个事件过滤器，其代表的就是节点之间的过滤通道，在流程图中将会以过滤器的toString返回值作为通道名称！
+     *                   <p>
+     *                   In the decision scheme list, each element is an event filter, which represents the filtering channel between nodes. In the flow chart, the return value of the filter toString will be used as the channel name!
+     * @param isLR       流程图是否以左右的布局排版，如果设置为true代表从左到右排版，反之则代表从上到下排版。
+     *                   <p>
+     *                   Whether the flow chart is typeset in left and right layout. If set to true, it means typesetting from left to right, otherwise it means typesetting from top to bottom.
+     * @param isDetailed 流程图中的节点显示设置，如果设置为true，在节点位置将显示所有的数据，如果设置为false 节点显示概述信息。
+     *                   <p>
+     *                   The node display settings in the flowchart. If set to true, all data will be displayed at the node location. If set to false, the node will display overview information.
+     * @param seed       随机森林中每一棵决策树所分配任务的随机种子。
+     *                   <p>
+     *                   The random seeds of the tasks assigned to each decision tree in the random forest.
+     * @param layer      您希望在计算的时候建立出来几个决策树。
+     *                   <p>
+     *                   You want to build several decision trees during calculation.
+     * @param rowOfLayer 您希望每一个决策树处理多少条数据。
+     *                   <p>
+     *                   How many pieces of data do you want each decision tree to process.
+     * @return 执行结果，是数据过滤的操作过程，其是一个Markdown流程图代码的字符串，您可以将其以 Markdown 语法解析出流程图！
+     * <p>
+     * The execution result is the operation process of data filtering. It is a string of Markdown flowchart code. You can parse it out of the flowchart with Markdown syntax!
+     */
+    public static String executeGetString(double[][] doubles, ArrayList<ArrayDoubleFiltering> arrayList, boolean isLR, boolean isDetailed, int seed, int layer, int rowOfLayer) {
+        // 将矩阵使用随机算法分开
+        DoubleMatrixSpace doubleMatrixBlock = ASMath.shuffleAndSplit(doubles, seed, layer, rowOfLayer);
+        // 对每一个矩阵使用决策树计算，最终将所有的树合并到一个根节点
+        StringBuilder stringBuilder = new StringBuilder(isLR ? "graph LR\n" : "graph TB\n");
+        int count = -1;
+        for (DoubleMatrix doubleMatrix : doubleMatrixBlock) {
+            String[] splitByChar = ASStr.splitByChar(DecisionTree.executeGetString(doubleMatrix.toArrays(), arrayList, isLR, isDetailed), '\n');
+            stringBuilder.append("\nroot == ")
+                    .append("double Tree").append(" ==> ")
+                    .append(++count).append("AllData").append('\n');
+            exGetString(stringBuilder, count, splitByChar);
+        }
+        return stringBuilder.toString();
+    }
+
+    // 将树结合起来
+    protected static void exGetString(StringBuilder stringBuilder, int count, String[] splitByChar) {
+        for (int i = 1, splitByCharLength = splitByChar.length; i < splitByCharLength; i++) {
+            String s = splitByChar[i];
+            Matcher matcher = PATTERN.matcher(s);
+            // 在这里修改每一个节点
+            if (matcher.find()) {
+                stringBuilder
+                        .append(count)
+                        .append(s, 0, matcher.start())
+                        .append(matcher.group())
+                        .append(count)
+                        .append(s.substring(matcher.end()))
+                        .append('\n');
+            }
         }
     }
 

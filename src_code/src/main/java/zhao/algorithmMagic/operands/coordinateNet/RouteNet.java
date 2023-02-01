@@ -3,6 +3,7 @@ package zhao.algorithmMagic.operands.coordinateNet;
 import zhao.algorithmMagic.operands.Operands;
 import zhao.algorithmMagic.operands.coordinate.Coordinate;
 
+import java.io.Serializable;
 import java.util.HashSet;
 
 /**
@@ -17,7 +18,8 @@ import java.util.HashSet;
  *                         <p>
  *                         route type
  */
-public interface RouteNet<CoordinateType extends Coordinate<?>, RouteType extends zhao.algorithmMagic.operands.route.Route<RouteType, CoordinateType>> extends Operands<RouteNet<CoordinateType, RouteType>> {
+public interface RouteNet<CoordinateType extends Coordinate<?>, RouteType extends zhao.algorithmMagic.operands.route.Route<RouteType, CoordinateType>>
+        extends Operands<RouteNet<CoordinateType, RouteType>>, Serializable {
 
     /**
      * 判断一条线路是否存在于线路网中。

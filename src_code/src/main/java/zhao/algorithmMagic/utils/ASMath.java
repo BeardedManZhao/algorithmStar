@@ -1351,13 +1351,14 @@ public final class ASMath {
      *                  <p>
      *                  The number of left-shift operations to be performed
      */
-    public static void leftShift(int[] arrayType, int n) {
-        if (n < 0) return;
+    public static int[] leftShift(int[] arrayType, int n) {
+        if (n < 0) return arrayType;
         if (n >= arrayType.length) {
             Arrays.fill(arrayType, 0);
         } else {
             leftShiftNv(arrayType, n);
         }
+        return arrayType;
     }
 
     /**
@@ -1389,13 +1390,14 @@ public final class ASMath {
      *                  <p>
      *                  The number of left-shift operations to be performed
      */
-    public static void leftShift(double[] arrayType, int n) {
-        if (n < 0) return;
+    public static double[] leftShift(double[] arrayType, int n) {
+        if (n < 0) return arrayType;
         if (n >= arrayType.length) {
             Arrays.fill(arrayType, 0);
         } else {
             leftShiftNv(arrayType, n);
         }
+        return arrayType;
     }
 
     /**

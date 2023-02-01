@@ -1,6 +1,6 @@
 # ![image](https://user-images.githubusercontent.com/113756063/194830221-abe24fcc-484b-4769-b3b7-ec6d8138f436.png) Algorithm Star-MachineBrain
 
-- 切换到 [中文文档](https://github.com/BeardedManZhao/algorithmStar/blob/main/src_code/update/1.12_1.13-Chinese.md)
+- 切换到 [中文文档](https://github.com/BeardedManZhao/algorithmStar/blob/main/src_code/update/1.14_1.15-Chinese.md)
 - knowledge base
   <a href="https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/knowledge%20base.md">
   <img src = "https://user-images.githubusercontent.com/113756063/194832492-f8c184c1-55e8-4f16-943a-34b99ac751d4.png"/>
@@ -327,6 +327,267 @@ public class MAIN1 {
 ```
 
 * Fix the problem that the specified class cannot be found due to the log facade in the integrator. At present, the log
-  in the integrator has been replaced with log4j2
+  in the integrator has been replaced with log4j2.
+* Matrix objects support Java's native iteration mode and implement Java's iteration interface.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
+import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixSpace;
+
+import java.util.Arrays;
+
+public final class MAIN1 {
+    public static void main(String[] args) {
+        IntegerMatrix parse1 = IntegerMatrix.parse(
+                new int[]{1, 2, 1, 1, 1, 1, 1, 1, 1},
+                new int[]{1, 2, 1, 40, 1, 1, 60, 1, 1},
+                new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9},
+                new int[]{10, 20, 30, 40, 50, 60, 70, 80, 90}
+        );
+        // 创建一个矩阵空间
+        IntegerMatrixSpace parse = IntegerMatrixSpace.parse(parse1, parse1.shuffle(22));
+        // 使用迭代器迭代矩阵空间对象
+        for (IntegerMatrix integerMatrix : parse) {
+            System.out.println(integerMatrix);
+        }
+        // 获取到其中的第二个矩阵空间对象
+        if (parse.hasNext()) {
+            IntegerMatrix integerMatrix = parse.toMatrix();
+            // 对矩阵对象使用迭代
+            for (int[] anInt : integerMatrix) {
+                System.out.println(Arrays.toString(anInt));
+            }
+        }
+    }
+}
+```
+
+* All vector and matrix objects have allowed serialization operation and can transfer data between network and disk
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.matrix.ColumnDoubleMatrix;
+
+import java.io.*;
+import java.util.Arrays;
+
+public class MAIN1 {
+    public static void main(String[] args) throws IOException {
+        // 获取到特征矩阵
+        String[] strings = {"本年累计金额", "本月金额"};
+        ColumnDoubleMatrix parse = ColumnDoubleMatrix.parse(
+                strings,
+                new String[]{"N1", "N2", "N3", "N4", "N5", "N6", "N7"},
+                new double[]{100, 10},
+                new double[]{200, 20},
+                new double[]{300, 30},
+                new double[]{400, 40},
+                new double[]{500, 50},
+                new double[]{600, 60},
+                new double[]{700, 70}
+        );
+        // 使用增强for打印矩阵中的元素
+        for (double[] res : parse) {
+            System.out.println(Arrays.toString(res));
+        }
+        // 将矩阵对象序列化成字节数据输出到文件中
+        File file = new File("C:\\Users\\zhao\\Desktop\\out\\ColumnDoubleMatrix.data");
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file));
+        objectOutputStream.writeObject(parse);
+        objectOutputStream.flush();
+        objectOutputStream.close();
+
+        System.out.println("+==================================================+");
+
+        // 将矩阵对象重新读取进来
+        try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(file))) {
+            ColumnDoubleMatrix columnDoubleMatrix = (ColumnDoubleMatrix) objectInputStream.readObject();
+            for (double[] doubleMatrix : columnDoubleMatrix) {
+                System.out.println(Arrays.toString(doubleMatrix));
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+* Rewrite the string result execution function in the decision tree to make it more important. It does not return a
+  simple string process, but a flowchart code. At the same time, change this function to a static function.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.algorithm.schemeAlgorithm.DecisionTree;
+import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
+import zhao.algorithmMagic.utils.filter.ArrayIntegerFiltering;
+
+import java.util.ArrayList;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 创建一个矩阵对象，其中包含一些相关联的数据，本次要求将与年龄相关联的数据全部删掉
+        ColumnIntegerMatrix columnDoubleMatrix = ColumnIntegerMatrix.parse(
+                new String[]{"颜值", "身高", "有钱"},
+                null,
+                new int[]{1, 1, 1},
+                new int[]{1, 0, 1},
+                new int[]{0, 1, 0},
+                new int[]{0, 0, 0},
+                new int[]{0, 1, 0},
+                new int[]{1, 0, 0},
+                new int[]{1, 1, 0},
+                new int[]{1, 1, 12},
+                new int[]{0, 1, 0}
+        );
+        System.out.println(columnDoubleMatrix);
+        // 构建一些事件过滤器
+        // 有钱选项为1
+        ArrayIntegerFiltering arrayIntegerFiltering1 = v -> v[2] == 1;
+        // 身高选项为1
+        ArrayIntegerFiltering arrayIntegerFiltering2 = v -> v[1] == 1;
+        // 颜值选项为1
+        ArrayIntegerFiltering arrayIntegerFiltering3 = v -> v[0] == 1;
+        System.out.println(arrayIntegerFiltering1);
+        System.out.println(arrayIntegerFiltering2);
+        System.out.println(arrayIntegerFiltering3);
+        // 获取到决策树
+        DecisionTree d = DecisionTree.getInstance("d");
+        // 设置精准模式
+        d.setAccurate(true);
+        // 设置中心字段索引
+        d.setGroupIndex(0);
+        // 可以通过实例化的对象直接获取到结果，这种方式能够快速的将结果返回
+        System.out.println(d.decisionAndGet(columnDoubleMatrix, 2, arrayIntegerFiltering1, arrayIntegerFiltering2, arrayIntegerFiltering3));
+        // 也可以仅仅让决策树计算最优方案，并返回优化顺序后的方案列表
+        ArrayList<ArrayIntegerFiltering> decision = d.decision(columnDoubleMatrix, arrayIntegerFiltering1, arrayIntegerFiltering2, arrayIntegerFiltering3);
+        // 将最优方案传递给决策树执行，并接收返回的结果 TODO 您也可以使用该方案去做足够多的事情
+        String s1 = DecisionTree.executeGetString(columnDoubleMatrix.toArrays(), decision); // 1.15版本此函数成为了静态函数
+        // 将最有方案传递给决策树执行，并获取到详细的结果
+        String s2 = DecisionTree.executeGetString(columnDoubleMatrix.toArrays(), decision, false, true); // 1.15版本此函数成为了静态函数
+        System.out.println(s1);
+        System.out.println(s2);
+    }
+}
+```
+
+```mermaid
+graph TB
+AllData -- zhao.algorithmMagic.MAIN1$$Lambda$3/10069385-103e736=true --> TrueData1[Node No.1<br>Remaining quantity = 5<br>Remaining percentage = 55.55555555555556%<br>]
+AllData -. zhao.algorithmMagic.MAIN1$$Lambda$3/10069385-103e736=false .-> FalseData1[Node No.1<br>Removal quantity = 4<br>Removal percentage = 44.44444444444444%<br>]
+TrueData1 -- zhao.algorithmMagic.MAIN1$$Lambda$1/8468976-372a00=true --> TrueData2[Node No.2<br>Remaining quantity = 2<br>Remaining percentage = 40.0%<br>]
+TrueData1 -. zhao.algorithmMagic.MAIN1$$Lambda$1/8468976-372a00=false .-> FalseData2[Node No.2<br>Removal quantity = 3<br>Removal percentage = 60.0%<br>]
+TrueData2 -- zhao.algorithmMagic.MAIN1$$Lambda$2/26887603-dd8dc3=true --> TrueData3[Node No.3<br>Remaining quantity = 1<br>Remaining percentage = 50.0%<br>]
+TrueData2 -. zhao.algorithmMagic.MAIN1$$Lambda$2/26887603-dd8dc3=false .-> FalseData3[Node No.3<br>Removal quantity = 1<br>Removal percentage = 50.0%<br>]
+```
+
+```mermaid
+graph TB
+AllData -- zhao.algorithmMagic.MAIN1$$Lambda$3/10069385-103e736=true --> TrueData1[1	1	1	<br>1	0	1	<br>1	0	0	<br>1	1	0	<br>1	1	12	<br>]
+AllData -. zhao.algorithmMagic.MAIN1$$Lambda$3/10069385-103e736=false .-> FalseData1[0	1	0	<br>0	0	0	<br>0	1	0	<br>0	1	0	<br>]
+TrueData1 -- zhao.algorithmMagic.MAIN1$$Lambda$1/8468976-372a00=true --> TrueData2[1	1	1	<br>1	0	1	<br>]
+TrueData1 -. zhao.algorithmMagic.MAIN1$$Lambda$1/8468976-372a00=false .-> FalseData2[1	0	0	<br>1	1	0	<br>1	1	12	<br>]
+TrueData2 -- zhao.algorithmMagic.MAIN1$$Lambda$2/26887603-dd8dc3=true --> TrueData3[1	1	1	<br>]
+TrueData2 -. zhao.algorithmMagic.MAIN1$$Lambda$2/26887603-dd8dc3=false .-> FalseData3[1	0	1	<br>]
+```
+
+* It provides the generation function of decision thinking diagram for the random forest computing component, which can
+  combine the trees of each decision scheme like the decision tree.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.algorithm.schemeAlgorithm.RandomForest;
+import zhao.algorithmMagic.operands.matrix.ColumnDoubleMatrix;
+import zhao.algorithmMagic.utils.filter.ArrayDoubleFiltering;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 创建一个矩阵对象，其中包含一些相关联的数据，本次要求将与年龄相关联的数据全部删掉
+        ColumnDoubleMatrix columnDoubleMatrix = ColumnDoubleMatrix.parse(
+                new String[]{"颜值", "身高", "有钱"},
+                null,
+                new double[]{1, 1, 1},
+                new double[]{1, 0, 1},
+                new double[]{0, 1, 0},
+                new double[]{0, 0, 0},
+                new double[]{0, 1, 0},
+                new double[]{1, 0, 0},
+                new double[]{1, 1, 0},
+                new double[]{1, 1, 12},
+                new double[]{0, 1, 0}
+        );
+        // 构建一些事件过滤器
+        // 有钱选项为1
+        ArrayDoubleFiltering arrayDoubleFiltering1 = v -> v[2] == 1;
+        // 身高选项为1
+        ArrayDoubleFiltering arrayDoubleFiltering2 = v -> v[1] == 1;
+        // 颜值选项为1
+        ArrayDoubleFiltering arrayDoubleFiltering3 = v -> v[0] == 1;
+        System.out.println(arrayDoubleFiltering1);
+        System.out.println(arrayDoubleFiltering2);
+        System.out.println(arrayDoubleFiltering3);
+        // 使用随机森林计算组件进行决策思维图绘制
+        String s = RandomForest.executeGetString(
+                columnDoubleMatrix.toArrays(),
+                new ArrayList<>(Arrays.asList(arrayDoubleFiltering1, arrayDoubleFiltering2, arrayDoubleFiltering3)),
+                false, false, 22, 3, 3);
+        System.out.println(s);
+    }
+}
+```
+
+```mermaid
+graph TB
+
+root == double Tree ==> 0AllData
+0AllData -- zhao.algorithmMagic.MAIN1$$Lambda$1/13257035-dd8dc3=true --> 0TrueData1[Double True Node No.1<br>Remaining quantity = 2<br>Remaining percentage = 66.66666666666666%<br>]
+0AllData -. zhao.algorithmMagic.MAIN1$$Lambda$1/13257035-dd8dc3=false .-> 0FalseData1[Double False Node No.1<br>Removal quantity = 1<br>Removal percentage = 33.33333333333334%<br>]
+0TrueData1 -- zhao.algorithmMagic.MAIN1$$Lambda$2/10069385-103e736=true --> 0TrueData2[Double True Node No.2<br>Remaining quantity = 1<br>Remaining percentage = 50.0%<br>]
+0TrueData1 -. zhao.algorithmMagic.MAIN1$$Lambda$2/10069385-103e736=false .-> 0FalseData2[Double False Node No.2<br>Removal quantity = 1<br>Removal percentage = 50.0%<br>]
+0TrueData2 -- zhao.algorithmMagic.MAIN1$$Lambda$3/3615232-8db2f2=true --> 0TrueData3[Double True Node No.3<br>Remaining quantity = 1<br>Remaining percentage = 100.0%<br>]
+
+root == double Tree ==> 1AllData
+1AllData -- zhao.algorithmMagic.MAIN1$$Lambda$1/13257035-dd8dc3=true --> 1TrueData1[Double True Node No.1<br>Remaining quantity = 1<br>Remaining percentage = 33.33333333333333%<br>]
+1AllData -. zhao.algorithmMagic.MAIN1$$Lambda$1/13257035-dd8dc3=false .-> 1FalseData1[Double False Node No.1<br>Removal quantity = 2<br>Removal percentage = 66.66666666666667%<br>]
+1TrueData1 -- zhao.algorithmMagic.MAIN1$$Lambda$2/10069385-103e736=true --> 1TrueData2[Double True Node No.2<br>Remaining quantity = 1<br>Remaining percentage = 100.0%<br>]
+1TrueData2 -- zhao.algorithmMagic.MAIN1$$Lambda$3/3615232-8db2f2=true --> 1TrueData3[Double True Node No.3<br>Remaining quantity = 1<br>Remaining percentage = 100.0%<br>]
+
+root == double Tree ==> 2AllData
+2AllData -- zhao.algorithmMagic.MAIN1$$Lambda$1/13257035-dd8dc3=true --> 2TrueData1[Double True Node No.1<br>Remaining quantity = 1<br>Remaining percentage = 33.33333333333333%<br>]
+2AllData -. zhao.algorithmMagic.MAIN1$$Lambda$1/13257035-dd8dc3=false .-> 2FalseData1[Double False Node No.1<br>Removal quantity = 2<br>Removal percentage = 66.66666666666667%<br>]
+2TrueData1 -- zhao.algorithmMagic.MAIN1$$Lambda$2/10069385-103e736=true --> 2TrueData2[Double True Node No.2<br>Remaining quantity = 1<br>Remaining percentage = 100.0%<br>]
+2TrueData2 -- zhao.algorithmMagic.MAIN1$$Lambda$3/3615232-8db2f2=true --> 2TrueData3[Double True Node No.3<br>Remaining quantity = 1<br>Remaining percentage = 100.0%<br>]
+
+```
+
+```mermaid
+graph TB
+
+root == double Tree ==> 0AllData
+0AllData -- zhao.algorithmMagic.MAIN1$$Lambda$1/13257035-dd8dc3=true --> 0TrueData1[1.0	1.0	1.0	<br>1.0	0.0	1.0	<br>]
+0AllData -. zhao.algorithmMagic.MAIN1$$Lambda$1/13257035-dd8dc3=false .-> 0FalseData1[0.0	1.0	0.0	<br>]
+0TrueData1 -- zhao.algorithmMagic.MAIN1$$Lambda$2/10069385-103e736=true --> 0TrueData2[1.0	1.0	1.0	<br>]
+0TrueData1 -. zhao.algorithmMagic.MAIN1$$Lambda$2/10069385-103e736=false .-> 0FalseData2[1.0	0.0	1.0	<br>]
+0TrueData2 -- zhao.algorithmMagic.MAIN1$$Lambda$3/3615232-8db2f2=true --> 0TrueData3[1.0	1.0	1.0	<br>]
+
+root == double Tree ==> 1AllData
+1AllData -- zhao.algorithmMagic.MAIN1$$Lambda$1/13257035-dd8dc3=true --> 1TrueData1[1.0	1.0	1.0	<br>]
+1AllData -. zhao.algorithmMagic.MAIN1$$Lambda$1/13257035-dd8dc3=false .-> 1FalseData1[1.0	1.0	12.0	<br>1.0	1.0	0.0	<br>]
+1TrueData1 -- zhao.algorithmMagic.MAIN1$$Lambda$2/10069385-103e736=true --> 1TrueData2[1.0	1.0	1.0	<br>]
+1TrueData2 -- zhao.algorithmMagic.MAIN1$$Lambda$3/3615232-8db2f2=true --> 1TrueData3[1.0	1.0	1.0	<br>]
+
+root == double Tree ==> 2AllData
+2AllData -- zhao.algorithmMagic.MAIN1$$Lambda$1/13257035-dd8dc3=true --> 2TrueData1[1.0	1.0	1.0	<br>]
+2AllData -. zhao.algorithmMagic.MAIN1$$Lambda$1/13257035-dd8dc3=false .-> 2FalseData1[0.0	0.0	0.0	<br>0.0	1.0	0.0	<br>]
+2TrueData1 -- zhao.algorithmMagic.MAIN1$$Lambda$2/10069385-103e736=true --> 2TrueData2[1.0	1.0	1.0	<br>]
+2TrueData2 -- zhao.algorithmMagic.MAIN1$$Lambda$3/3615232-8db2f2=true --> 2TrueData3[1.0	1.0	1.0	<br>]
+```
 
 ### Version update date : XX XX-XX-XX

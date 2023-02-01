@@ -8,6 +8,7 @@ package zhao.algorithmMagic.operands;
  * @param <ImplementationType> 操作数的实现类型，也就是运算时需要的类型，只有相同数据类型的两个操作数才可以进行运算
  *                             <p>
  *                             There is no description for the super interface, please refer to the subclass documentation
+ * @author 赵凌宇
  */
 public interface Operands<ImplementationType> extends Cloneable {
 

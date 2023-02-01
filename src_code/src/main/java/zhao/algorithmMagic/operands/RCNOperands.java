@@ -1,12 +1,14 @@
 package zhao.algorithmMagic.operands;
 
+import java.util.HashMap;
+
 /**
  * Row and column name operands
  * 具有行列名称的操作数对象，常用于矩阵对象中，根据行列名称获取到数据。
  * <p>
  * Operand objects with row and column names are commonly used in matrix objects to obtain data according to the row and column names.
  */
-public interface RCNOperands<ArrayType> {
+public interface RCNOperands<VectorType, ArrayType> {
     /**
      * 获取到指定名称的行数组
      * <p>
@@ -34,4 +36,13 @@ public interface RCNOperands<ArrayType> {
      * A new array containing the elements of the current col supports modification.
      */
     ArrayType getArrayByColName(String name);
+
+    /**
+     * 将当前的矩阵转换成列名与向量的键值对。
+     *
+     * @return 将当前的矩阵转换成列名与向量的键值对。
+     * <p>
+     * Converts the current matrix into a key-value pair of column names and vectors.
+     */
+    HashMap<String, VectorType> toHashMap();
 }
