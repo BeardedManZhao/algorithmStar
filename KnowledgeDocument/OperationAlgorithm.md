@@ -287,6 +287,7 @@ specific classification components, see the following example.
 | zhao.algorithmMagic.algorithm.classificationAlgorithm.UDFDistanceClassification | v1.14              | Calculate and classify the distance by manually passing in the category sample                              |
 | zhao.algorithmMagic.algorithm.classificationAlgorithm.KnnClassification         | v1.14              | K-nearest neighbor algorithm is used to calculate the distance of the nearest K features and classify them. |
 | zhao.algorithmMagic.algorithm.classificationAlgorithm.KMeans                    | v1.15              | K-means algorithm is used for unsupervised calculation and unsupervised classification.                     |
+
 ```java
 package zhao.algorithmMagic;
 
@@ -462,7 +463,9 @@ public final class MAIN1 {
 
 ### Decision calculation component
 
-The decision algorithm was added to the AS database in version 1.14. It is an excellent algorithm for optimal arrangement or optimization of multiple processing schemes. There are algorithms such as decision trees in the database. Next is the usage of decision trees.
+The decision algorithm was added to the AS database in version 1.14. It is an excellent algorithm for optimal
+arrangement or optimization of multiple processing schemes. There are algorithms such as decision trees in the database.
+Next is the usage of decision trees.
 
 - Decision calculation component list
 
@@ -571,7 +574,10 @@ False => [1, 0, 1]
 ```
 
 ### Model calculation component
-In addition to using integrators for model calculation, algorithms can also be used to calculate many models in the AS library. The existing model calculation components are shown here, and the unary linear regression algorithm component is used for an API demonstration example.
+
+In addition to using integrators for model calculation, algorithms can also be used to calculate many models in the AS
+library. The existing model calculation components are shown here, and the unary linear regression algorithm component
+is used for an API demonstration example.
 
 - Model calculation component list
 
@@ -612,11 +618,13 @@ public class MAIN1 {
 }
 
 ```
+
 ```
 [INFO][OperationAlgorithmManager][23-01-24:09]] : register OperationAlgorithm:line
 数据特征：
 y = x * 50.0 + 0.0
 ```
+
 - 切换到 [中文文档](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/OperationAlgorithm-Chinese.md)
 
 <hr>

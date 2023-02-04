@@ -13,13 +13,14 @@
 您可以通过maven将算术之星（AS-MB）集成到您的项目中，maven的配置如下所示。您可以将其添加到maven项目中，也可以从Releases下载并手动将其集成到项目中。
 
 ```xml
-    <dependencies>
-        <dependency>
-            <groupId>io.github.BeardedManZhao</groupId>
-            <artifactId>algorithmStar</artifactId>
-            <version>1.14</version>
-        </dependency>
-    </dependencies>
+
+<dependencies>
+    <dependency>
+        <groupId>io.github.BeardedManZhao</groupId>
+        <artifactId>algorithmStar</artifactId>
+        <version>1.14</version>
+    </dependency>
+</dependencies>
 ```
 
 ## API使用示例
@@ -103,6 +104,7 @@ Good evening, dear, don't forget the agreement between us. It's 9:00 tomorrow mo
 
 ```java
 package zhao.algorithmMagic;
+
 import zhao.algorithmMagic.lntegrator.Route2DDrawingIntegrator;
 import zhao.algorithmMagic.algorithm.generatingAlgorithm.ZhaoCoordinateNet2D;
 import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo;
@@ -150,6 +152,10 @@ public class MAIN1 {
 - 运行之后产生的关系网络图片
 
   ![image](https://user-images.githubusercontent.com/113756063/196412140-8b81979d-ecc1-4774-9cbe-df8a89c19c1c.png)
+
+### AsLib
+
+目录中是 Algorithm Star 机器学习库在运行时所依赖的DLL动态库文件以及库文件对应的源码，在机器学习库中为了能够更好的兼容性能，因此引入了C编译好的DLL，用户可以在AS库运行之前将DLL载入到机器学习库中。
 
 ### KnowledgeDocument
 

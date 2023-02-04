@@ -171,6 +171,13 @@ public class MAIN1 {
 
 # directory structure
 
+### AsLib
+
+The directory contains the DLL dynamic library file and the source code corresponding to the library file that the
+Algorithm Star machine learning library depends on when it runs. In order to achieve better compatibility in the machine
+learning library, the C compiled DLL is introduced. Users can load the DLL into the machine learning library before the
+AS library runs.
+
 ### KnowledgeDocument
 
 The knowledge base file archive is used for the storage task of ASMB series knowledge documents. You can access it

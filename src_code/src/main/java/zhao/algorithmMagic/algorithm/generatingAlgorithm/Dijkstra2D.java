@@ -104,6 +104,17 @@ public class Dijkstra2D implements GeneratingAlgorithm2D {
     }
 
     /**
+     * 添加很多路线到计算网络中
+     *
+     * @param routes 需要被计算的所有路线
+     */
+    public void addRoutes(IntegerConsanguinityRoute2D... routes) {
+        for (IntegerConsanguinityRoute2D route : routes) {
+            addRoute(route);
+        }
+    }
+
+    /**
      * 添加一个需要被算法处理的线路。
      * <p>
      * Add a route that needs to be processed by the algorithm.
@@ -126,7 +137,7 @@ public class Dijkstra2D implements GeneratingAlgorithm2D {
         // 获取该线路的终止点名称
         String endPointCoordinateName = route.getEndPointCoordinateName();
         // 获取起始点到终止点的名称
-        String SEName = startingCoordinateName + " -> " + endPointCoordinateName;
+        String SEName = route.getRouteName();
         // 获取终止点到起始点的名称
         String ESName = endPointCoordinateName + " -> " + startingCoordinateName;
         // 计算该线路的始末坐标距离

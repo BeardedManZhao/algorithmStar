@@ -550,6 +550,7 @@ False => [1, 0, 1]
 ```
 
 ### 模型计算组件
+
 在AS库中除了使用集成器进行模型的运算，还可以使用算法进行诸多模型的计算，在这里展示出目前已存在的模型计算组件，并且使用其中的一元线性回归算法组件进行一个API的演示示例。
 
 - 模型计算组件列表
@@ -590,11 +591,13 @@ public class MAIN1 {
   }
 }
 ```
+
 ```
 [INFO][OperationAlgorithmManager][23-01-24:09]] : register OperationAlgorithm:line
 数据特征：
 y = x * 50.0 + 0.0
 ```
+
 - Switch
   to [English Document](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/OperationAlgorithm.md)
 

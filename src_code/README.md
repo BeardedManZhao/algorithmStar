@@ -23,7 +23,6 @@ import zhao.algorithmMagic.utils.filter.ArrayIntegerFiltering;
 
 public class MAIN1 {
     public static void main(String[] args) {
-        // 创建一个矩阵对象，其中包含一些数据，现在需要找到最块的筛选路线，并使用此路线将数据进行一次获取
         ColumnIntegerMatrix columnDoubleMatrix = ColumnIntegerMatrix.parse(
                 new String[]{"颜值", "身高", "有钱"},
                 null,
@@ -88,7 +87,6 @@ import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
 
 public class MAIN1 {
     public static void main(String[] args) {
-        // 创建一个矩阵对象，其中包含一些数据，现在需要找到最块的筛选路线，并使用此路线将数据进行一次获取
         ColumnIntegerMatrix columnDoubleMatrix = ColumnIntegerMatrix.parse(
                 new String[]{"x", "y"},
                 null,
@@ -429,7 +427,6 @@ import java.util.ArrayList;
 
 public class MAIN1 {
     public static void main(String[] args) {
-        // 创建一个矩阵对象，其中包含一些相关联的数据，本次要求将与年龄相关联的数据全部删掉
         ColumnIntegerMatrix columnDoubleMatrix = ColumnIntegerMatrix.parse(
                 new String[]{"颜值", "身高", "有钱"},
                 null,
@@ -509,7 +506,6 @@ import java.util.Arrays;
 
 public class MAIN1 {
     public static void main(String[] args) {
-        // 创建一个矩阵对象，其中包含一些相关联的数据，本次要求将与年龄相关联的数据全部删掉
         ColumnDoubleMatrix columnDoubleMatrix = ColumnDoubleMatrix.parse(
                 new String[]{"颜值", "身高", "有钱"},
                 null,

@@ -82,12 +82,10 @@ public class RandomForest extends DecisionTree {
      * The execution result is the operation process of data filtering. It is a string of Markdown flowchart code. You can parse it out of the flowchart with Markdown syntax!
      */
     public static String executeGetString(int[][] ints, ArrayList<ArrayIntegerFiltering> arrayList, boolean isLR, boolean isDetailed, int seed, int layer, int rowOfLayer) {
-        // 将矩阵使用随机算法分开
-        IntegerMatrixSpace doubleMatrixBlock = ASMath.shuffleAndSplit(ints, seed, layer, rowOfLayer);
         // 对每一个矩阵使用决策树计算，最终将所有的树合并到一个根节点
         StringBuilder stringBuilder = new StringBuilder(isLR ? "graph LR\n" : "graph TB\n");
         int count = -1;
-        for (IntegerMatrix integerMatrix : doubleMatrixBlock) {
+        for (IntegerMatrix integerMatrix : ASMath.shuffleAndSplit(ints, seed, layer, rowOfLayer)) {
             String[] splitByChar = ASStr.splitByChar(DecisionTree.executeGetString(integerMatrix.toArrays(), arrayList, isLR, isDetailed), '\n');
             stringBuilder.append("\nroot == ")
                     .append("double Tree").append(" ==> ")
@@ -128,12 +126,10 @@ public class RandomForest extends DecisionTree {
      * The execution result is the operation process of data filtering. It is a string of Markdown flowchart code. You can parse it out of the flowchart with Markdown syntax!
      */
     public static String executeGetString(double[][] doubles, ArrayList<ArrayDoubleFiltering> arrayList, boolean isLR, boolean isDetailed, int seed, int layer, int rowOfLayer) {
-        // 将矩阵使用随机算法分开
-        DoubleMatrixSpace doubleMatrixBlock = ASMath.shuffleAndSplit(doubles, seed, layer, rowOfLayer);
         // 对每一个矩阵使用决策树计算，最终将所有的树合并到一个根节点
         StringBuilder stringBuilder = new StringBuilder(isLR ? "graph LR\n" : "graph TB\n");
         int count = -1;
-        for (DoubleMatrix doubleMatrix : doubleMatrixBlock) {
+        for (DoubleMatrix doubleMatrix : ASMath.shuffleAndSplit(doubles, seed, layer, rowOfLayer)) {
             String[] splitByChar = ASStr.splitByChar(DecisionTree.executeGetString(doubleMatrix.toArrays(), arrayList, isLR, isDetailed), '\n');
             stringBuilder.append("\nroot == ")
                     .append("double Tree").append(" ==> ")

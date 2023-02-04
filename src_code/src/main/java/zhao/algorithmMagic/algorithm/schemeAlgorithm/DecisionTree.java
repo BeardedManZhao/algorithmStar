@@ -104,42 +104,55 @@ public class DecisionTree extends SchemeAlgorithm {
         stringBuilder.append(isLR ? "graph LR\n" : "graph TB\n");
         String back = "AllData";
         if (isDetailed) {
-            for (ArrayIntegerFiltering arrayIntegerFiltering : arrayList) {
+            for (ArrayIntegerFiltering arrayDoubleFiltering : arrayList) {
                 // 获取当前决策的字符串编号
-                String filter = ASStr.replaceCharFirst(arrayIntegerFiltering.toString(), '@', '-');
+                final String filter = ASStr.replaceCharFirst(arrayDoubleFiltering.toString(), '@', '-');
                 // 开始进行提取 准备真假列表
-                StringBuilder stringBuilder1 = new StringBuilder(back);
-                StringBuilder stringBuilder2 = new StringBuilder(back);
+                final StringBuilder stringBuilder1 = new StringBuilder(back);
+                final StringBuilder stringBuilder2 = new StringBuilder(back);
                 // 更新当前节点的名称
                 back = "TrueData" + (++count);
-                stringBuilder2.append(" -. ").append(filter).append("=false .-> FalseData").append(count).append('[');
-                stringBuilder1.append(" -- ").append(filter).append("=true --> ").append(back).append('[');
+                initializeBuffer(stringBuilder2, filter, count, stringBuilder1, back);
                 ArrayList<int[]> deleteList = new ArrayList<>();
-                for (int[] anInt : data) {
-                    if (arrayIntegerFiltering.isComplianceEvents(anInt)) {
+                for (int[] doubles1 : data) {
+                    if (arrayDoubleFiltering.isComplianceEvents(doubles1)) {
                         // 标记为真 这里生成真的所有数据
-                        stringBuilder1.append(ASStr.arrayToMarkdownStr(anInt)).append("<br>");
+                        stringBuilder1.append(ASStr.arrayToMarkdownStr(doubles1)).append("<br>");
                     } else {
                         // 标记为假
-                        stringBuilder2.append(ASStr.arrayToMarkdownStr(anInt)).append("<br>");
-                        deleteList.add(anInt);
+                        stringBuilder2.append(ASStr.arrayToMarkdownStr(doubles1)).append("<br>");
+                        deleteList.add(doubles1);
                     }
                 }
-                // 清空假值
-                data.removeAll(deleteList);
-                // 真假合并
-                stringBuilder.append(stringBuilder1).append(']').append('\n').append(stringBuilder2).append(']').append('\n');
+                if (deleteList.size() != 0) {
+                    // 清空假值
+                    data.removeAll(deleteList);
+                    if (data.size() == 0) {
+                        stringBuilder1.append("No matching int data!!!");
+                        // 真假合并
+                        stringBuilder.append(stringBuilder1).append(']').append('\n').append(stringBuilder2).append(']').append('\n');
+                        break;
+                    }
+                    // 真假合并
+                    stringBuilder.append(stringBuilder1).append(']').append('\n').append(stringBuilder2).append(']').append('\n');
+                } else {
+                    if (data.size() == 0) {
+                        stringBuilder1.append("No matching int data!!!");
+                        stringBuilder.append(stringBuilder1).append(']').append('\n');
+                        break;
+                    }
+                    stringBuilder.append(stringBuilder1).append(']').append('\n');
+                }
             }
         } else {
             for (ArrayIntegerFiltering arrayIntegerFiltering : arrayList) {
                 // 获取当前决策的字符串编号
-                String filter = ASStr.replaceCharFirst(arrayIntegerFiltering.toString(), '@', '-');
+                final String filter = ASStr.replaceCharFirst(arrayIntegerFiltering.toString(), '@', '-');
                 // 开始进行提取 准备真假列表
-                StringBuilder stringBuilder1 = new StringBuilder(back), stringBuilder2 = new StringBuilder(back);
+                final StringBuilder stringBuilder1 = new StringBuilder(back), stringBuilder2 = new StringBuilder(back);
                 // 更新当前节点的名称
                 back = "TrueData" + (++count);
-                stringBuilder2.append(" -. ").append(filter).append("=false .-> FalseData").append(count).append('[');
-                stringBuilder1.append(" -- ").append(filter).append("=true --> ").append(back).append('[');
+                initializeBuffer(stringBuilder2, filter, count, stringBuilder1, back);
                 int okCount = 0;
                 ArrayList<int[]> deleteList = new ArrayList<>();
                 for (int[] anInt : data) {
@@ -178,6 +191,11 @@ public class DecisionTree extends SchemeAlgorithm {
             }
         }
         return stringBuilder.toString();
+    }
+
+    private static void initializeBuffer(StringBuilder stringBuilder2, String filter, int count, StringBuilder stringBuilder1, String back) {
+        stringBuilder2.append(" -. ").append(filter).append("=false .-> FalseData").append(count).append('[');
+        stringBuilder1.append(" -- ").append(filter).append("=true --> ").append(back).append('[');
     }
 
     /**
@@ -229,15 +247,13 @@ public class DecisionTree extends SchemeAlgorithm {
         String back = "AllData";
         if (isDetailed) {
             for (ArrayDoubleFiltering arrayDoubleFiltering : arrayList) {
+                // 开始进行提取 准备真假列表
+                final StringBuilder stringBuilder1 = new StringBuilder(back), stringBuilder2 = new StringBuilder(back);
                 // 获取当前决策的字符串编号
                 final String filter = ASStr.replaceCharFirst(arrayDoubleFiltering.toString(), '@', '-');
-                // 开始进行提取 准备真假列表
-                final StringBuilder stringBuilder1 = new StringBuilder(back);
-                final StringBuilder stringBuilder2 = new StringBuilder(back);
                 // 更新当前节点的名称
                 back = "TrueData" + (++count);
-                stringBuilder2.append(" -. ").append(filter).append("=false .-> FalseData").append(count).append('[');
-                stringBuilder1.append(" -- ").append(filter).append("=true --> ").append(back).append('[');
+                initializeBuffer(stringBuilder2, filter, count, stringBuilder1, back);
                 ArrayList<double[]> deleteList = new ArrayList<>();
                 for (double[] doubles1 : data) {
                     if (arrayDoubleFiltering.isComplianceEvents(doubles1)) {
@@ -252,9 +268,20 @@ public class DecisionTree extends SchemeAlgorithm {
                 if (deleteList.size() != 0) {
                     // 清空假值
                     data.removeAll(deleteList);
+                    if (data.size() == 0) {
+                        stringBuilder1.append("No matching double data!!!");
+                        // 真假合并
+                        stringBuilder.append(stringBuilder1).append(']').append('\n').append(stringBuilder2).append(']').append('\n');
+                        break;
+                    }
                     // 真假合并
                     stringBuilder.append(stringBuilder1).append(']').append('\n').append(stringBuilder2).append(']').append('\n');
                 } else {
+                    if (data.size() == 0) {
+                        stringBuilder1.append("No matching double data!!!");
+                        stringBuilder.append(stringBuilder1).append(']').append('\n');
+                        break;
+                    }
                     stringBuilder.append(stringBuilder1).append(']').append('\n');
                 }
             }
@@ -266,8 +293,7 @@ public class DecisionTree extends SchemeAlgorithm {
                 final StringBuilder stringBuilder1 = new StringBuilder(back), stringBuilder2 = new StringBuilder(back);
                 // 更新当前节点的名称
                 back = "TrueData" + (++count);
-                stringBuilder2.append(" -. ").append(filter).append("=false .-> FalseData").append(count).append('[');
-                stringBuilder1.append(" -- ").append(filter).append("=true --> ").append(back).append('[');
+                initializeBuffer(stringBuilder2, filter, count, stringBuilder1, back);
                 int okCount = 0;
                 ArrayList<double[]> deleteList = new ArrayList<>();
                 for (double[] anInt : data) {

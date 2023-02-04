@@ -22,7 +22,6 @@ import zhao.algorithmMagic.utils.filter.ArrayIntegerFiltering;
 
 public class MAIN1 {
     public static void main(String[] args) {
-        // 创建一个矩阵对象，其中包含一些数据，现在需要找到最块的筛选路线，并使用此路线将数据进行一次获取
         ColumnIntegerMatrix columnDoubleMatrix = ColumnIntegerMatrix.parse(
                 new String[]{"颜值", "身高", "有钱"},
                 null,
@@ -86,7 +85,6 @@ import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
 
 public class MAIN1 {
     public static void main(String[] args) {
-        // 创建一个矩阵对象，其中包含一些数据，现在需要找到最块的筛选路线，并使用此路线将数据进行一次获取
         ColumnIntegerMatrix columnDoubleMatrix = ColumnIntegerMatrix.parse(
                 new String[]{"x", "y"},
                 null,
@@ -422,7 +420,6 @@ import java.util.ArrayList;
 
 public class MAIN1 {
     public static void main(String[] args) {
-        // 创建一个矩阵对象，其中包含一些相关联的数据，本次要求将与年龄相关联的数据全部删掉
         ColumnIntegerMatrix columnDoubleMatrix = ColumnIntegerMatrix.parse(
                 new String[]{"颜值", "身高", "有钱"},
                 null,
@@ -501,7 +498,6 @@ import java.util.Arrays;
 
 public class MAIN1 {
     public static void main(String[] args) {
-        // 创建一个矩阵对象，其中包含一些相关联的数据，本次要求将与年龄相关联的数据全部删掉
         ColumnDoubleMatrix columnDoubleMatrix = ColumnDoubleMatrix.parse(
                 new String[]{"颜值", "身高", "有钱"},
                 null,
@@ -557,29 +553,6 @@ root == double Tree ==> 2AllData
 2TrueData1 -- zhao.algorithmMagic.MAIN1$$Lambda$2/10069385-103e736=true --> 2TrueData2[Double True Node No.2<br>Remaining quantity = 1<br>Remaining percentage = 100.0%<br>]
 2TrueData2 -- zhao.algorithmMagic.MAIN1$$Lambda$3/3615232-8db2f2=true --> 2TrueData3[Double True Node No.3<br>Remaining quantity = 1<br>Remaining percentage = 100.0%<br>]
 
-```
-
-```mermaid
-graph TB
-
-root == double Tree ==> 0AllData
-0AllData -- zhao.algorithmMagic.MAIN1$$Lambda$1/13257035-dd8dc3=true --> 0TrueData1[1.0	1.0	1.0	<br>1.0	0.0	1.0	<br>]
-0AllData -. zhao.algorithmMagic.MAIN1$$Lambda$1/13257035-dd8dc3=false .-> 0FalseData1[0.0	1.0	0.0	<br>]
-0TrueData1 -- zhao.algorithmMagic.MAIN1$$Lambda$2/10069385-103e736=true --> 0TrueData2[1.0	1.0	1.0	<br>]
-0TrueData1 -. zhao.algorithmMagic.MAIN1$$Lambda$2/10069385-103e736=false .-> 0FalseData2[1.0	0.0	1.0	<br>]
-0TrueData2 -- zhao.algorithmMagic.MAIN1$$Lambda$3/3615232-8db2f2=true --> 0TrueData3[1.0	1.0	1.0	<br>]
-
-root == double Tree ==> 1AllData
-1AllData -- zhao.algorithmMagic.MAIN1$$Lambda$1/13257035-dd8dc3=true --> 1TrueData1[1.0	1.0	1.0	<br>]
-1AllData -. zhao.algorithmMagic.MAIN1$$Lambda$1/13257035-dd8dc3=false .-> 1FalseData1[1.0	1.0	12.0	<br>1.0	1.0	0.0	<br>]
-1TrueData1 -- zhao.algorithmMagic.MAIN1$$Lambda$2/10069385-103e736=true --> 1TrueData2[1.0	1.0	1.0	<br>]
-1TrueData2 -- zhao.algorithmMagic.MAIN1$$Lambda$3/3615232-8db2f2=true --> 1TrueData3[1.0	1.0	1.0	<br>]
-
-root == double Tree ==> 2AllData
-2AllData -- zhao.algorithmMagic.MAIN1$$Lambda$1/13257035-dd8dc3=true --> 2TrueData1[1.0	1.0	1.0	<br>]
-2AllData -. zhao.algorithmMagic.MAIN1$$Lambda$1/13257035-dd8dc3=false .-> 2FalseData1[0.0	0.0	0.0	<br>0.0	1.0	0.0	<br>]
-2TrueData1 -- zhao.algorithmMagic.MAIN1$$Lambda$2/10069385-103e736=true --> 2TrueData2[1.0	1.0	1.0	<br>]
-2TrueData2 -- zhao.algorithmMagic.MAIN1$$Lambda$3/3615232-8db2f2=true --> 2TrueData3[1.0	1.0	1.0	<br>]
 ```
 
 ### Version update date : XX XX-XX-XX
