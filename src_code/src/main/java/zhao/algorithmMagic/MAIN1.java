@@ -1,53 +1,29 @@
 package zhao.algorithmMagic;
 
 import zhao.algorithmMagic.core.ASDynamicLibrary;
-import zhao.algorithmMagic.lntegrator.Route2DDrawingIntegrator;
-import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
-import zhao.algorithmMagic.operands.coordinateNet.IntegerRoute2DNet;
-import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute2D;
+import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
+import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
 
 import java.io.File;
 
 public class MAIN1 {
     public static void main(String[] args) {
-        // 加载dll动态库
-        ASDynamicLibrary.addDllDir(new File("D:\\MyGitHub\\algorithmStar\\AsLib"));
-        // 建立名称
-        final String zsStr = "鼠", cnStr = "牛", yhStr = "虎", mtStr = "兔";
-        final String clStr = "龙", ssStr = "蛇", wmStr = "马", wyStr = "羊";
-        final String shStr = "猴", yjStr = "鸡", xgStr = "狗", hzStr = "猪";
-        String p = " -> ";
-        // 建立坐标
-        IntegerCoordinateTwo zs = new IntegerCoordinateTwo(-24, 0);
-        IntegerCoordinateTwo cn = new IntegerCoordinateTwo(-20, 3);
-        IntegerCoordinateTwo yh = new IntegerCoordinateTwo(-16, 6);
-        IntegerCoordinateTwo mt = new IntegerCoordinateTwo(-12, 9);
-        IntegerCoordinateTwo cl = new IntegerCoordinateTwo(-8, 0);
-        IntegerCoordinateTwo ss = new IntegerCoordinateTwo(-4, 3);
-        IntegerCoordinateTwo wm = new IntegerCoordinateTwo(0, 6);
-        IntegerCoordinateTwo wy = new IntegerCoordinateTwo(4, 9);
-        IntegerCoordinateTwo sh = new IntegerCoordinateTwo(8, 0);
-        IntegerCoordinateTwo yj = new IntegerCoordinateTwo(12, 3);
-        IntegerCoordinateTwo xg = new IntegerCoordinateTwo(16, 6);
-        IntegerCoordinateTwo hz = new IntegerCoordinateTwo(20, 9);
-        // 创建关系路线图
-        IntegerConsanguinityRoute2D parse1 = IntegerConsanguinityRoute2D.parse(zsStr + p + wmStr, zs, wm);
-        IntegerConsanguinityRoute2D parse2 = IntegerConsanguinityRoute2D.parse(cnStr + p + wyStr, cn, wy);
-        IntegerConsanguinityRoute2D parse3 = IntegerConsanguinityRoute2D.parse(yhStr + p + shStr, yh, sh);
-        IntegerConsanguinityRoute2D parse4 = IntegerConsanguinityRoute2D.parse(mtStr + p + yjStr, mt, yj);
-        IntegerConsanguinityRoute2D parse5 = IntegerConsanguinityRoute2D.parse(clStr + p + xgStr, cl, xg);
-        IntegerConsanguinityRoute2D parse6 = IntegerConsanguinityRoute2D.parse(ssStr + p + hzStr, ss, hz);
-        // 创建一个整形坐标网络对象
-        IntegerRoute2DNet integerRoute2DNet = IntegerRoute2DNet.parse(
-                parse1, parse2, parse3, parse4,
-                parse5, parse6
+        int[][] ints = {
+                new int[]{1, 2, 1, 1, 1, 1, 1, 1, 1},
+                new int[]{1, 2, 1, 40, 1, 1, 60, 1, 1},
+                new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9},
+                new int[]{10, 20, 30, 40, 50, 60, 70, 80, 90}
+        };
+        // 准备一个矩阵 其中存储的是鸟的数据样本
+        IntegerMatrix parse1 = ColumnIntegerMatrix.parse(
+                new String[]{"1d", "2d", "3d", "4d", "5d", "6d", "7d", "8d", "9d"}, // 样本来源地区编号
+                new String[]{"羽毛", "字段占位", "羽毛的颜色", "种族"}, // 样本统计的三种维度
+                ints
         );
-        // 获取到绘图集成器 将坐标网络绘制出来
-        Route2DDrawingIntegrator zhao = new Route2DDrawingIntegrator("zhao", integerRoute2DNet);
-        boolean run = zhao.setDiscreteThreshold(4).setImageWidth(1024).setImageHeight(512)
-                .setImageOutPath("C:\\Users\\zhao\\Desktop\\out\\Test.jpg").run();
-        if (run) {
-            System.out.println("ok!!!!");
-        }
+        // 加载动态库 TODO 动态库加载之后，在遇到能够使用DLL动态库进行计算的组件时将会使用DLL计算
+        ASDynamicLibrary.addDllDir(new File("D:\\MyGitHub\\algorithmStar\\AsLib"));
+        // 开始进行特征清洗 去除掉与其中第4行 正相关系数区间达到 [0.8, 1] 的维度
+        IntegerMatrix integerMatrix = parse1.deleteRelatedDimensions(3, 0.8, 1);
+        System.out.println(integerMatrix);
     }
 }

@@ -37,7 +37,7 @@ import zhao.algorithmMagic.utils.ASMath;
  *            The type of floating-point coordinates involved in the operation in this class. You need to specify the floating-point coordinates that this class can operate on.
  * @author LingYuZhao
  */
-public class EuclideanMetric<I extends IntegerCoordinates<I> & Coordinate<I>, D extends FloatingPointCoordinates<?>> implements DistanceAlgorithm, RangeDistance {
+public class EuclideanMetric<I extends IntegerCoordinates<I> & Coordinate<I>, D extends FloatingPointCoordinates<?>> implements DistanceAlgorithm_C, RangeDistance {
     protected final Logger logger;
     protected final String AlgorithmName;
 
@@ -341,5 +341,33 @@ public class EuclideanMetric<I extends IntegerCoordinates<I> & Coordinate<I>, D 
     @Override
     public double getTrueDistance(RangeVector<?, ?, ?, ?> rangeDistance) {
         return rangeDistance.moduleLength();
+    }
+
+    /**
+     * 使用C编译出的动态库的方式计算两个样本之间的真实距离，并将计算结果返回，如果没有DLL库该函数将抛出异常。
+     * <p>
+     * Use the dynamic library compiled by C to calculate the real distance between two samples and return the calculation result. If there is no DLL library, the function will throw an exception.
+     *
+     * @param doubles1 数组序列1
+     * @param doubles2 数组序列2
+     * @return ...
+     */
+    @Override
+    public double getTrueDistance_C(double[] doubles1, double[] doubles2) {
+        return 0;
+    }
+
+    /**
+     * 使用C编译出的动态库的方式计算两个样本之间的真实距离，并将计算结果返回，如果没有DLL库该函数将抛出异常。
+     * <p>
+     * Use the dynamic library compiled by C to calculate the real distance between two samples and return the calculation result. If there is no DLL library, the function will throw an exception.
+     *
+     * @param ints1 数组序列1
+     * @param ints2 数组序列2
+     * @return ...
+     */
+    @Override
+    public double getTrueDistance_C(int[] ints1, int[] ints2) {
+        return 0;
     }
 }

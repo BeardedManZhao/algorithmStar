@@ -1,5 +1,6 @@
 package zhao.algorithmMagic.utils;
 
+import zhao.algorithmMagic.core.ASDynamicLibrary;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.operands.ComplexNumber;
 import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
@@ -374,6 +375,24 @@ public final class ASMath {
     }
 
     /**
+     * 使用C编译的DLL库的方式，计算出一个序列数组的均值。
+     *
+     * @param length  需要被计算的长度
+     * @param doubles 需要被计算的序列对象
+     * @return 均值
+     */
+    public static native double avg_C(int length, double... doubles);
+
+    /**
+     * 使用C编译的DLL库的方式，计算出一个序列数组的均值。
+     *
+     * @param length  需要被计算的长度
+     * @param doubles 需要被计算的序列对象
+     * @return 均值
+     */
+    public static native double avg_C(int length, int... doubles);
+
+    /**
      * 对一个整数进行平方计算
      * <p>
      * square an integer
@@ -423,9 +442,7 @@ public final class ASMath {
      * @return 叉乘结果数组
      */
     public static double[] CrossMultiplication(double[] doubles1, double[] doubles2) {
-        double[] res = new double[(doubles1.length - 1) * doubles1.length];
-        CrossMultiplication(doubles1.length, doubles2.length, res, doubles1, doubles2);
-        return res;
+        return CrossMultiplication(doubles1, doubles2, (doubles2.length - 1) * doubles1.length);
     }
 
     /**
@@ -436,7 +453,7 @@ public final class ASMath {
      * @return 叉乘结果数组
      */
     public static int[] CrossMultiplication(int[] ints1, int[] ints2) {
-        return CrossMultiplication(ints1, ints2, (ints1.length - 1) * ints1.length);
+        return CrossMultiplication(ints1, ints2, (ints2.length - 1) * ints1.length);
     }
 
     /**
@@ -449,7 +466,11 @@ public final class ASMath {
      */
     public static int[] CrossMultiplication(int[] ints1, int[] ints2, int newLength) {
         int[] res = new int[newLength];
-        CrossMultiplication(ints1.length, ints2.length, res, ints1, ints2);
+        if (ASDynamicLibrary.isUseC()) {
+            CrossMultiplication_C(ints1.length, ints2.length, res, newLength, ints1, ints2);
+        } else {
+            CrossMultiplication(ints1.length, ints2.length, res, ints1, ints2);
+        }
         return res;
     }
 
@@ -473,7 +494,11 @@ public final class ASMath {
      */
     public static double[] CrossMultiplication(double[] doubles1, double[] doubles2, int newLength) {
         double[] res = new double[newLength];
-        CrossMultiplication(doubles1.length, doubles2.length, res, doubles1, doubles2);
+        if (ASDynamicLibrary.isUseC()) {
+            CrossMultiplication_C(doubles1.length, doubles2.length, res, newLength, doubles1, doubles2);
+        } else {
+            CrossMultiplication(doubles1.length, doubles2.length, res, doubles1, doubles2);
+        }
         return res;
     }
 
@@ -559,6 +584,28 @@ public final class ASMath {
             }
         }
     }
+
+    /**
+     * 叉乘结果计算并拷贝到指定的数组中
+     *
+     * @param colCount1        操作数，数组1的长度
+     * @param colCount2        被操作数，数组2的长度
+     * @param ResultsContainer 叉乘结果的数据容器
+     * @param doubles1         操作数，数组1
+     * @param doubles2         被操作数，数组2
+     */
+    public static native void CrossMultiplication_C(int colCount1, int colCount2, int[] ResultsContainer, int length, int[] doubles1, int[] doubles2);
+
+    /**
+     * 叉乘结果计算并拷贝到指定的数组中
+     *
+     * @param colCount1        操作数，数组1的长度
+     * @param colCount2        被操作数，数组2的长度
+     * @param ResultsContainer 叉乘结果的数据容器
+     * @param doubles1         操作数，数组1
+     * @param doubles2         被操作数，数组2
+     */
+    public static native void CrossMultiplication_C(int colCount1, int colCount2, double[] ResultsContainer, int length, double[] doubles1, double[] doubles2);
 
     /**
      * 取得两个集合的并集
@@ -771,6 +818,30 @@ public final class ASMath {
             throw new OperatorOperationException("计算相关系数时的两个序列中所包含的元素数量应相等哦！\nWhen calculating the correlation coefficient, the number of elements contained in the two sequences should be equal!");
         }
     }
+
+    /**
+     * 计算两个序列之间的相关系数
+     *
+     * @param ints1  被计算的序列1
+     * @param ints2  被计算的序列2
+     * @param length 两个序列数组中的元素数量
+     * @return 序列1与序列2之间的相关系数，如果为负数则代表负相关，反之代表正相关，系数绝对值越接近1 数据联系就越高。
+     * <p>
+     * The correlation coefficient between sequence 1 and sequence 2. If it is negative, it represents negative correlation. If it is negative, it represents positive correlation. The closer the absolute value of the coefficient is to 1, the higher the data connection will be.
+     */
+    public static native double correlationCoefficient_C(int[] ints1, int[] ints2, int length);
+
+    /**
+     * 计算两个序列之间的相关系数
+     *
+     * @param doubles1 被计算的序列1
+     * @param doubles2 被计算的序列2
+     * @param length   两个序列数组中的元素数量
+     * @return 序列1与序列2之间的相关系数，如果为负数则代表负相关，反之代表正相关，系数绝对值越接近1 数据联系就越高。
+     * <p>
+     * The correlation coefficient between sequence 1 and sequence 2. If it is negative, it represents negative correlation. If it is negative, it represents positive correlation. The closer the absolute value of the coefficient is to 1, the higher the data connection will be.
+     */
+    public static native double correlationCoefficient_C(double[] doubles1, double[] doubles2, int length);
 
     /**
      * 将一个数组打乱

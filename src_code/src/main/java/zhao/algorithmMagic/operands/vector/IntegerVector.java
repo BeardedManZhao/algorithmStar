@@ -1,5 +1,6 @@
 package zhao.algorithmMagic.operands.vector;
 
+import zhao.algorithmMagic.core.ASDynamicLibrary;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateMany;
 import zhao.algorithmMagic.utils.ASClass;
@@ -356,7 +357,11 @@ public class IntegerVector extends ASVector<IntegerVector, Integer, int[]> {
         int[] ints2 = value.VectorArrayPrimitive;
         if (this.VectorArrayPrimitive.length == ints2.length) {
             int[] res = new int[ints2.length];
-            ASMath.CrossMultiplication(this.VectorArrayPrimitive.length, ints2.length, res, this.VectorArrayPrimitive, ints2);
+            if (ASDynamicLibrary.isUseC()) {
+                ASMath.CrossMultiplication_C(this.VectorArrayPrimitive.length, ints2.length, res, res.length, this.VectorArrayPrimitive, ints2);
+            } else {
+                ASMath.CrossMultiplication(this.VectorArrayPrimitive.length, ints2.length, res, this.VectorArrayPrimitive, ints2);
+            }
             if (ModifyCaller) {
                 this.VectorArrayPrimitive = res;
                 this.reFresh();

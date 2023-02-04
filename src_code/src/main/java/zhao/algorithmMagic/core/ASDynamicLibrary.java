@@ -45,10 +45,11 @@ public final class ASDynamicLibrary {
 
     /**
      * 判断是否支持使用dll动态库文件。
-     *
+     * <p>
      * Determine whether the use of dll dynamic library files is supported.
-     * @return 如果返回true，代表支持动态库。
      *
+     * @return 如果返回true，代表支持动态库。
+     * <p>
      * If true is returned, it means dynamic libraries are supported.
      */
     public static boolean isUseC() {

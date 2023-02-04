@@ -2,6 +2,7 @@ package zhao.algorithmMagic.algorithm.normalization;
 
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
+import zhao.algorithmMagic.core.ASDynamicLibrary;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
 import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateMany;
 import zhao.algorithmMagic.operands.coordinate.FloatingPointCoordinates;
@@ -64,12 +65,21 @@ public class Z_ScoreNormalization extends DataStandardization implements RangeDa
      */
     public static double[] StandardizedSequence(double[] doubles) {
         double[] res = new double[doubles.length];
-        double avg = ASMath.avg(doubles);
-        // 计算标准差 = 对方差进行算数平方根
-        double sqrt = Math.sqrt(ASMath.variance(doubles));
-        for (int i = 0; i < res.length; i++) {
-            double x = doubles[i];
-            res[i] = (x - avg) / sqrt;
+        if (ASDynamicLibrary.isUseC()) {
+            // 计算标准差 = 对方差进行算数平方根
+            double sqrt = Math.sqrt(ASMath.variance(doubles)), avg = ASMath.avg_C(doubles.length, doubles);
+            for (int i = 0; i < res.length; i++) {
+                double x = doubles[i];
+                res[i] = (int) ((x - avg) / sqrt);
+            }
+        } else {
+            double avg = ASMath.avg(doubles);
+            // 计算标准差 = 对方差进行算数平方根
+            double sqrt = Math.sqrt(ASMath.variance(doubles));
+            for (int i = 0; i < res.length; i++) {
+                double x = doubles[i];
+                res[i] = (int) ((x - avg) / sqrt);
+            }
         }
         return res;
     }
@@ -82,12 +92,22 @@ public class Z_ScoreNormalization extends DataStandardization implements RangeDa
      */
     public static int[] StandardizedSequence(int[] doubles) {
         int[] res = new int[doubles.length];
-        int avg = ASMath.avg(doubles);
-        // 计算标准差 = 对方差进行算数平方根
-        double sqrt = Math.sqrt(ASMath.variance(doubles));
-        for (int i = 0; i < res.length; i++) {
-            double x = doubles[i];
-            res[i] = (int) ((x - avg) / sqrt);
+        if (ASDynamicLibrary.isUseC()) {
+            double avg = ASMath.avg_C(doubles.length, doubles);
+            // 计算标准差 = 对方差进行算数平方根
+            double sqrt = Math.sqrt(ASMath.variance(doubles));
+            for (int i = 0; i < res.length; i++) {
+                double x = doubles[i];
+                res[i] = (int) ((x - avg) / sqrt);
+            }
+        } else {
+            int avg = ASMath.avg(doubles);
+            // 计算标准差 = 对方差进行算数平方根
+            double sqrt = Math.sqrt(ASMath.variance(doubles));
+            for (int i = 0; i < res.length; i++) {
+                double x = doubles[i];
+                res[i] = (int) ((x - avg) / sqrt);
+            }
         }
         return res;
     }

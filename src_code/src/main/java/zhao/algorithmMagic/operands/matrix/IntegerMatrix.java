@@ -1,5 +1,6 @@
 package zhao.algorithmMagic.operands.matrix;
 
+import zhao.algorithmMagic.core.ASDynamicLibrary;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.operands.vector.IntegerVector;
 import zhao.algorithmMagic.utils.ASClass;
@@ -140,15 +141,28 @@ public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], i
     }
 
     protected static void ex(double thresholdLeft, double thresholdRight, int[][] ints, int[] mid, ArrayList<int[]> res) {
-        for (int[] anInt : ints) {
-            double num = ASMath.correlationCoefficient(anInt, mid);
-            if (num >= thresholdLeft || num <= thresholdRight) {
-                // 这个情况代表是不符合删除区间的，也就是不需要被删除的
-                int[] res1 = new int[anInt.length];
-                System.arraycopy(anInt, 0, res1, 0, anInt.length);
-                res.add(res1);
+        if (ASDynamicLibrary.isUseC()) {
+            for (int[] anInt : ints) {
+                double num = ASMath.correlationCoefficient_C(anInt, mid, mid.length);
+                if (num >= thresholdLeft || num <= thresholdRight) {
+                    // 这个情况代表是不符合删除区间的，也就是不需要被删除的
+                    int[] res1 = new int[anInt.length];
+                    System.arraycopy(anInt, 0, res1, 0, anInt.length);
+                    res.add(res1);
+                }
+                res.add(anInt);
             }
-            res.add(anInt);
+        } else {
+            for (int[] anInt : ints) {
+                double num = ASMath.correlationCoefficient(anInt, mid);
+                if (num >= thresholdLeft || num <= thresholdRight) {
+                    // 这个情况代表是不符合删除区间的，也就是不需要被删除的
+                    int[] res1 = new int[anInt.length];
+                    System.arraycopy(anInt, 0, res1, 0, anInt.length);
+                    res.add(res1);
+                }
+                res.add(anInt);
+            }
         }
     }
 

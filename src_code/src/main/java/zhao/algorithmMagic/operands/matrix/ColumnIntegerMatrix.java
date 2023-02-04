@@ -1,5 +1,6 @@
 package zhao.algorithmMagic.operands.matrix;
 
+import zhao.algorithmMagic.core.ASDynamicLibrary;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.operands.RCNOperands;
 import zhao.algorithmMagic.operands.vector.IntegerVector;
@@ -72,15 +73,29 @@ public class ColumnIntegerMatrix extends IntegerMatrix implements RCNOperands<In
     }
 
     protected static void deleteRelatedFunction(double thresholdLeft, double thresholdRight, int[][] ints, int[] mid, ArrayList<int[]> res, ArrayList<String> res_f2, String[] field2) {
-        for (int i = 0; i < ints.length; i++) {
-            int[] anInt = ints[i];
-            double num = ASMath.correlationCoefficient(anInt, mid);
-            if (num < thresholdLeft || num > thresholdRight) {
-                // 这个情况代表是不符合删除区间的，也就是不需要被删除的
-                int[] res1 = new int[anInt.length];
-                System.arraycopy(anInt, 0, res1, 0, anInt.length);
-                res_f2.add(field2[i]);
-                res.add(res1);
+        if (ASDynamicLibrary.isUseC()) {
+            for (int i = 0; i < ints.length; i++) {
+                int[] anInt = ints[i];
+                double num = ASMath.correlationCoefficient_C(anInt, mid, anInt.length);
+                if (num < thresholdLeft || num > thresholdRight) {
+                    // 这个情况代表是不符合删除区间的，也就是不需要被删除的
+                    int[] res1 = new int[anInt.length];
+                    System.arraycopy(anInt, 0, res1, 0, anInt.length);
+                    res_f2.add(field2[i]);
+                    res.add(res1);
+                }
+            }
+        } else {
+            for (int i = 0; i < ints.length; i++) {
+                int[] anInt = ints[i];
+                double num = ASMath.correlationCoefficient(anInt, mid);
+                if (num < thresholdLeft || num > thresholdRight) {
+                    // 这个情况代表是不符合删除区间的，也就是不需要被删除的
+                    int[] res1 = new int[anInt.length];
+                    System.arraycopy(anInt, 0, res1, 0, anInt.length);
+                    res_f2.add(field2[i]);
+                    res.add(res1);
+                }
             }
         }
     }
@@ -252,14 +267,27 @@ public class ColumnIntegerMatrix extends IntegerMatrix implements RCNOperands<In
                         null, res_f2.toArray(new String[0]), res.toArray(new int[0][])
                 );
             } else if (b1) {
-                // 说明第二字段不需要加数据
-                for (int[] anInt : ints) {
-                    double num = ASMath.correlationCoefficient(anInt, mid);
-                    if (num < thresholdLeft || num > thresholdRight) {
-                        // 这个情况代表是不符合删除区间的，也就是不需要被删除的
-                        int[] res1 = new int[anInt.length];
-                        System.arraycopy(anInt, 0, res1, 0, anInt.length);
-                        res.add(res1);
+                if (ASDynamicLibrary.isUseC()) {
+                    // 说明第二字段不需要加数据
+                    for (int[] anInt : ints) {
+                        double num = ASMath.correlationCoefficient_C(anInt, mid, anInt.length);
+                        if (num < thresholdLeft || num > thresholdRight) {
+                            // 这个情况代表是不符合删除区间的，也就是不需要被删除的
+                            int[] res1 = new int[anInt.length];
+                            System.arraycopy(anInt, 0, res1, 0, anInt.length);
+                            res.add(res1);
+                        }
+                    }
+                } else {
+                    // 说明第二字段不需要加数据
+                    for (int[] anInt : ints) {
+                        double num = ASMath.correlationCoefficient(anInt, mid);
+                        if (num < thresholdLeft || num > thresholdRight) {
+                            // 这个情况代表是不符合删除区间的，也就是不需要被删除的
+                            int[] res1 = new int[anInt.length];
+                            System.arraycopy(anInt, 0, res1, 0, anInt.length);
+                            res.add(res1);
+                        }
                     }
                 }
                 return ColumnIntegerMatrix.parse(

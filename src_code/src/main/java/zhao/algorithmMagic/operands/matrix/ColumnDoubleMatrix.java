@@ -1,5 +1,6 @@
 package zhao.algorithmMagic.operands.matrix;
 
+import zhao.algorithmMagic.core.ASDynamicLibrary;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.operands.RCNOperands;
 import zhao.algorithmMagic.operands.vector.DoubleVector;
@@ -72,15 +73,29 @@ public class ColumnDoubleMatrix extends DoubleMatrix implements RCNOperands<Doub
     }
 
     protected static void deleteRelatedFunction(double thresholdLeft, double thresholdRight, double[][] ints, double[] mid, ArrayList<double[]> res, ArrayList<String> res_f2, String[] field2) {
-        for (int i = 0; i < ints.length; i++) {
-            double[] anInt = ints[i];
-            double num = ASMath.correlationCoefficient(anInt, mid);
-            if (num < thresholdLeft || num > thresholdRight) {
-                // 这个情况代表是不符合删除区间的，也就是不需要被删除的
-                double[] res1 = new double[anInt.length];
-                System.arraycopy(anInt, 0, res1, 0, anInt.length);
-                res_f2.add(field2[i]);
-                res.add(res1);
+        if (ASDynamicLibrary.isUseC()) {
+            for (int i = 0; i < ints.length; i++) {
+                double[] anInt = ints[i];
+                double num = ASMath.correlationCoefficient_C(anInt, mid, anInt.length);
+                if (num < thresholdLeft || num > thresholdRight) {
+                    // 这个情况代表是不符合删除区间的，也就是不需要被删除的
+                    double[] res1 = new double[anInt.length];
+                    System.arraycopy(anInt, 0, res1, 0, anInt.length);
+                    res_f2.add(field2[i]);
+                    res.add(res1);
+                }
+            }
+        } else {
+            for (int i = 0; i < ints.length; i++) {
+                double[] anInt = ints[i];
+                double num = ASMath.correlationCoefficient(anInt, mid);
+                if (num < thresholdLeft || num > thresholdRight) {
+                    // 这个情况代表是不符合删除区间的，也就是不需要被删除的
+                    double[] res1 = new double[anInt.length];
+                    System.arraycopy(anInt, 0, res1, 0, anInt.length);
+                    res_f2.add(field2[i]);
+                    res.add(res1);
+                }
             }
         }
     }
@@ -256,13 +271,25 @@ public class ColumnDoubleMatrix extends DoubleMatrix implements RCNOperands<Doub
                 );
             } else if (b1) {
                 // 说明第二字段不需要加数据
-                for (double[] anInt : ints) {
-                    double num = ASMath.correlationCoefficient(anInt, mid);
-                    if (num < thresholdLeft || num > thresholdRight) {
-                        // 这个情况代表是不符合删除区间的，也就是不需要被删除的
-                        double[] res1 = new double[anInt.length];
-                        System.arraycopy(anInt, 0, res1, 0, anInt.length);
-                        res.add(res1);
+                if (ASDynamicLibrary.isUseC()) {
+                    for (double[] anInt : ints) {
+                        double num = ASMath.correlationCoefficient_C(anInt, mid, anInt.length);
+                        if (num < thresholdLeft || num > thresholdRight) {
+                            // 这个情况代表是不符合删除区间的，也就是不需要被删除的
+                            double[] res1 = new double[anInt.length];
+                            System.arraycopy(anInt, 0, res1, 0, anInt.length);
+                            res.add(res1);
+                        }
+                    }
+                } else {
+                    for (double[] anInt : ints) {
+                        double num = ASMath.correlationCoefficient(anInt, mid);
+                        if (num < thresholdLeft || num > thresholdRight) {
+                            // 这个情况代表是不符合删除区间的，也就是不需要被删除的
+                            double[] res1 = new double[anInt.length];
+                            System.arraycopy(anInt, 0, res1, 0, anInt.length);
+                            res.add(res1);
+                        }
                     }
                 }
                 return ColumnDoubleMatrix.parse(

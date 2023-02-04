@@ -1,5 +1,6 @@
 package zhao.algorithmMagic.operands.vector;
 
+import zhao.algorithmMagic.core.ASDynamicLibrary;
 import zhao.algorithmMagic.exception.AlgorithmMagicException;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateMany;
@@ -427,7 +428,11 @@ public class DoubleVector extends ASVector<DoubleVector, Double, double[]> {
         double[] doubles2 = value.VectorArrayPrimitive;
         if (doubles1.length == doubles2.length) {
             double[] res = new double[doubles1.length];
-            ASMath.CrossMultiplication(doubles1.length, doubles2.length, res, doubles1, doubles2);
+            if (ASDynamicLibrary.isUseC()) {
+                ASMath.CrossMultiplication_C(doubles1.length, doubles2.length, res, res.length, doubles1, doubles2);
+            } else {
+                ASMath.CrossMultiplication(doubles1.length, doubles2.length, res, doubles1, doubles2);
+            }
             if (ModifyCaller) {
                 this.VectorArrayPrimitive = res;
                 this.reFresh();
