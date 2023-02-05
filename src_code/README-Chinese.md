@@ -556,6 +556,7 @@ root == double Tree ==> 2AllData
 ```
 
 * 为封装了巨大计算量的函数进行DLL动态库计算支持，可以通过DLL库调用这类函数，降低计算时的代价。
+
 ```java
 package zhao.algorithmMagic;
 
@@ -584,6 +585,10 @@ public class MAIN1 {
         // 开始进行特征清洗 去除掉与其中第4行 正相关系数区间达到 [0.8, 1] 的维度
         IntegerMatrix integerMatrix = parse1.deleteRelatedDimensions(3, 0.8, 1);
         System.out.println(integerMatrix);
+        // 如果不是很希望它使用DLL库计算，您可以关闭掉DLL的使用
+        ASDynamicLibrary.unUseC();
+        IntegerMatrix integerMatrix1 = parse1.deleteRelatedDimensions(3, 0.8, 1);
+        System.out.println(integerMatrix1);
     }
 }
 ```

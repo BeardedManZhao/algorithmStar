@@ -200,6 +200,11 @@ public class ExtremumAggregation extends BatchAggregation implements RangeAggreg
         if (doubles.length == 0) {
             throw OPERATOR_OPERATION_EXCEPTION;
         }
+        if (mode == MIN) {
+            return doubles[ASMath.findMinIndex(doubles)];
+        } else if (mode == MAX) {
+            return doubles[ASMath.findMaxIndex(doubles)];
+        }
         return ASMath.MaxOrMin(doubles, mode.isMax, mode);
     }
 
@@ -215,9 +220,9 @@ public class ExtremumAggregation extends BatchAggregation implements RangeAggreg
      */
     @Override
     public int calculation(int... ints) {
-        if (ints.length == 0) {
-            throw OPERATOR_OPERATION_EXCEPTION;
-        }
+        if (ints.length == 0) throw OPERATOR_OPERATION_EXCEPTION;
+        if (mode.equals(MAX)) return ints[ASMath.findMaxIndex(ints)];
+        else if (mode == MIN) return ints[ASMath.findMinIndex(ints)];
         return ASMath.MaxOrMin(ints, mode.isMax, mode);
     }
 

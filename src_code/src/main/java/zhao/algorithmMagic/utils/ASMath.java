@@ -254,6 +254,24 @@ public final class ASMath {
         return res;
     }
 
+    /**
+     * 将一个序列的方差计算出来
+     *
+     * @param doubles 被计算的序列
+     * @return 方差数值
+     */
+    public static double variance(double[] doubles) {
+        // 每个样本值与全体样本值的平均数之差
+        double avg = avg(doubles);
+        double sum = 0;
+        for (double aDouble : doubles) {
+            // 将每一个数值与平均数之差的平方计算出来，并进行求和
+            sum += Power2(aDouble - avg);
+        }
+        // 返回方差
+        return sum / doubles.length;
+    }
+
 /*
     /**
      * 计算一个数值的阶乘
@@ -273,24 +291,6 @@ public final class ASMath {
         return res;
     }
 */
-
-    /**
-     * 将一个序列的方差计算出来
-     *
-     * @param doubles 被计算的序列
-     * @return 方差数值
-     */
-    public static double variance(double[] doubles) {
-        // 每个样本值与全体样本值的平均数之差
-        double avg = avg(doubles);
-        double sum = 0;
-        for (double aDouble : doubles) {
-            // 将每一个数值与平均数之差的平方计算出来，并进行求和
-            sum += Power2(aDouble - avg);
-        }
-        // 返回方差
-        return sum / doubles.length;
-    }
 
     /**
      * 将一个序列的方差计算出来
@@ -563,7 +563,6 @@ public final class ASMath {
         }
     }
 
-
     /**
      * 叉乘结果计算并拷贝到指定的数组中
      *
@@ -660,6 +659,22 @@ public final class ASMath {
         hashSet1.removeIf(elementType -> !set1.contains(elementType) || !set2.contains(elementType));
         return hashSet1;
     }
+
+    /**
+     * 计算出两个字符串的并集
+     *
+     * @param value1 被计算的字符串1
+     * @param value2 被计算的字符串2
+     * @return 两个字符串的并集
+     */
+    public static String Union(String value1, String value2) {
+        final StringBuilder stringBuilder = new StringBuilder(value1.length() + value2.length() + 16);
+        stringBuilder.append(value1);
+        for (char c : value2.toCharArray()) {
+            if (!ASStr.contains(value1, c)) stringBuilder.append(c);
+        }
+        return stringBuilder.toString();
+    }
 /*
 
     /**
@@ -677,22 +692,6 @@ public final class ASMath {
         return doubles;
     }
 */
-
-    /**
-     * 计算出两个字符串的并集
-     *
-     * @param value1 被计算的字符串1
-     * @param value2 被计算的字符串2
-     * @return 两个字符串的并集
-     */
-    public static String Union(String value1, String value2) {
-        final StringBuilder stringBuilder = new StringBuilder(value1.length() + value2.length() + 16);
-        stringBuilder.append(value1);
-        for (char c : value2.toCharArray()) {
-            if (!ASStr.contains(value1, c)) stringBuilder.append(c);
-        }
-        return stringBuilder.toString();
-    }
 
     /**
      * 计算两个字符串的交集
@@ -1014,7 +1013,6 @@ public final class ASMath {
         }
     }
 
-
     /**
      * 将任意类型的数组打乱顺序
      *
@@ -1053,7 +1051,6 @@ public final class ASMath {
         }
         return res;
     }
-
 
     /**
      * 将一个数组中的所有元素打乱顺序，其中被打乱顺序的是数组本身，打乱时不会返回一个新的数组。
@@ -1372,15 +1369,15 @@ public final class ASMath {
             sum_targets += targets[n++];
         }
         double avg_features = sum_features / (double) n, avg_targets = sum_targets / (double) n;
-        double xxbar = 0, xybar = 0;
+        double xx_bar = 0, xy_bar = 0;
         int i = 0;
         while (i < n) {
             double f_avg_diff = features[i] - avg_features;
-            xxbar += Power2(f_avg_diff);
-            xybar += (f_avg_diff) * (targets[i++] - avg_targets);
+            xx_bar += Power2(f_avg_diff);
+            xy_bar += (f_avg_diff) * (targets[i++] - avg_targets);
         }
         // 将 回归系数 与 偏置值 封装起来。
-        double regressionCoefficient = xybar / xxbar;
+        double regressionCoefficient = xy_bar / xx_bar;
         return new double[]{regressionCoefficient, avg_targets - regressionCoefficient * avg_features};
     }
 
@@ -1399,14 +1396,14 @@ public final class ASMath {
             sum_targets += targets[n++];
         }
         double avg_features = sum_features / n, avg_targets = sum_targets / n;
-        double xxbar = 0.0, xybar = 0.0;
+        double xx_bar = 0.0, xy_bar = 0.0;
         for (int i = 0; i < n; i++) {
             double f_avg_diff = features[i] - avg_features;
-            xxbar += Power2(f_avg_diff);
-            xybar += (f_avg_diff) * (targets[i] - avg_targets);
+            xx_bar += Power2(f_avg_diff);
+            xy_bar += (f_avg_diff) * (targets[i] - avg_targets);
         }
         // 将 回归系数 与 偏置值 封装起来。
-        double regressionCoefficient = xybar / xxbar;
+        double regressionCoefficient = xy_bar / xx_bar;
         return new double[]{regressionCoefficient, avg_targets - regressionCoefficient * avg_features};
     }
 
@@ -1641,5 +1638,185 @@ public final class ASMath {
             arrayType[i] = null;
         }
         return arrayType;
+    }
+
+    /**
+     * 找到一个数组中的最大值，并将值作为函数的返回值
+     *
+     * @param arr 需要被计算的数组
+     * @return arr数组中的最大值对应的索引
+     */
+    public static int findMaxIndex(int[] arr) {
+        int res = 0;
+        int maxIndex = arr.length - 1;
+        {
+            boolean isOk = false;
+            int left = 0, right = maxIndex;
+            while (left < right) {
+                int mid = (right + left) >> 1;
+                int mv = arr[mid];
+                int next = arr[mid + 1];
+                // 峰值在右侧
+                if (mv < next) left = mid;
+                else if (mv > next) {
+                    if (arr[mid - 1] > mv) {
+                        // 峰值在左侧
+                        right = mid;
+                    } else {
+                        res = mid;
+                        isOk = true;
+                        break;
+                    }
+                }
+            }
+            if (!isOk) {
+                res = arr[left] > arr[right] ? left : right;
+            }
+        }
+        int valueIndex = 0;
+        int value = arr[valueIndex];
+        {
+            int i = arr[maxIndex];
+            if (value < i) {
+                valueIndex = maxIndex;
+                value = i;
+            }
+        }
+        if (value > arr[res]) return valueIndex;
+        else return res;
+    }
+
+    /**
+     * 找到一个数组中的最大值，并将值作为函数的返回值
+     *
+     * @param arr 需要被计算的数组
+     * @return arr数组中的最大值对应的索引
+     */
+    public static int findMaxIndex(double[] arr) {
+        int res = 0;
+        int maxIndex = arr.length - 1;
+        {
+            boolean isOk = false;
+            int left = 0, right = maxIndex;
+            while (left < right) {
+                int mid = (right + left) >> 1;
+                double mv = arr[mid];
+                double next = arr[mid + 1];
+                // 峰值在右侧
+                if (mv < next) left = mid;
+                else if (mv > next) {
+                    if (arr[mid - 1] > mv) {
+                        // 峰值在左侧
+                        right = mid;
+                    } else {
+                        res = mid;
+                        isOk = true;
+                        break;
+                    }
+                }
+            }
+            if (!isOk) {
+                res = arr[left] > arr[right] ? left : right;
+            }
+        }
+        int valueIndex = 0;
+        double value = arr[valueIndex];
+        {
+            double i = arr[maxIndex];
+            if (value < i) {
+                valueIndex = maxIndex;
+                value = i;
+            }
+        }
+        if (value > arr[res]) return valueIndex;
+        else return res;
+    }
+
+    /**
+     * 找到一个数组中的最小值，并将值作为函数的返回值
+     *
+     * @param arr 需要被计算的数组
+     * @return arr数组中的最大值对应的索引
+     */
+    public static int findMinIndex(int[] arr) {
+        int res = 0;
+        int maxIndex = arr.length - 1;
+        {
+            boolean isOk = false;
+            int left = 0, right = maxIndex;
+            while (left < right) {
+                int mid = (right + left) >> 1;
+                int mv = arr[mid];
+                int next = arr[mid + 1];
+                // 谷底值在右侧
+                if (mv > next) left = mid;
+                else if (mv < next) {
+                    // 谷底值在左侧
+                    if (arr[mid - 1] < mv) right = mid;
+                    else {
+                        res = mid;
+                        isOk = true;
+                        break;
+                    }
+                }
+            }
+            if (!isOk) {
+                res = arr[left] < arr[right] ? left : right;
+            }
+        }
+        int valueIndex = 0;
+        int value = arr[valueIndex];
+        {
+            int i = arr[maxIndex];
+            if (value > i) {
+                valueIndex = maxIndex;
+                value = i;
+            }
+        }
+        if (value < arr[res]) return valueIndex;
+        else return res;
+    }
+
+    /**
+     * 找到一个数组中的最小值，并将值作为函数的返回值
+     *
+     * @param arr 需要被计算的数组
+     * @return arr数组中的最大值对应的索引
+     */
+    public static int findMinIndex(double[] arr) {
+        int res = 0;
+        int maxIndex = arr.length - 1;
+        {
+            boolean isOk = false;
+            int left = 0, right = maxIndex;
+            while (left < right) {
+                int mid = (right + left) >> 1;
+                double mv = arr[mid];
+                double next = arr[mid + 1];
+                if (mv > next) left = mid;
+                else if (mv < next) {
+                    if (arr[mid - 1] < mv) right = mid;
+                    else {
+                        res = mid;
+                        isOk = true;
+                        break;
+                    }
+                }
+            }
+            if (!isOk) {
+                res = arr[left] < arr[right] ? left : right;
+            }
+        }
+        int valueIndex = 0;
+        double value = arr[valueIndex];
+        {
+            double i = arr[maxIndex];
+            if (value > i) {
+                valueIndex = maxIndex;
+                value = i;
+            }
+        }
+        if (value < arr[res]) return valueIndex;
+        else return res;
     }
 }

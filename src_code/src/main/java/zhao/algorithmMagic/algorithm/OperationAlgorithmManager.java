@@ -48,6 +48,15 @@ public final class OperationAlgorithmManager implements OperationAlgorithm {
     }
 
     /**
+     * 获取到 Algorithm 的包下载url
+     *
+     * @return AlgorithmStar 的详细信息URL，该URL是一个https链接，其对应AlgorithmStar的托管网站，您可以在这里查询到更多信息！
+     * <p>
+     * The detailed information URL of AlgorithmStar. This URL is an https link, which corresponds to the hosting website of AlgorithmStar. You can find more information here!
+     */
+    public native static String getAlgorithmStarUrl();
+
+    /**
      * @return 管理者的对象，通过此方法获取全局唯一的管理者对象。
      * <p>
      * The object of the manager, the globally unique manager object is obtained through this method.
