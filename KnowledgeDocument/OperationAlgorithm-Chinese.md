@@ -109,7 +109,7 @@ public class MAIN1 {
         // 获取到线性归一化算法
         LinearNormalization l = LinearNormalization.getInstance("L");
         // 对上面的向量进行归一化
-        DoubleVector doubleVector = l.NormalizedSequence(parse);
+        DoubleVector doubleVector = l.pretreatment(parse);
         // 打印归一化之后的向量
         System.out.println(doubleVector);
     }
@@ -555,9 +555,10 @@ False => [1, 0, 1]
 
 - 模型计算组件列表
 
-| 计算组件类型                                                        | 支持版本  | 功能                   |
-|---------------------------------------------------------------|-------|----------------------|
-| zhao.algorithmMagic.algorithm.modelAlgorithm.LinearRegression | v1.15 | 该计算组件能够实现快速的一元线性回归计算 |
+| 计算组件类型                                                                 | 支持版本   | 功能                   |
+|------------------------------------------------------------------------|--------|----------------------|
+| zhao.algorithmMagic.algorithm.modelAlgorithm.LinearRegression          | v1.15  | 该计算组件能够实现快速的一元线性回归计算 |
+| zhao.algorithmMagic.algorithm.modelAlgorithm.MultipleLinearRegression  | v1.15  | 该计算组件能够进行线性数据的多元线性回归 |
 
 ```java
 package zhao.algorithmMagic;

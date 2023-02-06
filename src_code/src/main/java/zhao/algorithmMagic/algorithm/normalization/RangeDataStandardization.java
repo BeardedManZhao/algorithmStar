@@ -7,6 +7,10 @@ import zhao.algorithmMagic.operands.vector.FastRangeIntegerVector;
 import zhao.algorithmMagic.operands.vector.IntegerVector;
 
 /**
+ * 数据预处理计算组件，其中包含了与数据预处理相关的所有计算函数。
+ * <p>
+ * Data preprocessing calculation component, which contains all calculation functions related to data preprocessing.
+ *
  * @author zhao
  */
 public interface RangeDataStandardization {

@@ -18,7 +18,7 @@
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>algorithmStar</artifactId>
-        <version>1.14</version>
+        <version>1.15</version>
     </dependency>
 </dependencies>
 ```

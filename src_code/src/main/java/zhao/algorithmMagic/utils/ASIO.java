@@ -78,13 +78,4 @@ public final class ASIO {
             }
         }
     }
-
-    /**
-     * 将一个byte数组输出到指定的路径
-     *
-     * @param path 数据输出路径
-     * @param data 文本数据
-     * @return 输出是否成功!
-     */
-    public static native boolean outTextToFile(String path, String data);
 }

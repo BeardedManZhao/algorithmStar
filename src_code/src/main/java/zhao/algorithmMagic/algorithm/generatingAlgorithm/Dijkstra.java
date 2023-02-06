@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.algorithm.distanceAlgorithm.DistanceAlgorithm;
-import zhao.algorithmMagic.algorithm.distanceAlgorithm.EuclideanMetric;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
 import zhao.algorithmMagic.operands.coordinateNet.DoubleRouteNet;
@@ -35,7 +34,7 @@ public class Dijkstra implements GeneratingAlgorithmMany {
     protected final HashMap<String, DoubleConsanguinityRoute> stringDoubleConsanguinityRouteHashMap = new HashMap<>();
     // 相对关系记载容器，key代表一个坐标，value代表与该坐标相连接的所有坐标名称以及两坐标之间的距离
     protected final LinkedHashMap<String, HashMap<String, Double>> hashMap = new LinkedHashMap<>();
-    protected DistanceAlgorithm distanceAlgorithm = EuclideanMetric.getInstance(DependentAlgorithmNameLibrary.EUCLIDEAN_METRIC_NAME);
+    protected DistanceAlgorithm distanceAlgorithm = DependentAlgorithmNameLibrary.EUCLIDEAN_METRIC;
 
     protected Dijkstra() {
         this.AlgorithmName = "Dijkstra";

@@ -1,5 +1,8 @@
 package zhao.algorithmMagic.utils;
 
+import zhao.algorithmMagic.algorithm.distanceAlgorithm.DistanceAlgorithm;
+import zhao.algorithmMagic.algorithm.distanceAlgorithm.EuclideanMetric;
+
 import java.util.HashSet;
 
 /**
@@ -13,12 +16,11 @@ import java.util.HashSet;
  */
 public final class DependentAlgorithmNameLibrary {
     public static final String EUCLIDEAN_METRIC_NAME = "EuclideanMetric";
-    public static final String DECISION_TREE_NAME = "DecisionTree";
+    public static final DistanceAlgorithm EUCLIDEAN_METRIC = EuclideanMetric.getInstance(DependentAlgorithmNameLibrary.EUCLIDEAN_METRIC_NAME);
     private final static HashSet<String> DEPENDENT_ALGORITHM_NAME_ARRAY = new HashSet<>();
 
     static {
         DEPENDENT_ALGORITHM_NAME_ARRAY.add(EUCLIDEAN_METRIC_NAME);
-        DEPENDENT_ALGORITHM_NAME_ARRAY.add(DECISION_TREE_NAME);
     }
 
     /**

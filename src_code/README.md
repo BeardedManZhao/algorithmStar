@@ -8,7 +8,8 @@
 
 ### Update log:
 
-* Framework version: 1.14 - x.xx
+* Framework version: 1.14 - 1.15
+* Clean up many unused mathematical functions.
 * The random forest calculation component is added. Compared with the decision tree, the random forest can make the work
   easier, but the calculation is large because there are many decision trees in the forest.
 
@@ -586,8 +587,9 @@ root == double Tree ==> 2AllData
 2TrueData2 -- zhao.algorithmMagic.MAIN1$$Lambda$3/3615232-8db2f2=true --> 2TrueData3[1.0	1.0	1.0	<br>]
 ```
 
-* To support DLL dynamic library calculation for functions that encapsulate a huge amount of computation, such functions
-  can be called through the DLL library to reduce the cost of calculation.
+* In order to support the calculation of DLL dynamic libraries for functions that require huge functionality, such
+  functions can be called through DLL libraries. Some algorithms that need to interact with computer systems can obtain
+  higher functionality.
 
 ```java
 package zhao.algorithmMagic;
@@ -625,4 +627,55 @@ public class MAIN1 {
 }
 ```
 
-### Version update date : XX XX-XX-XX
+* A multiple linear regression calculation function is added, which uses gradient descent to deduce a more appropriate
+  result value under the condition of continuously reducing the cost value.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.algorithm.modelAlgorithm.MultipleLinearRegression;
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
+import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
+
+import java.util.Arrays;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 准备矩阵
+        DoubleMatrix parse1 = DoubleMatrix.parse(
+                new double[]{1, 2, 12},
+                new double[]{5, 7, 48},
+                new double[]{8, 9, 68}
+        );
+        // 获取到线性回归组件
+        MultipleLinearRegression multipleLinearRegression1 = MultipleLinearRegression.getInstance("MultipleLinearRegression");
+        // 设置回归学习率
+        multipleLinearRegression1.setLearningRate(0.2f);
+        // 开始计算回归模型
+        // 参数解释： 第 2 索引列作为目标值     parse1 是计算的数据矩阵     为每列提供初始的权重      权重可修改1
+        double[] doubles1 = multipleLinearRegression1.modelInference(2, parse1, new double[]{15, 15}, false);
+        System.out.println(Arrays.toString(doubles1));
+        // 打印结果
+        System.out.println("(x1 * " + doubles1[0] + ") + (x2 * " + doubles1[1] + ") + " + doubles1[2] + " = y");
+
+        // 准备矩阵
+        IntegerMatrix parse2 = IntegerMatrix.parse(
+                new int[]{1, 12, 2},
+                new int[]{5, 48, 7},
+                new int[]{8, 68, 9}
+        );
+        // 获取到线性回归组件
+        MultipleLinearRegression multipleLinearRegression2 = MultipleLinearRegression.getInstance("MultipleLinearRegression");
+        // 设置回归学习率
+        multipleLinearRegression2.setLearningRate(0.2f);
+        // 开始计算回归模型
+        // 参数解释： 第 1 索引列作为目标值     parse2 是计算的数据矩阵     为每列提供初始的权重      权重可修改
+        double[] doubles2 = multipleLinearRegression2.modelInference(1, parse2, new double[]{15, 15}, false);
+        System.out.println(Arrays.toString(doubles2));
+        // 打印结果
+        System.out.println("(x1 * " + doubles2[0] + ") + (x3 * " + doubles2[1] + ") + " + doubles2[2] + " = y");
+    }
+}
+```
+
+### Version update date : 2023-02-06

@@ -57,12 +57,15 @@ public abstract class MatrixSpace<ImplementationType extends Matrix<?, ?, ?, ?, 
      * <p>
      * Get the value of the specified coordinate point in the matrix
      *
-     * @param row 行编号 从0开始
-     *            <p>
-     *            Line number starts from 0
-     * @param col 列编号 从0开始
-     *            <p>
-     *            Column number starts from 0
+     * @param layer 空间中的矩阵层编号 从0开始
+     *              <p>
+     *              The matrix layer number in the space starts from 0
+     * @param row   行编号 从0开始
+     *              <p>
+     *              Line number starts from 0
+     * @param col   列编号 从0开始
+     *              <p>
+     *              Column number starts from 0
      * @return 矩阵中指定行列坐标的数值
      * <p>
      * The value of the specified row and column coordinates in the matrix

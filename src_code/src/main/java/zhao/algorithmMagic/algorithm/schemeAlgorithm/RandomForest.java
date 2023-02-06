@@ -77,6 +77,15 @@ public class RandomForest extends DecisionTree {
      * @param isDetailed 流程图中的节点显示设置，如果设置为true，在节点位置将显示所有的数据，如果设置为false 节点显示概述信息。
      *                   <p>
      *                   The node display settings in the flowchart. If set to true, all data will be displayed at the node location. If set to false, the node will display overview information.
+     * @param seed       随机森林中每一棵决策树所分配任务的随机种子。
+     *                   <p>
+     *                   The random seeds of the tasks assigned to each decision tree in the random forest.
+     * @param layer      您希望在计算的时候建立出来几个决策树。
+     *                   <p>
+     *                   You want to build several decision trees during calculation.
+     * @param rowOfLayer 您希望每一个决策树处理多少条数据。
+     *                   <p>
+     *                   How many pieces of data do you want each decision tree to process.
      * @return 执行结果，是数据过滤的操作过程，其是一个Markdown流程图代码的字符串，您可以将其以 Markdown 语法解析出流程图！
      * <p>
      * The execution result is the operation process of data filtering. It is a string of Markdown flowchart code. You can parse it out of the flowchart with Markdown syntax!

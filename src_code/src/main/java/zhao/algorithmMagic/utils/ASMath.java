@@ -9,7 +9,6 @@ import zhao.algorithmMagic.operands.matrix.block.DoubleMatrixSpace;
 import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixSpace;
 import zhao.algorithmMagic.utils.filter.ArrayDoubleFiltering;
 import zhao.algorithmMagic.utils.filter.ArrayIntegerFiltering;
-import zhao.algorithmMagic.utils.filter.DoubleEvent;
 import zhao.algorithmMagic.utils.filter.NumericalFiltering;
 
 import java.util.*;
@@ -127,134 +126,6 @@ public final class ASMath {
     }
 
     /**
-     * 计算一个数值的阶乘
-     *
-     * @param d 被计算数值
-     * @return 阶乘结果
-     */
-    public static double Factorial(double d) {
-        if (d <= 1) {
-            return d;
-        } else {
-            return d * Factorial(d - 1);
-        }
-    }
-
-    /**
-     * 计算一个数值的阶乘
-     *
-     * @param i 被计算数值
-     * @return 阶乘结果
-     */
-    public static int Factorial(int i) {
-        if (i <= 1) {
-            return i;
-        } else {
-            return i * Factorial(i - 1);
-        }
-    }
-
-    /**
-     * 计算一个数值的阶乘
-     *
-     * @param i               被计算数值
-     * @param FactorialNumber 数值停止阶乘的数值
-     * @return 阶乘结果
-     */
-    public static int Factorial(int i, long FactorialNumber) {
-        int res = i;
-        for (int i1 = i - 1; i1 > 1 && res <= FactorialNumber; i1--) {
-            res *= i;
-        }
-        return res;
-    }
-
-    /**
-     * 在n个元素的集合中，取出m个元素，这种取法的组合数量
-     *
-     * @param n 数据样本的总数
-     * @param m 要提取的数据样本数量，不同数量的组合在样本中有很多方式，可以计算出来，m个数据样本在n个数据样本之内的组合
-     * @return 排列组合中的具体组合数量，如果返回-1，代表参数不合法。
-     */
-    public static double CombinationNumber(int n, int m) {
-        if (m <= n) {
-            return Factorial(n) / ((double) Factorial(m)) * Factorial(n - m);
-        } else {
-            return 0b11111111111111111111111111111111;
-        }
-    }
-
-    /**
-     * E(X)  = ⁿ∑₁ (probability(Xn) * frequency(Xn in X))
-     *
-     * @param event 期望运算中有，所使用到的事件条件，为true的时候，代表真事件。
-     * @param X     需要计算期望的数列。
-     * @return X序列的期望
-     */
-    public static double Expectation(double[] X, DoubleEvent event) {
-        double res = 0;
-        for (double Xn : X) {
-            // 序列中 Xn 这个数值的出现频率
-            int frequency = frequency(Xn, X);
-            // 计算出 Xn 在所有整个序列中的概率，真假条件由外界传入
-            res += (probability(X, event) / X.length) * frequency;
-        }
-        return res;
-    }
-
-    /**
-     * 计算一个数值在一个序列中的概率
-     *
-     * @param v       被计算的数值
-     * @param event   结果为真的条件
-     * @param <value> 数值所在序列
-     * @return value 中 满足 event 条件的 v 的概率
-     */
-    public static <value> double probability(value[] v, Event<value> event) {
-        int ok = 0;
-        for (value value : v) {
-            if (event.isComplianceEvents(value)) {
-                ok += 1;
-            }
-        }
-        return ok / (double) v.length;
-    }
-
-    /**
-     * 计算一个数值在一个序列中的概率
-     *
-     * @param v     被计算的数值
-     * @param event 结果为真的条件
-     * @return value 中 满足 event 条件的 v 的概率
-     */
-    public static double probability(double[] v, DoubleEvent event) {
-        int ok = 0;
-        for (double value : v) {
-            if (event.isComplianceEvents(value)) {
-                ok += 1;
-            }
-        }
-        return ok / (double) v.length;
-    }
-
-    /**
-     * 统计一个数值在序列中出现的次数
-     * <p>
-     * Count the number of times a number appears in a sequence
-     *
-     * @param value 被统计的数值
-     * @param Array 数值所处的序列
-     * @return Count the number of times a number appears in a sequence
-     */
-    public static int frequency(double value, double[] Array) {
-        int res = 0;
-        for (double v : Array) {
-            if (v == value) res++;
-        }
-        return res;
-    }
-
-    /**
      * 将一个序列的方差计算出来
      *
      * @param doubles 被计算的序列
@@ -300,7 +171,7 @@ public final class ASMath {
      */
     public static double variance(int[] ints) {
         // 每个样本值与全体样本值的平均数之差
-        int avg = avg(ints);
+        double avg = avg(ints);
         double sum = 0;
         for (int anInt : ints) {
             // 将每一个数值与平均数之差的平方计算出来
@@ -318,7 +189,7 @@ public final class ASMath {
      */
     public static double undirectedDifference(int[] ints) {
         // 每个样本值与全体样本值的平均数之差
-        int avg = avg(ints);
+        double avg = avg(ints);
         double sum = 0;
         for (int anInt : ints) {
             // 将每一个数值与平均数之差的平方计算出来
@@ -366,12 +237,12 @@ public final class ASMath {
      * @param ints 被计算的序列
      * @return 均值
      */
-    public static int avg(int... ints) {
+    public static double avg(int... ints) {
         int res = 0;
         for (int aDouble : ints) {
             res += aDouble;
         }
-        return res / ints.length;
+        return res / (double) ints.length;
     }
 
     /**
@@ -590,6 +461,7 @@ public final class ASMath {
      * @param colCount1        操作数，数组1的长度
      * @param colCount2        被操作数，数组2的长度
      * @param ResultsContainer 叉乘结果的数据容器
+     * @param length           叉乘结果数据容器中的可用空间
      * @param doubles1         操作数，数组1
      * @param doubles2         被操作数，数组2
      */
@@ -601,6 +473,7 @@ public final class ASMath {
      * @param colCount1        操作数，数组1的长度
      * @param colCount2        被操作数，数组2的长度
      * @param ResultsContainer 叉乘结果的数据容器
+     * @param length           叉乘结果数据容器中的可用空间
      * @param doubles1         操作数，数组1
      * @param doubles2         被操作数，数组2
      */
@@ -981,6 +854,7 @@ public final class ASMath {
      * @param random   打乱数组时使用的随机数生成器。
      * @param maxIndex 打乱数组时，随机索引的最大值。
      * @param res      需要被打乱的数组对象，该对象本身会被打乱。
+     * @param length   需要进行随机打乱的次数
      * @return 打乱之后的数组对象。
      */
     public static double[][] shuffleFunction(Random random, int maxIndex, double[][] res, int length) {
@@ -1019,6 +893,7 @@ public final class ASMath {
      * @param ts   需要被打乱的二维数组
      * @param Seed 洗牌打乱时的随即种子
      * @param copy 是否使用拷贝新数组的方式进行打乱
+     * @param <T>  需要被随机打乱的数组中，每一个元素的数据类型
      * @return 打乱之后的数组对象，是否为新数组需要看copy函数的值
      */
     @SuppressWarnings("unchecked")
@@ -1040,6 +915,7 @@ public final class ASMath {
      * @param random   打乱数组时使用的随机数生成器。
      * @param maxIndex 打乱数组时，随机索引的最大值。
      * @param res      需要被打乱的数组对象，该对象本身会被打乱。
+     * @param <T>      需要被随机打乱的数组中，每一个元素的数据类型
      * @return 打乱之后的数组对象。
      */
     public static <T> T[] shuffleFunction(Random random, int maxIndex, T[] res) {
@@ -1418,6 +1294,9 @@ public final class ASMath {
      * @param n         需要被进行左移操作的数量
      *                  <p>
      *                  The number of left-shift operations to be performed
+     * @return 左移之后的数组，该数组就是形参对象本身。
+     * <p>
+     * The array after the left shift is the formal parameter object itself.
      */
     public static int[] leftShift(int[] arrayType, int n) {
         if (n < 0) return arrayType;
@@ -1434,6 +1313,9 @@ public final class ASMath {
      *
      * @param arrayType 需要被进行左移操作的函数
      * @param n         左移位的数值
+     * @return 左移之后的数组，该数组就是形参对象本身。
+     * <p>
+     * The array after the left shift is the formal parameter object itself.
      */
     public static int[] leftShiftNv(int[] arrayType, int n) {
         int diff = arrayType.length - n;
@@ -1457,6 +1339,9 @@ public final class ASMath {
      * @param n         需要被进行左移操作的数量
      *                  <p>
      *                  The number of left-shift operations to be performed
+     * @return 左移之后的数组，该数组就是形参对象本身。
+     * <p>
+     * The array after the left shift is the formal parameter object itself.
      */
     public static double[] leftShift(double[] arrayType, int n) {
         if (n < 0) return arrayType;
@@ -1473,6 +1358,9 @@ public final class ASMath {
      *
      * @param arrayType 需要被进行左移操作的函数
      * @param n         左移位的数值
+     * @return 左移之后的数组，该数组就是形参对象本身。
+     * <p>
+     * The array after the left shift is the formal parameter object itself.
      */
     public static double[] leftShiftNv(double[] arrayType, int n) {
         int diff = arrayType.length - n;
@@ -1496,7 +1384,12 @@ public final class ASMath {
      * @param n         需要被进行左移操作的数量
      *                  <p>
      *                  The number of left-shift operations to be performed
-     * @return 左移之后的数组
+     * @param <data>    需要被左移数组中每一个元素的数据类型。
+     *                  <p>
+     *                  The data type of each element in the array needs to be shifted left.
+     * @return 左移之后的数组，该数组就是形参对象本身。
+     * <p>
+     * The array after the left shift is the formal parameter object itself.
      */
     public static <data> data[] leftShift(data[] arrayType, int n) {
         if (n < 0) return arrayType;
@@ -1513,6 +1406,12 @@ public final class ASMath {
      *
      * @param arrayType 需要被进行左移操作的函数
      * @param n         左移位的数值
+     * @param <data>    需要被左移数组中每一个元素的数据类型。
+     *                  <p>
+     *                  The data type of each element in the array needs to be shifted left.
+     * @return 左移之后的数组，该数组就是形参对象本身。
+     * <p>
+     * The array after the left shift is the formal parameter object itself.
      */
     public static <data> data[] leftShiftNv(data[] arrayType, int n) {
         int diff = arrayType.length - n;
@@ -1536,6 +1435,9 @@ public final class ASMath {
      * @param n         需要被进行左移操作的数量
      *                  <p>
      *                  The number of left-shift operations to be performed
+     * @return 右移之后的数组，该数组就是形参对象本身。
+     * <p>
+     * The array after the right shift is the formal parameter object itself.
      */
     public static int[] rightShift(int[] arrayType, int n) {
         if (n < 0) return arrayType;
@@ -1552,6 +1454,9 @@ public final class ASMath {
      *
      * @param arrayType 需要被进行左移操作的函数
      * @param n         左移位的数值
+     * @return 右移之后的数组，该数组就是形参对象本身。
+     * <p>
+     * The array after the right shift is the formal parameter object itself.
      */
     public static int[] rightShiftNv(int[] arrayType, int n) {
         // 将每一个不会溢出的元素向后移动n位
@@ -1574,6 +1479,9 @@ public final class ASMath {
      * @param n         需要被进行左移操作的数量
      *                  <p>
      *                  The number of left-shift operations to be performed
+     * @return 右移之后的数组，该数组就是形参对象本身。
+     * <p>
+     * The array after the right shift is the formal parameter object itself.
      */
     public static double[] rightShift(double[] arrayType, int n) {
         if (n < 0) return arrayType;
@@ -1590,6 +1498,9 @@ public final class ASMath {
      *
      * @param arrayType 需要被进行右移操作的函数
      * @param n         左移位的数值
+     * @return 右移之后的数组，该数组就是形参对象本身。
+     * <p>
+     * The array after the right shift is the formal parameter object itself.
      */
     public static double[] rightShiftNv(double[] arrayType, int n) {
         // 将每一个不会溢出的元素向后移动n位
@@ -1612,7 +1523,12 @@ public final class ASMath {
      * @param n         需要被进行左移操作的数量
      *                  <p>
      *                  The number of left-shift operations to be performed
-     * @return 左移之后的数组
+     * @param <data>    需要被左移数组中每一个元素的数据类型。
+     *                  <p>
+     *                  The data type of each element in the array needs to be shifted left.
+     * @return 右移之后的数组，该数组就是形参对象本身。
+     * <p>
+     * The array after the right shift is the formal parameter object itself.
      */
     public static <data> data[] rightShift(data[] arrayType, int n) {
         if (n < 0) return arrayType;
@@ -1629,6 +1545,12 @@ public final class ASMath {
      *
      * @param arrayType 需要被进行左移操作的函数
      * @param n         左移位的数值
+     * @param <data>    需要被左移数组中每一个元素的数据类型。
+     *                  <p>
+     *                  The data type of each element in the array needs to be shifted left.
+     * @return 右移之后的数组，该数组就是形参对象本身。
+     * <p>
+     * The array after the right shift is the formal parameter object itself.
      */
     public static <data> data[] rightShiftNv(data[] arrayType, int n) {
         // 将每一个不会溢出的元素向后移动n位
@@ -1697,8 +1619,10 @@ public final class ASMath {
         int maxIndex = arr.length - 1;
         {
             boolean isOk = false;
-            int left = 0, right = maxIndex;
-            while (left < right) {
+            int left = 0, right = maxIndex, backL = -1, backR = -1;
+            while (left < right && (backL != left || backR != right)) {
+                backL = left;
+                backR = right;
                 int mid = (right + left) >> 1;
                 double mv = arr[mid];
                 double next = arr[mid + 1];
@@ -1741,7 +1665,7 @@ public final class ASMath {
     public static int findMinIndex(int[] arr) {
         int res = 0;
         int maxIndex = arr.length - 1;
-        {
+        if (maxIndex > 1) {
             boolean isOk = false;
             int left = 0, right = maxIndex;
             while (left < right) {
@@ -1786,7 +1710,7 @@ public final class ASMath {
     public static int findMinIndex(double[] arr) {
         int res = 0;
         int maxIndex = arr.length - 1;
-        {
+        if (maxIndex > 1) {
             boolean isOk = false;
             int left = 0, right = maxIndex;
             while (left < right) {
@@ -1818,5 +1742,63 @@ public final class ASMath {
         }
         if (value < arr[res]) return valueIndex;
         else return res;
+    }
+
+    /**
+     * 对一份数据生成权重数组，其权重值为当前列所有数值的平均值。
+     *
+     * @param targetIndex   目标值，也是需要被排除在外的字段编号，如果设置为-1，代表不排除任何数值编号。
+     * @param integerMatrix 需要被进行权重数组生成的矩阵数组矩阵
+     * @param ByLine        如果设置为true，则将会按照每一行生成权重值
+     * @return 生成了权重数值的数组，其每一个元素代表了一列的数值
+     */
+    public static double[] generateWeight(int targetIndex, IntegerMatrix integerMatrix, boolean ByLine) {
+        double[] weight;
+        int[][] arrays = ByLine ? integerMatrix.toArrays() : integerMatrix.transpose().toArrays();
+        weight = new double[arrays.length - 1];
+        int count = -1;
+        for (int i = 0; i < arrays.length; i++) {
+            if (i == targetIndex) continue;
+            weight[++count] = ASMath.avg(arrays[i]);
+        }
+        return weight;
+    }
+
+    /**
+     * 对一份数据生成权重数组。
+     *
+     * @param targetIndex  目标值，也是需要被排除在外的字段编号，如果设置为-1，代表不排除任何数值编号。
+     * @param doubleMatrix 需要被进行权重数组生成的矩阵数组矩阵
+     * @param ByLine       如果设置为true，则将会按照每一行生成权重值
+     * @return 生成了权重数值的数组，其每一个元素代表了一列的数值
+     */
+    public static double[] generateWeight(int targetIndex, DoubleMatrix doubleMatrix, boolean ByLine) {
+        double[] weight;
+        double[][] arrays = ByLine ? doubleMatrix.toArrays() : doubleMatrix.transpose().toArrays();
+        weight = new double[arrays.length - 1];
+        int count = -1;
+        int i = 0;
+        while (i < arrays.length) {
+            if (i == targetIndex) continue;
+            weight[++count] = ASMath.avg(arrays[i++]);
+        }
+        return weight;
+    }
+
+    /**
+     * 将一个权重值进行一次梯度下降
+     *
+     * @param weight       需要被进行梯度下降的权重值，该权重值会变化
+     * @param length       需要下降的前 length 个元素
+     * @param learningRate 梯度下降时需要的学习率
+     * @param lossFunction 损失函数的代价数值 也是要进梯度下降的目标，需要将此数值降低到最小
+     * @return 更改之后的权重值
+     */
+    public static double[] gradientDescent(double[] weight, int length, double learningRate, double lossFunction) {
+        for (int i = 0; i < length; i++) {
+            double v = weight[i];
+            weight[i] = v - learningRate * (lossFunction / v);
+        }
+        return weight;
     }
 }

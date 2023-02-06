@@ -258,6 +258,7 @@ public final class ASClass {
      *
      * @param src  需要被拷贝的原数组
      * @param dest 需要被拷贝的目标数组
+     * @return 拷贝完成的数组对象，其本身是 dest
      */
     public static int[][] array2DCopy(int[][] src, int[][] dest) {
         array2DCopy(src, dest, Math.min(src.length, dest.length));
@@ -279,6 +280,7 @@ public final class ASClass {
      *
      * @param src  需要被拷贝的原数组
      * @param dest 需要被拷贝的目标数组
+     * @return 拷贝完成的数组对象，其本身是 dest
      */
     public static double[][] array2DCopy(double[][] src, double[][] dest) {
         array2DCopy(src, dest, Math.min(src.length, dest.length));

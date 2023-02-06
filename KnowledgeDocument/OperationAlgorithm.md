@@ -120,7 +120,7 @@ public class MAIN1 {
         // Get the linear normalization algorithm
         LinearNormalization l = LinearNormalization.getInstance("L");
         // Normalize the above vector
-        DoubleVector doubleVector = l.NormalizedSequence(parse);
+        DoubleVector doubleVector = l.pretreatment(parse);
         // print the normalized vector
         System.out.println(doubleVector);
     }
@@ -581,9 +581,10 @@ is used for an API demonstration example.
 
 - Model calculation component list
 
-| Calculation component type                                    | Supported versions | function                                                                 |
-|---------------------------------------------------------------|--------------------|--------------------------------------------------------------------------|
-| zhao.algorithmMagic.algorithm.modelAlgorithm.LinearRegression | v1.15              | The calculation component can realize fast linear regression calculation |
+| Calculation component type                                            | Supported versions | function                                                                         |
+|-----------------------------------------------------------------------|--------------------|----------------------------------------------------------------------------------|
+| zhao.algorithmMagic.algorithm.modelAlgorithm.LinearRegression         | v1.15              | The calculation component can realize fast linear regression calculation         |
+| zhao.algorithmMagic.algorithm.modelAlgorithm.MultipleLinearRegression | v1.15              | The calculation component can perform multiple linear regression of linear data  |
 
 ```java
 package zhao.algorithmMagic;

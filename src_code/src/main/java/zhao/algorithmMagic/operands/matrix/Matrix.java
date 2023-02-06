@@ -179,6 +179,7 @@ public abstract class Matrix<ImplementationType
      * <p>
      * Reset the row pointer, so that the row pointer returns to 0
      *
+     * @param n 指针复位的目标位置
      * @return 链式 chain
      */
     public final ImplementationType PointerReset(int n) {
@@ -435,8 +436,7 @@ public abstract class Matrix<ImplementationType
      *                                       yet been called, or the {@code remove} method has already
      *                                       been called after the last call to the {@code next}
      *                                       method
-     * @implSpec The default implementation throws an instance of
-     * {@link UnsupportedOperationException} and performs no other action.
+     *                                       {@link UnsupportedOperationException} and performs no other action.
      */
     @Override
     public void remove() {

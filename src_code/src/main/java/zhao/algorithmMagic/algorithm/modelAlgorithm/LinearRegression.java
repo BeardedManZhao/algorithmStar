@@ -15,12 +15,12 @@ import zhao.algorithmMagic.utils.ASMath;
  *
  * @author zhao
  */
-public class LinearRegression extends ModelAlgorithm {
+public final class LinearRegression extends ModelAlgorithm {
 
-    protected int featureIndex = 0;
-    protected int targetIndex = 0;
+    private int featureIndex = 0;
+    private int targetIndex = 0;
 
-    protected LinearRegression(String AlgorithmName) {
+    private LinearRegression(String AlgorithmName) {
         super(AlgorithmName);
     }
 
@@ -47,16 +47,8 @@ public class LinearRegression extends ModelAlgorithm {
         }
     }
 
-    public int featureIndex() {
-        return featureIndex;
-    }
-
     public void setFeatureIndex(int featureIndex) {
         this.featureIndex = featureIndex;
-    }
-
-    public int targetIndex() {
-        return targetIndex;
     }
 
     public void setTargetIndex(int targetIndex) {

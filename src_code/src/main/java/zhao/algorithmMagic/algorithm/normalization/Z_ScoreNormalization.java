@@ -101,9 +101,8 @@ public class Z_ScoreNormalization extends DataStandardization implements RangeDa
                 res[i] = (int) ((x - avg) / sqrt);
             }
         } else {
-            int avg = ASMath.avg(doubles);
             // 计算标准差 = 对方差进行算数平方根
-            double sqrt = Math.sqrt(ASMath.variance(doubles));
+            double avg = ASMath.avg(doubles), sqrt = Math.sqrt(ASMath.variance(doubles));
             for (int i = 0; i < res.length; i++) {
                 double x = doubles[i];
                 res[i] = (int) ((x - avg) / sqrt);

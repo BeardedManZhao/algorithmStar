@@ -18,7 +18,7 @@ import java.util.HashMap;
  * @author LingYuZhao
  */
 public final class OperationAlgorithmManager implements OperationAlgorithm {
-    public final static float VERSION = 1.14f;
+    public final static float VERSION = 1.15f;
     /**
      * 计算组件的日志打印开关，当此处值为false的时候，计算组件中的日志将不会被打印，logger也不会被调用，一般来说，这里为了减少冗余的字符串实例化操作，会设置为false，当需要调试的时候才需要打开此处的数值。
      * <p>
@@ -52,7 +52,7 @@ public final class OperationAlgorithmManager implements OperationAlgorithm {
      *
      * @return AlgorithmStar 的详细信息URL，该URL是一个https链接，其对应AlgorithmStar的托管网站，您可以在这里查询到更多信息！
      * <p>
-     * The detailed information URL of AlgorithmStar. This URL is an https link, which corresponds to the hosting website of AlgorithmStar. You can find more information here!
+     * The detailed information URL of AlgorithmStar. This URL is a https link, which corresponds to the hosting website of AlgorithmStar. You can find more information here!
      */
     public native static String getAlgorithmStarUrl();
 

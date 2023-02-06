@@ -421,6 +421,9 @@ public class DecisionTree extends SchemeAlgorithm {
      * @param arrayIntegerFiltering 本次需要被决策树重新排列的决策方案，这是一个数组，其中每一个都是一个事件判断函数的实现，最终会通过决策树算法计算出结果数值
      *                              <p>
      *                              The decision scheme that needs to be rearranged by the decision tree this time is an array, each of which is the implementation of an event judgment function. Finally, the result value will be calculated by the decision tree algorithm
+     * @param max                   在决策排序时，您希望最终排序出的决策中最多有几个决策事件过滤器。
+     *                              <p>
+     *                              When sorting decisions, you want to sort out at most several decision event filters.
      * @return 重新排列过的 ArrayDoubleFiltering 决策方案，其中从0开始进行决策，是效果最好的处理方式。
      * <p>
      * The rearranged ArrayDoubleFiltering decision scheme, in which the decision is made from 0, is the best way to deal with it.
@@ -484,6 +487,9 @@ public class DecisionTree extends SchemeAlgorithm {
      * @param arrayIntegerFiltering 本次需要被决策树重新排列的决策方案，这是一个数组，其中每一个都是一个事件判断函数的实现，最终会通过决策树算法计算出结果数值
      *                              <p>
      *                              The decision scheme that needs to be rearranged by the decision tree this time is an array, each of which is the implementation of an event judgment function. Finally, the result value will be calculated by the decision tree algorithm
+     * @param max                   在决策排序时，您希望最终排序出的决策中最多有几个决策事件过滤器。
+     *                              <p>
+     *                              When sorting decisions, you want to sort out at most several decision event filters.
      * @return 重新排列过的 ArrayDoubleFiltering 决策方案，其中从0开始进行决策，是效果最好的处理方式。
      * <p>
      * The rearranged ArrayDoubleFiltering decision scheme, in which the decision is made from 0, is the best way to deal with it.

@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.algorithm.distanceAlgorithm.DistanceAlgorithm;
-import zhao.algorithmMagic.algorithm.distanceAlgorithm.EuclideanMetric;
 import zhao.algorithmMagic.utils.DependentAlgorithmNameLibrary;
 
 /**
@@ -17,7 +16,7 @@ import zhao.algorithmMagic.utils.DependentAlgorithmNameLibrary;
 public abstract class DistanceClassification implements ClassificationAlgorithm {
     protected final Logger logger;
     private final String Name;
-    DistanceAlgorithm distanceAlgorithm = EuclideanMetric.getInstance(DependentAlgorithmNameLibrary.EUCLIDEAN_METRIC_NAME);
+    DistanceAlgorithm distanceAlgorithm = DependentAlgorithmNameLibrary.EUCLIDEAN_METRIC;
 
     protected DistanceClassification(String name) {
         Name = name;
