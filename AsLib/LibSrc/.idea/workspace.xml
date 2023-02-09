@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="CMakePresetLoader">{
   &quot;useNewFormat&quot;: true
 }</component>
@@ -52,12 +55,17 @@
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
     &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/MyGitHub/algorithmStar/AsLib/LibSrc&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/MyGithub/algorithmStar/AsLib/LibSrc&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;structure.view.defaults.are.configured&quot;: &quot;true&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\MyGithub\algorithmStar\AsLib\LibSrc" />
       <recent name="D:\MyGitHub\algorithmStar\AsLib\head" />
     </key>
   </component>
@@ -90,6 +98,10 @@
       <workItem from="1675604533626" duration="21000" />
       <workItem from="1675687540041" duration="209000" />
       <workItem from="1675687792336" duration="17000" />
+      <workItem from="1675854019529" duration="195000" />
+      <workItem from="1675854418439" duration="696000" />
+      <workItem from="1675855341043" duration="331000" />
+      <workItem from="1675855675548" duration="4000" />
     </task>
     <servers />
   </component>

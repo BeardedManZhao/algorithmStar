@@ -1,12 +1,6 @@
 # ninja log v5
-2	218	6972794735732926	CMakeFiles/AsLib.dir/ASMath.cpp.obj	c9a2d4f0757383d5
-60	116	6972800267254839	libAsLib.dll.a	4b9e66eab1c7cc62
-60	116	6972800267254839	libAsLib.dll	4b9e66eab1c7cc62
-0	5	0	clean	423d5d1b1b3d5ebb
-1	60	6972800266713525	CMakeFiles/AsLib.dir/ASIO.cpp.obj	d21b82d5c1f8a2c1
-0	7	0	clean	423d5d1b1b3d5ebb
-1	6	0	clean	423d5d1b1b3d5ebb
 0	316	6973909357488338	CMakeFiles/AsLib.dir/ASMath.cpp.obj	c9a2d4f0757383d5
-317	647	6973909360772596	libAsLib.dll	b65e1bde0e52ee46
 317	647	6973909360772596	libAsLib.dll.a	b65e1bde0e52ee46
+317	647	6973909360772596	libAsLib.dll	b65e1bde0e52ee46
 0	34	0	clean	423d5d1b1b3d5ebb
+0	11	0	clean	34793d755d65561a

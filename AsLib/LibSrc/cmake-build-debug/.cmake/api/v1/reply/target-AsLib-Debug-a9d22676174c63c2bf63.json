@@ -64,11 +64,11 @@
 			[
 				{
 					"backtrace" : 2,
-					"path" : "D:/MyGitHub/algorithmStar/AsLib/LibSrc/head"
+					"path" : "D:/MyGithub/algorithmStar/AsLib/LibSrc/head"
 				},
 				{
 					"backtrace" : 2,
-					"path" : "D:/MyGitHub/algorithmStar/AsLib/LibSrc/AsHead"
+					"path" : "D:/MyGithub/algorithmStar/AsLib/LibSrc/AsHead"
 				}
 			],
 			"language" : "CXX",
