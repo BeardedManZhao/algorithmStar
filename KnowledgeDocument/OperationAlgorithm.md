@@ -524,53 +524,14 @@ public class MAIN1 {
 }
 ```
 
-```
-------------IntegerMatrixStart-----------
-颜值	身高	有钱	
-[1, 1, 1]
-[1, 0, 1]
-[0, 1, 0]
-[0, 0, 0]
-[0, 1, 0]
-[1, 0, 0]
-[1, 1, 0]
-[0, 1, 0]
-------------IntegerMatrixEnd------------
-
-zhao.algorithmMagic.MAIN1$$Lambda$1/8468976@372a00
-zhao.algorithmMagic.MAIN1$$Lambda$2/26887603@dd8dc3
-zhao.algorithmMagic.MAIN1$$Lambda$3/10069385@103e736
-[INFO][OperationAlgorithmManager][23-01-20:09]] : +============================== Welcome to [mathematical expression] ==============================+
-[INFO][OperationAlgorithmManager][23-01-20:09]] : + 	Start time Fri Jan 20 21:17:44 CST 2023
-[INFO][OperationAlgorithmManager][23-01-20:09]] : + 	version: 1.14
-[INFO][OperationAlgorithmManager][23-01-20:09]] : + 	Calculation component manager initialized successfully
-[INFO][OperationAlgorithmManager][23-01-20:09]] : + 	For more information, see: https://github.com/BeardedManZhao/algorithmStar.git
-[INFO][OperationAlgorithmManager][23-01-20:09]] : +--------------------------------------------------------------------------------------------------+
-[INFO][OperationAlgorithmManager][23-01-20:09]] : register OperationAlgorithm:d
-
-* >>> Tier 1 Decision
-True => [1, 1, 1]
-True => [1, 0, 1]
-True => [1, 0, 0]
-True => [1, 1, 0]
-False => [0, 1, 0]
-False => [0, 0, 0]
-False => [0, 1, 0]
-False => [0, 1, 0]
-
-* >>> Tier 2 Decision
-True => [1, 1, 1]
-True => [1, 0, 1]
-False => [1, 0, 0]
-False => [1, 1, 0]
-
-* >>> Tier 3 Decision
-True => [1, 1, 1]
-False => [1, 0, 1]
-
-
-进程已结束,退出代码0
-
+```mermaid
+graph TB
+AllData -- zhao.algorithmMagic.MAIN1$$Lambda$3/668386784-7b23ec81=true --> TrueData1[Int True Node No.1<br>Remaining quantity = 4<br>Remaining percentage = 50.0%<br>]
+AllData -. zhao.algorithmMagic.MAIN1$$Lambda$3/668386784-7b23ec81=false .-> FalseData1[Int False Node No.1<br>Removal quantity = 4<br>Removal percentage = 50.0%<br>]
+TrueData1 -- zhao.algorithmMagic.MAIN1$$Lambda$1/1607521710-4f3f5b24=true --> TrueData2[Int True Node No.2<br>Remaining quantity = 2<br>Remaining percentage = 50.0%<br>]
+TrueData1 -. zhao.algorithmMagic.MAIN1$$Lambda$1/1607521710-4f3f5b24=false .-> FalseData2[Int False Node No.2<br>Removal quantity = 2<br>Removal percentage = 50.0%<br>]
+TrueData2 -- zhao.algorithmMagic.MAIN1$$Lambda$2/2129789493-15aeb7ab=true --> TrueData3[Int True Node No.3<br>Remaining quantity = 1<br>Remaining percentage = 50.0%<br>]
+TrueData2 -. zhao.algorithmMagic.MAIN1$$Lambda$2/2129789493-15aeb7ab=false .-> FalseData3[Int False Node No.3<br>Removal quantity = 1<br>Removal percentage = 50.0%<br>]
 ```
 
 ### Model calculation component

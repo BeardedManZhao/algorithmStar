@@ -1,26 +1,28 @@
 package zhao.algorithmMagic;
 
-import zhao.algorithmMagic.algorithm.normalization.LinearNormalization;
-import zhao.algorithmMagic.algorithm.normalization.Z_ScoreNormalization;
-import zhao.algorithmMagic.operands.vector.DoubleVector;
-import zhao.algorithmMagic.operands.vector.IntegerVector;
+import zhao.algorithmMagic.lntegrator.ImageRenderingIntegrator;
+import zhao.algorithmMagic.lntegrator.launcher.ImageRenderingMarLauncher;
+import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
 
 public class MAIN1 {
     public static void main(String[] args) {
-        // 准备一个向量对象
-        IntegerVector parse1 = IntegerVector.parse(15, 9, 8, 7, 6, 7, 8, 9, 10);
-        DoubleVector parse2 = DoubleVector.parse(10.5, 9, 8, 7, 6, 7, 8, 9, 10);
-        // 获取到数据预处理组件 线性归一化 并设置其归一化的最大值与最小值
-        LinearNormalization line = LinearNormalization
-                .getInstance("line")
-                .setMin(-5).setMax(5);
-        // 获取到数据预处理组件，序列标准化
-        Z_ScoreNormalization z_score = Z_ScoreNormalization.getInstance("z_Score");
-        // 打印序列线性归一化的结果向量
-        System.out.println(line.pretreatment(parse1));
-        System.out.println(line.pretreatment(parse2));
-        // 打印线性诡异话的结果向量
-        System.out.println(z_score.pretreatment(parse1));
-        System.out.println(z_score.pretreatment(parse2));
+        // 准备一个矩阵对象
+        IntegerMatrix parse = IntegerMatrix.parse(
+                new int[]{0xffffff, 0xfffffe, 0xfffffd, 0xfffffc, 0xfffffb},
+                new int[]{0xddffff, 0xddfffe, 0xddfffd, 0xddfffc, 0xddfffb},
+                new int[]{0xccffff, 0xccfffe, 0xccfffd, 0xccfffc, 0xccfffb},
+                new int[]{0xbbffff, 0xbbfffe, 0xbbfffd, 0xbbfffc, 0xbbfffb},
+                new int[]{0xffffff, 0xfffffe, 0xfffffd, 0xfffffc, 0xfffffb},
+                new int[]{0xffaaaa, 0xfaaffe, 0xfaaffd, 0xfaaffc, 0x000000}
+        );
+        // 获取到图像绘制集成器
+        ImageRenderingIntegrator integrator = new ImageRenderingIntegrator(
+                "image",
+                new ImageRenderingMarLauncher<>(parse, "C:\\Users\\Liming\\Desktop\\test1.jpg")
+        );
+        // 开始绘制图像
+        if (integrator.run()) {
+            System.out.println("ok!!!");
+        }
     }
 }

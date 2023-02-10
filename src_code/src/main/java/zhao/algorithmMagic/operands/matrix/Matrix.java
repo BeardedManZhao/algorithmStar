@@ -16,6 +16,7 @@ import java.util.function.Consumer;
  * @param <ImplementationType> 实现类的数据类型  The data type of the implementing class
  * @param <ElementType>        向量中的元素类型  element type in the vector
  * @param <ArrayType>          矩阵中的行向量数组类型
+ * @param <IteratorType>       矩阵中被Java迭代器所迭代出来的数据类型
  * @param <ArraysType>         矩阵转换成功之后的数组类型
  * @author zhao
  * 该类为抽象，其中包含最基本的定义与类型管控

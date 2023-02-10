@@ -55,22 +55,29 @@
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
     &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/MyGithub/algorithmStar/AsLib/LibSrc&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/MyGithub/algorithmStar/AsLib/LibSrc/ASHead&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;structure.view.defaults.are.configured&quot;: &quot;true&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\MyGithub\algorithmStar\AsLib\LibSrc\ASHead" />
       <recent name="D:\MyGithub\algorithmStar\AsLib\LibSrc" />
       <recent name="D:\MyGitHub\algorithmStar\AsLib\head" />
     </key>
   </component>
   <component name="RunManager">
     <configuration name="AsLib" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="AsLib" TARGET_NAME="AsLib" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -102,6 +109,8 @@
       <workItem from="1675854418439" duration="696000" />
       <workItem from="1675855341043" duration="331000" />
       <workItem from="1675855675548" duration="4000" />
+      <workItem from="1675947090908" duration="351000" />
+      <workItem from="1675947458467" duration="21000" />
     </task>
     <servers />
   </component>
