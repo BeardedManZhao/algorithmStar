@@ -516,4 +516,64 @@ public class ColumnDoubleMatrix extends DoubleMatrix implements RCNOperands<Doub
             return this;
         }
     }
+
+    /**
+     * 将当前对象中的元素从左向右的方向进行元素索引为宗旨的反转，实现更多的效果。
+     * <p>
+     * Invert the element index of the current object from left to right to achieve more results.
+     *
+     * @param isCopy 如果设置为true 代表反转操作会作用到一个新数组中，并不会更改源数组中的元素位置。反之则是直接更改源数组。
+     *               <p>
+     *               If set to true, the inversion operation will be applied to a new array, and the position of the elements in the source array will not be changed. On the contrary, you can directly change the source array.
+     * @return 被反转之后的对象，该对象的数据类型与函数调用者是一致的。
+     * <p>
+     * The data type of the reversed object is the same as that of the function caller.
+     */
+    @Override
+    public ColumnDoubleMatrix reverseLR(boolean isCopy) {
+        if (isCopy) {
+            double[][] ints1 = this.copyToNewArrays();
+            for (double[] ints : ints1) {
+                ASMath.arrayReverse(ints);
+            }
+            return ColumnDoubleMatrix.parse(
+                    ASMath.arrayReverse(this.getColFieldNames().clone()),
+                    this.getRowFieldNames().clone(),
+                    ints1
+            );
+        } else {
+            ASMath.arrayReverse(this.getColFieldNames());
+            for (double[] ints : this.toArrays()) {
+                ASMath.arrayReverse(ints);
+            }
+            return this;
+        }
+    }
+
+    /**
+     * 将当前对象中的元素从上向下的方向进行元素索引为宗旨的反转，实现更多的效果。
+     * <p>
+     * Invert the element index of the current object from Above to below to achieve more results.
+     *
+     * @param isCopy 如果设置为true 代表反转操作会作用到一个新数组中，并不会更改源数组中的元素位置。反之则是直接更改源数组。
+     *               <p>
+     *               If set to true, the inversion operation will be applied to a new array, and the position of the elements in the source array will not be changed. On the contrary, you can directly change the source array.
+     * @return 被反转之后的对象，该对象的数据类型与函数调用者是一致的。
+     * <p>
+     * The data type of the reversed object is the same as that of the function caller.
+     */
+    @Override
+    public ColumnDoubleMatrix reverseBT(boolean isCopy) {
+        if (isCopy) {
+            return ColumnDoubleMatrix.parse(
+                    this.getColFieldNames().clone(),
+                    ASMath.arrayReverse(this.getRowFieldNames().clone()),
+                    ASMath.arrayReverse(this.copyToNewArrays())
+            );
+        } else {
+            ASMath.arrayReverse(this.getColFieldNames());
+            ASMath.arrayReverse(this.toArrays());
+            return this;
+        }
+    }
 }

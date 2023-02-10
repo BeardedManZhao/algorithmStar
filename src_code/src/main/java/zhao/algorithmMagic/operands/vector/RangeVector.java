@@ -107,4 +107,5 @@ public abstract class RangeVector<ImplementationType, ElementType extends Number
     public final int size() {
         return this.length;
     }
+
 }

@@ -1801,4 +1801,50 @@ public final class ASMath {
         }
         return weight;
     }
+
+    /**
+     * 将一个任意类型的数组反转
+     *
+     * @param arr 需要被反转的函数，注意反转操作会作用于该数组对象上。
+     * @param <T> 数组中的元素类型
+     * @return 被反转之后的数组对象
+     */
+    public static <T> T[] arrayReverse(T[] arr) {
+        for (int left = 0, right = arr.length - 1; left < right; left++, right--) {
+            T temp = arr[left];
+            arr[left] = arr[right];
+            arr[right] = temp;
+        }
+        return arr;
+    }
+
+    /**
+     * 将一个任意类型的数组反转
+     *
+     * @param arr 需要被反转的函数，注意反转操作会作用于该数组对象上。
+     * @return 被反转之后的数组对象
+     */
+    public static int[] arrayReverse(int[] arr) {
+        for (int left = 0, right = arr.length - 1; left < right; left++, right--) {
+            int temp = arr[left];
+            arr[left] = arr[right];
+            arr[right] = temp;
+        }
+        return arr;
+    }
+
+    /**
+     * 将一个任意类型的数组反转
+     *
+     * @param arr 需要被反转的函数，注意反转操作会作用于该数组对象上。
+     * @return 被反转之后的数组对象
+     */
+    public static double[] arrayReverse(double[] arr) {
+        for (int left = 0, right = arr.length - 1; left < right; left++, right--) {
+            double temp = arr[left];
+            arr[left] = arr[right];
+            arr[right] = temp;
+        }
+        return arr;
+    }
 }
