@@ -1,14 +1,20 @@
 # AS machine learning library DLL dynamic library
 
-The AS machine learning library supports calling the functions of the DLL dynamic library compiled by C/C++. Here is the C++source code with relevant dependency management components built in.
+The AS machine learning library supports calling the functions of the DLL dynamic library compiled by C/C++. Here is the
+C++source code with relevant dependency management components built in.
 
 ## Dynamic library usage
 
-The machine learning library already contains the compiled DLL dynamic library, which is currently stored in the algorithmStar  AsLib directory. It supports running under a 64-bit JVM. If you need a 32-bit JVM, you can build this source code in a 32-bit way, which contains the functional logic implemented in C/C++, and further upgrades the powerful functions in the machine learning library.
+The machine learning library already contains the compiled DLL dynamic library, which is currently stored in the
+algorithmStar AsLib directory. It supports running under a 64-bit JVM. If you need a 32-bit JVM, you can build this
+source code in a 32-bit way, which contains the functional logic implemented in C/C++, and further upgrades the powerful
+functions in the machine learning library.
 
 ### Use example
 
-Copy all the dynamic libraries in the DLL library directory of the AS machine learning library to the directory you want to rely on as the AS library, and then register the directory containing the DLL file in the ASDynamicLibrary class to realize the call of the DLL library.
+Copy all the dynamic libraries in the DLL library directory of the AS machine learning library to the directory you want
+to rely on as the AS library, and then register the directory containing the DLL file in the ASDynamicLibrary class to
+realize the call of the DLL library.
 
 ```java
 import zhao.algorithmMagic.core.ASDynamicLibrary;
@@ -39,7 +45,9 @@ public class Test {
     }
 }
 ```
+
 - Operation results
+
 ```
 2.0
 动态库已经成功禁用！

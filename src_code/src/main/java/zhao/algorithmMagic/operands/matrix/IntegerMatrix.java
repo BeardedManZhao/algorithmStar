@@ -4,12 +4,10 @@ import zhao.algorithmMagic.core.ASDynamicLibrary;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.operands.vector.IntegerVector;
 import zhao.algorithmMagic.utils.ASClass;
+import zhao.algorithmMagic.utils.ASIO;
 import zhao.algorithmMagic.utils.ASMath;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * 一个整数矩阵，其中维护了一个基元数组，矩阵中基于数组提供了很多转换函数，同时也提供了对维护数组的提取与拷贝函数。
@@ -60,6 +58,16 @@ public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], i
         } else {
             throw new OperatorOperationException("The array of construction matrix cannot be empty");
         }
+    }
+
+    /**
+     * 根据一个文件中的数据获取到对应的整形的矩阵数据对象，目前支持通过图片与文本文件两种方式获取到整形矩阵。
+     *
+     * @param inputString 需要被读取的文本文件或图像文件
+     * @return 构建出来的结果数据对象
+     */
+    public static IntegerMatrix parse(String inputString) {
+        return IntegerMatrix.parse(ASIO.parseImageGetArray(inputString));
     }
 
     /**
@@ -642,5 +650,15 @@ public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], i
             }
             return this;
         }
+    }
+
+    /**
+     * Returns an iterator over elements of type {@code T}.
+     *
+     * @return an Iterator.
+     */
+    @Override
+    public Iterator<int[]> iterator() {
+        return Arrays.stream(this.toArrays()).iterator();
     }
 }

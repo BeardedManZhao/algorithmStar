@@ -27,20 +27,6 @@ public abstract class NumberMatrix<ImplementationType extends Matrix<?, ?, ?, ?,
     }
 
     /**
-     * 这里应代表行指针所指向的元素，指针就是行数据，行指针的最大索引值为 MaximumRowPointerCount 该参数可以通过特别的构造函数构造出来。
-     * <p>
-     * This should represent the element that the row pointer points to. The pointer is the row data. The maximum index value of the row pointer is MaximumRowPointerCount. This parameter can be constructed through a special constructor.
-     *
-     * @return 当hashNext返回true的时候，当前行指针将会返回具体的数值对象，如果hashNext为false的情况下调用此函数，将会发生异常！
-     * <p>
-     * When hashNext returns true, the current row pointer will return the specific numeric object. If this function is called when hashNext is false, an exception will occur!
-     */
-    @Override
-    public ArrayType next() {
-        return toArray();
-    }
-
-    /**
      * 去除冗余特征维度，将当前矩阵中的每一个维度都进行方差或无向差计算，并将过于稳定的冗余特征去除。
      * <p>
      * Remove redundant feature dimensions, calculate variance or undirected difference of each dimension in the current matrix, and remove redundant features that are too stable.

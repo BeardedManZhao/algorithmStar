@@ -2,9 +2,12 @@ package zhao.algorithmMagic.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import zhao.algorithmMagic.exception.OperatorOperationException;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
 import java.io.*;
 
 /**
@@ -77,5 +80,128 @@ public final class ASIO {
                 }
             }
         }
+    }
+
+    /**
+     * 将一个图片中的所有像素RGB值所构成的整形二维矩阵获取到！
+     *
+     * @param inputFile 需要被读取的图像文件路径
+     * @return 读取成功之后返回的整形矩阵
+     */
+    public static int[][] parseImageGetArray(String inputFile) {
+        try {
+            return parseImageGetArray(new File(inputFile));
+        } catch (IOException e) {
+            throw new OperatorOperationException("尝试获取您所给定路径图像的像素矩阵时发生了错误\nAn error occurred while trying to get the pixel matrix of the path image you gave\nERROR => " +
+                    inputFile
+            );
+        }
+    }
+
+    /**
+     * 将一个图片中的所有像素RGB值所构成的整形二维矩阵获取到！
+     *
+     * @param inputString 需要被读取的图像文件路径
+     * @return 读取成功之后返回的整形矩阵
+     */
+    public static Color[][] parseImageGetColorArray(String inputString) {
+        try {
+            return parseImageGetColorArray(new File(inputString));
+        } catch (IOException e) {
+            throw new OperatorOperationException("尝试获取您所给定路径图像的像素矩阵时发生了错误\nAn error occurred while trying to get the pixel matrix of the path image you gave\nERROR => " +
+                    inputString
+            );
+        }
+    }
+
+    /**
+     * 将一个图片中的所有像素RGB值所构成的整形二维矩阵获取到！
+     *
+     * @param inputFile 需要被读取的图像文件路径
+     * @return 读取成功之后返回的整形矩阵
+     */
+    public static Color[][] parseImageGetColorArray(File inputFile) throws IOException {
+        BufferedImage image = ImageIO.read(inputFile);
+        final byte[] pixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+        final int width = image.getWidth(), height = image.getHeight();
+        final boolean hasAlphaChannel = image.getAlphaRaster() != null;
+        Color[][] result = new Color[height][width];
+        if (hasAlphaChannel) {
+            final int pixelLength = 4;
+            for (int pixel = 0, row = 0, col = 0; pixel < pixels.length; pixel += pixelLength) {
+                int argb = 0;
+                argb += (((int) pixels[pixel] & 0xff) << 24); // alpha
+                argb += ((int) pixels[pixel + 1] & 0xff); // blue
+                argb += (((int) pixels[pixel + 2] & 0xff) << 8); // green
+                argb += (((int) pixels[pixel + 3] & 0xff) << 16); // red
+                result[row][col] = new Color(argb);
+                col++;
+                if (col == width) {
+                    col = 0;
+                    row++;
+                }
+            }
+        } else {
+            final int pixelLength = 3;
+            for (int pixel = 0, row = 0, col = 0; pixel < pixels.length; pixel += pixelLength) {
+                int argb = -16777216;
+                argb += ((int) pixels[pixel] & 0xff); // blue
+                argb += (((int) pixels[pixel + 1] & 0xff) << 8); // green
+                argb += (((int) pixels[pixel + 2] & 0xff) << 16); // red
+                result[row][col] = new Color(argb);
+                col++;
+                if (col == width) {
+                    col = 0;
+                    row++;
+                }
+            }
+        }
+        return result;
+    }
+
+
+    /**
+     * 将一个图片中的所有像素RGB值所构成的整形二维矩阵获取到！
+     *
+     * @param inputFile 需要被读取的图像文件路径
+     * @return 读取成功之后返回的整形矩阵
+     */
+    public static int[][] parseImageGetArray(File inputFile) throws IOException {
+        BufferedImage image = ImageIO.read(inputFile);
+        final byte[] pixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+        final int width = image.getWidth(), height = image.getHeight();
+        final boolean hasAlphaChannel = image.getAlphaRaster() != null;
+        int[][] result = new int[height][width];
+        if (hasAlphaChannel) {
+            final int pixelLength = 4;
+            for (int pixel = 0, row = 0, col = 0; pixel < pixels.length; pixel += pixelLength) {
+                int argb = (((int) pixels[pixel] & 0xff) << 24);
+                argb += ((int) pixels[pixel + 1] & 0xff); // blue
+                argb += (((int) pixels[pixel + 2] & 0xff) << 8); // green
+                argb += (((int) pixels[pixel + 3] & 0xff) << 16); // red
+                result[row][col] = argb;
+                col++;
+                if (col == width) {
+                    col = 0;
+                    row++;
+                }
+            }
+        } else {
+            final int pixelLength = 3;
+            for (int pixel = 0, row = 0, col = 0; pixel < pixels.length; pixel += pixelLength) {
+                int argb = 0;
+                argb -= 16777216; // 255 alpha
+                argb += ((int) pixels[pixel] & 0xff); // blue
+                argb += (((int) pixels[pixel + 1] & 0xff) << 8); // green
+                argb += (((int) pixels[pixel + 2] & 0xff) << 16); // red
+                result[row][col] = argb;
+                col++;
+                if (col == width) {
+                    col = 0;
+                    row++;
+                }
+            }
+        }
+        return result;
     }
 }

@@ -4,6 +4,9 @@ import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
 import zhao.algorithmMagic.utils.ASMath;
 
+import java.util.Arrays;
+import java.util.Iterator;
+
 /**
  * 整数矩阵块数据对象，其中每一层矩阵由整数矩阵组成，是针对矩阵复合的有效解决方案。
  * <p>
@@ -91,20 +94,6 @@ public class IntegerMatrixSpace extends MatrixSpace<IntegerMatrixSpace, Integer,
     }
 
     /**
-     * 这里应代表行指针所指向的元素，指针就是行数据，行指针的最大索引值为 MaximumRowPointerCount 该参数可以通过特别的构造函数构造出来。
-     * <p>
-     * This should represent the element that the row pointer points to. The pointer is the row data. The maximum index value of the row pointer is MaximumRowPointerCount. This parameter can be constructed through a special constructor.
-     *
-     * @return 当hashNext返回true的时候，当前行指针将会返回具体的数值对象，如果hashNext为false的情况下调用此函数，将会发生异常！
-     * <p>
-     * When hashNext returns true, the current row pointer will return the specific numeric object. If this function is called when hashNext is false, an exception will occur!
-     */
-    @Override
-    public IntegerMatrix next() {
-        return toMatrix();
-    }
-
-    /**
      * 将两个操作数进行求和的方法，具体用法请参阅API说明。
      * <p>
      * The method for summing two operands, please refer to the API description for specific usage.
@@ -185,5 +174,15 @@ public class IntegerMatrixSpace extends MatrixSpace<IntegerMatrixSpace, Integer,
             stringBuilder.append(integerMatrix);
         }
         return stringBuilder.toString();
+    }
+
+    /**
+     * Returns an iterator over elements of type {@code T}.
+     *
+     * @return an Iterator.
+     */
+    @Override
+    public Iterator<IntegerMatrix> iterator() {
+        return Arrays.stream(this.toArrays()).iterator();
     }
 }

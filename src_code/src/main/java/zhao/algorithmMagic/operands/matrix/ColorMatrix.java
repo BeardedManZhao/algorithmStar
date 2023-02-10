@@ -1,9 +1,12 @@
 package zhao.algorithmMagic.operands.matrix;
 
 import zhao.algorithmMagic.exception.OperatorOperationException;
+import zhao.algorithmMagic.utils.ASIO;
 import zhao.algorithmMagic.utils.ASMath;
 
 import java.awt.*;
+import java.util.Arrays;
+import java.util.Iterator;
 
 /**
  * 颜色矩阵对象，其中存储的每一个元素都是一个 Color 对象，适合用来进行图像的绘制等工作。
@@ -71,6 +74,22 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         } else {
             throw new OperatorOperationException("The array of construction matrix cannot be empty");
         }
+    }
+
+    /**
+     * 根据图像文件获取到整形矩阵对象，在整形矩阵对象中会包含该图像的每一个像素点对应的整形数值。
+     * <p>
+     * The reshaping matrix object is obtained from the image file, and the reshaping value corresponding to each pixel of the image will be included in the reshaping matrix object.
+     *
+     * @param inputString 要读取的目标图像文件路径。
+     *                    <p>
+     *                    The target image file path to read.
+     * @return 根据图像获取到的矩阵对象。
+     * <p>
+     * The matrix object obtained from the image.
+     */
+    public static ColorMatrix parse(String inputString) {
+        return ColorMatrix.parse(ASIO.parseImageGetColorArray(inputString));
     }
 
     /**
@@ -314,20 +333,6 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
     }
 
     /**
-     * 这里应代表行指针所指向的元素，指针就是行数据，行指针的最大索引值为 MaximumRowPointerCount 该参数可以通过特别的构造函数构造出来。
-     * <p>
-     * This should represent the element that the row pointer points to. The pointer is the row data. The maximum index value of the row pointer is MaximumRowPointerCount. This parameter can be constructed through a special constructor.
-     *
-     * @return 当hashNext返回true的时候，当前行指针将会返回具体的数值对象，如果hashNext为false的情况下调用此函数，将会发生异常！
-     * <p>
-     * When hashNext returns true, the current row pointer will return the specific numeric object. If this function is called when hashNext is false, an exception will occur!
-     */
-    @Override
-    public Color[] next() {
-        return toArray();
-    }
-
-    /**
      * 将矩阵中的所有像素颜色反转，并生成一个新像素矩阵对象！
      * <p>
      * Invert all pixel colors in the matrix and generate a new pixel matrix object!
@@ -344,5 +349,15 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             }
         }
         return ColorMatrix.parse(colors);
+    }
+
+    /**
+     * Returns an iterator over elements of type {@code T}.
+     *
+     * @return an Iterator.
+     */
+    @Override
+    public Iterator<Color[]> iterator() {
+        return Arrays.stream(this.toArrays()).iterator();
     }
 }

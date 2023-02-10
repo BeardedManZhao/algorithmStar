@@ -6,10 +6,7 @@ import zhao.algorithmMagic.operands.vector.DoubleVector;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASMath;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * Java类于 2022/10/11 20:02:06 创建
@@ -642,5 +639,15 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
             ASMath.rightShift(this.toArrays(), n);
             return this;
         }
+    }
+
+    /**
+     * Returns an iterator over elements of type {@code T}.
+     *
+     * @return an Iterator.
+     */
+    @Override
+    public Iterator<double[]> iterator() {
+        return Arrays.stream(this.toArrays()).iterator();
     }
 }

@@ -6,6 +6,7 @@ import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASMath;
 
 import java.util.Arrays;
+import java.util.Iterator;
 
 /**
  * Java类于 2022/10/12 17:32:56 创建
@@ -376,20 +377,6 @@ public class ComplexNumberMatrix extends Matrix<ComplexNumberMatrix, ComplexNumb
     }
 
     /**
-     * 这里应代表行指针所指向的元素，指针就是行数据，行指针的最大索引值为 MaximumRowPointerCount 该参数可以通过特别的构造函数构造出来。
-     * <p>
-     * This should represent the element that the row pointer points to. The pointer is the row data. The maximum index value of the row pointer is MaximumRowPointerCount. This parameter can be constructed through a special constructor.
-     *
-     * @return 当hashNext返回true的时候，当前行指针将会返回具体的数值对象，如果hashNext为false的情况下调用此函数，将会发生异常！
-     * <p>
-     * When hashNext returns true, the current row pointer will return the specific numeric object. If this function is called when hashNext is false, an exception will occur!
-     */
-    @Override
-    public ComplexNumber[] next() {
-        return toArray();
-    }
-
-    /**
      * 对复数矩阵进行共轭运算，矩阵中的每一个复数都将会被共轭。
      * <p>
      * Conjugate the complex number matrix, each complex number in the matrix will be conjugated.
@@ -414,4 +401,13 @@ public class ComplexNumberMatrix extends Matrix<ComplexNumberMatrix, ComplexNumb
         this.PointerReset();
     }
 
+    /**
+     * Returns an iterator over elements of type {@code T}.
+     *
+     * @return an Iterator.
+     */
+    @Override
+    public Iterator<ComplexNumber[]> iterator() {
+        return Arrays.stream(this.toArrays()).iterator();
+    }
 }
