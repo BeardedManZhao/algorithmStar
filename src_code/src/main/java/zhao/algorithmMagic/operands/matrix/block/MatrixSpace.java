@@ -155,4 +155,5 @@ public abstract class MatrixSpace<ImplementationType extends Matrix<?, ?, ?, ?, 
         throw new UnsupportedOperationException("请您不要在矩阵空间中调用 'getArrayByColIndex' 方法，您需要先将矩阵从空间中获取到。\n" +
                 "Please do not call the 'getArrayByColIndex' method in the matrix space. You need to get the matrix from the space first.");
     }
+
 }

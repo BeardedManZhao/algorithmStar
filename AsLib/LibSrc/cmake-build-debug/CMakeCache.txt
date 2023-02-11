@@ -122,7 +122,7 @@ CMAKE_INSTALL_PREFIX:PATH=C:/Program Files (x86)/AsLib
 CMAKE_LINKER:FILEPATH=D:/liming/CX/Clion/CLion 2022.2.1/bin/mingw/bin/ld.exe
 
 //make program
-CMAKE_MAKE_PROGRAM:FILEPATH=D:/liming/CX/Clion/CLION2~1.1/bin/ninja/win/ninja.exe
+CMAKE_MAKE_PROGRAM:FILEPATH=D:/liming/CX/Clion/CLion 2022.2.1/bin/ninja/win/ninja.exe
 
 //Flags used by the linker during the creation of modules during
 // all build types.

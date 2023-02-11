@@ -467,6 +467,4 @@ public abstract class Matrix<ImplementationType
     public final Spliterator<IteratorType> spliterator() {
         return Iterable.super.spliterator();
     }
-
-
 }

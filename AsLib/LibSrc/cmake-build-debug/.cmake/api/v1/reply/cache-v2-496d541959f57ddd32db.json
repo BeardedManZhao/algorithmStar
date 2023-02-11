@@ -699,7 +699,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "D:/liming/CX/Clion/CLION2~1.1/bin/ninja/win/ninja.exe"
+			"value" : "D:/liming/CX/Clion/CLion 2022.2.1/bin/ninja/win/ninja.exe"
 		},
 		{
 			"name" : "CMAKE_MODULE_LINKER_FLAGS",

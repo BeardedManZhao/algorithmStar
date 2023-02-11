@@ -93,6 +93,30 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
     }
 
     /**
+     * 根据图像文件获取到整形矩阵对象，在整形矩阵对象中会包含该图像的每一个像素点对应的灰度整形数值。
+     * <p>
+     * The reshaping matrix object is obtained from the image file, and the reshaping value corresponding to each pixel of the image will be included in the reshaping matrix object.
+     *
+     * @param inputString 要读取的目标图像文件路径。
+     *                    <p>
+     *                    The target image file path to read.
+     * @return 根据图像获取到的矩阵对象。
+     * <p>
+     * The matrix object obtained from the image.
+     */
+    public static ColorMatrix parseGrayscale(String inputString) {
+        Color[][] colors = ASIO.parseImageGetColorArray(inputString);
+        for (Color[] color : colors) {
+            int count = -1;
+            for (Color color1 : color) {
+                int avg = (int) ASMath.avg(color1.getRed(), color1.getGreen(), color1.getBlue());
+                color[++count] = new Color(avg, avg, avg);
+            }
+        }
+        return ColorMatrix.parse(colors);
+    }
+
+    /**
      * 将两个操作数进行求和的方法，具体用法请参阅API说明。
      * <p>
      * The method for summing two operands, please refer to the API description for specific usage.
@@ -337,18 +361,30 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      * <p>
      * Invert all pixel colors in the matrix and generate a new pixel matrix object!
      *
+     * @param isCopy 如果设置为true 代表反转操作会作用到一个新数组中，并不会更改源数组中的元素位置。反之则是直接更改源数组。
+     *               <p>
+     *               If set to true, the inversion operation will be applied to a new array, and the position of the elements in the source array will not be changed. On the contrary, you can directly change the source array.
      * @return 颜色数值反转之的新像素矩阵对象。
      * <p>
      * A new pixel matrix object whose color values are reversed.
      */
-    public ColorMatrix colorReversal() {
-        Color[][] colors = this.copyToNewArrays();
-        for (Color[] nowRow : colors) {
-            for (int i = 0; i < nowRow.length; i++) {
-                nowRow[i] = new Color(~(nowRow[i].getRGB()) & WHITE_NUM);
+    public ColorMatrix colorReversal(boolean isCopy) {
+        if (isCopy) {
+            Color[][] colors = this.copyToNewArrays();
+            for (Color[] nowRow : colors) {
+                for (int i = 0; i < nowRow.length; i++) {
+                    nowRow[i] = new Color(~(nowRow[i].getRGB()) & WHITE_NUM);
+                }
             }
+            return ColorMatrix.parse(colors);
+        } else {
+            for (Color[] colors : this.toArrays()) {
+                for (int i = 0; i < colors.length; i++) {
+                    colors[i] = new Color(~(colors[i].getRGB()) & WHITE_NUM);
+                }
+            }
+            return this;
         }
-        return ColorMatrix.parse(colors);
     }
 
     /**
@@ -399,6 +435,25 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             ASMath.arrayReverse(this.toArrays());
             return this;
         }
+    }
+
+    /**
+     * 将矩阵中指定行列坐标的像素点进行修改。
+     * <p>
+     * Modify the pixel points of the specified row and column coordinates in the matrix.
+     *
+     * @param x        需要被修改的像素的横坐标。
+     *                 <p>
+     *                 The abscissa of the pixel to be modified.
+     * @param y        需要被修改的像素点的纵坐标。
+     *                 <p>
+     *                 The ordinate of the pixel to be modified
+     * @param newColor 需要将指定坐标点修改成为哪个颜色Color对象。
+     *                 <p>
+     *                 You need to change the specified coordinate point to which color object.
+     */
+    public void setPixels(int x, int y, Color newColor) {
+        this.toArrays()[y][x] = newColor;
     }
 
     /**

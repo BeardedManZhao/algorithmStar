@@ -3,8 +3,12 @@ package zhao.algorithmMagic.operands.vector;
 import zhao.algorithmMagic.core.ASDynamicLibrary;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateMany;
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASMath;
+
+import java.awt.*;
 
 /**
  * Java类于 2022/10/20 14:58:56 创建
@@ -55,6 +59,61 @@ public class IntegerVector extends ASVector<IntegerVector, Integer, int[]> {
 
     public static IntegerVector parse(double... doubles) {
         return parse(ASClass.DoubleArray_To_IntArray(doubles));
+    }
+
+    /**
+     * 将矩阵中的所有数据扁平化成为一个数组。
+     * <p>
+     * Flatten all data in the matrix into an array.
+     *
+     * @param integerMatrix 需要被解析的矩阵对象。
+     * @return 将矩阵中所有行扁平化之后的数组对象。
+     * <p>
+     * The array object after flattening all rows in the matrix
+     */
+    public static IntegerVector parse(IntegerMatrix integerMatrix) {
+        int[] res = new int[integerMatrix.getNumberOfDimensions()];
+        int count = -1;
+        for (int[] ints : integerMatrix.toArrays()) {
+            for (int anInt : ints) {
+                res[++count] = anInt;
+            }
+        }
+        return parse(res);
+    }
+
+    /**
+     * 将一个图像矩阵中的所有元素进行扁平化操作，使得其成为一个矩阵对象。
+     *
+     * @param colorMatrix 需要被扁平化的像素矩阵对象
+     * @return 扁平化之后的整形向量对象、
+     */
+    public static IntegerVector parse(ColorMatrix colorMatrix) {
+        int[] res = new int[colorMatrix.getNumberOfDimensions()];
+        int count = -1;
+        for (Color[] ints : colorMatrix.toArrays()) {
+            for (Color anInt : ints) {
+                res[++count] = anInt.getRGB() & ColorMatrix.WHITE_NUM;
+            }
+        }
+        return parse(res);
+    }
+
+    /**
+     * 将一个图像矩阵中的所有元素进行扁平化操作，使得其成为一个矩阵对象。
+     *
+     * @param colorMatrix 需要被扁平化的像素矩阵对象
+     * @return 扁平化之后的整形向量对象、
+     */
+    public static IntegerVector parseGrayscale(ColorMatrix colorMatrix) {
+        int[] res = new int[colorMatrix.getNumberOfDimensions()];
+        int count = -1;
+        for (Color[] ints : colorMatrix.toArrays()) {
+            for (Color anInt : ints) {
+                res[++count] = anInt.getBlue();
+            }
+        }
+        return parse(res);
     }
 
     /**

@@ -6,6 +6,7 @@ import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateMany;
 import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateThree;
 import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo;
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
 import zhao.algorithmMagic.utils.ASMath;
 
 import java.util.Arrays;
@@ -99,6 +100,27 @@ public class DoubleVector extends ASVector<DoubleVector, Double, double[]> {
      */
     public static DoubleVector parse(DoubleCoordinateMany startDoubleCoordinateMany, DoubleCoordinateMany endDoubleCoordinateMany) {
         return DoubleVector.parse((endDoubleCoordinateMany.diff(startDoubleCoordinateMany.extend())).toArray());
+    }
+
+    /**
+     * 将矩阵中的所有数据扁平化成为一个数组。
+     * <p>
+     * Flatten all data in the matrix into an array.
+     *
+     * @param doubleMatrix 需要被解析的矩阵对象。
+     * @return 将矩阵中所有行扁平化之后的数组对象。
+     * <p>
+     * The array object after flattening all rows in the matrix
+     */
+    public static DoubleVector parse(DoubleMatrix doubleMatrix) {
+        double[] res = new double[doubleMatrix.getNumberOfDimensions()];
+        int count = -1;
+        for (double[] ints : doubleMatrix.toArrays()) {
+            for (double anInt : ints) {
+                res[++count] = anInt;
+            }
+        }
+        return parse(res);
     }
 
     /**
