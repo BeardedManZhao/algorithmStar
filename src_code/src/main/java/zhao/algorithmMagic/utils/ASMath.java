@@ -11,6 +11,7 @@ import zhao.algorithmMagic.utils.filter.ArrayDoubleFiltering;
 import zhao.algorithmMagic.utils.filter.ArrayIntegerFiltering;
 import zhao.algorithmMagic.utils.filter.NumericalFiltering;
 
+import java.awt.*;
 import java.util.*;
 
 /**
@@ -1846,5 +1847,179 @@ public final class ASMath {
             arr[right] = temp;
         }
         return arr;
+    }
+
+    /**
+     * 矩阵方框模糊算法
+     *
+     * @param mat 需要被模糊的矩阵对象
+     * @return 模糊之后的新矩阵对象
+     */
+    public static Color[][] boxBlur(Color[][] mat) {
+        int y = -1;
+        Color[][] res = new Color[mat.length][mat[0].length];
+        for (Color[] doubles : mat) {
+            Color[] nowRes = res[++y];
+            for (int x = 0; x < doubles.length; x++) {
+                // 获取到周围点的平均值
+                if (y == 0) {
+                    Color[] next = mat[y + 1];
+                    int nextIndex = x + 1;
+                    // 代表是第一行
+                    if (x == 0) {
+                        boxBlurAVG1(doubles, nowRes, x, next, nextIndex);
+                    } else if (x == doubles.length - 1) {
+                        Color leftColor = doubles[x - 1];
+                        Color lowLeftColor = next[x - 1];
+                        Color lowColor = next[x];
+                        // 代表是最后一列 获取到左与下的avg
+                        nowRes[x] = new Color(
+                                (int) ASMath.avg(
+                                        leftColor.getRed(), lowLeftColor.getRed(), lowColor.getRed()
+                                ),
+                                (int) ASMath.avg(
+                                        leftColor.getGreen(), lowLeftColor.getGreen(), lowColor.getGreen()
+                                ),
+                                (int) ASMath.avg(
+                                        leftColor.getBlue(), lowLeftColor.getBlue(), lowColor.getBlue()
+                                )
+                        );
+                    } else {
+                        // 仅仅是第一行 因此只需要将当前的值更改为左右下的平均值
+                        Color leftColor = doubles[nextIndex];
+                        Color lowLeftColor = next[nextIndex];
+                        Color lowRightColor = next[x - 1];
+                        Color rightColor = doubles[x - 1];
+                        nowRes[x] = new Color(
+                                (int) ASMath.avg(
+                                        leftColor.getRed(), rightColor.getRed(), lowLeftColor.getRed(), next[x].getRed(), lowRightColor.getRed()
+                                ),
+                                (int) ASMath.avg(
+                                        leftColor.getGreen(), rightColor.getGreen(), lowLeftColor.getGreen(), next[x].getGreen(), lowRightColor.getGreen()
+                                ),
+                                (int) ASMath.avg(
+                                        leftColor.getBlue(), rightColor.getBlue(), lowLeftColor.getBlue(), next[x].getBlue(), lowRightColor.getBlue()
+                                )
+                        );
+                    }
+                } else if (y == mat.length - 1) {
+                    Color[] back = mat[y - 1];
+                    int backIndex = x - 1;
+                    // 代表最后一行
+                    if (x == 0) {
+                        // 代表是第一列 获取右与上的avg
+                        Color rightColor = doubles[x + 1];
+                        Color upRightColor = back[x + 1];
+                        Color upColor = back[x];
+                        nowRes[x] = new Color(
+                                (int) ASMath.avg(
+                                        rightColor.getRed(), upRightColor.getRed(), upColor.getRed()
+                                ),
+                                (int) ASMath.avg(
+                                        rightColor.getGreen(), upRightColor.getGreen(), upColor.getGreen()
+                                ),
+                                (int) ASMath.avg(
+                                        rightColor.getBlue(), upRightColor.getBlue(), upColor.getBlue()
+                                )
+                        );
+                    } else if (x == doubles.length - 1) {
+                        // 代表是最后一列 获取到左与上的avg
+                        boxBlurAVG1(doubles, nowRes, x, back, backIndex);
+                    } else {
+                        // 仅仅是第一行 因此只需要将当前的值更改为左右上的平均值
+                        Color rightColor = doubles[x + 1];
+                        Color leftColor = back[x + 1];
+                        nowRes[x] = new Color(
+                                (int) ASMath.avg(
+                                        rightColor.getRed(), leftColor.getRed(), back[x].getRed(), back[backIndex].getRed()
+                                ),
+                                (int) ASMath.avg(
+                                        rightColor.getGreen(), leftColor.getGreen(), back[x].getGreen(), back[backIndex].getGreen()
+                                ),
+                                (int) ASMath.avg(
+                                        rightColor.getBlue(), leftColor.getBlue(), back[x].getBlue(), back[backIndex].getBlue()
+                                )
+                        );
+                    }
+                } else {
+                    // 代表是中间的行
+                    Color[] next = mat[y + 1];
+                    Color[] back = mat[y - 1];
+                    int nextIndex = x + 1;
+                    int backIndex = x - 1;
+                    if (x == 0) {
+                        // 代表是第一列 获取右与上下的avg
+                        boxBlurAVG2(doubles, nowRes, x, next, back, nextIndex);
+                    } else if (x == doubles.length - 1) {
+                        // 代表是最后一列 获取到左与上下的avg
+                        boxBlurAVG2(doubles, nowRes, x, next, back, backIndex);
+                    } else {
+                        // 仅仅是第一行 因此只需要将当前的值更改为左右上下的平均值
+                        Color rightColor = doubles[nextIndex];
+                        Color lowRightColor = next[nextIndex];
+                        Color upRightColor = back[nextIndex];
+                        Color leftColor = doubles[backIndex];
+                        Color lowLeftColor = next[backIndex];
+                        Color upLeftColor = back[backIndex];
+                        Color lowColor = next[x];
+                        Color upColor = back[x];
+                        nowRes[x] = new Color(
+                                (int) ASMath.avg(
+                                        rightColor.getRed(), leftColor.getRed(),
+                                        lowLeftColor.getRed(), lowColor.getRed(), lowRightColor.getRed(),
+                                        upLeftColor.getRed(), upColor.getRed(), upRightColor.getRed()
+                                ),
+                                (int) ASMath.avg(
+                                        rightColor.getGreen(), leftColor.getGreen(),
+                                        lowLeftColor.getGreen(), lowColor.getGreen(), lowRightColor.getGreen(),
+                                        upLeftColor.getGreen(), upColor.getGreen(), upRightColor.getGreen()
+                                ),
+                                (int) ASMath.avg(
+                                        rightColor.getBlue(), leftColor.getBlue(),
+                                        lowLeftColor.getBlue(), lowColor.getBlue(), lowRightColor.getBlue(),
+                                        upLeftColor.getBlue(), upColor.getBlue(), upRightColor.getBlue()
+                                )
+                        );
+                    }
+                }
+            }
+        }
+        return res;
+    }
+
+    private static void boxBlurAVG2(Color[] doubles, Color[] nowRes, int x, Color[] next, Color[] back, int nextIndex) {
+        Color rightColor = doubles[nextIndex];
+        Color lowRightColor = next[nextIndex];
+        Color upRightColor = back[nextIndex];
+        Color lowColor = next[x];
+        Color upColor = back[x];
+        nowRes[x] = new Color(
+                (int) ASMath.avg(
+                        rightColor.getRed(), lowRightColor.getRed(), lowColor.getRed(), upRightColor.getRed(), upColor.getRed()
+                ),
+                (int) ASMath.avg(
+                        rightColor.getGreen(), lowRightColor.getGreen(), lowColor.getGreen(), upRightColor.getGreen(), upColor.getGreen()
+                ),
+                (int) ASMath.avg(
+                        rightColor.getBlue(), lowRightColor.getBlue(), lowColor.getBlue(), upRightColor.getBlue(), upColor.getBlue()
+                )
+        );
+    }
+
+    private static void boxBlurAVG1(Color[] doubles, Color[] nowRes, int x, Color[] back, int backIndex) {
+        Color leftColor = doubles[backIndex];
+        Color upLeftColor = back[backIndex];
+        Color upColor = back[x];
+        nowRes[x] = new Color(
+                (int) ASMath.avg(
+                        leftColor.getRed(), upLeftColor.getRed(), upColor.getRed()
+                ),
+                (int) ASMath.avg(
+                        leftColor.getGreen(), upLeftColor.getGreen(), upColor.getGreen()
+                ),
+                (int) ASMath.avg(
+                        leftColor.getBlue(), upLeftColor.getBlue(), upColor.getBlue()
+                )
+        );
     }
 }

@@ -438,6 +438,21 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
     }
 
     /**
+     * 将图像进行模糊处理
+     *
+     * @param isCopy 如果设置为true 代表拷贝一份新矩阵然后再模糊计算
+     * @return 方框模糊处理过的矩阵对象
+     */
+    public ColorMatrix boxBlur(boolean isCopy) {
+        if (isCopy) {
+            return ColorMatrix.parse(ASMath.boxBlur(this.copyToNewArrays()));
+        } else {
+            System.arraycopy(ASMath.boxBlur(this.toArrays()), 0, this.toArrays(), 0, this.getRowCount());
+            return this;
+        }
+    }
+
+    /**
      * 将矩阵中指定行列坐标的像素点进行修改。
      * <p>
      * Modify the pixel points of the specified row and column coordinates in the matrix.
