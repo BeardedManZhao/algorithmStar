@@ -472,6 +472,104 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
     }
 
     /**
+     * 将矩阵中指定的颜值RGB数值 加上 对应的数值，并生成或返回一个转换之后的矩阵对象。
+     * <p>
+     * Add the RGB value of the face value specified in the matrix to the corresponding value, and generate or return a converted matrix object.
+     *
+     * @param isCopy 如果设置为true 代表再进行数据砖混的时候返回一个新的矩阵对象。
+     *               <p>
+     *               If it is set to true, a new matrix object will be returned when the data is bricked again.
+     * @param R      Red颜色数值需要被增加的数值。
+     *               <p>
+     *               Red color value needs to be added.
+     * @param G      Green颜色数值需要被增加的数值。
+     *               <p>
+     *               Green color value needs to be increased.
+     * @param B      Blue颜色数值需要被增加的数值。
+     *               <p>
+     *               The value that the Blue color value needs to be increased.
+     */
+    public ColorMatrix addColor(boolean isCopy, int R, int G, int B) {
+        if (isCopy) {
+            Color[][] colors = new Color[this.getRowCount()][this.getColCount()];
+            int y = -1;
+            for (Color[] toArray : this.toArrays()) {
+                int x = -1;
+                Color[] row = colors[++y];
+                for (Color color : toArray) {
+                    row[++x] = new Color(
+                            Math.min(color.getRed() + R, 0xfc),
+                            Math.min(color.getGreen() + G, 0xfc),
+                            Math.min(color.getBlue() + B, 0xcf)
+                    );
+                }
+            }
+            return ColorMatrix.parse(colors);
+        } else {
+            for (Color[] colors : this.toArrays()) {
+                int x = -1;
+                for (Color color : colors) {
+                    colors[++x] = new Color(
+                            Math.min(color.getRed() + R, 0xfc),
+                            Math.min(color.getGreen() + G, 0xfc),
+                            Math.min(color.getBlue() + B, 0xcf)
+                    );
+                }
+            }
+            return this;
+        }
+    }
+
+    /**
+     * 将矩阵中指定的颜值RGB数值 加上 对应的数值，并生成或返回一个转换之后的矩阵对象。
+     * <p>
+     * Add the RGB value of the face value specified in the matrix to the corresponding value, and generate or return a converted matrix object.
+     *
+     * @param isCopy 如果设置为true 代表再进行数据砖混的时候返回一个新的矩阵对象。
+     *               <p>
+     *               If it is set to true, a new matrix object will be returned when the data is bricked again.
+     * @param R      Red颜色数值需要被增加的数值。
+     *               <p>
+     *               Red color value needs to be added.
+     * @param G      Green颜色数值需要被增加的数值。
+     *               <p>
+     *               Green color value needs to be increased.
+     * @param B      Blue颜色数值需要被增加的数值。
+     *               <p>
+     *               The value that the Blue color value needs to be increased.
+     */
+    public ColorMatrix subColor(boolean isCopy, int R, int G, int B) {
+        if (isCopy) {
+            Color[][] colors = new Color[this.getRowCount()][this.getColCount()];
+            int y = -1;
+            for (Color[] toArray : this.toArrays()) {
+                int x = -1;
+                Color[] row = colors[++y];
+                for (Color color : toArray) {
+                    row[++x] = new Color(
+                            Math.max(color.getRed() - R, 0),
+                            Math.max(color.getGreen() - G, 0),
+                            Math.max(color.getBlue() - B, 0)
+                    );
+                }
+            }
+            return ColorMatrix.parse(colors);
+        } else {
+            for (Color[] colors : this.toArrays()) {
+                int x = -1;
+                for (Color color : colors) {
+                    colors[++x] = new Color(
+                            Math.max(color.getRed() - R, 0),
+                            Math.max(color.getGreen() - G, 0),
+                            Math.max(color.getBlue() - B, 0)
+                    );
+                }
+            }
+            return this;
+        }
+    }
+
+    /**
      * Returns an iterator over elements of type {@code T}.
      *
      * @return an Iterator.

@@ -246,4 +246,39 @@ public class MAIN1 {
 }
 ```
 
+* 支持更改图像中的RGB颜色数值
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.lntegrator.ImageRenderingIntegrator;
+import zhao.algorithmMagic.lntegrator.launcher.ImageRenderingMarLauncher;
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+
+public class MAIN1 {
+  public static void main(String[] args) {
+    // 设置需要计算相似度的图片文件地址
+    String s1 = "C:\\Users\\Liming\\Desktop\\fsdownload\\微信图片_3.jpg"; // 被对比的图像文件
+    // 将图片文件转换成图像矩阵
+    ColorMatrix parse1 = ColorMatrix.parse(s1);
+    long start = System.currentTimeMillis();
+    // 将矩阵中的所有行的绿色增加
+    parse1.addColor(false, 0, 50, 0);
+    // 使用拷贝的方式 将所有蓝色增加
+    ColorMatrix parse2 = parse1.addColor(true, 0, 0, 40);
+    System.out.println("模糊完成，耗时 = " + (System.currentTimeMillis() - start));
+    // 输出图片1的图像文件
+    ImageRenderingIntegrator image = new ImageRenderingIntegrator(
+            "image",
+            // 将拷贝之后的新矩阵中减少一些红色的数值
+            new ImageRenderingMarLauncher<>(parse2.subColor(false, 30, 0, 0),
+                    "C:\\Users\\Liming\\Desktop\\fsdownload\\res1.jpg", 1)
+    );
+    if (image.run()) {
+      System.out.println("ok!!!");
+    }
+  }
+}
+```
+
 ### Version update date : xx xx-xx-xx

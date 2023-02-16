@@ -61,7 +61,7 @@ public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], i
     }
 
     /**
-     * 根据一个文件中的数据获取到对应的整形的矩阵数据对象，目前支持通过图片与文本文件两种方式获取到整形矩阵。
+     * 根据一个文件中的数据获取到对应的整形的矩阵数据对象，目前支持通过图片获取到对应的像素整形矩阵。
      *
      * @param inputString 需要被读取的文本文件或图像文件
      * @return 构建出来的结果数据对象
