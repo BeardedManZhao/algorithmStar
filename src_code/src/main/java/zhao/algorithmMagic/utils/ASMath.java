@@ -2022,4 +2022,26 @@ public final class ASMath {
                 )
         );
     }
+
+    /**
+     * 将RGBA的四个数值转换成一个数值形式的 ARGB
+     *
+     * @param red   红色像素值
+     * @param green 绿色像素值
+     * @param blue  蓝色像素值
+     * @return ARGB颜色值
+     */
+    public static int rgbaTOIntRGBA(int red, int green, int blue) {
+        return (((red << 0b1000) + green) << 0b1000) + blue;
+    }
+
+    /**
+     * 将一个灰度值与一个透明度转换成为数值形式的 ARGB
+     *
+     * @param gray 需要被转换的灰度数值
+     * @return ARGB颜色值
+     */
+    public static int grayTORGB(int gray) {
+        return (((gray << 0b1000) + gray) << 0b1000) + gray;
+    }
 }

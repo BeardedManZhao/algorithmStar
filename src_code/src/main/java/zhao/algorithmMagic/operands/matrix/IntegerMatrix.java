@@ -70,6 +70,28 @@ public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], i
         return IntegerMatrix.parse(ASIO.parseImageGetArray(inputString));
     }
 
+/*
+    /**
+     * 根据一个文件中的数据获取到对应的整形的矩阵数据对象，目前支持通过图片获取到对应的灰度像素整形矩阵。
+     *
+     * @param inputString 需要被读取的文本文件或图像文件
+     * @return 构建出来的结果数据对象
+     * /
+    public static IntegerMatrix parseGrayscale(String inputString) {
+        Color[][] colors = ASIO.parseImageGetColorArray(inputString);
+        int[][] res = new int[colors.length][colors[0].length];
+        int y = -1;
+        for (Color[] color : colors) {
+            int[] rowColor = res[++y];
+            int x = -1;
+            for (Color color1 : color) {
+                rowColor[++x] = ASMath.grayTORGB((int) ASMath.avg(color1.getRed(), color1.getGreen(), color1.getBlue()));
+            }
+        }
+        return parse(res);
+    }
+*/
+
     /**
      * 使用稀疏矩阵的数据构造一个完整的矩阵对象。
      * <p>

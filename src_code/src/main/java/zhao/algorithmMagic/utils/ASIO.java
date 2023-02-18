@@ -123,18 +123,21 @@ public final class ASIO {
     public static Color[][] parseImageGetColorArray(File inputFile) throws IOException {
         BufferedImage image = ImageIO.read(inputFile);
         final byte[] pixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+        if (pixels.length == 0) {
+            throw new OperatorOperationException("您不能读取一个不包含任何像素的图像，请您重新切换被读取的图像文件!!!\nYou cannot read an image that does not contain any pixels. Please switch the read image file again!!!");
+        }
         final int width = image.getWidth(), height = image.getHeight();
         final boolean hasAlphaChannel = image.getAlphaRaster() != null;
         Color[][] result = new Color[height][width];
         if (hasAlphaChannel) {
             final int pixelLength = 4;
             for (int pixel = 0, row = 0, col = 0; pixel < pixels.length; pixel += pixelLength) {
-                int argb = 0;
-                argb += (((int) pixels[pixel] & 0xff) << 24); // alpha
-                argb += ((int) pixels[pixel + 1] & 0xff); // blue
-                argb += (((int) pixels[pixel + 2] & 0xff) << 8); // green
-                argb += (((int) pixels[pixel + 3] & 0xff) << 16); // red
-                result[row][col] = new Color(argb);
+                result[row][col] = new Color(
+                        ((int) pixels[pixel + 3] & 0xff), // red
+                        ((int) pixels[pixel + 2] & 0xff), // green
+                        (int) pixels[pixel + 1] & 0xff, // blue
+                        ((int) pixels[pixel] & 0xff)// alpha
+                );
                 col++;
                 if (col == width) {
                     col = 0;
@@ -144,11 +147,12 @@ public final class ASIO {
         } else {
             final int pixelLength = 3;
             for (int pixel = 0, row = 0, col = 0; pixel < pixels.length; pixel += pixelLength) {
-                int argb = -16777216;
-                argb += ((int) pixels[pixel] & 0xff); // blue
-                argb += (((int) pixels[pixel + 1] & 0xff) << 8); // green
-                argb += (((int) pixels[pixel + 2] & 0xff) << 16); // red
-                result[row][col] = new Color(argb);
+                result[row][col] = new Color(
+                        ((int) pixels[pixel + 3] & 0xff), // red
+                        ((int) pixels[pixel + 2] & 0xff), // green
+                        (int) pixels[pixel + 1] & 0xff, // blue
+                        0xff // alpha
+                );
                 col++;
                 if (col == width) {
                     col = 0;

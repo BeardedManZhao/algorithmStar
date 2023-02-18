@@ -1,46 +1,37 @@
 package zhao.algorithmMagic;
 
-import zhao.algorithmMagic.algorithm.distanceAlgorithm.ManhattanDistance;
 import zhao.algorithmMagic.lntegrator.ImageRenderingIntegrator;
 import zhao.algorithmMagic.lntegrator.launcher.ImageRenderingMarLauncher;
 import zhao.algorithmMagic.operands.matrix.ColorMatrix;
-import zhao.algorithmMagic.operands.vector.IntegerVector;
+import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
 
 public class MAIN1 {
     public static void main(String[] args) {
-        // 设置需要计算相似度的图片文件地址
-        String s1 = "C:\\Users\\Liming\\Desktop\\fsdownload\\微信图片_1.jpg"; // 被对比的图像文件
-        String s2 = "C:\\Users\\Liming\\Desktop\\fsdownload\\微信图片_2.jpg"; // 相似
-        String s3 = "C:\\Users\\Liming\\Desktop\\fsdownload\\微信图片_3.jpg"; // 不相似
+        // 设置需要被读取的图像文件路径
+        String path = "C:\\Users\\zhao\\Downloads\\test.png";
+        // 使用Color矩阵解析图片，获取到图像的像素矩阵
+        ColorMatrix colors = ColorMatrix.parse(path);
+        System.out.print("当前图像的像素色彩模式 = ");
+        System.out.println(colors.isGrayscale() ? "灰度" : "彩色");
 
-        // 将图片文件转换成两个图像灰度像素矩阵
-        ColorMatrix parse1 = ColorMatrix.parseGrayscale(s1);
-        ColorMatrix parse2 = ColorMatrix.parseGrayscale(s2);
-        ColorMatrix parse3 = ColorMatrix.parseGrayscale(s3);
+        /*
+         将像素矩阵的色彩模式强制转换
+         这里由于转换之前是调用的彩色图像读取，因此转换之后会标记为灰度图像
+         需要注意的是这里并不会真正变成灰度图 而是在后面的操作中尽量采用灰度图像的方式处理矩阵数据
+        */
+        colors.forcedColorChange();
+        System.out.print("当前图像的像素色彩模式 = ");
+        System.out.println(colors.isGrayscale() ? "灰度" : "彩色");
 
-        {
-            // 将灰度像素矩阵扁平化获取到向量对象 用于进行度量的计算
-            IntegerVector parse11 = IntegerVector.parseGrayscale(parse1);
-            IntegerVector parse22 = IntegerVector.parseGrayscale(parse2);
-            IntegerVector parse33 = IntegerVector.parseGrayscale(parse3);
-
-            // 使用曼哈顿度量计算出两个图片的相似度
-            // (由于图片中的RGB值很大，因此使用欧几里德进行平方值时会发生精度溢出问题，选择曼哈顿可避免这种情况)
-            double d1_2 = ManhattanDistance.getInstance("Man").getTrueDistance(parse11.toArray(), parse22.toArray());
-            double d1_3 = ManhattanDistance.getInstance("Man").getTrueDistance(parse11.toArray(), parse33.toArray());
-
-            // 打印距离 距离越大 相似度越低
-            System.out.println("图片1与图片2对比的距离 = " + d1_2);
-            System.out.println("图片1与图片3对比的距离 = " + d1_3);
-        }
-
-        // 输出图片1的灰度图像文件
+        // 强制转换像素的矩阵，可以影响到像素矩阵到整形矩阵之间的转换，会按照不同的模式使用不同的逻辑转换像素矩阵
+        IntegerMatrix ints = colors.toIntegerMatrix();
+        // 获取到图像绘制集成器
         ImageRenderingIntegrator image = new ImageRenderingIntegrator(
                 "image",
-                new ImageRenderingMarLauncher<>(parse1, "C:\\Users\\Liming\\Desktop\\fsdownload\\res1.jpg", 1)
+                // 在这里传递需要被绘制的矩阵对象与绘制的新图像路径 以及 图像绘制的像素倍率
+                new ImageRenderingMarLauncher<>(ints, "C:\\Users\\zhao\\Downloads\\test1.png", 1)
         );
-        if (image.run()) {
-            System.out.println("ok!!!");
-        }
+        // 开始运行
+        image.run();
     }
 }

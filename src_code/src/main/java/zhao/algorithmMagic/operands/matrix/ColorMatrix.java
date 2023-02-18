@@ -19,22 +19,27 @@ import java.util.Iterator;
 public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Color[][]> {
 
     public final static int WHITE_NUM = 0xffffff;
+    private boolean isGrayscale;
 
     /**
      * 构造一个指定行列数据的矩阵对象，其中的行指针最大值将会默认使用行数量。
      * <p>
      * Construct a matrix object with specified row and column data. The maximum value of row pointer will use the number of rows by default.
      *
-     * @param rowCount 矩阵中的行数量
-     *                 <p>
-     *                 the number of rows in the matrix
-     * @param colCount 矩阵中的列数量
-     *                 <p>
-     *                 the number of cols in the matrix
-     * @param colors   该矩阵对象中的二维数组对象。
+     * @param rowCount    矩阵中的行数量
+     *                    <p>
+     *                    the number of rows in the matrix
+     * @param colCount    矩阵中的列数量
+     *                    <p>
+     *                    the number of cols in the matrix
+     * @param colors      该矩阵对象中的二维数组对象。
+     * @param isGrayscale 如果设置为true 代表此图像是灰度图像
+     *                    <p>
+     *                    If set to true, this image is grayscale image
      */
-    protected ColorMatrix(int rowCount, int colCount, Color[][] colors) {
+    protected ColorMatrix(int rowCount, int colCount, Color[][] colors, boolean isGrayscale) {
         super(rowCount, colCount, colors);
+        this.isGrayscale = isGrayscale;
     }
 
     /**
@@ -52,10 +57,13 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      *                               <p>
      *                               The maximum value of the row pointer. It should be noted that the row pointer uses index positioning, so counting starts from 0!
      * @param colors                 该矩阵对象中的二维数组对象。
+     * @param isGrayscale            如果设置为true 代表此图像是灰度图像
      *                               <p>
+     *                               If set to true, this image is grayscale image
      */
-    protected ColorMatrix(int rowCount, int colCount, int maximumRowPointerCount, Color[][] colors) {
+    protected ColorMatrix(int rowCount, int colCount, int maximumRowPointerCount, Color[][] colors, boolean isGrayscale) {
         super(rowCount, colCount, maximumRowPointerCount, colors);
+        this.isGrayscale = isGrayscale;
     }
 
     /**
@@ -70,7 +78,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      */
     public static ColorMatrix parse(Color[]... ints) {
         if (ints.length > 0) {
-            return new ColorMatrix(ints.length, ints[0].length, ints);
+            return new ColorMatrix(ints.length, ints[0].length, ints, false);
         } else {
             throw new OperatorOperationException("The array of construction matrix cannot be empty");
         }
@@ -110,10 +118,10 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             int count = -1;
             for (Color color1 : color) {
                 int avg = (int) ASMath.avg(color1.getRed(), color1.getGreen(), color1.getBlue());
-                color[++count] = new Color(avg, avg, avg);
+                color[++count] = new Color(avg, avg, avg, color1.getAlpha());
             }
         }
-        return ColorMatrix.parse(colors);
+        return new ColorMatrix(colors.length, colors[0].length, colors, true);
     }
 
     /**
@@ -469,6 +477,14 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      */
     public void setPixels(int x, int y, Color newColor) {
         this.toArrays()[y][x] = newColor;
+        if (this.isGrayscale) {
+            // 如果在变更之前是灰度图像，就需要进一个判断，看下新像素是否影响了灰度
+            int red = newColor.getRed();
+            if (red != newColor.getGreen() || red != newColor.getBlue()) {
+                // 影响了灰度，因此图像不属于灰度图了
+                isGrayscale = false;
+            }
+        }
     }
 
     /**
@@ -498,21 +514,22 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
                 Color[] row = colors[++y];
                 for (Color color : toArray) {
                     row[++x] = new Color(
-                            Math.min(color.getRed() + R, 0xfc),
-                            Math.min(color.getGreen() + G, 0xfc),
-                            Math.min(color.getBlue() + B, 0xcf)
+                            Math.min(color.getRed() + R, 0xff),
+                            Math.min(color.getGreen() + G, 0xff),
+                            Math.min(color.getBlue() + B, 0xff)
                     );
                 }
             }
             return ColorMatrix.parse(colors);
         } else {
+            this.isGrayscale = false;
             for (Color[] colors : this.toArrays()) {
                 int x = -1;
                 for (Color color : colors) {
                     colors[++x] = new Color(
-                            Math.min(color.getRed() + R, 0xfc),
-                            Math.min(color.getGreen() + G, 0xfc),
-                            Math.min(color.getBlue() + B, 0xcf)
+                            Math.min(color.getRed() + R, 0xff),
+                            Math.min(color.getGreen() + G, 0xff),
+                            Math.min(color.getBlue() + B, 0xff)
                     );
                 }
             }
@@ -555,6 +572,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             }
             return ColorMatrix.parse(colors);
         } else {
+            this.isGrayscale = false;
             for (Color[] colors : this.toArrays()) {
                 int x = -1;
                 for (Color color : colors) {
@@ -567,6 +585,58 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             }
             return this;
         }
+    }
+
+    /**
+     * 将图像矩阵转换至整形矩阵中，此方法将会使得矩阵中存储的图像矩阵中每一个像素的所有色彩值与透明度
+     * <p>
+     * Convert the image matrix to the shaping matrix. This method will make all the color values and transparency of each pixel in the image matrix stored in the matrix
+     *
+     * @return 转换之后的整形矩阵对象，需要注意，如果颜色矩阵中的
+     * <p>
+     * The converted shape matrix object needs to be noted that if the
+     */
+    public IntegerMatrix toIntegerMatrix() {
+        int[][] res = new int[this.getRowCount()][this.getColCount()];
+        int y = -1;
+        if (this.isGrayscale) {
+            for (Color[] colors : this.toArrays()) {
+                int[] row = res[++y];
+                int x = -1;
+                for (Color color : colors) {
+                    row[++x] = ASMath.grayTORGB(color.getGreen());
+                }
+            }
+        } else {
+            for (Color[] colors : this.toArrays()) {
+                int[] row = res[++y];
+                int x = -1;
+                for (Color color : colors) {
+                    row[++x] = ASMath.rgbaTOIntRGBA(color.getRed(), color.getGreen(), color.getBlue());
+                }
+            }
+        }
+        return IntegerMatrix.parse(res);
+    }
+
+    /**
+     * 强制将图像色彩模式进行反转，通常用于将一个普通图像转换成灰度图像，需要注意的是，此方法并不会改变原像素矩阵中的数值。
+     * <p>
+     * Forced reversal of image color mode is usually used to convert an ordinary image into a grayscale image. It should be noted that this method does not change the value in the original pixel matrix.
+     * <p>
+     * 该函数会将当前的色彩模式反转，例如灰度到有色，有色到灰度之间的转换。
+     */
+    public void forcedColorChange() {
+        this.isGrayscale = !this.isGrayscale;
+    }
+
+    /**
+     * 获取到图像当前的色彩模式布尔值。
+     *
+     * @return 如果返回 true 代表当前图像是一个灰度图像。
+     */
+    public final boolean isGrayscale() {
+        return isGrayscale;
     }
 
     /**

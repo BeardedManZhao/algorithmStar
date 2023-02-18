@@ -170,6 +170,7 @@ public abstract class Matrix<ImplementationType
      * @return 链式 chain
      */
     public final ImplementationType PointerReset() {
+        if (!MovePointerUp()) return this.expand();
         return PointerReset(-1);
     }
 
