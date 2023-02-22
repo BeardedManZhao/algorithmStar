@@ -452,11 +452,20 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      * @return 方框模糊处理过的矩阵对象
      */
     public ColorMatrix boxBlur(boolean isCopy) {
-        if (isCopy) {
-            return ColorMatrix.parse(ASMath.boxBlur(this.copyToNewArrays()));
+        if (this.isGrayscale) {
+            if (isCopy) {
+                return ColorMatrix.parse(ASMath.boxBlurGrayscale(this.copyToNewArrays()));
+            } else {
+                System.arraycopy(ASMath.boxBlurGrayscale(this.toArrays()), 0, this.toArrays(), 0, this.getRowCount());
+                return this;
+            }
         } else {
-            System.arraycopy(ASMath.boxBlur(this.toArrays()), 0, this.toArrays(), 0, this.getRowCount());
-            return this;
+            if (isCopy) {
+                return ColorMatrix.parse(ASMath.boxBlur(this.copyToNewArrays()));
+            } else {
+                System.arraycopy(ASMath.boxBlur(this.toArrays()), 0, this.toArrays(), 0, this.getRowCount());
+                return this;
+            }
         }
     }
 

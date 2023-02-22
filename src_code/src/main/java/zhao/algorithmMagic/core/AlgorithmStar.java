@@ -609,7 +609,7 @@ public final class AlgorithmStar<diffValue, featureReturn> {
      * <p>
      * Normalized style of v
      */
-    public FloatingPointCoordinates<DoubleCoordinateMany> NormalizedSequence(DataStandardization dataStandardization, DoubleCoordinateMany v) {
+    public FloatingPointCoordinates<DoubleCoordinateMany> pretreatment(DataStandardization dataStandardization, DoubleCoordinateMany v) {
         return dataStandardization.pretreatment(v);
     }
 
@@ -624,7 +624,7 @@ public final class AlgorithmStar<diffValue, featureReturn> {
      * <p>
      * Normalized style of v
      */
-    public IntegerCoordinates<IntegerCoordinateMany> NormalizedSequence(DataStandardization dataStandardization, IntegerCoordinateMany v) {
+    public IntegerCoordinates<IntegerCoordinateMany> pretreatment(DataStandardization dataStandardization, IntegerCoordinateMany v) {
         return dataStandardization.pretreatment(v);
     }
 
@@ -639,7 +639,7 @@ public final class AlgorithmStar<diffValue, featureReturn> {
      * <p>
      * Normalized style of v
      */
-    public DoubleVector NormalizedSequence(DataStandardization dataStandardization, DoubleVector doubleVector) {
+    public DoubleVector pretreatment(DataStandardization dataStandardization, DoubleVector doubleVector) {
         return dataStandardization.pretreatment(doubleVector);
     }
 
@@ -654,7 +654,7 @@ public final class AlgorithmStar<diffValue, featureReturn> {
      * <p>
      * Normalized style of v
      */
-    public IntegerVector NormalizedSequence(DataStandardization dataStandardization, IntegerVector integerVector) {
+    public IntegerVector pretreatment(DataStandardization dataStandardization, IntegerVector integerVector) {
         return dataStandardization.pretreatment(integerVector);
     }
 
@@ -671,7 +671,7 @@ public final class AlgorithmStar<diffValue, featureReturn> {
      * <p>
      * Normalized style of v
      */
-    public IntegerVector NormalizedSequence(RangeDataStandardization rangeDataStandardization, FastRangeIntegerVector fastRangeIntegerVector) {
+    public IntegerVector pretreatment(RangeDataStandardization rangeDataStandardization, FastRangeIntegerVector fastRangeIntegerVector) {
         return rangeDataStandardization.pretreatment(fastRangeIntegerVector);
     }
 
@@ -688,7 +688,7 @@ public final class AlgorithmStar<diffValue, featureReturn> {
      * <p>
      * Normalized style of v
      */
-    public DoubleVector NormalizedSequence(RangeDataStandardization rangeDataStandardization, FastRangeDoubleVector fastRangeDoubleVector) {
+    public DoubleVector pretreatment(RangeDataStandardization rangeDataStandardization, FastRangeDoubleVector fastRangeDoubleVector) {
         return rangeDataStandardization.pretreatment(fastRangeDoubleVector);
     }
 

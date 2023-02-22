@@ -148,9 +148,9 @@ public final class ASIO {
             final int pixelLength = 3;
             for (int pixel = 0, row = 0, col = 0; pixel < pixels.length; pixel += pixelLength) {
                 result[row][col] = new Color(
-                        ((int) pixels[pixel + 3] & 0xff), // red
-                        ((int) pixels[pixel + 2] & 0xff), // green
-                        (int) pixels[pixel + 1] & 0xff, // blue
+                        ((int) pixels[pixel + 2] & 0xff), // red
+                        ((int) pixels[pixel + 1] & 0xff), // green
+                        (int) pixels[pixel] & 0xff, // blue
                         0xff // alpha
                 );
                 col++;

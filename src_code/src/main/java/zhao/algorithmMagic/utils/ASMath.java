@@ -2024,6 +2024,115 @@ public final class ASMath {
     }
 
     /**
+     * 矩阵方框模糊算法，该算法只会以 Green 色彩数值作为模糊特征
+     *
+     * @param mat 需要被模糊的矩阵对象
+     * @return 模糊之后的新矩阵对象
+     */
+    public static Color[][] boxBlurGrayscale(Color[][] mat) {
+        int y = -1;
+        Color[][] res = new Color[mat.length][mat[0].length];
+        for (Color[] doubles : mat) {
+            Color[] nowRes = res[++y];
+            for (int x = 0; x < doubles.length; x++) {
+                // 获取到周围点的平均值
+                if (y == 0) {
+                    Color[] next = mat[y + 1];
+                    int nextIndex = x + 1;
+                    // 代表是第一行
+                    if (x == 0) {
+                        boxBlurAVG1Grayscale(doubles, nowRes, x, next, nextIndex);
+                    } else if (x == doubles.length - 1) {
+                        Color leftColor = doubles[x - 1];
+                        Color lowLeftColor = next[x - 1];
+                        Color lowColor = next[x];
+                        // 代表是最后一列 获取到左与下的avg
+                        int avg = (int) ASMath.avg(
+                                leftColor.getGreen(), lowLeftColor.getGreen(), lowColor.getGreen()
+                        );
+                        nowRes[x] = new Color(avg, avg, avg);
+                    } else {
+                        // 仅仅是第一行 因此只需要将当前的值更改为左右下的平均值
+                        Color leftColor = doubles[nextIndex];
+                        Color lowLeftColor = next[nextIndex];
+                        Color lowRightColor = next[x - 1];
+                        Color rightColor = doubles[x - 1];
+                        int avg = (int) ASMath.avg(
+                                leftColor.getGreen(), rightColor.getGreen(), lowLeftColor.getGreen(), next[x].getGreen(), lowRightColor.getGreen()
+                        );
+                        nowRes[x] = new Color(avg, avg, avg);
+                    }
+                } else if (y == mat.length - 1) {
+                    Color[] back = mat[y - 1];
+                    int backIndex = x - 1;
+                    // 代表最后一行
+                    if (x == 0) {
+                        // 代表是第一列 获取右与上的avg
+                        Color rightColor = doubles[x + 1];
+                        Color upRightColor = back[x + 1];
+                        Color upColor = back[x];
+                        int avg = (int) ASMath.avg(
+                                rightColor.getGreen(), upRightColor.getGreen(), upColor.getGreen()
+                        );
+                        nowRes[x] = new Color(avg, avg, avg);
+                    } else if (x == doubles.length - 1) {
+                        // 代表是最后一列 获取到左与上的avg
+                        boxBlurAVG1Grayscale(doubles, nowRes, x, back, backIndex);
+                    } else {
+                        // 仅仅是第一行 因此只需要将当前的值更改为左右上的平均值
+                        Color rightColor = doubles[x + 1];
+                        Color leftColor = back[x + 1];
+                        int avg = (int) ASMath.avg(
+                                rightColor.getGreen(), leftColor.getGreen(), back[x].getGreen(), back[backIndex].getGreen()
+                        );
+                        nowRes[x] = new Color(avg, avg, avg);
+                    }
+                } else {
+                    // 代表是中间的行
+                    Color[] next = mat[y + 1];
+                    Color[] back = mat[y - 1];
+                    int nextIndex = x + 1;
+                    int backIndex = x - 1;
+                    if (x == 0) {
+                        // 代表是第一列 获取右与上下的avg
+                        boxBlurAVG2Grayscale(doubles, nowRes, x, next, back, nextIndex);
+                    } else if (x == doubles.length - 1) {
+                        // 代表是最后一列 获取到左与上下的avg
+                        boxBlurAVG2Grayscale(doubles, nowRes, x, next, back, backIndex);
+                    } else {
+                        // 仅仅是第一行 因此只需要将当前的值更改为左右上下的平均值
+                        int avg = (int) ASMath.avg(
+                                doubles[nextIndex].getGreen(), doubles[backIndex].getGreen(),
+                                next[backIndex].getGreen(), next[x].getGreen(), next[nextIndex].getGreen(),
+                                back[backIndex].getGreen(), back[x].getGreen(), back[nextIndex].getGreen()
+                        );
+                        nowRes[x] = new Color(avg, avg, avg);
+                    }
+                }
+            }
+        }
+        return res;
+    }
+
+    private static void boxBlurAVG2Grayscale(Color[] doubles, Color[] nowRes, int x, Color[] next, Color[] back, int nextIndex) {
+        int avg = (int) ASMath.avg(
+                doubles[nextIndex].getGreen(), next[nextIndex].getGreen(), next[x].getGreen(), back[nextIndex].getGreen(), back[x].getGreen()
+        );
+        nowRes[x] = new Color(
+                avg, avg, avg
+        );
+    }
+
+    private static void boxBlurAVG1Grayscale(Color[] doubles, Color[] nowRes, int x, Color[] back, int backIndex) {
+        int avg = (int) ASMath.avg(
+                doubles[backIndex].getGreen(), back[backIndex].getGreen(), back[x].getGreen()
+        );
+        nowRes[x] = new Color(
+                avg, avg, avg
+        );
+    }
+
+    /**
      * 将RGBA的四个数值转换成一个数值形式的 ARGB
      *
      * @param red   红色像素值

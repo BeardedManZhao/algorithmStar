@@ -296,7 +296,8 @@ public class MAIN1 {
 }
 ```
 
-* Support the conversion of pixel matrix and shaping matrix, and also support the calculation of pixel matrix according to different color modes, which can effectively reduce redundant calculation.
+* Support the conversion of pixel matrix and shaping matrix, and also support the calculation of pixel matrix according
+  to different color modes, which can effectively reduce redundant calculation.
 
 ```java
 package zhao.algorithmMagic;
@@ -335,6 +336,31 @@ public class MAIN1 {
         // 开始运行
         image.run();
     }
+}
+```
+
+* The name of the data preprocessing function in the AlgorithmStar portal class has been changed.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.algorithm.normalization.Z_ScoreNormalization;
+import zhao.algorithmMagic.core.AlgorithmStar;
+import zhao.algorithmMagic.operands.vector.DoubleVector;
+
+public class MAIN1 {
+  public static void main(String[] args) {
+    // 准备一个向量
+    DoubleVector doubleVector = DoubleVector.parse(1, 2, 3, 4, 5);
+    // 使用 AlgorithmStar 门户进行数据标准化
+    AlgorithmStar<Object, Object> algorithmStar = AlgorithmStar.getInstance();
+    // 调用标准化函数
+    DoubleVector doubleVector1 = algorithmStar.pretreatment(Z_ScoreNormalization.getInstance("z"), doubleVector);
+    // 打印结果数据
+    System.out.println(doubleVector1);
+    // 取消 AlgorithmStar 门户的使用
+    AlgorithmStar.clear();
+  }
 }
 ```
 

@@ -224,6 +224,12 @@ public final class ASStr {
         return s;
     }
 
+    /**
+     * 将一个数组转换成为makeDown中的一行字符串形式的数据
+     *
+     * @param ints 需要被转换的字符串
+     * @return 转换之后的字符串数据
+     */
     public static String arrayToMarkdownStr(int[] ints) {
         StringBuilder stringBuilder = new StringBuilder(ints.length << 1);
         for (int anInt : ints) {
@@ -232,6 +238,12 @@ public final class ASStr {
         return stringBuilder.toString();
     }
 
+    /**
+     * 将一个数组转换成为makeDown中的一行字符串形式的数据
+     *
+     * @param ints 需要被转换的字符串
+     * @return 转换之后的字符串数据
+     */
     public static String arrayToMarkdownStr(double[] ints) {
         StringBuilder stringBuilder = new StringBuilder(ints.length << 1);
         for (double anInt : ints) {

@@ -323,4 +323,29 @@ public class MAIN1 {
 }
 ```
 
+* AlgorithmStar 门户类中的数据预处理函数名称已更改完毕。
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.algorithm.normalization.Z_ScoreNormalization;
+import zhao.algorithmMagic.core.AlgorithmStar;
+import zhao.algorithmMagic.operands.vector.DoubleVector;
+
+public class MAIN1 {
+  public static void main(String[] args) {
+    // 准备一个向量
+    DoubleVector doubleVector = DoubleVector.parse(1, 2, 3, 4, 5);
+    // 使用 AlgorithmStar 门户进行数据标准化
+    AlgorithmStar<Object, Object> algorithmStar = AlgorithmStar.getInstance();
+    // 调用标准化函数
+    DoubleVector doubleVector1 = algorithmStar.pretreatment(Z_ScoreNormalization.getInstance("z"), doubleVector);
+    // 打印结果数据
+    System.out.println(doubleVector1);
+    // 取消 AlgorithmStar 门户的使用
+    AlgorithmStar.clear();
+  }
+}
+```
+
 ### Version update date : xx xx-xx-xx
