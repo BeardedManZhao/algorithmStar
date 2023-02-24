@@ -23,7 +23,7 @@ import java.util.List;
  *                <p>
  *                You need to classify the data type of each element of the data.
  */
-public class HashClassificationIntegrator<VALUE> implements AlgorithmIntegrator<HashClassificationIntegrator<VALUE>> {
+public final class HashClassificationIntegrator<VALUE> implements AlgorithmIntegrator<HashClassificationIntegrator<VALUE>> {
 
     private final Logger logger;
     private final String IntegratorName;

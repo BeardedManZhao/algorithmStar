@@ -25,7 +25,7 @@ import java.util.HashMap;
  *
  * @author zhao
  */
-public class IncrementalLearning implements AlgorithmIntegrator<IncrementalLearning> {
+public final class IncrementalLearning implements AlgorithmIntegrator<IncrementalLearning> {
 
     private final Logger logger;
     private final String IntegratorName;

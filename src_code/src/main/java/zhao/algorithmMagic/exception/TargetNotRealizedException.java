@@ -7,7 +7,7 @@ package zhao.algorithmMagic.exception;
  *
  * @author 4
  */
-public class TargetNotRealizedException extends AlgorithmMagicException {
+public final class TargetNotRealizedException extends AlgorithmMagicException {
 
     private static final String TAG = "TargetNotRealizedException_转换目标未实现：\n";
 

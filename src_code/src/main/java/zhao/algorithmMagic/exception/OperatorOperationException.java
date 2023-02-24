@@ -3,7 +3,7 @@ package zhao.algorithmMagic.exception;
 /**
  * 操作符运算错误，当操作符与操作符之间的运算发生错误的时候会抛出该异常。
  */
-public class OperatorOperationException extends AlgorithmMagicException {
+public final class OperatorOperationException extends AlgorithmMagicException {
 
     private static final String TAG = "OperandConversionException_操作符运算错误：\n";
 

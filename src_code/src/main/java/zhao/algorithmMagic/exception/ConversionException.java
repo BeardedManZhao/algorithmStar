@@ -7,7 +7,7 @@ package zhao.algorithmMagic.exception;
  *
  * @author 4
  */
-public class ConversionException extends AlgorithmMagicException {
+public final class ConversionException extends AlgorithmMagicException {
 
     private static final String TAG = "ConversionException_转换异常：";
 

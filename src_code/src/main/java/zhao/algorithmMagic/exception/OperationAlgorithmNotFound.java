@@ -7,7 +7,7 @@ package zhao.algorithmMagic.exception;
  *
  * @author 4
  */
-public class OperationAlgorithmNotFound extends AlgorithmMagicException {
+public final class OperationAlgorithmNotFound extends AlgorithmMagicException {
 
     public OperationAlgorithmNotFound() {
         super();

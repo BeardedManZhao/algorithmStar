@@ -29,7 +29,7 @@ import java.awt.image.BufferedImage;
  *
  * @author zhao
  */
-public class Route2DDrawingIntegrator implements AlgorithmIntegrator<Route2DDrawingIntegrator> {
+public final class Route2DDrawingIntegrator implements AlgorithmIntegrator<Route2DDrawingIntegrator> {
 
     private final Logger logger;
     private final String IntegratorName;
