@@ -119,6 +119,7 @@ public final class ASIO {
      *
      * @param inputFile 需要被读取的图像文件路径
      * @return 读取成功之后返回的整形矩阵
+     * @throws IOException 解析图像矩阵发生错误的时候抛出该异常
      */
     public static Color[][] parseImageGetColorArray(File inputFile) throws IOException {
         BufferedImage image = ImageIO.read(inputFile);
@@ -169,6 +170,7 @@ public final class ASIO {
      *
      * @param inputFile 需要被读取的图像文件路径
      * @return 读取成功之后返回的整形矩阵
+     * @throws IOException 解析图像矩阵发生错误的时候抛出该异常
      */
     public static int[][] parseImageGetArray(File inputFile) throws IOException {
         BufferedImage image = ImageIO.read(inputFile);

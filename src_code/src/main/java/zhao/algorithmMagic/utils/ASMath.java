@@ -2153,4 +2153,15 @@ public final class ASMath {
     public static int grayTORGB(int gray) {
         return (((gray << 0b1000) + gray) << 0b1000) + gray;
     }
+
+    /**
+     * 规整三原色，确保三原色数值不会发生溢出。
+     *
+     * @param RorGorB 需要被规整的三原色的分色数值
+     * @return 规整之后的三原色
+     */
+    public static int regularTricolor(int RorGorB) {
+        if (RorGorB < 0) return 0;
+        return Math.min(RorGorB, 255);
+    }
 }

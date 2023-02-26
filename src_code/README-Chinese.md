@@ -8,7 +8,7 @@
 
 ### 更新日志
 
-* 框架版本：1.15 - x.xx
+* 框架版本：1.15 - 1.16
 * 在数据预处理组件中移除过时的吗 normalization 函数，使用 pretreatment 替代。
 * 修复线性归一化计算组件中，针对整形向量归一化结果出现不准确的问题。
 
@@ -323,6 +323,41 @@ public class MAIN1 {
 }
 ```
 
+* 支持图像矩阵中的亮度调整，对比度调整，图像提取与合并等操作
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.lntegrator.ImageRenderingIntegrator;
+import zhao.algorithmMagic.lntegrator.launcher.ImageRenderingMarLauncher;
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+
+public final class MAIN1 {
+    public static void main(String[] args) {
+        // 获取到图像
+        ColorMatrix srcImage = ColorMatrix.parse("C:\\Users\\zhao\\Desktop\\fsdownload\\微信图片_2.jpg");
+        // 调整亮度
+        srcImage.dimming(0.75f);
+        // 调整对比度 增加 10 对比度属性
+        srcImage.contrast(10);
+        // 提取图像中的子图像 从(20, 79) 到(335, 156)
+        ColorMatrix subColor = srcImage.extractImage(20, 79, 335, 156);
+        // 将这一部分的颜色反转
+        subColor.colorReversal(false);
+        // 将处理好的局部子图像合并到原图像
+        srcImage.merge(subColor, 20, 79);
+        // 输出图像
+        ImageRenderingIntegrator image = new ImageRenderingIntegrator(
+                "image",
+                new ImageRenderingMarLauncher<>(srcImage, "C:\\Users\\zhao\\Desktop\\fsdownload\\res1.jpg", 1)
+        );
+        if (image.run()) {
+            System.out.println("ok!!!");
+        }
+    }
+}
+```
+
 * AlgorithmStar 门户类中的数据预处理函数名称已更改完毕。
 
 ```java
@@ -333,18 +368,18 @@ import zhao.algorithmMagic.core.AlgorithmStar;
 import zhao.algorithmMagic.operands.vector.DoubleVector;
 
 public class MAIN1 {
-  public static void main(String[] args) {
-    // 准备一个向量
-    DoubleVector doubleVector = DoubleVector.parse(1, 2, 3, 4, 5);
-    // 使用 AlgorithmStar 门户进行数据标准化
-    AlgorithmStar<Object, Object> algorithmStar = AlgorithmStar.getInstance();
-    // 调用标准化函数
-    DoubleVector doubleVector1 = algorithmStar.pretreatment(Z_ScoreNormalization.getInstance("z"), doubleVector);
-    // 打印结果数据
-    System.out.println(doubleVector1);
-    // 取消 AlgorithmStar 门户的使用
-    AlgorithmStar.clear();
-  }
+    public static void main(String[] args) {
+        // 准备一个向量
+        DoubleVector doubleVector = DoubleVector.parse(1, 2, 3, 4, 5);
+        // 使用 AlgorithmStar 门户进行数据标准化
+        AlgorithmStar<Object, Object> algorithmStar = AlgorithmStar.getInstance();
+        // 调用标准化函数
+        DoubleVector doubleVector1 = algorithmStar.pretreatment(Z_ScoreNormalization.getInstance("z"), doubleVector);
+        // 打印结果数据
+        System.out.println(doubleVector1);
+        // 取消 AlgorithmStar 门户的使用
+        AlgorithmStar.clear();
+    }
 }
 ```
 

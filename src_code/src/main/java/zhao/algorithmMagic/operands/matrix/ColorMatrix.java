@@ -285,7 +285,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      * the number of dimensions contained in the vector
      */
     @Override
-    public int getNumberOfDimensions() {
+    public final int getNumberOfDimensions() {
         return getRowCount() * getColCount();
     }
 
@@ -513,6 +513,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      * @param B      Blue颜色数值需要被增加的数值。
      *               <p>
      *               The value that the Blue color value needs to be increased.
+     * @return 经过函数计算之后的图像矩阵对象。
      */
     public ColorMatrix addColor(boolean isCopy, int R, int G, int B) {
         if (isCopy) {
@@ -563,6 +564,8 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      * @param B      Blue颜色数值需要被增加的数值。
      *               <p>
      *               The value that the Blue color value needs to be increased.
+     *
+     *          @return 经过函数计算之后的图像矩阵对象。
      */
     public ColorMatrix subColor(boolean isCopy, int R, int G, int B) {
         if (isCopy) {
@@ -635,7 +638,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      * <p>
      * 该函数会将当前的色彩模式反转，例如灰度到有色，有色到灰度之间的转换。
      */
-    public void forcedColorChange() {
+    public final void forcedColorChange() {
         this.isGrayscale = !this.isGrayscale;
     }
 
@@ -646,6 +649,181 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      */
     public final boolean isGrayscale() {
         return isGrayscale;
+    }
+
+    /**
+     * 调整图像整体的光度色彩值
+     *
+     * @param dimmingValue 调整时的光度阈值 大于1 表示亮度提高，小于1 表示亮度变暗
+     */
+    public final void dimming(float dimmingValue) {
+        // 获取到  平均值 - (平均值 * 亮度系数)  的值，每一个像素点都需要减去该数值
+        int red_avg2, green_avg2, blue_avg2;
+        {
+            // 获取到像素数量
+            int size = this.getNumberOfDimensions();
+            // 获取到三种颜色的总和
+            int red_sum = 0, green_sum = 0, blue_sum = 0;
+            for (Color[] colors : this.toArrays()) {
+                for (Color color : colors) {
+                    red_sum += color.getRed();
+                    green_sum += color.getGreen();
+                    blue_sum += color.getBlue();
+                }
+            }
+            // 先计算出 整个图片中RGB三种颜色各自的平均值 然后计算出 平均值 - (平均值 * 亮度系数)
+            red_avg2 = (int) (-(red_sum / size) * (dimmingValue - 1));
+            green_avg2 = (int) (-(green_sum / size) * (dimmingValue - 1));
+            blue_avg2 = (int) (-(blue_sum / size) * (dimmingValue - 1));
+        }
+        // 开始进行图像亮度转换
+        for (Color[] colors : this.toArrays()) {
+            for (int i = 0, colorsLength = colors.length; i < colorsLength; i++) {
+                Color color = colors[i];
+                // 在这里进行图像颜色的转换
+                colors[i] = new Color(
+                        ASMath.regularTricolor(color.getRed() - red_avg2),
+                        ASMath.regularTricolor(color.getGreen() - green_avg2),
+                        ASMath.regularTricolor(color.getBlue() - blue_avg2)
+                );
+            }
+        }
+    }
+
+    /**
+     * 调整图像中的图像对比度，该函数将会根据图像的情况来对图像进行数据的处理。
+     *
+     * @param contrastThreshold 对比度阈值 取值范围为 [-255, 255]
+     */
+    public final void contrast(int contrastThreshold) {
+        if (this.isGrayscale) {
+            // 计算出灰度颜色均值
+            int green_avg = 0;
+            {
+                for (Color[] colors : this.toArrays()) {
+                    for (Color color : colors) {
+                        green_avg += color.getGreen();
+                    }
+                }
+                green_avg /= this.getNumberOfDimensions();
+            }
+            for (Color[] colors : this.toArrays()) {
+                for (int i = 0, colorsLength = colors.length; i < colorsLength; i++) {
+                    int green = colors[i].getGreen();
+                    // 查看当前颜色是否为亮色 如果是就提高亮度
+                    if (green < green_avg) {
+                        // 暗色 继续提高灰度
+                        int g = ASMath.regularTricolor(green - contrastThreshold);
+                        colors[i] = new Color(g, g, g);
+                        continue;
+                    }
+                    if (green > green_avg) {
+                        // 亮色 降低灰度
+                        int g = ASMath.regularTricolor(green + contrastThreshold);
+                        colors[i] = new Color(g, g, g);
+                    }
+                }
+            }
+        } else {
+            // 计算出三种颜色均值
+            int red_avg = 0, green_avg = 0, blue_avg = 0;
+            {
+                for (Color[] colors : this.toArrays()) {
+                    for (Color color : colors) {
+                        red_avg += color.getRed();
+                        green_avg += color.getGreen();
+                        blue_avg += color.getBlue();
+                    }
+                }
+                int number = this.getNumberOfDimensions();
+                red_avg /= number;
+                green_avg /= number;
+                blue_avg /= number;
+            }
+            for (Color[] colors : this.toArrays()) {
+                for (int i = 0, colorsLength = colors.length; i < colorsLength; i++) {
+                    Color color = colors[i];
+                    int red = color.getRed();
+                    int green = color.getGreen();
+                    int blue = color.getBlue();
+                    // 查看当前颜色是否为亮色 如果是就提高亮度
+                    if (red > red_avg) red += contrastThreshold;
+                    else if (red < red_avg) red -= contrastThreshold;
+                    if (green > green_avg) green += contrastThreshold;
+                    else if (green < green_avg) green -= contrastThreshold;
+                    if (blue > blue_avg) blue += contrastThreshold;
+                    else if (blue < blue_avg) blue -= contrastThreshold;
+                    colors[i] = new Color(
+                            ASMath.regularTricolor(red), ASMath.regularTricolor(green), ASMath.regularTricolor(blue)
+                    );
+                }
+            }
+        }
+    }
+
+    /**
+     * 从图像矩阵中截取出一块空间，并返回这一块空间对应的图像矩阵，注意：这块空间与原图像直接没有任何关系，您可以使用 merge 函数将这块空间合并到原图像。
+     * <p>
+     * Intercept a space from the image matrix and return the image matrix corresponding to this space. Note: this space has no direct relationship with the original image. You can use the merge function to merge this space into the original image.
+     *
+     * @param x1 原图像矩阵中的提取起始x坐标
+     *           <p>
+     *           Extracting the starting x coordinate in the original image matrix
+     * @param y1 原图像矩阵中的提取起始y坐标
+     *           <p>
+     *           Extraction of starting y coordinate in the original image matrix
+     * @param x2 原图像矩阵中的提取终止y坐标
+     *           <p>
+     *           Extraction termination y coordinate in the original image matrix
+     * @param y2 原图像矩阵中的提取终止y坐标
+     *           <p>
+     *           Extraction termination y coordinate in the original image matrix
+     * @return 从原图像中提取出来的一块图像矩阵对象。
+     * <p>
+     * An image matrix object extracted from the original image.
+     */
+    public ColorMatrix extractImage(int x1, int y1, int x2, int y2) {
+        if (x1 >= x2 || y1 >= y2) {
+            throw new OperatorOperationException("图像提取发生错误，您设置的提取坐标点有误!!!\nAn error occurred in image extraction. The extraction coordinate point you set is incorrect!!!\n" +
+                    "ERROR => (" + x1 + ',' + x2 + ") >= (" + x2 + ',' + y2 + ')');
+        }
+        if (x2 >= this.getColCount() || y2 >= this.getRowCount()) {
+            throw new OperatorOperationException("图像提取发生错误，您不能提取不存在于图像中的坐标点\nAn error occurred in image extraction. You cannot extract coordinate points that do not exist in the image\n" +
+                    "ERROR => (" + x2 + ',' + y2 + ')');
+        }
+        Color[][] colors = new Color[y2 - y1][x2 - x1];
+        Color[][] srcImage = this.toArrays();
+        for (Color[] color : colors) {
+            Color[] row = srcImage[y1++];
+            for (int i = 0, colorLength = color.length; i < colorLength; i++) {
+                color[i] = row[i];
+            }
+        }
+        return ColorMatrix.parse(colors);
+    }
+
+    /**
+     * 合并两个图像对象，会将 colorMatrix 中的图像 从本图像中 (x1,y1) 坐标处开始进行覆盖。
+     *
+     * @param colorMatrix 需要合并进来的图像矩阵对象.
+     * @param x1          合并操作进行时的本图像起始坐标。
+     * @param y1          合并操作进行时的本图像起始坐标。
+     */
+    public void merge(ColorMatrix colorMatrix, int x1, int y1) {
+        if (y1 <= 0 || y1 >= getRowCount()) {
+            throw new OperatorOperationException("Illegal coordinate axis value y1 = " + y1);
+        }
+        if (x1 <= 0 || x1 >= getColCount()) {
+            throw new OperatorOperationException("Illegal coordinate axis value x1 = " + x1);
+        }
+        Color[][] colors1 = this.toArrays();
+        x1 = Math.min(x1, this.getColCount() - 1);
+        y1 = Math.min(y1, this.getRowCount() - 1);
+        int length = colorMatrix.getColCount();
+        for (Color[] colors : colorMatrix.toArrays()) {
+            Color[] colors1_row = colors1[y1++];
+            System.arraycopy(colors, 0, colors1_row, x1, length);
+        }
     }
 
     /**
