@@ -564,8 +564,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      * @param B      Blue颜色数值需要被增加的数值。
      *               <p>
      *               The value that the Blue color value needs to be increased.
-     *
-     *          @return 经过函数计算之后的图像矩阵对象。
+     * @return 经过函数计算之后的图像矩阵对象。
      */
     public ColorMatrix subColor(boolean isCopy, int R, int G, int B) {
         if (isCopy) {

@@ -211,6 +211,10 @@ the vector and coordinates. However, the internal structure processing takes thi
 primitives and objects reuse reduces performance consumption. In this framework, the matrix is not only Contains a
 numeric matrix and a complex matrix. The following is a demonstration of the operation!
 
+### Numerical matrix
+
+Numeric matrix is a kind of characteristic matrix, in which the primitive numerical data types are stored. In the machine learning library, integer and double-precision floating-point numerical matrix objects are supported, and have different use opportunities in different scenarios.
+
 ```java
 // Java api
 
@@ -256,6 +260,51 @@ public class MAIN1 {
         // print matrix directly
         System.out.println(parse11);
     }
+}
+```
+### Image matrix
+
+An image matrix is a matrix object that stores image pixel points. Each coordinate in the matrix is a pixel, and the data type of each pixel is Color. You can call many built-in image matrix calculation functions, or directly operate each pixel in the image through the toArrays function.
+
+```java
+// Java api
+package core;
+
+import zhao.algorithmMagic.lntegrator.ImageRenderingIntegrator;
+import zhao.algorithmMagic.lntegrator.launcher.ImageRenderingMarLauncher;
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+
+import java.awt.Color;
+
+public class MAIN {
+  public static void main(String[] args) {
+    // 获取到图像灰度矩阵
+    ColorMatrix parse = ColorMatrix.parseGrayscale("C:\\Users\\zhao\\Desktop\\fsdownload\\微信图片_6.jpg");
+    // 将图像中所有不属于深色的像素换为白色
+    Color color = new Color(ColorMatrix.WHITE_NUM);
+    for (Color[] colors : parse.toArrays()) {
+      for (int i = 0; i < colors.length; i++) {
+        int green = colors[i].getGreen();
+        // 这里就是分界线 深色分界线的数值需要根据图像进行设置
+        // 数值越小，去除的噪音越多，但数值过小也可能导致数据的损失
+        if (green > 100) {
+          colors[i] = color;
+        }
+      }
+    }
+    // 将图像的亮度降低一点
+    parse.dimming(0.7f);
+    // 将图像的对比度增强
+    parse.contrast(50);
+    // 输出图像
+    ImageRenderingIntegrator imageRenderingIntegrator = new ImageRenderingIntegrator(
+            "image",
+            new ImageRenderingMarLauncher<>(parse, "C:\\Users\\zhao\\Desktop\\fsdownload\\res_6.jpg", 1)
+    );
+    if (imageRenderingIntegrator.run()) {
+      System.out.println("ok!!!");
+    }
+  }
 }
 ```
 

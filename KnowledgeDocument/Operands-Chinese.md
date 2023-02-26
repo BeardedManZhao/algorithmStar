@@ -198,6 +198,9 @@ public class MAIN1 {
 
 矩阵类似很多个向量的叠加，矩阵的构造相对于向量与坐标是比较庞大的，但是内部的结构处理考虑到了这个问题，使用基元与对象复用来降低了性能消耗，本框架中矩阵不仅仅包含数值型矩阵，还包含一个复数矩阵，下面就是操作演示！
 
+### 数值矩阵
+
+数值矩阵是一种特征矩阵，其中存储的是一个个的基元数值数据类型，在机器学习库中支持整形与双精度浮点型的数值矩阵对象，在不同的场景下有不同的使用时机。
 ```java
 // Java api
 
@@ -243,6 +246,50 @@ public class MAIN1 {
         // 直接打印矩阵
         System.out.println(parse11);
     }
+}
+```
+### 图像矩阵
+
+图像矩阵是一种存储着图像像素点的矩阵对象，在矩阵中的每一个坐标都是一个像素，其中每一个像素的数据类型为Color，您可以调用诸多的内置图像矩阵计算函数，也可以通过 toArrays 函数直接操作图像中的每一个像素。
+```java
+// Java api
+package core;
+
+import zhao.algorithmMagic.lntegrator.ImageRenderingIntegrator;
+import zhao.algorithmMagic.lntegrator.launcher.ImageRenderingMarLauncher;
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+
+import java.awt.Color;
+
+public class MAIN {
+  public static void main(String[] args) {
+    // 获取到图像灰度矩阵
+    ColorMatrix parse = ColorMatrix.parseGrayscale("C:\\Users\\zhao\\Desktop\\fsdownload\\微信图片_6.jpg");
+    // 将图像中所有不属于深色的像素换为白色
+    Color color = new Color(ColorMatrix.WHITE_NUM);
+    for (Color[] colors : parse.toArrays()) {
+      for (int i = 0; i < colors.length; i++) {
+        int green = colors[i].getGreen();
+        // 这里就是分界线 深色分界线的数值需要根据图像进行设置
+        // 数值越小，去除的噪音越多，但数值过小也可能导致数据的损失
+        if (green > 100) {
+          colors[i] = color;
+        }
+      }
+    }
+    // 将图像的亮度降低一点
+    parse.dimming(0.7f);
+    // 将图像的对比度增强
+    parse.contrast(50);
+    // 输出图像
+    ImageRenderingIntegrator imageRenderingIntegrator = new ImageRenderingIntegrator(
+            "image",
+            new ImageRenderingMarLauncher<>(parse, "C:\\Users\\zhao\\Desktop\\fsdownload\\res_6.jpg", 1)
+    );
+    if (imageRenderingIntegrator.run()) {
+      System.out.println("ok!!!");
+    }
+  }
 }
 ```
 
