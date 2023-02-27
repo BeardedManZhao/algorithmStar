@@ -651,14 +651,19 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
     }
 
     /**
-     * 调整图像整体的光度色彩值
+     * 调整图像整体的光度色彩值，常用于调整图像中的曝光数值。
+     * <p>
+     * Adjust the overall photometric color value of the image, which is often used to adjust the exposure value in the image.
      *
-     * @param dimmingValue 调整时的光度阈值 大于1 表示亮度提高，小于1 表示亮度变暗
+     * @param dimmingValue 调整时的光度阈值 大于1 表示亮度提高，小于1 表示亮度变暗，常用取值范围为[-1,3]
+     *                     <p>
+     *                     When adjusting, the brightness threshold is greater than 1, which means the brightness is increased, and less than 1, which means the brightness is darkened. The common value range is [- 1,3]
      */
     public final void dimming(float dimmingValue) {
         // 获取到  平均值 - (平均值 * 亮度系数)  的值，每一个像素点都需要减去该数值
         int red_avg2, green_avg2, blue_avg2;
         {
+            float v = dimmingValue - 1;
             // 获取到像素数量
             int size = this.getNumberOfDimensions();
             // 获取到三种颜色的总和
@@ -671,9 +676,9 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
                 }
             }
             // 先计算出 整个图片中RGB三种颜色各自的平均值 然后计算出 平均值 - (平均值 * 亮度系数)
-            red_avg2 = (int) (-(red_sum / size) * (dimmingValue - 1));
-            green_avg2 = (int) (-(green_sum / size) * (dimmingValue - 1));
-            blue_avg2 = (int) (-(blue_sum / size) * (dimmingValue - 1));
+            red_avg2 = (int) (-(red_sum / size) * (v));
+            green_avg2 = (int) (-(green_sum / size) * (v));
+            blue_avg2 = (int) (-(blue_sum / size) * (v));
         }
         // 开始进行图像亮度转换
         for (Color[] colors : this.toArrays()) {
@@ -691,8 +696,12 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
 
     /**
      * 调整图像中的图像对比度，该函数将会根据图像的情况来对图像进行数据的处理。
+     * <p>
+     * Adjust the image contrast in the image. This function will process the image data according to the image situation.
      *
      * @param contrastThreshold 对比度阈值 取值范围为 [-255, 255]
+     *                          <p>
+     *                          The contrast threshold value range is [- 255, 255]
      */
     public final void contrast(int contrastThreshold) {
         if (this.isGrayscale) {
@@ -790,7 +799,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             throw new OperatorOperationException("图像提取发生错误，您不能提取不存在于图像中的坐标点\nAn error occurred in image extraction. You cannot extract coordinate points that do not exist in the image\n" +
                     "ERROR => (" + x2 + ',' + y2 + ')');
         }
-        Color[][] colors = new Color[y2 - y1][x2 - x1];
+        Color[][] colors = new Color[y2 - y1 + 1][x2 - x1 + 1];
         Color[][] srcImage = this.toArrays();
         for (Color[] color : colors) {
             Color[] row = srcImage[y1++];
@@ -803,10 +812,18 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
 
     /**
      * 合并两个图像对象，会将 colorMatrix 中的图像 从本图像中 (x1,y1) 坐标处开始进行覆盖。
+     * <p>
+     * Merging two image objects will cover the image in the colorMatrix from the (x1, y1) coordinates in this image.
      *
      * @param colorMatrix 需要合并进来的图像矩阵对象.
+     *                    <p>
+     *                    The image matrix object to be merged
      * @param x1          合并操作进行时的本图像起始坐标。
+     *                    <p>
+     *                    The starting coordinate of this image when the merge operation is in progress.
      * @param y1          合并操作进行时的本图像起始坐标。
+     *                    <p>
+     *                    The starting coordinate of this image when the merge operation is in progress.
      */
     public void merge(ColorMatrix colorMatrix, int x1, int y1) {
         if (y1 <= 0 || y1 >= getRowCount()) {

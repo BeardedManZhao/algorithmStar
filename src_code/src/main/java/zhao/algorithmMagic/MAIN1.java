@@ -1,30 +1,42 @@
 package zhao.algorithmMagic;
 
-import zhao.algorithmMagic.lntegrator.ImageRenderingIntegrator;
-import zhao.algorithmMagic.lntegrator.launcher.ImageRenderingMarLauncher;
-import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
+import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixSpace;
 
 public final class MAIN1 {
     public static void main(String[] args) {
-        // 获取到图像
-        ColorMatrix srcImage = ColorMatrix.parse("C:\\Users\\Liming\\Desktop\\华为.bmp");
-        // 调整亮度
-        srcImage.dimming(0.75f);
-        // 调整对比度 增加 10 对比度属性
-        srcImage.contrast(10);
-        // 提取图像中的子图像 从(20, 79) 到(335, 156)
-        ColorMatrix subColor = srcImage.extractImage(20, 79, 335, 156);
-        // 将这一部分的颜色反转
-        subColor.colorReversal(false);
-        // 将处理好的局部子图像合并到原图像
-        srcImage.merge(subColor, 20, 79);
-        // 输出图像
-        ImageRenderingIntegrator image = new ImageRenderingIntegrator(
-                "image",
-                new ImageRenderingMarLauncher<>(srcImage, "C:\\Users\\Liming\\Desktop\\华为1.jpg", 1)
+        // 手动创建一个 3 通道的图像整形矩阵
+        IntegerMatrixSpace parse1 = IntegerMatrixSpace.parse(
+                // Red
+                IntegerMatrix.parse(new int[]{1, 1, 1}, new int[]{1, 1, 1}, new int[]{1, 1, 1}, new int[]{1, 1, 1}, new int[]{1, 1, 1}, new int[]{1, 1, 1}, new int[]{1, 1, 1}, new int[]{1, 1, 1}),
+                // Green
+                IntegerMatrix.parse(new int[]{2, 2, 2}, new int[]{2, 2, 2}, new int[]{2, 2, 2}, new int[]{2, 2, 2}, new int[]{2, 2, 2}, new int[]{2, 2, 2}, new int[]{2, 2, 2}, new int[]{2, 2, 2}),
+                // Blue
+                IntegerMatrix.parse(new int[]{3, 3, 3}, new int[]{3, 3, 3}, new int[]{3, 3, 3}, new int[]{3, 3, 3}, new int[]{3, 3, 3}, new int[]{3, 3, 3}, new int[]{3, 3, 3}, new int[]{3, 3, 3})
         );
-        if (image.run()) {
-            System.out.println("ok!!!");
-        }
+//        // 创建一个权重矩阵
+//        IntegerMatrixSpace parse2 = IntegerMatrixSpace.parse(
+//                // Red
+//                IntegerMatrix.parse(new int[]{1, 1, 1}, new int[]{1, 1, 1}, new int[]{1, 1, 1}),
+//                // Green
+//                IntegerMatrix.parse(new int[]{2, 2, 2}, new int[]{2, 2, 2}, new int[]{2, 2, 2}),
+//                // Blue
+//                IntegerMatrix.parse(new int[]{3, 3, 3}, new int[]{3, 3, 3}, new int[]{3, 3, 3})
+//        );
+        // 创建一个权重矩阵
+        IntegerMatrixSpace parse2 = IntegerMatrixSpace.parse(
+                // Red
+                IntegerMatrix.parse(new int[]{1, 1, 2}, new int[]{1, 1, 2}),
+                // Green
+                IntegerMatrix.parse(new int[]{2, 2, 2}, new int[]{2, 2, 2}),
+                // Blue
+                IntegerMatrix.parse(new int[]{3, 3, 2}, new int[]{3, 3, 2})
+        );
+
+        System.out.println(parse1.get(0));
+        System.out.println(parse2.get(0));
+        // 使用权重开始进行卷积
+        IntegerMatrix ints = parse1.foldingAndSum(3, 2, parse2);
+        System.out.println(ints);
     }
 }

@@ -3,6 +3,7 @@ package zhao.algorithmMagic.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import zhao.algorithmMagic.exception.OperatorOperationException;
+import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -114,6 +115,16 @@ public final class ASIO {
         }
     }
 
+    public static IntegerMatrix[] parseImageGetArrays(String inputString) {
+        try {
+            return parseImageGetArrays(new File(inputString));
+        } catch (IOException e) {
+            throw new OperatorOperationException("尝试获取您所给定路径图像的像素矩阵时发生了错误\nAn error occurred while trying to get the pixel matrix of the path image you gave\nERROR => " +
+                    inputString
+            );
+        }
+    }
+
     /**
      * 将一个图片中的所有像素RGB值所构成的整形二维矩阵获取到！
      *
@@ -209,5 +220,50 @@ public final class ASIO {
             }
         }
         return result;
+    }
+
+    /**
+     * 将一个图片中的所有像素RGB值所构成的整形三维矩阵空间获取到！
+     *
+     * @param inputFile 需要被读取的图像文件路径
+     * @return 读取成功之后返回的整形矩阵空间，其中每一层代表图形的一层颜色通道。
+     * @throws IOException 解析图像矩阵发生错误的时候抛出该异常
+     */
+    public static IntegerMatrix[] parseImageGetArrays(File inputFile) throws IOException {
+        BufferedImage image = ImageIO.read(inputFile);
+        final byte[] pixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+        final int width = image.getWidth(), height = image.getHeight();
+        int[][] RMat = new int[height][width];
+        int[][] GMat = new int[height][width];
+        int[][] BMat = new int[height][width];
+        final boolean hasAlphaChannel = image.getAlphaRaster() != null;
+        if (hasAlphaChannel) {
+            final int pixelLength = 4;
+            for (int pixel = 0, row = 0, col = 0; pixel < pixels.length; pixel += pixelLength) {
+                RMat[row][col] = ((int) pixels[pixel + 3] & 0xff) << 16;
+                GMat[row][col] = ((int) pixels[pixel + 2] & 0xff) << 8;
+                BMat[row][col] = (int) pixels[pixel + 1] & 0xff;
+                col++;
+                if (col == width) {
+                    col = 0;
+                    row++;
+                }
+            }
+        } else {
+            final int pixelLength = 3;
+            for (int pixel = 0, row = 0, col = 0; pixel < pixels.length; pixel += pixelLength) {
+                RMat[row][col] = ((int) pixels[pixel + 2] & 0xff) << 16;
+                GMat[row][col] = ((int) pixels[pixel + 1] & 0xff) << 8;
+                BMat[row][col] = (int) pixels[pixel] & 0xff;
+                col++;
+                if (col == width) {
+                    col = 0;
+                    row++;
+                }
+            }
+        }
+        return new IntegerMatrix[]{
+                IntegerMatrix.parse(RMat), IntegerMatrix.parse(GMat), IntegerMatrix.parse(BMat)
+        };
     }
 }

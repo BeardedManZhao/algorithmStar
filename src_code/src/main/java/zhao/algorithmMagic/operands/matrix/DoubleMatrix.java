@@ -577,6 +577,27 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
     }
 
     @Override
+    public DoubleMatrix extractMat(int x1, int y1, int x2, int y2) {
+        if (x1 >= x2 || y1 >= y2) {
+            throw new OperatorOperationException("double矩阵提取发生错误，您设置的提取坐标点有误!!!\nAn error occurred in mat extraction. The extraction coordinate point you set is incorrect!!!\n" +
+                    "ERROR => (" + x1 + ',' + x2 + ") >= (" + x2 + ',' + y2 + ')');
+        }
+        if (x2 >= this.getColCount() || y2 >= this.getRowCount()) {
+            throw new OperatorOperationException("double矩阵提取发生错误，您不能提取不存在于矩阵中的坐标点\nAn error occurred in mat extraction. You cannot extract coordinate points that do not exist in the image\n" +
+                    "ERROR => (" + x2 + ',' + y2 + ')');
+        }
+        double[][] colors = new double[y2 - y1 + 1][x2 - x1 + 1];
+        double[][] srcImage = this.toArrays();
+        for (double[] color : colors) {
+            double[] row = srcImage[y1++];
+            for (int i = 0, colorLength = color.length; i < colorLength; i++) {
+                color[i] = row[i];
+            }
+        }
+        return DoubleMatrix.parse(colors);
+    }
+
+    @Override
     protected void reFresh() {
         this.PointerReset();
     }

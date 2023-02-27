@@ -70,28 +70,6 @@ public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], i
         return IntegerMatrix.parse(ASIO.parseImageGetArray(inputString));
     }
 
-/*
-    /**
-     * 根据一个文件中的数据获取到对应的整形的矩阵数据对象，目前支持通过图片获取到对应的灰度像素整形矩阵。
-     *
-     * @param inputString 需要被读取的文本文件或图像文件
-     * @return 构建出来的结果数据对象
-     * /
-    public static IntegerMatrix parseGrayscale(String inputString) {
-        Color[][] colors = ASIO.parseImageGetColorArray(inputString);
-        int[][] res = new int[colors.length][colors[0].length];
-        int y = -1;
-        for (Color[] color : colors) {
-            int[] rowColor = res[++y];
-            int x = -1;
-            for (Color color1 : color) {
-                rowColor[++x] = ASMath.grayTORGB((int) ASMath.avg(color1.getRed(), color1.getGreen(), color1.getBlue()));
-            }
-        }
-        return parse(res);
-    }
-*/
-
     /**
      * 使用稀疏矩阵的数据构造一个完整的矩阵对象。
      * <p>
@@ -608,6 +586,25 @@ public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], i
         } else {
             return IntegerMatrix.parse(copyToNewArrays());
         }
+    }
+
+    @Override
+    public IntegerMatrix extractMat(int x1, int y1, int x2, int y2) {
+        if (x1 >= x2 || y1 >= y2) {
+            throw new OperatorOperationException("整形矩阵提取发生错误，您设置的提取坐标点有误!!!\nAn error occurred in mat extraction. The extraction coordinate point you set is incorrect!!!\n" +
+                    "ERROR => (" + x1 + ',' + x2 + ") >= (" + x2 + ',' + y2 + ')');
+        }
+        if (x2 >= this.getColCount() || y2 >= this.getRowCount()) {
+            throw new OperatorOperationException("整形矩阵提取发生错误，您不能提取不存在于矩阵中的坐标点\nAn error occurred in mat extraction. You cannot extract coordinate points that do not exist in the image\n" +
+                    "ERROR => (" + x2 + ',' + y2 + ')');
+        }
+        int[][] colors = new int[y2 - y1 + 1][x2 - x1 + 1];
+        int[][] srcImage = this.toArrays();
+        for (int[] color : colors) {
+            int[] row = srcImage[y1++];
+            System.arraycopy(row, 0, color, 0, color.length);
+        }
+        return IntegerMatrix.parse(colors);
     }
 
     /**

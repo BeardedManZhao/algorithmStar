@@ -2,6 +2,7 @@ package zhao.algorithmMagic.operands.matrix.block;
 
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
+import zhao.algorithmMagic.utils.ASIO;
 import zhao.algorithmMagic.utils.ASMath;
 
 import java.util.Arrays;
@@ -48,6 +49,16 @@ public class IntegerMatrixSpace extends MatrixSpace<IntegerMatrixSpace, Integer,
             return new IntegerMatrixSpace(back_Row, back_Col, integerMatrices);
         }
         return new IntegerMatrixSpace(0, 0, integerMatrices);
+    }
+
+    /**
+     * 根据一个文件中的数据获取到对应的整形的矩阵数据对象，目前支持通过图片获取到对应的像素整形矩阵。
+     *
+     * @param inputString 需要被读取的文本文件或图像文件
+     * @return 构建出来的矩阵空间对象，其中空间有很多层矩阵，每一层矩阵都是图像的一个通道。
+     */
+    public static IntegerMatrixSpace parse(String inputString) {
+        return parse(ASIO.parseImageGetArrays(inputString));
     }
 
     @Override
@@ -165,6 +176,91 @@ public class IntegerMatrixSpace extends MatrixSpace<IntegerMatrixSpace, Integer,
             integerMatrices2[++count] = integerMatrix.transpose();
         }
         return parse(integerMatrices2);
+    }
+
+    /**
+     * 对矩阵空间进行卷积计算，在卷积计算的时候会产生出一个更小的特征矩阵。
+     *
+     * @param width  矩阵进行卷积运算的时的子图像宽度，最好选择能够被矩阵的列数整除的数值。
+     * @param height 矩阵进行卷积运算时的子图像高度，最好选中能够被矩阵的行数整除的数值。
+     * @return 矩阵空间卷积结果特征图，保持三通道的格式返回。
+     */
+    public IntegerMatrixSpace folding(int width, int height, IntegerMatrixSpace weightMat) {
+        int layouts = this.getNumberOfDimensions();
+        {
+            if (width != weightMat.getColCount() || height != weightMat.getRowCount()) {
+                // 代表权重的宽高与截取小区域的宽高不一致
+                throw new OperatorOperationException("请您确保权重权重的宽高与截取小区域的宽高保持一致\nPlease ensure that the width and height of the weight weight are consistent with the width and height of the intercepted small area");
+            }
+            if (weightMat.getNumberOfDimensions() != layouts) {
+                // 代表通道数量不相同
+                throw new OperatorOperationException("在进行矩阵空间卷积时发生了错误，提供的特征矩阵空间的通道数量与本通道的矩阵通道数量不一致，因此无法进行计算。\nAn error occurred during the convolution of matrix space. The number of channels in the provided characteristic matrix space is inconsistent with the number of matrix channels in this channel, so it cannot be calculated.");
+            }
+            if (width < 0 || width > this.getColCount()) {
+                // 代表宽度不合法
+                throw new OperatorOperationException("在进行空间卷积的死后发生了错误，提供二点特征矩阵图宽度不合法!!!\nAn error occurred after the death of spatial convolution. It is illegal to provide the width of two-point characteristic matrix!!!\nERROR => " +
+                        width);
+            }
+            if (height < 0 || height > this.getRowCount()) {
+                // 代表宽度不合法
+                throw new OperatorOperationException("在进行空间卷积的死后发生了错误，提供二点特征矩阵图高度不合法!!!\nAn error occurred after the death of spatial convolution. It is illegal to provide the height of two-point characteristic matrix!!!\nERROR => " +
+                        height);
+            }
+        }
+        // 一切都合法，开始进行卷积 获取到所有通道的图像与其权重的内积。
+        // 准备结果数据容器
+        IntegerMatrix[] result = new IntegerMatrix[layouts];
+        for (int i = 0; i < layouts; i++) {
+            IntegerMatrix now = this.get(i);
+            IntegerMatrix nowWeight = weightMat.get(i);
+            // 这张图像中需要被提取的坐标 以及最大坐标
+            int colCount = now.getColCount();
+            int rowCount = now.getRowCount();
+            int row = 0, col = 0, maxRow = rowCount - row, maxCol = colCount - col;
+            // 图像中的下一层坐标点 以及结果数据容器的坐标标记
+            int nextRow = height - 1, nextCol = width - 1, resRow = 0, resCol = 0;
+            int[][] temp = new int[Math.min(maxRow, rowCount - nextRow)][Math.min(maxCol, colCount - nextCol)];
+            while (resRow < maxRow && nextRow < rowCount) {
+                while (resCol < maxCol && nextCol < colCount) {
+                    // 提取小区域图像 并与 权重进行卷积计算 并存储结果数据
+                    temp[resRow][resCol++] = now.extractMat(col, row, nextCol, nextRow).innerProduct(nowWeight);
+                    // 移动一列
+                    col++;
+                    nextCol++;
+                }
+                // 移动一行
+                resRow++;
+                row++;
+                nextRow++;
+                // 复位 x 轴
+                resCol = 0;
+                col = 0;
+                nextCol = width - 1;
+            }
+            // 将这一层矩阵赋予结果矩阵
+            result[i] = IntegerMatrix.parse(temp);
+        }
+        // 返回结果三维矩阵
+        return IntegerMatrixSpace.parse(result);
+    }
+
+    /**
+     * 对矩阵空间进行卷积计算，在卷积计算的时候会产生出一个更小的特征矩阵。
+     *
+     * @param width  矩阵进行卷积运算的时的子图像宽度，最好选择能够被矩阵的列数整除的数值。
+     * @param height 矩阵进行卷积运算时的子图像高度，最好选中能够被矩阵的行数整除的数值。
+     * @return 矩阵空间卷积结果特征图，以三原色通道之和的方式返回一个矩阵。
+     */
+    public final IntegerMatrix foldingAndSum(int width, int height, IntegerMatrixSpace weightMat) {
+        IntegerMatrix res = null;
+        for (IntegerMatrix ints : folding(width, height, weightMat)) {
+            if (res == null) {
+                res = ints;
+                continue;
+            }
+            res = res.add(ints);
+        }
+        return res;
     }
 
     @Override
