@@ -9,8 +9,7 @@ AS机器学习库支持针对C/C++所编译出来的DLL动态库的函数进行�
 
 ### 使用示例
 
-将AS 机器学习库的DLL库目录中所有的动态库复制到您想要作为AS库依赖的目录中，然后将包含DLL文件的目录在 ASDynamicLibrary
-类中进行注册，就可以实现DLL库的调用。
+将AS 机器学习库的DLL库目录中所有的动态库复制到您想要作为AS库依赖的目录中，然后将包含DLL文件的目录在 ASDynamicLibrary 类中进行注册，就可以实现DLL库的调用。
 
 ```java
 import zhao.algorithmMagic.core.ASDynamicLibrary;

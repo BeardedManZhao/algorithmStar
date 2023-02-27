@@ -460,43 +460,43 @@ import zhao.algorithmMagic.utils.filter.ArrayIntegerFiltering;
 import java.util.ArrayList;
 
 public class MAIN1 {
-  public static void main(String[] args) {
-    // 创建一个矩阵对象，其中包含一些相关联的数据，本次要求将与年龄相关联的数据全部删掉
-    ColumnIntegerMatrix columnDoubleMatrix = ColumnIntegerMatrix.parse(
-            new String[]{"颜值", "身高", "有钱"},
-            null,
-            new int[]{1, 1, 1},
-            new int[]{1, 0, 1},
-            new int[]{0, 1, 0},
-            new int[]{0, 0, 0},
-            new int[]{0, 1, 0},
-            new int[]{1, 0, 0},
-            new int[]{1, 1, 0},
-            new int[]{0, 1, 0}
-    );
-    System.out.println(columnDoubleMatrix);
-    // 构建一些事件过滤器
-    // 有钱选项为1
-    ArrayIntegerFiltering arrayIntegerFiltering1 = v -> v[2] == 1;
-    // 身高选项为1
-    ArrayIntegerFiltering arrayIntegerFiltering2 = v -> v[1] == 1;
-    // 颜值选项为1
-    ArrayIntegerFiltering arrayIntegerFiltering3 = v -> v[0] == 1;
-    System.out.println(arrayIntegerFiltering1);
-    System.out.println(arrayIntegerFiltering2);
-    System.out.println(arrayIntegerFiltering3);
-    // 获取到决策树
-    DecisionTree d = DecisionTree.getInstance("d");
-    // 设置精准模式
-    d.setAccurate(true);
-    // 设置中心字段索引
-    d.setGroupIndex(0);
-    // 开始计算最优方案
-    ArrayList<ArrayIntegerFiltering> decision = d.decision(columnDoubleMatrix, arrayIntegerFiltering1, arrayIntegerFiltering2, arrayIntegerFiltering3);
-    // 将最优方案传递给决策树执行，并接收返回的结果
-    String s = DecisionTree.executeGetString(columnDoubleMatrix.toArrays(), decision);
-    System.out.println(s);
-  }
+    public static void main(String[] args) {
+        // 创建一个矩阵对象，其中包含一些相关联的数据，本次要求将与年龄相关联的数据全部删掉
+        ColumnIntegerMatrix columnDoubleMatrix = ColumnIntegerMatrix.parse(
+                new String[]{"颜值", "身高", "有钱"},
+                null,
+                new int[]{1, 1, 1},
+                new int[]{1, 0, 1},
+                new int[]{0, 1, 0},
+                new int[]{0, 0, 0},
+                new int[]{0, 1, 0},
+                new int[]{1, 0, 0},
+                new int[]{1, 1, 0},
+                new int[]{0, 1, 0}
+        );
+        System.out.println(columnDoubleMatrix);
+        // 构建一些事件过滤器
+        // 有钱选项为1
+        ArrayIntegerFiltering arrayIntegerFiltering1 = v -> v[2] == 1;
+        // 身高选项为1
+        ArrayIntegerFiltering arrayIntegerFiltering2 = v -> v[1] == 1;
+        // 颜值选项为1
+        ArrayIntegerFiltering arrayIntegerFiltering3 = v -> v[0] == 1;
+        System.out.println(arrayIntegerFiltering1);
+        System.out.println(arrayIntegerFiltering2);
+        System.out.println(arrayIntegerFiltering3);
+        // 获取到决策树
+        DecisionTree d = DecisionTree.getInstance("d");
+        // 设置精准模式
+        d.setAccurate(true);
+        // 设置中心字段索引
+        d.setGroupIndex(0);
+        // 开始计算最优方案
+        ArrayList<ArrayIntegerFiltering> decision = d.decision(columnDoubleMatrix, arrayIntegerFiltering1, arrayIntegerFiltering2, arrayIntegerFiltering3);
+        // 将最优方案传递给决策树执行，并接收返回的结果
+        String s = DecisionTree.executeGetString(columnDoubleMatrix.toArrays(), decision);
+        System.out.println(s);
+    }
 }
 ```
 
@@ -528,29 +528,29 @@ import zhao.algorithmMagic.algorithm.modelAlgorithm.LinearRegression;
 import zhao.algorithmMagic.operands.matrix.ColumnDoubleMatrix;
 
 public class MAIN1 {
-  public static void main(String[] args) {
-    // 创建一个矩阵对象，其中包含一些数据，现在需要找到最块的筛选路线，并使用此路线将数据进行一次获取
-    ColumnDoubleMatrix columnDoubleMatrix = ColumnDoubleMatrix.parse(
-            new String[]{"x", "y"},
-            null,
-            new double[]{1, 50},
-            new double[]{2, 100},
-            new double[]{3, 150},
-            new double[]{4, 200}
-    );
-    // 获取到线性回归
-    LinearRegression line = LinearRegression.getInstance("line");
-    // 开始计算线性回归 计算x 与 y 之间的关系 其中 x 为自变量  y 为因变量
-    // 设置自变量的列编号
-    line.setFeatureIndex(0);
-    // 设置因变量的列编号
-    line.setTargetIndex(1);
-    // 计算出回归系数与结果值
-    double[] doubles = line.modelInference(columnDoubleMatrix);
-    // 获取到线性回归计算之后的权重数组，并将权重数组插入到公式打印出来
-    System.out.println("数据特征：");
-    System.out.println("y = x * " + doubles[0] + " + " + doubles[1]);
-  }
+    public static void main(String[] args) {
+        // 创建一个矩阵对象，其中包含一些数据，现在需要找到最块的筛选路线，并使用此路线将数据进行一次获取
+        ColumnDoubleMatrix columnDoubleMatrix = ColumnDoubleMatrix.parse(
+                new String[]{"x", "y"},
+                null,
+                new double[]{1, 50},
+                new double[]{2, 100},
+                new double[]{3, 150},
+                new double[]{4, 200}
+        );
+        // 获取到线性回归
+        LinearRegression line = LinearRegression.getInstance("line");
+        // 开始计算线性回归 计算x 与 y 之间的关系 其中 x 为自变量  y 为因变量
+        // 设置自变量的列编号
+        line.setFeatureIndex(0);
+        // 设置因变量的列编号
+        line.setTargetIndex(1);
+        // 计算出回归系数与结果值
+        double[] doubles = line.modelInference(columnDoubleMatrix);
+        // 获取到线性回归计算之后的权重数组，并将权重数组插入到公式打印出来
+        System.out.println("数据特征：");
+        System.out.println("y = x * " + doubles[0] + " + " + doubles[1]);
+    }
 }
 ```
 

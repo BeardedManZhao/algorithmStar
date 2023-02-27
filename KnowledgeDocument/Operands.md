@@ -174,9 +174,92 @@ public class MAIN1 {
 }
 ```
 
+## 坐标线路
+
+A coordinate line object is a line object with start and end coordinate points. It can be expressed as a line from start
+coordinate to end coordinate. It is an operand object implemented based on the coordinate object. Next, we will show the
+general functions of coordinate lines.
+
+- Functions in the interface
+
+| 函数名称                    | 函数返回值              | 函数作用                                                                                                  |
+|-------------------------|--------------------|-------------------------------------------------------------------------------------------------------|
+| expand()                | ImplementationType | The object with the identity of a parent class is materialized into an object of a subclass.          |
+| getEndPointCoordinate() | CoordinateType     | Gets the end point coordinates in the circuit object.                                                 |
+| getStartingCoordinate() | CoordinateType     | Gets the starting point coordinates in the circuit object.                                            |
+| getNumberOfDimensions() | int                | Gets the dimension quantity of the starting and ending coordinates in the circuit.                    |
+| toDoubleVector()        | DoubleVector       | Get the vector object constructed by the starting point coordinates and the ending point coordinates。 |
+
+```java
+// Java api
+
+import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
+import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute2D;
+
+public class Test {
+
+    public static void main(String[] args) {
+        // Get some coordinates
+        IntegerCoordinateTwo A = new IntegerCoordinateTwo(1, 2);
+        IntegerCoordinateTwo B = new IntegerCoordinateTwo(1, 20);
+        IntegerCoordinateTwo C = new IntegerCoordinateTwo(20, 2);
+        // Build three lines
+        IntegerConsanguinityRoute2D AB = IntegerConsanguinityRoute2D.parse("A -> B", A, B);
+        IntegerConsanguinityRoute2D BC = IntegerConsanguinityRoute2D.parse("B -> C", B, C);
+        IntegerConsanguinityRoute2D CA = IntegerConsanguinityRoute2D.parse("C -> A", C, A);
+        // Calculate the three lines
+        IntegerConsanguinityRoute2D AB_BC = AB.add(BC);
+        IntegerConsanguinityRoute2D AB_CA = AB.add(CA);
+        // Print calculation results
+        System.out.println(AB_BC);
+        System.out.println(AB_CA);
+    }
+}
+```
+
+## 坐标网络
+
+坐标网络正如名称所示，其是一个网络，由多条线路对象构建成的网络，在在这条网络当中，将会准确的记录着路线之间的关系。
+
+- Functions in the interface
+
+| 函数名称                                            | 函数返回值              | 函数作用                                                                                         |
+|-------------------------------------------------|--------------------|----------------------------------------------------------------------------------------------|
+| expand()                                        | ImplementationType | The object with the identity of a parent class is materialized into an object of a subclass. |
+| addRoute(RouteType routeType)                   | Boolean            | Add a line object to the network, and return true if it is added successfully.               |
+| containsKeyFromRoute2DHashMap(String RouteName) | Boolean            | Judge whether a line exists in the line network. If yes, return true.                        |
+| getNetDataSet()                                 | HashSet<RouteType> | Get the collection of all circuit objects.                                                   |
+| getRouteCount()                                 | int                | Gets the number of circuit objects in the current network object.                            |
+
+```java
+// Java api
+
+import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
+import zhao.algorithmMagic.operands.coordinateNet.IntegerRoute2DNet;
+import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute2D;
+
+public class Test {
+
+    public static void main(String[] args) {
+        // Get some coordinates
+        IntegerCoordinateTwo A = new IntegerCoordinateTwo(1, 2);
+        IntegerCoordinateTwo B = new IntegerCoordinateTwo(1, 20);
+        IntegerCoordinateTwo C = new IntegerCoordinateTwo(20, 2);
+        // Build three lines
+        IntegerConsanguinityRoute2D AB = IntegerConsanguinityRoute2D.parse("A -> B", A, B);
+        IntegerConsanguinityRoute2D BC = IntegerConsanguinityRoute2D.parse("B -> C", B, C);
+        IntegerConsanguinityRoute2D CA = IntegerConsanguinityRoute2D.parse("C -> A", C, A);
+        // Get a line network and add three lines
+        IntegerRoute2DNet parse = IntegerRoute2DNet.parse(AB, BC, CA);
+        // Extract "BC" route from line network
+        System.out.println(parse.getRouteFromHashMap("B -> C"));
+    }
+}
+```
+
 ## vector
 
-A vector is the distance between two multi-dimensional coordinate points. It can be used for matrix construction and
+A vector is the distance between two multidimensional coordinate points. It can be used for matrix construction and
 various operation algorithms in the framework. The importance and coordinates are the same. The construction method is
 roughly as follows.
 
@@ -213,7 +296,9 @@ numeric matrix and a complex matrix. The following is a demonstration of the ope
 
 ### Numerical matrix
 
-Numeric matrix is a kind of characteristic matrix, in which the primitive numerical data types are stored. In the machine learning library, integer and double-precision floating-point numerical matrix objects are supported, and have different use opportunities in different scenarios.
+Numeric matrix is a kind of characteristic matrix, in which the primitive numerical data types are stored. In the
+machine learning library, integer and double-precision floating-point numerical matrix objects are supported, and have
+different use opportunities in different scenarios.
 
 ```java
 // Java api
@@ -262,9 +347,12 @@ public class MAIN1 {
     }
 }
 ```
+
 ### Image matrix
 
-An image matrix is a matrix object that stores image pixel points. Each coordinate in the matrix is a pixel, and the data type of each pixel is Color. You can call many built-in image matrix calculation functions, or directly operate each pixel in the image through the toArrays function.
+An image matrix is a matrix object that stores image pixel points. Each coordinate in the matrix is a pixel, and the
+data type of each pixel is Color. You can call many built-in image matrix calculation functions, or directly operate
+each pixel in the image through the toArrays function.
 
 ```java
 // Java api
@@ -277,34 +365,34 @@ import zhao.algorithmMagic.operands.matrix.ColorMatrix;
 import java.awt.Color;
 
 public class MAIN {
-  public static void main(String[] args) {
-    // 获取到图像灰度矩阵
-    ColorMatrix parse = ColorMatrix.parseGrayscale("C:\\Users\\zhao\\Desktop\\fsdownload\\微信图片_6.jpg");
-    // 将图像中所有不属于深色的像素换为白色
-    Color color = new Color(ColorMatrix.WHITE_NUM);
-    for (Color[] colors : parse.toArrays()) {
-      for (int i = 0; i < colors.length; i++) {
-        int green = colors[i].getGreen();
-        // 这里就是分界线 深色分界线的数值需要根据图像进行设置
-        // 数值越小，去除的噪音越多，但数值过小也可能导致数据的损失
-        if (green > 100) {
-          colors[i] = color;
+    public static void main(String[] args) {
+        // 获取到图像灰度矩阵
+        ColorMatrix parse = ColorMatrix.parseGrayscale("C:\\Users\\zhao\\Desktop\\fsdownload\\微信图片_6.jpg");
+        // 将图像中所有不属于深色的像素换为白色
+        Color color = new Color(ColorMatrix.WHITE_NUM);
+        for (Color[] colors : parse.toArrays()) {
+            for (int i = 0; i < colors.length; i++) {
+                int green = colors[i].getGreen();
+                // 这里就是分界线 深色分界线的数值需要根据图像进行设置
+                // 数值越小，去除的噪音越多，但数值过小也可能导致数据的损失
+                if (green > 100) {
+                    colors[i] = color;
+                }
+            }
         }
-      }
+        // 将图像的亮度降低一点
+        parse.dimming(0.7f);
+        // 将图像的对比度增强
+        parse.contrast(50);
+        // 输出图像
+        ImageRenderingIntegrator imageRenderingIntegrator = new ImageRenderingIntegrator(
+                "image",
+                new ImageRenderingMarLauncher<>(parse, "C:\\Users\\zhao\\Desktop\\fsdownload\\res_6.jpg", 1)
+        );
+        if (imageRenderingIntegrator.run()) {
+            System.out.println("ok!!!");
+        }
     }
-    // 将图像的亮度降低一点
-    parse.dimming(0.7f);
-    // 将图像的对比度增强
-    parse.contrast(50);
-    // 输出图像
-    ImageRenderingIntegrator imageRenderingIntegrator = new ImageRenderingIntegrator(
-            "image",
-            new ImageRenderingMarLauncher<>(parse, "C:\\Users\\zhao\\Desktop\\fsdownload\\res_6.jpg", 1)
-    );
-    if (imageRenderingIntegrator.run()) {
-      System.out.println("ok!!!");
-    }
-  }
 }
 ```
 
@@ -345,3 +433,5 @@ public class MAIN1 {
 <hr>
 
 #### date: 2022-10-15
+
+#### update date：2023-02-27

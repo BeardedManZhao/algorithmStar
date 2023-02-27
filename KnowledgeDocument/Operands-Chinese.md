@@ -85,6 +85,7 @@ public class MAIN1 {
 // scala api
 
 //import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo TODO 从1.12版本之后，包结构变更，请使用下方的导包
+
 import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo
 
 object MAIN {
@@ -166,6 +167,87 @@ public class MAIN1 {
 }
 ```
 
+## 坐标线路
+
+坐标线路对象是一个有起始与终止坐标点的线路对象，其可以表示为从起始坐标到终止坐标的线路，是基于坐标对象而实现出来的一种操作数对象，接下来将展示坐标线路的通用函数。
+
+- 接口中的函数
+
+| 函数名称                    | 函数返回值              | 函数作用                      |
+|-------------------------|--------------------|---------------------------|
+| expand()                | ImplementationType | 将一个父类身份的对象，具体化成为子类的对象。    |
+| getEndPointCoordinate() | CoordinateType     | 获取到线路对象中的终止点坐标。           |
+| getStartingCoordinate() | CoordinateType     | 获取到线路对象中的起始点坐标。           |
+| getNumberOfDimensions() | int                | 获取到线路中始末坐标的维度数量。          |
+| toDoubleVector()        | DoubleVector       | 获取到起始点坐标与终止点坐标所构造出来的向量对象。 |
+
+```java
+// Java api
+
+import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
+import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute2D;
+
+public class Test {
+
+    public static void main(String[] args) {
+        // 获取到一些坐标
+        IntegerCoordinateTwo A = new IntegerCoordinateTwo(1, 2);
+        IntegerCoordinateTwo B = new IntegerCoordinateTwo(1, 20);
+        IntegerCoordinateTwo C = new IntegerCoordinateTwo(20, 2);
+        // 构建三条线路
+        IntegerConsanguinityRoute2D AB = IntegerConsanguinityRoute2D.parse("A -> B", A, B);
+        IntegerConsanguinityRoute2D BC = IntegerConsanguinityRoute2D.parse("B -> C", B, C);
+        IntegerConsanguinityRoute2D CA = IntegerConsanguinityRoute2D.parse("C -> A", C, A);
+        // 将三条线路进行计算
+        IntegerConsanguinityRoute2D AB_BC = AB.add(BC);
+        IntegerConsanguinityRoute2D AB_CA = AB.add(CA);
+        // 打印计算结果
+        System.out.println(AB_BC);
+        System.out.println(AB_CA);
+    }
+}
+```
+
+## 坐标网络
+
+坐标网络正如名称所示，其是一个网络，由多条线路对象构建成的网络，在在这条网络当中，将会准确的记录着路线之间的关系。
+
+- 接口中的函数
+
+| 函数名称                                            | 函数返回值              | 函数作用                         |
+|-------------------------------------------------|--------------------|------------------------------|
+| expand()                                        | ImplementationType | 将一个父类身份的对象，具体化成为子类的对象。       |
+| addRoute(RouteType routeType)                   | Boolean            | 将一条线路对象添加到网络中，添加成功添加则返回true。 |
+| containsKeyFromRoute2DHashMap(String RouteName) | Boolean            | 判断一条线路是否存在与线路网络中，如哦存在返回true。 |
+| getNetDataSet()                                 | HashSet<RouteType> | 获取等到所有线路对象的集合。               |
+| getRouteCount()                                 | int                | 获取到当前网络对象中的线路对象数量。           |
+
+```java
+// Java api
+
+import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
+import zhao.algorithmMagic.operands.coordinateNet.IntegerRoute2DNet;
+import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute2D;
+
+public class Test {
+
+    public static void main(String[] args) {
+        // 获取到一些坐标
+        IntegerCoordinateTwo A = new IntegerCoordinateTwo(1, 2);
+        IntegerCoordinateTwo B = new IntegerCoordinateTwo(1, 20);
+        IntegerCoordinateTwo C = new IntegerCoordinateTwo(20, 2);
+        // 构建三条线路
+        IntegerConsanguinityRoute2D AB = IntegerConsanguinityRoute2D.parse("A -> B", A, B);
+        IntegerConsanguinityRoute2D BC = IntegerConsanguinityRoute2D.parse("B -> C", B, C);
+        IntegerConsanguinityRoute2D CA = IntegerConsanguinityRoute2D.parse("C -> A", C, A);
+        // 获取到一张线路网络，并将三条线路添加进去
+        IntegerRoute2DNet parse = IntegerRoute2DNet.parse(AB, BC, CA);
+        // 从线路网络中提取出来 BC 线路
+        System.out.println(parse.getRouteFromHashMap("B -> C"));
+    }
+}
+```
+
 ## 向量
 
 向量是两个多维坐标点之间的距离，在框架中能够用于矩阵的构造，以及各种操作算法，重要性和坐标同等，构造方式大致如下所示
@@ -201,6 +283,7 @@ public class MAIN1 {
 ### 数值矩阵
 
 数值矩阵是一种特征矩阵，其中存储的是一个个的基元数值数据类型，在机器学习库中支持整形与双精度浮点型的数值矩阵对象，在不同的场景下有不同的使用时机。
+
 ```java
 // Java api
 
@@ -248,9 +331,11 @@ public class MAIN1 {
     }
 }
 ```
+
 ### 图像矩阵
 
 图像矩阵是一种存储着图像像素点的矩阵对象，在矩阵中的每一个坐标都是一个像素，其中每一个像素的数据类型为Color，您可以调用诸多的内置图像矩阵计算函数，也可以通过 toArrays 函数直接操作图像中的每一个像素。
+
 ```java
 // Java api
 package core;
@@ -262,34 +347,34 @@ import zhao.algorithmMagic.operands.matrix.ColorMatrix;
 import java.awt.Color;
 
 public class MAIN {
-  public static void main(String[] args) {
-    // 获取到图像灰度矩阵
-    ColorMatrix parse = ColorMatrix.parseGrayscale("C:\\Users\\zhao\\Desktop\\fsdownload\\微信图片_6.jpg");
-    // 将图像中所有不属于深色的像素换为白色
-    Color color = new Color(ColorMatrix.WHITE_NUM);
-    for (Color[] colors : parse.toArrays()) {
-      for (int i = 0; i < colors.length; i++) {
-        int green = colors[i].getGreen();
-        // 这里就是分界线 深色分界线的数值需要根据图像进行设置
-        // 数值越小，去除的噪音越多，但数值过小也可能导致数据的损失
-        if (green > 100) {
-          colors[i] = color;
+    public static void main(String[] args) {
+        // 获取到图像灰度矩阵
+        ColorMatrix parse = ColorMatrix.parseGrayscale("C:\\Users\\zhao\\Desktop\\fsdownload\\微信图片_6.jpg");
+        // 将图像中所有不属于深色的像素换为白色
+        Color color = new Color(ColorMatrix.WHITE_NUM);
+        for (Color[] colors : parse.toArrays()) {
+            for (int i = 0; i < colors.length; i++) {
+                int green = colors[i].getGreen();
+                // 这里就是分界线 深色分界线的数值需要根据图像进行设置
+                // 数值越小，去除的噪音越多，但数值过小也可能导致数据的损失
+                if (green > 100) {
+                    colors[i] = color;
+                }
+            }
         }
-      }
+        // 将图像的亮度降低一点
+        parse.dimming(0.7f);
+        // 将图像的对比度增强
+        parse.contrast(50);
+        // 输出图像
+        ImageRenderingIntegrator imageRenderingIntegrator = new ImageRenderingIntegrator(
+                "image",
+                new ImageRenderingMarLauncher<>(parse, "C:\\Users\\zhao\\Desktop\\fsdownload\\res_6.jpg", 1)
+        );
+        if (imageRenderingIntegrator.run()) {
+            System.out.println("ok!!!");
+        }
     }
-    // 将图像的亮度降低一点
-    parse.dimming(0.7f);
-    // 将图像的对比度增强
-    parse.contrast(50);
-    // 输出图像
-    ImageRenderingIntegrator imageRenderingIntegrator = new ImageRenderingIntegrator(
-            "image",
-            new ImageRenderingMarLauncher<>(parse, "C:\\Users\\zhao\\Desktop\\fsdownload\\res_6.jpg", 1)
-    );
-    if (imageRenderingIntegrator.run()) {
-      System.out.println("ok!!!");
-    }
-  }
 }
 ```
 
@@ -327,3 +412,5 @@ public class MAIN1 {
 <hr>
 
 #### date: 2022-10-15
+
+#### update date：2023-02-27
