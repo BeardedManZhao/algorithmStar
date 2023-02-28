@@ -1,6 +1,7 @@
 package zhao.algorithmMagic.operands.matrix;
 
 import zhao.algorithmMagic.exception.OperatorOperationException;
+import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixSpace;
 import zhao.algorithmMagic.utils.ASIO;
 import zhao.algorithmMagic.utils.ASMath;
 
@@ -19,6 +20,7 @@ import java.util.Iterator;
 public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Color[][]> {
 
     public final static int WHITE_NUM = 0xffffff;
+    public final static short SINGLE_CHANNEL_MAXIMUM = 0xff;
     private boolean isGrayscale;
 
     /**
@@ -122,6 +124,80 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             }
         }
         return new ColorMatrix(colors.length, colors[0].length, colors, true);
+    }
+
+    /**
+     * 将一个具有三层矩阵的矩阵空间转换成为一个图像矩阵对象。
+     * <p>
+     * Convert a matrix space with a three-layer matrix into an image matrix object.
+     *
+     * @param integerMatrixSpace 需要被转换的数据矩阵，其中的三层矩阵分别为RGB通道对应的RGB矩阵对象。
+     *                           <p>
+     *                           The data matrix to be converted, the three layers of which are RGB matrix objects corresponding to RGB channels.
+     * @return 将三层矩阵的矩阵空间合并在一起的一个矩阵图像对象。
+     * <p>
+     * A matrix image object that combines the matrix space of a three-layer matrix.
+     */
+    public static ColorMatrix parse(IntegerMatrixSpace integerMatrixSpace) {
+        int n = integerMatrixSpace.getNumberOfDimensions();
+        if (n != 3) {
+            throw new OperatorOperationException("将矩阵空间转换成为图像矩阵时发生错误，需要3个通道，但是实际通道数为：" + n);
+        }
+        Color[][] colors = new Color[integerMatrixSpace.getRowCount()][integerMatrixSpace.getColCount()];
+        {        // 开始合并
+            IntegerMatrix RMat = integerMatrixSpace.get(0);
+            IntegerMatrix GMat = integerMatrixSpace.get(1);
+            IntegerMatrix BMat = integerMatrixSpace.get(2);
+            int y = -1;
+            for (Color[] color : colors) {
+                int[] reds = RMat.toArrays()[++y];
+                int[] greens = GMat.toArrays()[y];
+                int[] blues = BMat.toArrays()[y];
+                for (int i = 0; i < color.length; i++) {
+                    color[i] = new Color(
+                            reds[i] + greens[i] + blues[i]
+                    );
+                }
+            }
+        }
+        return ColorMatrix.parse(colors);
+    }
+
+    /**
+     * 以灰度图像矩阵的方式将整形矩阵中的每一个元素赋值到颜色矩阵的三通道中。
+     * <p>
+     * Each element in the shaping matrix is assigned to the three channels of the color matrix in the form of gray image matrix.
+     *
+     * @param integerMatrix 需要被转换的图像色彩整形矩阵对象。
+     *                      <p>
+     *                      The image color shaping matrix object to be converted.
+     * @param isGrayscale   如果设置为 true 则代表读取的时候直接将整形矩阵作为欸一个灰度图像进行读取，只会将一个G通道的颜色值提供给每一个像素。 入宫设置为 false 则代表正在读取的时候直接将整形矩阵中的参数作为一个RGB色度值进行转换。
+     *                      <p>
+     *                      If set to true, it means that the shaping matrix is directly read as a grayscale image when reading, and only the color value of one G channel is provided to each pixel. If the setting of "entering the palace" is false, it means that the parameters in the shaping matrix are directly converted as an RGB chroma value when reading.
+     * @return 转换之后的图像矩阵对象。
+     * <p>
+     * The converted image matrix object.
+     */
+    public static ColorMatrix parse(IntegerMatrix integerMatrix, boolean isGrayscale) {
+        Color[][] colors = new Color[integerMatrix.getRowCount()][integerMatrix.getColCount()];
+        int y = -1;
+        if (isGrayscale) {
+            for (int[] ints : integerMatrix.toArrays()) {
+                Color[] row = colors[++y];
+                for (int i = 0; i < ints.length; i++) {
+                    int anInt = ASMath.regularTricolor(ints[i]);
+                    row[i] = new Color(anInt, anInt, anInt);
+                }
+            }
+            return ColorMatrix.parse(colors);
+        }
+        for (int[] ints : integerMatrix.toArrays()) {
+            Color[] row = colors[++y];
+            for (int i = 0; i < ints.length; i++) {
+                row[i] = new Color(ints[i]);
+            }
+        }
+        return ColorMatrix.parse(colors);
     }
 
     /**
@@ -524,9 +600,9 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
                 Color[] row = colors[++y];
                 for (Color color : toArray) {
                     row[++x] = new Color(
-                            Math.min(color.getRed() + R, 0xff),
-                            Math.min(color.getGreen() + G, 0xff),
-                            Math.min(color.getBlue() + B, 0xff)
+                            Math.min(color.getRed() + R, SINGLE_CHANNEL_MAXIMUM),
+                            Math.min(color.getGreen() + G, SINGLE_CHANNEL_MAXIMUM),
+                            Math.min(color.getBlue() + B, SINGLE_CHANNEL_MAXIMUM)
                     );
                 }
             }
@@ -537,9 +613,9 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
                 int x = -1;
                 for (Color color : colors) {
                     colors[++x] = new Color(
-                            Math.min(color.getRed() + R, 0xff),
-                            Math.min(color.getGreen() + G, 0xff),
-                            Math.min(color.getBlue() + B, 0xff)
+                            Math.min(color.getRed() + R, SINGLE_CHANNEL_MAXIMUM),
+                            Math.min(color.getGreen() + G, SINGLE_CHANNEL_MAXIMUM),
+                            Math.min(color.getBlue() + B, SINGLE_CHANNEL_MAXIMUM)
                     );
                 }
             }
@@ -803,9 +879,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         Color[][] srcImage = this.toArrays();
         for (Color[] color : colors) {
             Color[] row = srcImage[y1++];
-            for (int i = 0, colorLength = color.length; i < colorLength; i++) {
-                color[i] = row[i];
-            }
+            if (color.length - x1 >= 0) System.arraycopy(row, x1, color, x1, color.length - x1);
         }
         return ColorMatrix.parse(colors);
     }

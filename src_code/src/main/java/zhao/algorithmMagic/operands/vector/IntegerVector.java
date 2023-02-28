@@ -110,7 +110,7 @@ public class IntegerVector extends ASVector<IntegerVector, Integer, int[]> {
         int count = -1;
         for (Color[] ints : colorMatrix.toArrays()) {
             for (Color anInt : ints) {
-                res[++count] = anInt.getBlue();
+                res[++count] = anInt.getGreen();
             }
         }
         return parse(res);

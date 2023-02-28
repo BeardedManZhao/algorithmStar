@@ -1,4 +1,4 @@
-package zhao.algorithmMagic.lntegrator.launcher;
+package zhao.algorithmMagic.integrator.launcher;
 
 /**
  * 图像绘制集成器对应的图像绘制启动器，您需要在其中指定图像输出目录与图像矩阵。

@@ -1,11 +1,11 @@
-package zhao.algorithmMagic.lntegrator;
+package zhao.algorithmMagic.integrator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
-import zhao.algorithmMagic.lntegrator.launcher.HashClassificationLauncher;
+import zhao.algorithmMagic.integrator.launcher.HashClassificationLauncher;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.dataContainer.SetAndValue;
 

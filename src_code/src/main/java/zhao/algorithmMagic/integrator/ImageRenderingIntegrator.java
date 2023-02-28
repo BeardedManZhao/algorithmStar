@@ -1,7 +1,7 @@
-package zhao.algorithmMagic.lntegrator;
+package zhao.algorithmMagic.integrator;
 
 import zhao.algorithmMagic.exception.OperatorOperationException;
-import zhao.algorithmMagic.lntegrator.launcher.ImageRenderingLauncher;
+import zhao.algorithmMagic.integrator.launcher.ImageRenderingLauncher;
 import zhao.algorithmMagic.operands.matrix.ColorMatrix;
 import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
 import zhao.algorithmMagic.utils.ASIO;

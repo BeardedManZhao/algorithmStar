@@ -1,4 +1,4 @@
-package zhao.algorithmMagic.lntegrator.launcher;
+package zhao.algorithmMagic.integrator.launcher;
 
 import zhao.algorithmMagic.operands.matrix.Matrix;
 

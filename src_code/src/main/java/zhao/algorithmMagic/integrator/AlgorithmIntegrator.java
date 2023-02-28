@@ -1,9 +1,9 @@
-package zhao.algorithmMagic.lntegrator;
+package zhao.algorithmMagic.integrator;
 
 /**
- * 算法继承器,是针对每一个算法的实际应用模块,这里有着针对算法的调用逻辑封装,您不需要去自己实现算法的应用.
+ * 算法集成器,是针对每一个算法的实际应用模块,这里有着针对算法的调用逻辑封装,您不需要去自己实现算法的应用.
  * <p>
- * The algorithm inheritor is the actual application module for each algorithm. There is a logical encapsulation of the calling logic for the algorithm, and you do not need to implement the application of the algorithm yourself.
+ * The algorithm integrator is the actual application module for each algorithm. There is a logical encapsulation of the calling logic for the algorithm, and you do not need to implement the application of the algorithm yourself.
  *
  * @param <AlgorithmType> 算法实现类型
  */

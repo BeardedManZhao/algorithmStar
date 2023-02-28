@@ -1,4 +1,4 @@
-package zhao.algorithmMagic.lntegrator.launcher;
+package zhao.algorithmMagic.integrator.launcher;
 
 import zhao.algorithmMagic.utils.dataContainer.SetAndValue;
 
@@ -15,7 +15,7 @@ import java.util.List;
  *                <p>
  *                The data type of the data itself. In this initiator, the smallest data unit is a data container, and there is a generic field in the data container. The field stores the really classified data. The generic ID here is the data type of the data field in the container
  */
-public interface HashClassificationLauncher<VALUE> extends zhao.algorithmMagic.lntegrator.launcher.Launcher<HashClassificationLauncher<VALUE>> {
+public interface HashClassificationLauncher<VALUE> extends zhao.algorithmMagic.integrator.launcher.Launcher<HashClassificationLauncher<VALUE>> {
 
     /**
      * 将标签与类别提供给分类集成器，在这里您应该返回一个 key为类别名称  value 为类别包含特征的集合

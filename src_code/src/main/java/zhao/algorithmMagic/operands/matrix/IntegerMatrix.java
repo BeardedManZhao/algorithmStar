@@ -602,7 +602,7 @@ public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], i
         int[][] srcImage = this.toArrays();
         for (int[] color : colors) {
             int[] row = srcImage[y1++];
-            System.arraycopy(row, 0, color, 0, color.length);
+            System.arraycopy(row, x1, color, 0, color.length);
         }
         return IntegerMatrix.parse(colors);
     }

@@ -590,9 +590,7 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
         double[][] srcImage = this.toArrays();
         for (double[] color : colors) {
             double[] row = srcImage[y1++];
-            for (int i = 0, colorLength = color.length; i < colorLength; i++) {
-                color[i] = row[i];
-            }
+            if (color.length - x1 >= 0) System.arraycopy(row, x1, color, x1, color.length - x1);
         }
         return DoubleMatrix.parse(colors);
     }

@@ -240,8 +240,8 @@ public final class ASIO {
         if (hasAlphaChannel) {
             final int pixelLength = 4;
             for (int pixel = 0, row = 0, col = 0; pixel < pixels.length; pixel += pixelLength) {
-                RMat[row][col] = ((int) pixels[pixel + 3] & 0xff) << 16;
-                GMat[row][col] = ((int) pixels[pixel + 2] & 0xff) << 8;
+                RMat[row][col] = ((int) pixels[pixel + 3] & 0xff);
+                GMat[row][col] = ((int) pixels[pixel + 2] & 0xff);
                 BMat[row][col] = (int) pixels[pixel + 1] & 0xff;
                 col++;
                 if (col == width) {
@@ -252,8 +252,8 @@ public final class ASIO {
         } else {
             final int pixelLength = 3;
             for (int pixel = 0, row = 0, col = 0; pixel < pixels.length; pixel += pixelLength) {
-                RMat[row][col] = ((int) pixels[pixel + 2] & 0xff) << 16;
-                GMat[row][col] = ((int) pixels[pixel + 1] & 0xff) << 8;
+                RMat[row][col] = ((int) pixels[pixel + 2] & 0xff);
+                GMat[row][col] = ((int) pixels[pixel + 1] & 0xff);
                 BMat[row][col] = (int) pixels[pixel] & 0xff;
                 col++;
                 if (col == width) {

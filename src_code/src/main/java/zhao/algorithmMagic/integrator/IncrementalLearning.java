@@ -1,4 +1,4 @@
-package zhao.algorithmMagic.lntegrator;
+package zhao.algorithmMagic.integrator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -6,7 +6,7 @@ import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
-import zhao.algorithmMagic.lntegrator.launcher.IncrementalLearningLauncher;
+import zhao.algorithmMagic.integrator.launcher.IncrementalLearningLauncher;
 import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateMany;
 import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateMany;
 import zhao.algorithmMagic.operands.vector.DoubleVector;
