@@ -1,10 +1,12 @@
 package zhao.algorithmMagic.operands.matrix.block;
 
 import zhao.algorithmMagic.exception.OperatorOperationException;
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
 import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
 import zhao.algorithmMagic.utils.ASIO;
 import zhao.algorithmMagic.utils.ASMath;
 
+import java.awt.*;
 import java.util.Arrays;
 import java.util.Iterator;
 
@@ -261,6 +263,30 @@ public class IntegerMatrixSpace extends MatrixSpace<IntegerMatrixSpace, Integer,
             res = res.add(ints);
         }
         return res;
+    }
+
+    public final ColorMatrix foldingAndSumRGB(int width, int height, IntegerMatrixSpace weightMat) {
+        if (this.getNumberOfDimensions() != 3) {
+            throw new OperatorOperationException("合并RGB图像矩阵失败，您的矩阵空间没有3层通道。");
+        }
+        IntegerMatrixSpace folding = folding(width, height, weightMat);
+        // 合并三层通道的色彩数值
+        int[][] redMat = folding.get(0).toArrays();
+        int[][] greenMat = folding.get(1).toArrays();
+        int[][] blueMat = folding.get(2).toArrays();
+        Color[][] colors = new Color[folding.getRowCount()][folding.getColCount()];
+        int y = -1;
+        for (Color[] color : colors) {
+            int[] r = redMat[++y];
+            int[] g = greenMat[y];
+            int[] b = blueMat[y];
+            for (int i = 0; i < color.length; i++) {
+                color[i] = new Color(
+                        ASMath.regularTricolor(r[i]), ASMath.regularTricolor(g[i]), ASMath.regularTricolor(b[i])
+                );
+            }
+        }
+        return ColorMatrix.parse(colors);
     }
 
     @Override

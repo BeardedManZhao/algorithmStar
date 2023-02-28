@@ -5,6 +5,7 @@ import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixSpace;
 import zhao.algorithmMagic.utils.ASIO;
 import zhao.algorithmMagic.utils.ASMath;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -914,6 +915,65 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             Color[] colors1_row = colors1[y1++];
             System.arraycopy(colors, 0, colors1_row, x1, length);
         }
+    }
+
+    /**
+     * 将图像矩阵展示出来，使得在矩阵的图像数据能够被展示出来。
+     * <p>
+     * Display the image matrix so that the image data in the matrix can be displayed.
+     *
+     * @param title 展示图像时，图像窗口对应的标题。
+     *              <p>
+     *              The title corresponding to the image window when displaying the image.
+     */
+    public final void show(String title) {
+        show(title, this.getColCount(), this.getRowCount());
+    }
+
+    /**
+     * 将图像矩阵展示出来，使得在矩阵的图像数据能够被展示出来。
+     * <p>
+     * Display the image matrix so that the image data in the matrix can be displayed.
+     *
+     * @param title  展示图像时，图像窗口对应的标题。
+     *               <p>
+     *               The title corresponding to the image window when displaying the image.
+     * @param width  展示图像时，图像窗口的宽度。
+     *               <p>
+     *               The width of the image window when displaying the image.
+     * @param height 展示图象时，图像窗口的高度。
+     *               <p>
+     *               The height of the image window when displaying the image.
+     */
+    public final void show(String title, int width, int height) {
+        JFrame jFrame = new JFrame();
+        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        jFrame.setSize(width, height);
+        jFrame.setVisible(true);
+        jFrame.setTitle(title);
+        jFrame.setBackground(new Color(WHITE_NUM));
+        jFrame.setResizable(true);
+        ImageIcon imageIcon = new ImageIcon(jFrame.createVolatileImage(this.getColCount(), this.getRowCount()));
+        Image image = imageIcon.getImage();
+        {
+            Graphics graphics = image.getGraphics();
+            // 开始绘制图形
+            int yc = -1;
+            for (Color[] colors : this.toArrays()) {
+                ++yc;
+                int xc = -1;
+                for (Color color : colors) {
+                    graphics.setColor(color);
+                    graphics.fillRect(++xc, yc, 1, 1);
+                }
+            }
+        }
+        JLabel label = new JLabel(imageIcon);//往一个标签中加入图片
+        label.setVisible(true);
+        label.setBounds(0, 0, jFrame.getWidth(), jFrame.getHeight());//设置标签位置大小，记得大小要和窗口一样大
+        imageIcon.setImage(image.getScaledInstance(label.getWidth(), label.getHeight(), Image.SCALE_DEFAULT));//图片自适应窗口大小
+        jFrame.getLayeredPane().add(label, Integer.valueOf(Integer.MIN_VALUE));//标签添加到层面板
+        jFrame.add(label);
     }
 
     /**
