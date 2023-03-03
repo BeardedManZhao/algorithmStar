@@ -14,6 +14,7 @@ import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute;
 import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute2D;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 /**
@@ -306,4 +307,18 @@ public final class ASClass {
     public static void array2DCopy(Object[][] src, Object[][] dest) {
         System.arraycopy(src, 0, dest, 0, Math.min(src.length, dest.length));
     }
+
+    /**
+     * 将一个数组中的 元素与索引 以 KV 的形式拷贝到 HashMap
+     *
+     * @param RowOrColIndex HashMap对象
+     * @param RowOrColData  被拷贝的数据
+     */
+    public static void extractedIndexMap(HashMap<String, Integer> RowOrColIndex, String[] RowOrColData) {
+        int indexNum = -1;
+        for (String s : RowOrColData) {
+            RowOrColIndex.put(s, ++indexNum);
+        }
+    }
+
 }

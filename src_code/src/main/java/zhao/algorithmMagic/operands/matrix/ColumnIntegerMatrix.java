@@ -4,6 +4,7 @@ import zhao.algorithmMagic.core.ASDynamicLibrary;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.operands.RCNOperands;
 import zhao.algorithmMagic.operands.vector.IntegerVector;
+import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASMath;
 import zhao.algorithmMagic.utils.dataContainer.IntegerAndInts;
 
@@ -19,6 +20,8 @@ import java.util.*;
 public class ColumnIntegerMatrix extends IntegerMatrix implements RCNOperands<IntegerVector, int[]> {
     private final String[] Field1;
     private final String[] Field2;
+    private final HashMap<String, Integer> rowIndex;
+    private final HashMap<String, Integer> colIndex;
 
     /**
      * 构造一个具有列名属性的整形矩阵
@@ -34,20 +37,28 @@ public class ColumnIntegerMatrix extends IntegerMatrix implements RCNOperands<In
             if (rowNames != null && rowNames.length > 0) {
                 if (rowNames.length == ints.length) {
                     Field2 = rowNames;
+                    // 构造行索引
+                    rowIndex = new HashMap<>(Field2.length);
+                    ASClass.extractedIndexMap(rowIndex, Field2);
                 } else {
                     throw new OperatorOperationException("构造字段矩阵时需要注意字段名的数量与字段数据的列数一一对应！！！ERROR =>  RowField.length = " + rowNames.length + "\tints.rowCount = " + ints.length);
                 }
             } else {
                 Field2 = new String[0];
+                rowIndex = new HashMap<>();
             }
             if (colNames != null && colNames.length > 0) {
                 if (colNames.length == length) {
                     Field1 = colNames;
+                    // 构造列索引
+                    colIndex = new HashMap<>(Field1.length);
+                    ASClass.extractedIndexMap(colIndex, Field1);
                 } else {
                     throw new OperatorOperationException("构造字段矩阵时需要注意字段名的数量与字段数据的列数一一对应！！！ERROR =>  ColField.length = " + colNames.length + "\tints.colCount = " + length);
                 }
             } else {
                 Field1 = new String[0];
+                colIndex = new HashMap<>();
             }
         } else {
             throw new OperatorOperationException("The array of construction matrix cannot be empty");
@@ -319,14 +330,11 @@ public class ColumnIntegerMatrix extends IntegerMatrix implements RCNOperands<In
      */
     @Override
     public int[] getArrayByRowName(String name) {
-        int index = 0;
-        for (String s : this.Field2) {
-            if (s.equals(name)) {
-                return getArrayByRowIndex(index);
-            }
-            ++index;
+        Integer index = rowIndex.get(name);
+        if (index == null) {
+            throw new OperatorOperationException("No rows found" + name);
         }
-        return new int[0];
+        return getArrayByRowIndex(index);
     }
 
     /**
@@ -343,14 +351,11 @@ public class ColumnIntegerMatrix extends IntegerMatrix implements RCNOperands<In
      */
     @Override
     public int[] getArrayByColName(String name) {
-        int index = 0;
-        for (String s : this.Field1) {
-            if (s.equals(name)) {
-                return getArrayByColIndex(index);
-            }
-            ++index;
+        Integer index = colIndex.get(name);
+        if (index == null) {
+            throw new OperatorOperationException("No columns found" + name);
         }
-        return new int[0];
+        return getArrayByColIndex(colIndex.get(name));
     }
 
     /**
@@ -425,6 +430,7 @@ public class ColumnIntegerMatrix extends IntegerMatrix implements RCNOperands<In
      * Objects after disruption.
      */
     public ColumnIntegerMatrix shuffle(Random random1, boolean copy, int length) {
+        length = Math.min(getRowCount(), length);
         // 行是否无字段
         if (this.Field2.length == 0) {
             return ColumnIntegerMatrix.parse(
@@ -436,18 +442,26 @@ public class ColumnIntegerMatrix extends IntegerMatrix implements RCNOperands<In
             int[][] res;
             String[] rowNames;
             if (!copy) {
-                res = this.toArrays();
                 rowNames = this.Field2;
+                res = this.toArrays();
+                // 生成随机数对象
+                int maxIndex = res.length - 1;
+                for (int i = 0; i < length; i++) {
+                    ex(random1, res, rowNames, maxIndex, i);
+                }
+                // 字段发生变化了，重新构建索引
+                ASClass.extractedIndexMap(rowIndex, Field2);
+                return this;
             } else {
                 res = this.copyToNewArrays();
                 rowNames = this.Field2.clone();
+                // 生成随机数对象
+                int maxIndex = res.length - 1;
+                for (int i = 0; i < length; i++) {
+                    ex(random1, res, rowNames, maxIndex, i);
+                }
+                return ColumnIntegerMatrix.parse(this.Field1.clone(), rowNames, res);
             }
-            // 生成随机数对象
-            int maxIndex = res.length - 1;
-            for (int i = 0; i < length; i++) {
-                ex(random1, res, rowNames, maxIndex, i);
-            }
-            return ColumnIntegerMatrix.parse(this.Field1.clone(), rowNames, res);
         }
     }
 
@@ -477,6 +491,8 @@ public class ColumnIntegerMatrix extends IntegerMatrix implements RCNOperands<In
         } else {
             if (this.Field2.length != 0) {
                 ASMath.leftShift(this.Field2, n);
+                // 字段发生变化了，重新构建索引
+                ASClass.extractedIndexMap(rowIndex, this.Field2);
             }
             ASMath.leftShift(this.toArrays(), n);
             return this;
@@ -509,6 +525,8 @@ public class ColumnIntegerMatrix extends IntegerMatrix implements RCNOperands<In
         } else {
             if (this.Field2.length != 0) {
                 ASMath.rightShift(this.Field2, n);
+                // 字段发生变化了，重新构建索引
+                ASClass.extractedIndexMap(rowIndex, this.Field2);
             }
             ASMath.rightShift(this.toArrays(), n);
             return this;

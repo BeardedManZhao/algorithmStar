@@ -66,5 +66,46 @@ public class MAIN1 {
         parse.show("image");
     }
 }
-```****
+```
+
+* Optimize the algorithm of maximum random scrambling times in the random scrambling function shuffle, so that it will
+  not have out-of-bounds exceptions.
+* Optimize the function logic of random access to data in the matrix through column names, and use hash to map
+  addresses.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.matrix.ColumnDoubleMatrix;
+
+import java.util.Arrays;
+import java.util.Random;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 构建一份矩阵数据
+        double[][] data = new double[][]{
+                new double[]{10, 11, 14, 10, 100},
+                new double[]{11, 11, 14, 10, 100},
+                new double[]{25, 20, 28, 20, 100},
+                new double[]{26, 20, 28, 20, 100}
+        };
+        // 将矩阵数据使用指定列与行名称的方式创建出来
+        ColumnDoubleMatrix columnDoubleMatrix = ColumnDoubleMatrix.parse(
+                new String[]{"col1", "col2", "col3", "col4", "col5"},
+                new String[]{"row1", "row2", "row3", "row4"},
+                data
+        );
+        // 使用不创建新矩阵的方式打乱其中的数据顺序 且最多打乱 10 次
+        columnDoubleMatrix.shuffle(new Random(), false, 10);
+        // 打印出矩阵数据
+        System.out.println(columnDoubleMatrix);
+        // 打印出矩阵中的 col2 列 在新版中该函数采取哈希实现 速度提升很明显
+        System.out.println(Arrays.toString(columnDoubleMatrix.getArrayByColName("col2")));
+        // 打印出矩阵中的 row2 行 在新版中该函数采取哈希实现 速度提升很明显
+        System.out.println(Arrays.toString(columnDoubleMatrix.getArrayByRowName("row2")));
+    }
+}
+```
+
 ### Version update date : xx xx-xx-xx
