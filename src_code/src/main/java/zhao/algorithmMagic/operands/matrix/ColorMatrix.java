@@ -912,8 +912,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         y1 = Math.min(y1, this.getRowCount() - 1);
         int length = colorMatrix.getColCount();
         for (Color[] colors : colorMatrix.toArrays()) {
-            Color[] colors1_row = colors1[y1++];
-            System.arraycopy(colors, 0, colors1_row, x1, length);
+            System.arraycopy(colors, 0, colors1[y1++], x1, length);
         }
     }
 

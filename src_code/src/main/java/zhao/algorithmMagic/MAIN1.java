@@ -9,6 +9,6 @@ public class MAIN1 {
         parse.show("image");
         Thread.sleep(1024);
         parse.colorReversal(false);
-        parse.show("image");
+        parse.show("image1");
     }
 }
