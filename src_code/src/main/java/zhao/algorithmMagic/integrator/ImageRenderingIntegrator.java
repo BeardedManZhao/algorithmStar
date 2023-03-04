@@ -78,8 +78,7 @@ public final class ImageRenderingIntegrator implements AlgorithmIntegrator<Image
             }
         }
         // 输出图片
-        ASIO.outImage(image, outFilePath);
-        return true;
+        return ASIO.outImage(image, outFilePath);
     }
 
     /**
@@ -127,8 +126,7 @@ public final class ImageRenderingIntegrator implements AlgorithmIntegrator<Image
             }
         }
         // 输出图片
-        ASIO.outImage(image, outFilePath);
-        return true;
+        return ASIO.outImage(image, outFilePath);
     }
 
     @Override

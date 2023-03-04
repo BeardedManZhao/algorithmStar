@@ -1,6 +1,7 @@
 package zhao.algorithmMagic.operands.matrix;
 
 import zhao.algorithmMagic.exception.OperatorOperationException;
+import zhao.algorithmMagic.integrator.ImageRenderingIntegrator;
 import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixSpace;
 import zhao.algorithmMagic.utils.ASIO;
 import zhao.algorithmMagic.utils.ASMath;
@@ -930,6 +931,22 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
     }
 
     /**
+     * 将图像保存到指定的数据输出路径，如果输出成功将不会发生异常！
+     * <p>
+     * Save the image to the specified data output path. If the output succeeds, no exception will occur!
+     *
+     * @param outPath 图像输出路径，需要是一个文件路径的字符串。
+     *                <p>
+     *                The image output path needs to be a string of file path.
+     */
+    public final void save(String outPath) {
+        if (!ImageRenderingIntegrator.draw(outPath, this.toArrays(), this.getColCount(), this.getRowCount(), 1, false)) {
+            throw new OperatorOperationException("图像在保存时发生了错误，可能是写文件错误。\nAn error occurred while saving the image. It may be a writing file error.\nERROR => " +
+                    outPath);
+        }
+    }
+
+    /**
      * 将图像矩阵展示出来，使得在矩阵的图像数据能够被展示出来。
      * <p>
      * Display the image matrix so that the image data in the matrix can be displayed.
@@ -945,6 +962,9 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      *               The height of the image window when displaying the image.
      */
     public final void show(String title, int width, int height) {
+        int colCount = this.getColCount();
+        int rowCount = this.getRowCount();
+        boolean needCorrection = colCount != width || rowCount != height;
         JFrame jFrame = new JFrame();
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jFrame.setSize(width, height);
@@ -952,7 +972,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         jFrame.setTitle(title);
         jFrame.setBackground(new Color(WHITE_NUM));
         jFrame.setResizable(true);
-        ImageIcon imageIcon = new ImageIcon(jFrame.createVolatileImage(this.getColCount(), this.getRowCount()));
+        ImageIcon imageIcon = new ImageIcon(jFrame.createVolatileImage(colCount, rowCount));
         Image image = imageIcon.getImage();
         {
             Graphics graphics = image.getGraphics();
@@ -970,7 +990,9 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         JLabel label = new JLabel(imageIcon);//往一个标签中加入图片
         label.setVisible(true);
         label.setBounds(0, 0, jFrame.getWidth(), jFrame.getHeight());//设置标签位置大小，记得大小要和窗口一样大
-        imageIcon.setImage(image.getScaledInstance(label.getWidth(), label.getHeight(), Image.SCALE_DEFAULT));//图片自适应窗口大小
+        if (needCorrection) {
+            imageIcon.setImage(image.getScaledInstance(label.getWidth(), label.getHeight(), Image.SCALE_DEFAULT));//图片自适应窗口大小
+        }
         jFrame.getLayeredPane().add(label, Integer.valueOf(Integer.MIN_VALUE));//标签添加到层面板
         jFrame.add(label);
     }

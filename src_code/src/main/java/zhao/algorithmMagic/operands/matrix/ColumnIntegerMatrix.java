@@ -332,7 +332,7 @@ public class ColumnIntegerMatrix extends IntegerMatrix implements RCNOperands<In
     public int[] getArrayByRowName(String name) {
         Integer index = rowIndex.get(name);
         if (index == null) {
-            throw new OperatorOperationException("No rows found" + name);
+            throw new OperatorOperationException("No rows found " + name);
         }
         return getArrayByRowIndex(index);
     }
@@ -353,7 +353,7 @@ public class ColumnIntegerMatrix extends IntegerMatrix implements RCNOperands<In
     public int[] getArrayByColName(String name) {
         Integer index = colIndex.get(name);
         if (index == null) {
-            throw new OperatorOperationException("No columns found" + name);
+            throw new OperatorOperationException("No columns found " + name);
         }
         return getArrayByColIndex(colIndex.get(name));
     }
@@ -591,5 +591,18 @@ public class ColumnIntegerMatrix extends IntegerMatrix implements RCNOperands<In
             ASMath.arrayReverse(this.getRowFieldNames());
             return this;
         }
+    }
+
+    /**
+     * 刷新操作数对象的所有字段
+     */
+    @Override
+    protected void reFresh() {
+        if (this.Field1.length != 0) {
+            ASClass.extractedIndexMap(colIndex, this.Field1);
+        } else colIndex.clear();
+        if (this.Field2.length != 0) {
+            ASClass.extractedIndexMap(rowIndex, this.Field2);
+        } else rowIndex.clear();
     }
 }

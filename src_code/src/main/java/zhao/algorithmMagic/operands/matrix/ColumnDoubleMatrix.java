@@ -596,4 +596,17 @@ public class ColumnDoubleMatrix extends DoubleMatrix implements RCNOperands<Doub
             return this;
         }
     }
+
+    /**
+     * 刷新操作数对象的所有字段
+     */
+    @Override
+    protected void reFresh() {
+        if (this.Field1.length != 0) {
+            ASClass.extractedIndexMap(colIndex, this.Field1);
+        } else colIndex.clear();
+        if (this.Field2.length != 0) {
+            ASClass.extractedIndexMap(rowIndex, this.Field2);
+        } else rowIndex.clear();
+    }
 }
