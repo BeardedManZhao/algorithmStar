@@ -8,6 +8,8 @@ import zhao.algorithmMagic.utils.ASMath;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Iterator;
 
@@ -19,7 +21,7 @@ import java.util.Iterator;
  * @author 赵凌宇
  * 2023/2/9 20:59
  */
-public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Color[][]> {
+public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Color[][]> implements SaveMatrix {
 
     public final static int WHITE_NUM = 0xffffff;
     public final static short SINGLE_CHANNEL_MAXIMUM = 0xff;
@@ -944,6 +946,52 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             throw new OperatorOperationException("图像在保存时发生了错误，可能是写文件错误。\nAn error occurred while saving the image. It may be a writing file error.\nERROR => " +
                     outPath);
         }
+    }
+
+    /**
+     * 将矩阵使用指定分隔符保存到文件系统的指定路径的文件中。
+     * <p>
+     * Save the matrix to a file in the specified path of the file system using the specified separator.
+     *
+     * @param path 需要保存的目录路径。
+     *             <p>
+     *             Directory path to save.
+     * @param sep  保存时使用的分隔符。
+     *             <p>
+     */
+    @Override
+    public void save(String path, char sep) {
+        save(new File(path), sep);
+    }
+
+    /**
+     * 将矩阵使用指定分隔符保存到文件系统的指定路径的文件中。
+     * <p>
+     * Save the matrix to a file in the specified path of the file system using the specified separator.
+     *
+     * @param path 需要保存的目录路径。
+     *             <p>
+     *             Directory path to save.
+     * @param sep  保存时使用的分隔符。
+     *             <p>
+     */
+    @Override
+    public void save(File path, char sep) {
+        ASIO.writer(path, (stream) -> {
+            try {
+                int rowCount = 0;
+                for (Color[] colors : this.toArrays()) {
+                    stream.write(String.valueOf(++rowCount));
+                    for (Color color : colors) {
+                        stream.write(sep);
+                        stream.write(String.valueOf(color.getRGB()));
+                    }
+                    stream.newLine();
+                }
+            } catch (IOException e) {
+                throw new OperatorOperationException("Write data exception!", e);
+            }
+        });
     }
 
     /**

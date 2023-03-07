@@ -5,9 +5,12 @@ import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.operands.RCNOperands;
 import zhao.algorithmMagic.operands.vector.IntegerVector;
 import zhao.algorithmMagic.utils.ASClass;
+import zhao.algorithmMagic.utils.ASIO;
 import zhao.algorithmMagic.utils.ASMath;
 import zhao.algorithmMagic.utils.dataContainer.IntegerAndInts;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -17,7 +20,7 @@ import java.util.*;
  *
  * @author zhao
  */
-public class ColumnIntegerMatrix extends IntegerMatrix implements RCNOperands<IntegerVector, int[]> {
+public class ColumnIntegerMatrix extends IntegerMatrix implements RCNOperands<IntegerVector, int[]>, SaveMatrix {
     private final String[] Field1;
     private final String[] Field2;
     private final HashMap<String, Integer> rowIndex;
@@ -604,5 +607,71 @@ public class ColumnIntegerMatrix extends IntegerMatrix implements RCNOperands<In
         if (this.Field2.length != 0) {
             ASClass.extractedIndexMap(rowIndex, this.Field2);
         } else rowIndex.clear();
+    }
+
+    /**
+     * 将矩阵对象使用不同的处理方式保存到指定的路径中。
+     * <p>
+     * Save the matrix object to the specified path using different processing methods.
+     *
+     * @param path 目标文件所在路径。
+     *             <p>
+     *             Directory path to save.
+     */
+    @Override
+    public void save(String path) {
+        save(path, ',');
+    }
+
+    /**
+     * 将矩阵使用指定分隔符保存到文件系统的指定路径的文件中。
+     * <p>
+     * Save the matrix to a file in the specified path of the file system using the specified separator.
+     *
+     * @param path 需要保存的目录路径。
+     *             <p>
+     *             Directory path to save.
+     * @param sep  保存时使用的分隔符。
+     *             <p>
+     */
+    @Override
+    public void save(String path, char sep) {
+        save(new File(path), sep);
+    }
+
+    /**
+     * 将矩阵使用指定分隔符保存到文件系统的指定路径的文件中。
+     * <p>
+     * Save the matrix to a file in the specified path of the file system using the specified separator.
+     *
+     * @param path 需要保存的目录路径。
+     *             <p>
+     *             Directory path to save.
+     * @param sep  保存时使用的分隔符。
+     *             <p>
+     */
+    @Override
+    public void save(File path, char sep) {
+        ASIO.writer(path, stream -> {
+            int rowCount = -1;
+            try {
+                // 输出列
+                stream.write("colName");
+                for (String colName : this.Field1) {
+                    stream.write(sep);
+                    stream.write(colName);
+                }
+                stream.newLine();
+                for (int[] ints : this.toArrays()) {
+                    stream.write(this.Field2[++rowCount]);
+                    for (int aInt : ints) {
+                        stream.write(sep);
+                        stream.write(String.valueOf(aInt));
+                    }
+                }
+            } catch (IOException e) {
+                throw new OperatorOperationException("Write data exception!", e);
+            }
+        });
     }
 }

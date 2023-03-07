@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.*;
+import java.util.function.Consumer;
 
 /**
  * Java类于 2022/10/15 14:43:22 创建
@@ -39,6 +40,29 @@ public final class ASIO {
         }
     }
 
+    /**
+     * 写文本数据的工具函数，该函数将有效的管理数据流。
+     *
+     * @param path      文本数据输出路径
+     * @param voidTrans 文本数据输出使用输出逻辑
+     */
+    public static void writer(File path, Consumer<BufferedWriter> voidTrans) {
+        BufferedWriter bufferedWriter = null;
+        try {
+            bufferedWriter = new BufferedWriter(new FileWriter(path));
+            voidTrans.accept(bufferedWriter);
+        } catch (IOException e) {
+            throw new OperatorOperationException("The target file may be a directory, or the data stream cannot be opened because it does not have write permission.", e);
+        } finally {
+            if (bufferedWriter != null) {
+                try {
+                    bufferedWriter.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 
     /**
      * 将一个byte数组输出到指定的路径

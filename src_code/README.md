@@ -130,4 +130,23 @@ public class MAIN1 {
 }
 ```
 
+* The "SaveMatrix" interface is added. All matrices that implement this interface can be saved in structured or
+  unstructured way.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+
+public class MAIN1 {
+    public static void main(String[] args) throws InterruptedException {
+        String s1 = "C:\\Users\\Liming\\Desktop\\fsdownload\\微信图片_2.jpg";
+        // 获取到图像矩阵对象
+        ColorMatrix parse = ColorMatrix.parse(s1);
+        // 输出图像RGB文本数据
+        parse.save("C:\\Users\\Liming\\Desktop\\fsdownload\\res1234.csv", ',');
+    }
+}
+```
+
 ### Version update date : xx xx-xx-xx
