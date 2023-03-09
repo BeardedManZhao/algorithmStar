@@ -1,5 +1,7 @@
 package zhao.algorithmMagic.utils;
 
+import zhao.algorithmMagic.operands.table.Cell;
+
 /**
  * 事件函数接口，该事件用于概率等操作，在概率中，可通过该函数得出符合事件的对象数值，然后利用该数值对序列中所有数值的数量进行作商，也是计算概率时候的随机变量。
  * <p>
@@ -10,5 +12,10 @@ package zhao.algorithmMagic.utils;
  *                Determine if it matches the data type of the event
  */
 public interface Event<value> {
+    /**
+     * 过滤数值类型为数值的单元格对象。
+     */
+    Event<Cell<?>> NUM_TRUE = Cell::isNumber;
+
     boolean isComplianceEvents(value v);
 }

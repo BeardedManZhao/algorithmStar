@@ -14,6 +14,20 @@ import java.util.HashSet;
 public final class ASStr {
 
     /**
+     * 检查字符串是否符合数值类型
+     *
+     * @param data 需要被检查的字符串
+     * @return 检查之后的结果数值。
+     */
+    public static boolean checkIsNum(String data) {
+        for (int i = 0; i < data.length(); i++) {
+            char c = data.charAt(i);
+            if ((c < 48 && c != '.') || c > 57) return false;
+        }
+        return true;
+    }
+
+    /**
      * 统计某个字符出现的次数
      *
      * @param StringToBeCounted 被统计的字符串
