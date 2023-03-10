@@ -58,7 +58,7 @@ public class FinalCell<valueType> implements Cell<valueType> {
     @Override
     public int getIntValue() {
         if (isNumber()) {
-            return (Integer) this.valueType;
+            return ((Number) this.valueType).intValue();
         } else {
             throw new OperatorOperationException("您在尝试将一个非数值的单元格按照整数的方式提取，这是不允许的。\nYou are trying to extract a non-numeric cell as an integer, which is not allowed.");
         }
@@ -72,7 +72,7 @@ public class FinalCell<valueType> implements Cell<valueType> {
     @Override
     public double getDoubleValue() {
         if (isNumber()) {
-            return (Double) this.valueType;
+            return ((Number) this.valueType).doubleValue();
         } else {
             throw new OperatorOperationException("您在尝试将一个非数值的单元格按照整数的方式提取，这是不允许的。\nYou are trying to extract a non-numeric cell as an integer, which is not allowed.");
         }

@@ -407,6 +407,130 @@ public class MAIN1 {
 }
 ```
 
+## Table
+
+Table 是AS库中用于进行数据分析的数据对象，其表现形式属于一张表，具有行列索引，能够实现方便的数据处理任务，在AS库中通过DataFrame对象就可以实现数据的加载与处理。
+
+### DataFrameBuilder 与 DataFrame
+
+DataFrameBuilder 与 DataFrame 分别用于数据的加载与数据的分析操作，在数据的加载过程中可以通过 DataFameBuilder 数据对象快捷同时容易理解的函数构造出一个DataFrame，并使用DataFrame进行数据的处理。
+
+DataFrame 简称 "DF" 在数据的处理阶段，诸多函数采用SQL风格设计，能够有效降低学习成本，使得精力专注于更重要的事情上，接下来展示下 DataFrameBuilder 的基本使用。
+
+#### 使用 FDataFrame 加载数据
+- 读取数据库
+  在AS库中您可以将数据加载成为 FDataFrame 数据对象，该对象能够实现基本的数据读取与数据处理功能，能够实现有效的数据管控，您可以将数据库中的数据加载成为一个 FDataFrame ，接下来就是有关数据库数据加载的代码示例。
+  - 需要注意的是，在读取数据库的时候请在项目中导入 JDBC 的驱动类。
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.table.*;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class MAIN1 {
+  public static void main(String[] args) throws SQLException {
+    // 准备数据库连接对象
+    Connection connection = DriverManager.getConnection("jdbc:mysql://192.168.0.101:38243/tq_SCHOOL", "liming", "liming7887");
+    // 将数据库数据对象加载成 FDF
+    DataFrame execute = FDataFrame.builder(connection) // 指定数据库连接
+            .create("*") // 指定查询字段
+            .from("STU_FIVE") // 指定查询表
+            .where(" name = '赵凌宇' ") // 指定查询条件
+            .primaryKey(0) // 指定内存AS表的主键（AS会自动建立行索引）数据库查询需要使用索引指定哦！
+            .execute();// 开始查询
+    // 打印出 FDF 中的数据
+    System.out.println(execute);
+  }
+}
+```
+- 读取文件系统
+  针对文件系统的读取，FDataFrame 是可以轻松做到本地文件系统读取的，不需要依赖任何的第三方库就可以实现文件系统的读取，接下来就实现一下具体的步骤！
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.table.DataFrame;
+import zhao.algorithmMagic.operands.table.FDataFrame;
+
+import java.io.File;
+import java.sql.SQLException;
+import java.util.Objects;
+
+public class MAIN1 {
+  public static void main(String[] args) {
+    // 准备文件对象
+    File file = new File("C:\\Users\\zhao\\Desktop\\out\\res1.csv");
+    // 使用 FDF 加载文件
+    DataFrame execute1 = FDataFrame.builder(file)
+            // 文件对象的读取需要指定文本分隔符
+            .setSep(',')
+            // 文件对象需要指定好列名称，不能使用 * 这里代表的不是查询，而是创建一个DF的列字段
+            .create("id", "name", "sex")
+            // 文件对象需要使用lambda表达式进行数据的过滤
+            .where(v -> Objects.equals(v.getCell(1).getStringValue(), "赵凌宇"))
+            // 文件对象的主键指定允许使用列名称
+            .primaryKey("name")
+            // 执行查询
+            .execute();
+    // 打印出结果数据
+    System.out.println(execute1);
+  }
+}
+```
+#### 综合案例
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.table.*;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class MAIN1 {
+  public static void main(String[] args) throws SQLException {
+    // 准备数据库连接对象
+    Connection connection = DriverManager.getConnection("jdbc:mysql://192.168.0.101:38243/tq_SCHOOL", "liming", "liming7887");
+    // 将数据库数据对象加载成 FDF
+    DataFrame execute = FDataFrame.builder(connection) // 指定数据库连接
+            .create("*") // 指定查询字段
+            .from("STU_FIVE") // 指定查询表
+            .primaryKey(0) // 指定内存AS表的主键（AS会自动建立行索引）数据库查询需要使用索引指定哦！
+            .execute();// 开始查询
+    // 打印出 FDF 中的数据
+    System.out.println(execute);
+
+    // 开始查询 FDF
+    // 正序打印出 FDF 中 所有name长度为3的人员中男女生的人数 打印出前 3 行数据
+    DataFrame select = execute
+            .select("name", "sex") // 查询其中的 name sex 列
+            .where(v -> v.getCell(0).getStringValue().length() == 3) // 获取到其中的名字长度为 3 的数据行
+            .groupBy("sex") // 按照 sex 列分组
+            .agg(series -> {
+              StringBuilder stringBuilder = new StringBuilder();
+              // 在这里合并名字
+              for (Series cells : series) {
+                stringBuilder.append(cells.getCell(0).getStringValue()).append(' ');
+              }
+              return new FinalSeries(
+                      // 第一列是名字合并的字符串
+                      new FinalCell<>(stringBuilder.toString()),
+                      // 第二列是性别字段，也是分组字段，这里的所有Series的性别字段都是一样的，因此取第一个Series的第二列就好
+                      new FinalCell<>(series.get(0).getCell(1))
+              );
+            });// 将每一组的人员名字合并 性别原样输出
+    // 打印出结果
+    System.out.println(select);
+  }
+}
+
+```
+
 - Switch to [English Document](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Operands.md)
 
 <hr>

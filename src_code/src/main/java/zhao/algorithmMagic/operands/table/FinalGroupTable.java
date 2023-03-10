@@ -1,27 +1,41 @@
 package zhao.algorithmMagic.operands.table;
 
-import scala.Array;
 import zhao.algorithmMagic.utils.transformation.Transformation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
+ * 分组数据集表，在该表中能够将每一个组对应的数据行展示出来，将每一个分组数据对应的数据集保存下来并进行各种数据处理的计算。
+ * <p>
+ * The grouping data set table, in which the data row corresponding to each group can be displayed, the data set corresponding to each grouping data can be saved and various data processing calculations can be performed.
+ *
  * @author 赵凌宇
- * @date 2023/3/9 14:58
+ * 2023/3/9 14:58
  */
-public class FinalGroupTable implements GroupDataFrameData{
+public class FinalGroupTable implements GroupDataFrameData {
 
     private final HashMap<String, DataFrame> hashMap;
+    private final Cell<?> groupKey;
+    private final Series colNameRow;
 
+    /**
+     * 构造一个分组表数据，该表用于存储一个分组之后的新数据表，在新数据表张能够进行诸多的按组聚合需求与操作。
+     *
+     * @param colNameRow   被分组表的字段名称行数据。
+     * @param primaryIndex 被分组表的主键字段列索引数值，从0开始计算。
+     * @param index        被分组表中的分组字段索引数值，从0开始计算。
+     * @param dataFrame    需要被分组的表数据对象。
+     */
     public FinalGroupTable(Series colNameRow, int primaryIndex, int index, DataFrame dataFrame) {
         HashMap<String, ArrayList<Series>> hashMap1 = new HashMap<>();
         // 开始按照 index 进行分组
         for (Series cells : dataFrame) {
             String key = cells.getCell(index).getStringValue();
             ArrayList<Series> arrayLists = hashMap1.get(key);
-            if (arrayLists == null){
+            if (arrayLists == null) {
                 arrayLists = new ArrayList<>();
                 arrayLists.add(cells);
                 hashMap1.put(key, arrayLists);
@@ -32,6 +46,8 @@ public class FinalGroupTable implements GroupDataFrameData{
             hashMap.put(key, new FDataFrame(colNameRow, primaryIndex, value.toArray(new Series[0])));
             value.clear();
         });
+        groupKey = colNameRow.getCell(index);
+        this.colNameRow = colNameRow;
     }
 
     /**
@@ -45,7 +61,14 @@ public class FinalGroupTable implements GroupDataFrameData{
      */
     @Override
     public FDataFrame count() {
-        return null;
+        Series[] series = new Series[hashMap.size()];
+        int index = -1;
+        for (Map.Entry<String, DataFrame> entry : this.hashMap.entrySet()) {
+            series[++index] = new FinalSeries(
+                    new FinalCell<>(entry.getKey()), entry.getValue().count()
+            );
+        }
+        return new FDataFrame(new FinalSeries(this.groupKey, new FinalCell<>("count()")), 0, series);
     }
 
     /**
@@ -59,7 +82,14 @@ public class FinalGroupTable implements GroupDataFrameData{
      */
     @Override
     public FDataFrame sum() {
-        return null;
+        Series[] series = new Series[hashMap.size()];
+        int index = -1;
+        for (Map.Entry<String, DataFrame> entry : this.hashMap.entrySet()) {
+            series[++index] = new FinalSeries(
+                    new FinalCell<>(entry.getKey()), entry.getValue().sum()
+            );
+        }
+        return new FDataFrame(new FinalSeries(this.groupKey, new FinalCell<>("sum()")), 0, series);
     }
 
     /**
@@ -73,7 +103,14 @@ public class FinalGroupTable implements GroupDataFrameData{
      */
     @Override
     public FDataFrame avg() {
-        return null;
+        Series[] series = new Series[hashMap.size()];
+        int index = -1;
+        for (Map.Entry<String, DataFrame> entry : this.hashMap.entrySet()) {
+            series[++index] = new FinalSeries(
+                    new FinalCell<>(entry.getKey()), entry.getValue().avg()
+            );
+        }
+        return new FDataFrame(new FinalSeries(this.groupKey, new FinalCell<>("avg()")), 0, series);
     }
 
     /**
@@ -90,6 +127,11 @@ public class FinalGroupTable implements GroupDataFrameData{
      */
     @Override
     public FDataFrame agg(Transformation<List<Series>, Series> transformation) {
-        return null;
+        Series[] series = new Series[hashMap.size()];
+        int index = -1;
+        for (Map.Entry<String, DataFrame> entry : this.hashMap.entrySet()) {
+            series[++index] = entry.getValue().agg(transformation);
+        }
+        return new FDataFrame(this.colNameRow, 0, series);
     }
 }

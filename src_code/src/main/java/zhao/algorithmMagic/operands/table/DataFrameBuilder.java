@@ -56,6 +56,18 @@ public interface DataFrameBuilder {
     DataFrameBuilder where(String whereClause);
 
     /**
+     * 在进行文件系统数据获取的啥时候需要使用的过滤条件，需要注意的时，如果当前的读取模式为 文件系统 那么该函数才可用。
+     * <p>
+     * The filter conditions to be used when obtaining file system data should be noted that this function is only available if the current read mode is file system.
+     *
+     * @param whereClause 文件系统数据读取时的需要使用的过滤语句。
+     *                    <p>
+     *                    The filter statement to be used when reading file system data.
+     * @return 链式调用
+     */
+    DataFrameBuilder where(Condition whereClause);
+
+    /**
      * 准备好数据的查询之后指定查询。
      *
      * @return 经过查询之后返回的数据对象。

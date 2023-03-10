@@ -68,7 +68,7 @@ public interface DataFrame extends AggDataFrameData, Iterable<Series> {
      * @param colName 需要被用来进行分组的字段数据
      * @return 分组之后的数据对象
      */
-    GroupTable groupBy(String colName);
+    GroupDataFrameData groupBy(String colName);
 
     /**
      * 将数据集进行切片操作，并返回经过切片之后的新数据集结果对象。
@@ -97,12 +97,25 @@ public interface DataFrame extends AggDataFrameData, Iterable<Series> {
      * Slice the dataset and return the new dataset result object after slicing.
      *
      * @param startRowName 切分数据开始位置的行主键名称，请注意这里是表主键位
-     * @param EndRowName
-     * @return
+     * @param EndRowName   需要被切分的截止行主键名称，请注意这里是表主键位
+     * @return 经过切分之后返回的新数据集
      */
     DataFrame limit(String startRowName, String EndRowName);
 
+    /**
+     * 将计算结果输出到指定的目录的文本文件中。
+     *
+     * @param outPath 需要被输出的目录
+     * @return 输出之后会返回数据集本身，不会终止调用。
+     */
     DataFrame into_outfile(String outPath);
 
+    /**
+     * 将计算结果输出到指定的目录的文本文件中。
+     *
+     * @param outPath 需要被输出的目录
+     * @param sep     在输出的时候需要使用的指定的文件单元格分隔符字符串。
+     * @return 输出之后会返回数据集本身，不会终止调用。
+     */
     DataFrame into_outfile(String outPath, String sep);
 }

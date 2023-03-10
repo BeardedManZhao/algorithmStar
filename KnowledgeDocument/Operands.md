@@ -71,7 +71,7 @@ public class MAIN1 {
         // print two coordinates
         System.out.println(doubleCoordinateMany1);
         System.out.println(doubleCoordinateMany2);
-        // For multi-dimensional coordinates, we have no way to obtain them one by one, but we can use a method that all coordinates have, that is, to obtain an array of coordinate sequences
+        // For multidimensional coordinates, we have no way to obtain them one by one, but we can use a method that all coordinates have, that is, to obtain an array of coordinate sequences
         double[] doubles1 = doubleCoordinateMany1.toArray();
         double[] doubles2 = doubleCoordinateMany2.toArray();
         for (int i = 0; i < doubles1.length; i++) {
@@ -426,6 +426,128 @@ public class MAIN1 {
         ComplexNumber conjugate = parse1.conjugate();
     }
 }
+```
+## Table
+
+Table is the data object used for data analysis in the AS database. Its representation is a table with row and column indexes, which can realize convenient data processing tasks. Data can be loaded and processed in the AS database through the DataFrame object.
+
+### DataFrameBuilder & DataFrame
+
+DataFrameBuilder and DataFrame are used for data loading and data analysis respectively. In the process of data loading, a DataFrame can be constructed through DataFameBuilder data object fast and easy to understand functions, and the DataFrame can be used for data processing.
+DataFrame is called "DF" for short. In the data processing stage, many functions are designed in SQL style, which can effectively reduce learning costs and focus on more important things. Next, we will show the basic use of DataFrameBuilder.
+
+#### Load data using FDataFrame
+-Read Database
+  In the AS database, you can load data into an FDataFrame data object, which can realize basic data reading and data processing functions, and effective data control. You can load data in the database into an FDataFrame. Next is the code example about database data loading.
+    -It should be noted that when reading the database, please import the JDBC driver class in the project.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.table.*;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class MAIN1 {
+  public static void main(String[] args) throws SQLException {
+    // 准备数据库连接对象
+    Connection connection = DriverManager.getConnection("jdbc:mysql://192.168.0.101:38243/tq_SCHOOL", "liming", "liming7887");
+    // 将数据库数据对象加载成 FDF
+    DataFrame execute = FDataFrame.builder(connection) // 指定数据库连接
+            .create("*") // 指定查询字段
+            .from("STU_FIVE") // 指定查询表
+            .where(" name = '赵凌宇' ") // 指定查询条件
+            .primaryKey(0) // 指定内存AS表的主键（AS会自动建立行索引）数据库查询需要使用索引指定哦！
+            .execute();// 开始查询
+    // 打印出 FDF 中的数据
+    System.out.println(execute);
+  }
+}
+```
+-Read file system
+  For the reading of the file system, FDataFrame can easily read the local file system without relying on any third-party library. Next, we will implement the specific steps!
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.table.DataFrame;
+import zhao.algorithmMagic.operands.table.FDataFrame;
+
+import java.io.File;
+import java.sql.SQLException;
+import java.util.Objects;
+
+public class MAIN1 {
+  public static void main(String[] args) {
+    // 准备文件对象
+    File file = new File("C:\\Users\\zhao\\Desktop\\out\\res1.csv");
+    // 使用 FDF 加载文件
+    DataFrame execute1 = FDataFrame.builder(file)
+            // 文件对象的读取需要指定文本分隔符
+            .setSep(',')
+            // 文件对象需要指定好列名称，不能使用 * 这里代表的不是查询，而是创建一个DF的列字段
+            .create("id", "name", "sex")
+            // 文件对象需要使用lambda表达式进行数据的过滤
+            .where(v -> Objects.equals(v.getCell(1).getStringValue(), "赵凌宇"))
+            // 文件对象的主键指定允许使用列名称
+            .primaryKey("name")
+            // 执行查询
+            .execute();
+    // 打印出结果数据
+    System.out.println(execute1);
+  }
+}
+```
+#### Comprehensive case
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.table.*;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class MAIN1 {
+  public static void main(String[] args) throws SQLException {
+    // 准备数据库连接对象
+    Connection connection = DriverManager.getConnection("jdbc:mysql://192.168.0.101:38243/tq_SCHOOL", "liming", "liming7887");
+    // 将数据库数据对象加载成 FDF
+    DataFrame execute = FDataFrame.builder(connection) // 指定数据库连接
+            .create("*") // 指定查询字段
+            .from("STU_FIVE") // 指定查询表
+            .primaryKey(0) // 指定内存AS表的主键（AS会自动建立行索引）数据库查询需要使用索引指定哦！
+            .execute();// 开始查询
+    // 打印出 FDF 中的数据
+    System.out.println(execute);
+
+    // 开始查询 FDF
+    // 正序打印出 FDF 中 所有name长度为3的人员中男女生的人数 打印出前 3 行数据
+    DataFrame select = execute
+            .select("name", "sex") // 查询其中的 name sex 列
+            .where(v -> v.getCell(0).getStringValue().length() == 3) // 获取到其中的名字长度为 3 的数据行
+            .groupBy("sex") // 按照 sex 列分组
+            .agg(series -> {
+              StringBuilder stringBuilder = new StringBuilder();
+              // 在这里合并名字
+              for (Series cells : series) {
+                stringBuilder.append(cells.getCell(0).getStringValue()).append(' ');
+              }
+              return new FinalSeries(
+                      // 第一列是名字合并的字符串
+                      new FinalCell<>(stringBuilder.toString()),
+                      // 第二列是性别字段，也是分组字段，这里的所有Series的性别字段都是一样的，因此取第一个Series的第二列就好
+                      new FinalCell<>(series.get(0).getCell(1))
+              );
+            });// 将每一组的人员名字合并 性别原样输出
+    // 打印出结果
+    System.out.println(select);
+  }
+}
+
 ```
 
 - 切换到 [中文文档](https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/Operands-Chinese.md)

@@ -11,6 +11,10 @@ import java.sql.Connection;
 import java.util.*;
 
 /**
+ * Final数据集对象，在该对象中，被添加之后的数据将是不可变的数据类型，在这些数据类型中您可以直接使用DSL编程将数据进行处理。
+ * <p>
+ * Final data set object. In this object, the added data will be immutable data types. In these data types, you can directly use DSL programming to process the data.
+ *
  * @author 赵凌宇
  * 2023/3/8 11:26
  */
@@ -31,7 +35,7 @@ public class FDataFrame implements DataFrame {
         refreshField();
     }
 
-    public FDataFrame(Series colNameRow, ArrayList<Series> arrayList, int primaryIndex) {
+    public FDataFrame(Series colNameRow, int primaryIndex, ArrayList<Series> arrayList) {
         list = arrayList;
         this.colNameRow = colNameRow;
         colHashMap = new HashMap<>(colNameRow.count().getIntValue() + 4);
@@ -40,16 +44,30 @@ public class FDataFrame implements DataFrame {
         refreshField();
     }
 
+    /**
+     * 从本地文件系统中读取一个数据对象，并返回对应数据对象的建造者类。
+     *
+     * @param file 需要被读取的文件对象。
+     * @return 读取之后会返回该数据集对应的一个建造者对象，在该对象中可以对读取操作进行更加详细的设置，
+     */
     public static FDataFrameBuilder builder(File file) {
         return new FDataFrameBuilder(file);
     }
 
+    /**
+     * 从远程数据库中读取一个数据对象，并返回数据对象对应的建造者类。
+     *
+     * @param DBC 在连接数据库时需要使用的数据库连接对象。
+     * @return 数据库连接设置完毕将会返回一个建造者对象，在该对象中可以对读取数据库操作进行更加详细的设置。
+     */
     public static FDataFrameBuilder builder(Connection DBC) {
         return new FDataFrameBuilder(DBC);
     }
 
     /**
-     * 刷新字段数据。
+     * 刷新字段数据，在数据集中包含针对行列字段名称构建的索引Hash表，在hash表中的字段时可以进行刷新的，经过刷新之后，原先的字段将不会消失，而是与新字段共同指向同一个数据行，一般来说，不更改行字段的情况下将不会调用该函数。
+     * <p>
+     * Refresh field data. The data set contains an index hash table built for row and column field names. The fields in the hash table can be refreshed. After refreshing, the original fields will not disappear, but point to the same data row with the new fields. Generally speaking, this function will not be called without changing the row fields.
      */
     private void refreshField() {
         int index = -1;
@@ -102,8 +120,8 @@ public class FDataFrame implements DataFrame {
                 strings2[++index] = cell.isNumber() ? "YES" : "No";
             }
             // 开始将所有列主键信息添加到其中。
-            for (int i = 1, ok1 = primaryIndex + 2, ok2 = ok1 + 1; i < strings3.length; i++) {
-                strings3[i] = i == ok1 || i == ok2 ? "Yes" : "No";
+            for (int i = 1, ok1 = primaryIndex + 3; i < strings3.length; i++) {
+                strings3[i] = i == ok1 || i == 2 ? "Yes" : "No";
             }
         }
         // 开始生成数据
@@ -148,7 +166,7 @@ public class FDataFrame implements DataFrame {
             }
             arrayList.add(new FinalSeries(arrayList1.toArray(new Cell[0])));
         }
-        return new FDataFrame(FinalSeries.parse(colNames), arrayList, primaryIndex);
+        return new FDataFrame(FinalSeries.parse(colNames), primaryIndex, arrayList);
     }
 
     /**
@@ -230,11 +248,13 @@ public class FDataFrame implements DataFrame {
     }
 
     @Override
-    public GroupTable groupBy(String colName) {
+    public GroupDataFrameData groupBy(String colName) {
         // 获取到对应列字段的索引数值
-        int colIndex = this.rowHashMap.get(colName);
-        // 将这列所有的数据都进行处理
-        return null;
+        Integer colIndex = this.colHashMap.get(colName);
+        if (colIndex != null) {
+            // 将这列所有的数据都进行处理
+            return new FinalGroupTable(colNameRow, primaryIndex, colIndex, this);
+        } else throw new OperatorOperationException("Unknown line: " + colName);
     }
 
     @Override
@@ -244,19 +264,14 @@ public class FDataFrame implements DataFrame {
 
     @Override
     public DataFrame limit(int start, int len) {
+        if (start + len > this.list.size()) {
+            len = this.list.size() - start;
+        }
         Series[] series = new Series[len];
         int index = -1;
         List<Series> seriesList = this.list;
-        boolean isOk = false;
-        for (int i = 0, seriesListSize = seriesList.size(); ++index < len && i < seriesListSize; i++) {
-            if (isOk) {
-                series[index] = seriesList.get(i);
-            } else {
-                if (index == start) {
-                    series[index] = seriesList.get(i);
-                    isOk = true;
-                }
-            }
+        for (int i = start, seriesListSize = seriesList.size(); ++index < len && i < seriesListSize; i++) {
+            series[index] = seriesList.get(i);
         }
         return new FDataFrame(this.colNameRow, this.primaryIndex, series);
     }
@@ -267,7 +282,7 @@ public class FDataFrame implements DataFrame {
         if (integer != null) {
             Integer integer1 = this.rowHashMap.get(EndRowName);
             if (integer1 != null) {
-                return limit(Math.min(integer, integer1), ASMath.absoluteValue(integer1 - integer));
+                return limit(Math.min(integer, integer1), ASMath.absoluteValue(integer1 - integer) + 1);
             } else throw new OperatorOperationException("Unknown line: " + EndRowName);
         } else throw new OperatorOperationException("Unknown line: " + startRowName);
     }
@@ -329,22 +344,27 @@ public class FDataFrame implements DataFrame {
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         StringBuilder split = new StringBuilder();
+        String s;
         {
             split.append('+');
+            stringBuilder.append('|');
             for (Cell<?> cell : this.colNameRow) {
                 stringBuilder.append('\t').append('\t').append(cell.getValue());
                 split.append("---------------");
             }
-            split.append('+');
-            stringBuilder.append('\n').append(split).append('\n');
+            split.append('+').append('\n');
+            s = split.toString();
+            stringBuilder.append('\n').append(s);
         }
         for (Series cells : this.list) {
+            stringBuilder.append('|');
             for (Cell<?> cell : cells) {
-                stringBuilder.append('\t').append('\t').append(cell.getValue());
+                stringBuilder.append('\t').append('|').append('\t').append(cell.getValue());
             }
             stringBuilder.append('\n');
         }
-        return stringBuilder.toString();
+        stringBuilder.append(s);
+        return s + stringBuilder;
     }
 
     /**

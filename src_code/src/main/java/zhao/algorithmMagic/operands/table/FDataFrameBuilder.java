@@ -179,6 +179,7 @@ public class FDataFrameBuilder implements DataFrameBuilder {
      *                    The filter statement to be used when reading file system data.
      * @return 链式调用
      */
+    @Override
     public DataFrameBuilder where(Condition whereClause) {
         if (this.inMode == Mode.FILESYSTEM) {
             this.whereFS = whereClause;
@@ -220,7 +221,7 @@ public class FDataFrameBuilder implements DataFrameBuilder {
                     }
                     arrayList.add(new FinalSeries(row.toArray(new Cell[0])));
                 }
-                return new FDataFrame(this.colNames, arrayList, primaryIndex);
+                return new FDataFrame(this.colNames, primaryIndex, arrayList);
             } catch (SQLException e) {
                 throw new OperatorOperationException(e);
             }
@@ -241,7 +242,7 @@ public class FDataFrameBuilder implements DataFrameBuilder {
                         arrayList.add(parse);
                     }
                 }
-                return new FDataFrame(this.colNames, arrayList, primaryIndex);
+                return new FDataFrame(this.colNames, primaryIndex, arrayList);
             } catch (IOException e) {
                 throw new OperatorOperationException(e);
             }
