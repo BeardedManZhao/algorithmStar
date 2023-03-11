@@ -1,12 +1,14 @@
 package zhao.algorithmMagic.operands.table;
 
+import java.io.Serializable;
+
 /**
  * 单元格数据类型，该数据类型被 Multi-type 矩阵所使用，并进行相对应的处理与操作。
  *
  * @author 赵凌宇
  * 2023/3/7 21:32
  */
-public interface Cell<valueType> {
+public interface Cell<valueType> extends Serializable {
 
     /**
      * @return 获取到当前单元格中的数据是否属于数值类型，如果返回 true 代表当前单元格中存储的是一个数值类型的数据。

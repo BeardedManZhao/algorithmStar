@@ -68,7 +68,8 @@ public class FinalGroupTable implements GroupDataFrameData {
                     new FinalCell<>(entry.getKey()), entry.getValue().count()
             );
         }
-        return new FDataFrame(new FinalSeries(this.groupKey, new FinalCell<>("count()")), 0, series);
+        return new FDataFrame(new FinalSeries(this.groupKey, FieldCell.$("count()")), 0, series)
+                .refreshField(true, true);
     }
 
     /**
@@ -89,7 +90,8 @@ public class FinalGroupTable implements GroupDataFrameData {
                     new FinalCell<>(entry.getKey()), entry.getValue().sum()
             );
         }
-        return new FDataFrame(new FinalSeries(this.groupKey, new FinalCell<>("sum()")), 0, series);
+        return new FDataFrame(new FinalSeries(this.groupKey, FieldCell.$("sum()")), 0, series)
+                .refreshField(true, true);
     }
 
     /**
@@ -110,7 +112,8 @@ public class FinalGroupTable implements GroupDataFrameData {
                     new FinalCell<>(entry.getKey()), entry.getValue().avg()
             );
         }
-        return new FDataFrame(new FinalSeries(this.groupKey, new FinalCell<>("avg()")), 0, series);
+        return new FDataFrame(new FinalSeries(this.groupKey, FieldCell.$("avg()")), 0, series)
+                .refreshField(true, true);
     }
 
     /**
@@ -132,6 +135,7 @@ public class FinalGroupTable implements GroupDataFrameData {
         for (Map.Entry<String, DataFrame> entry : this.hashMap.entrySet()) {
             series[++index] = entry.getValue().agg(transformation);
         }
-        return new FDataFrame(this.colNameRow, 0, series);
+        return new FDataFrame(this.colNameRow, 0, series)
+                .refreshField(true, true);
     }
 }

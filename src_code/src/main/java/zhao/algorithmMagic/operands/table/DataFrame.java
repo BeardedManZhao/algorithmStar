@@ -1,5 +1,7 @@
 package zhao.algorithmMagic.operands.table;
 
+import java.io.Serializable;
+
 /**
  * 该数据类型是一种表结构的数据类型，其是所有表数据的父类，其应能够实现诸多的计算函数。
  * <p>
@@ -8,7 +10,14 @@ package zhao.algorithmMagic.operands.table;
  * @author 赵凌宇
  * 2023/3/8 10:46
  */
-public interface DataFrame extends AggDataFrameData, Iterable<Series> {
+public interface DataFrame extends AggDataFrameData, Iterable<Series>, Serializable {
+
+    /**
+     * 获取到当前表中的字段对象。
+     *
+     * @return 字段对象序列
+     */
+    Series getFields();
 
     /**
      * 获取到当前表中的字段信息与表信息。
@@ -28,6 +37,14 @@ public interface DataFrame extends AggDataFrameData, Iterable<Series> {
      * @return 查询出指定列数据的DF表。
      */
     DataFrame select(String... colNames);
+
+    /**
+     * 获取到当前表中的指定列字段数据。
+     *
+     * @param colNames 所有需要被获取的列数据，需要注意的是，在这里不允许使用 * 哦！
+     * @return 查询出指定列数据的DF表。
+     */
+    DataFrame select(FieldCell... colNames);
 
     /**
      * 查询当前表中的指定行字段数据。
@@ -96,8 +113,12 @@ public interface DataFrame extends AggDataFrameData, Iterable<Series> {
      * <p>
      * Slice the dataset and return the new dataset result object after slicing.
      *
-     * @param startRowName 切分数据开始位置的行主键名称，请注意这里是表主键位
-     * @param EndRowName   需要被切分的截止行主键名称，请注意这里是表主键位
+     * @param startRowName 切分数据开始位置的行主键名称，请注意这里是表主键位。
+     *                     <p>
+     *                     The name of the row primary key at the beginning of the split data. Please note that this is the table primary key
+     * @param EndRowName   需要被切分的截止行主键名称，请注意这里是表主键位。
+     *                     <p>
+     *                     The primary key name of the end row to be split. Please note that this is the table primary key
      * @return 经过切分之后返回的新数据集
      */
     DataFrame limit(String startRowName, String EndRowName);
@@ -113,7 +134,7 @@ public interface DataFrame extends AggDataFrameData, Iterable<Series> {
     /**
      * 将计算结果输出到指定的目录的文本文件中。
      *
-     * @param outPath 需要被输出的目录
+     * @param outPath 需要被输出的目录.
      * @param sep     在输出的时候需要使用的指定的文件单元格分隔符字符串。
      * @return 输出之后会返回数据集本身，不会终止调用。
      */

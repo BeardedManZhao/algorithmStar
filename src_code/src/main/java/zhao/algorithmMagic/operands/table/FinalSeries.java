@@ -19,7 +19,7 @@ import java.util.stream.Stream;
  * @author 赵凌宇
  * 2023/3/7 22:01
  */
-public final class FinalSeries implements Series {
+public class FinalSeries implements Series {
     private final Cell<?>[] cells;
     private final Cell<Integer> length;
 

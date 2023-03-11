@@ -35,18 +35,25 @@ public class FinalCell<valueType> implements Cell<valueType> {
         this.isNumber = isNumber1;
     }
 
+
+    @SuppressWarnings("unchecked")
+    protected FinalCell(String string, boolean isNumber) {
+        this.valueType = (valueType) string;
+        this.isNumber = isNumber;
+    }
+
     /**
      * @return 获取到当前单元格中的数据是否属于数值类型，如果返回 true 代表当前单元格中存储的是一个数值类型的数据。
      * <p>
      * Gets whether the data in the current cell is of numerical type. If true is returned, it means that the data stored in the current cell is of numerical type.
      */
     @Override
-    public boolean isNumber() {
+    public final boolean isNumber() {
         return isNumber;
     }
 
     @Override
-    public valueType getValue() {
+    public final valueType getValue() {
         return valueType;
     }
 
@@ -56,7 +63,7 @@ public class FinalCell<valueType> implements Cell<valueType> {
      * The integer numeric type stored in the current cell. This operation will not return the original object.
      */
     @Override
-    public int getIntValue() {
+    public final int getIntValue() {
         if (isNumber()) {
             return ((Number) this.valueType).intValue();
         } else {
@@ -70,7 +77,7 @@ public class FinalCell<valueType> implements Cell<valueType> {
      * The Double numeric type stored in the current cell. This operation will not return the original object.
      */
     @Override
-    public double getDoubleValue() {
+    public final double getDoubleValue() {
         if (isNumber()) {
             return ((Number) this.valueType).doubleValue();
         } else {
@@ -84,7 +91,7 @@ public class FinalCell<valueType> implements Cell<valueType> {
      * The String numeric type stored in the current cell. This operation will not return the original object.
      */
     @Override
-    public String getStringValue() {
+    public final String getStringValue() {
         return this.valueType.toString();
     }
 

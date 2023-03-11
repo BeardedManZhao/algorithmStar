@@ -32,7 +32,6 @@ public class FDataFrame implements DataFrame {
         this.colNameRow = colNameRow;
         colHashMap = new HashMap<>(colNameRow.count().getIntValue() + 4);
         rowHashMap = new HashMap<>(series.length + 4);
-        refreshField();
     }
 
     public FDataFrame(Series colNameRow, int primaryIndex, ArrayList<Series> arrayList) {
@@ -41,7 +40,6 @@ public class FDataFrame implements DataFrame {
         colHashMap = new HashMap<>(colNameRow.count().getIntValue() + 4);
         rowHashMap = new HashMap<>(arrayList.size() + 4);
         this.primaryIndex = primaryIndex;
-        refreshField();
     }
 
     /**
@@ -69,15 +67,31 @@ public class FDataFrame implements DataFrame {
      * <p>
      * Refresh field data. The data set contains an index hash table built for row and column field names. The fields in the hash table can be refreshed. After refreshing, the original fields will not disappear, but point to the same data row with the new fields. Generally speaking, this function will not be called without changing the row fields.
      */
-    private void refreshField() {
+    FDataFrame refreshField(boolean rr, boolean rc) {
         int index = -1;
-        for (Cell<?> cell : this.colNameRow) {
-            colHashMap.put(cell.getStringValue(), ++index);
+        if (rc) {
+            for (Cell<?> cell : this.colNameRow) {
+                colHashMap.put(cell.toString(), ++index);
+                colHashMap.put(cell.getStringValue(), index);
+            }
         }
-        index = -1;
-        for (Series cells : this.list) {
-            rowHashMap.put(cells.getCell(primaryIndex).getStringValue(), ++index);
+        if (rr) {
+            index = -1;
+            for (Series cells : this.list) {
+                rowHashMap.put(cells.getCell(primaryIndex).getStringValue(), ++index);
+            }
         }
+        return this;
+    }
+
+    /**
+     * 获取到当前表中的字段对象。
+     *
+     * @return 字段对象序列
+     */
+    @Override
+    public Series getFields() {
+        return this.colNameRow;
     }
 
     /**
@@ -135,7 +149,7 @@ public class FDataFrame implements DataFrame {
                         new FinalCell<>(this.list.size()),
                         this.colNameRow.count()
                 )
-        );
+        ).refreshField(true, true);
     }
 
     /**
@@ -166,7 +180,47 @@ public class FDataFrame implements DataFrame {
             }
             arrayList.add(new FinalSeries(arrayList1.toArray(new Cell[0])));
         }
-        return new FDataFrame(FinalSeries.parse(colNames), primaryIndex, arrayList);
+        // 计算出新的主键索引列
+        int pk = 0;
+        {
+            // 获取到主键列名称
+            String s = this.colNameRow.getCell(primaryIndex).toString();
+            int index1 = -1;
+            // 查看新列中是否包含主键
+            for (String colName : colNames) {
+                ++index1;
+                if (Objects.equals(s, colName)) {
+                    // 如果包含，则代表新列的新主键找到了
+                    pk = index1;
+                    break;
+                }
+            }
+        }
+        return new FDataFrame(FieldCell.parse(colNames), pk, arrayList).refreshField(false, true);
+    }
+
+    /**
+     * 获取到当前表中的指定列字段数据。
+     *
+     * @param colNames 所有需要被获取的列数据，需要注意的是，在这里不允许使用 * 哦！
+     * @return 查询出指定列数据的DF表。
+     */
+    @Override
+    public DataFrame select(FieldCell... colNames) {
+        // 将别名尽量转换成为列名称
+        String[] res = new String[colNames.length];
+        int index = -1;
+        for (FieldCell colName : colNames) {
+            FieldCell byAs = FieldCell.getByAs(
+                    colName.getStringValue()
+            );
+            if (byAs == null) {
+                res[++index] = FieldCell.$(colName.getStringValue()).getStringValue();
+            } else {
+                res[++index] = byAs.getStringValue();
+            }
+        }
+        return select(res);
     }
 
     /**
@@ -184,7 +238,8 @@ public class FDataFrame implements DataFrame {
                 arrayList.add(this.list.get(integer));
             }
         }
-        return new FDataFrame(this.colNameRow, primaryIndex, arrayList.toArray(new Series[0]));
+        return new FDataFrame(this.colNameRow, primaryIndex, arrayList.toArray(new Series[0]))
+                .refreshField(true, false);
     }
 
     /**
@@ -199,7 +254,8 @@ public class FDataFrame implements DataFrame {
         for (Series cells : this.list) {
             if (whereClause.isComplianceEvents(cells)) arrayList.add(cells);
         }
-        return new FDataFrame(this.colNameRow, this.primaryIndex, arrayList.toArray(new Series[0]));
+        return new FDataFrame(this.colNameRow, this.primaryIndex, arrayList.toArray(new Series[0]))
+                .refreshField(true, false);
     }
 
     @Override
@@ -244,7 +300,8 @@ public class FDataFrame implements DataFrame {
         }
         // 开始重新排序
         treeSet.addAll(this.list);
-        return new FDataFrame(this.colNameRow, this.primaryIndex, treeSet.toArray(new Series[0]));
+        return new FDataFrame(this.colNameRow, this.primaryIndex, treeSet.toArray(new Series[0]))
+                .refreshField(true, false);
     }
 
     @Override
@@ -273,7 +330,8 @@ public class FDataFrame implements DataFrame {
         for (int i = start, seriesListSize = seriesList.size(); ++index < len && i < seriesListSize; i++) {
             series[index] = seriesList.get(i);
         }
-        return new FDataFrame(this.colNameRow, this.primaryIndex, series);
+        return new FDataFrame(this.colNameRow, this.primaryIndex, series)
+                .refreshField(true, false);
     }
 
     @Override
@@ -348,8 +406,8 @@ public class FDataFrame implements DataFrame {
         {
             split.append('+');
             stringBuilder.append('|');
-            for (Cell<?> cell : this.colNameRow) {
-                stringBuilder.append('\t').append('\t').append(cell.getValue());
+            for (Cell<?> cell : this.getFields()) {
+                stringBuilder.append('\t').append('\t').append(cell);
                 split.append("---------------");
             }
             split.append('+').append('\n');

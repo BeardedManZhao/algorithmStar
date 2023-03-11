@@ -59,11 +59,12 @@ public class FDataFrameBuilder implements DataFrameBuilder {
     }
 
     public FDataFrameBuilder setColNames(String[] colNames) {
-        ArrayList<Cell<String>> colNameRow = new ArrayList<>(colNames.length);
+        FieldCell[] fieldCells = new FieldCell[colNames.length];
+        int index = -1;
         for (String colNamesF : colNames) {
-            colNameRow.add(new FinalCell<>(colNamesF));
+            fieldCells[++index] = FieldCell.$(colNamesF);
         }
-        this.colNames = new FinalSeries(colNameRow.toArray(new Cell[0]));
+        this.colNames = new FinalSeries(fieldCells);
         return this;
     }
 
@@ -209,7 +210,7 @@ public class FDataFrameBuilder implements DataFrameBuilder {
                     for (int i = 0; i < fields.length; ) {
                         fields[i] = metaData.getColumnName(++i);
                     }
-                    this.colNames = FinalSeries.parse(fields);
+                    this.colNames = FieldCell.parse(fields);
                 }
                 ResultSet resultSet = preparedStatement.executeQuery();
                 int columnCount = resultSet.getMetaData().getColumnCount();
@@ -221,7 +222,8 @@ public class FDataFrameBuilder implements DataFrameBuilder {
                     }
                     arrayList.add(new FinalSeries(row.toArray(new Cell[0])));
                 }
-                return new FDataFrame(this.colNames, primaryIndex, arrayList);
+                return new FDataFrame(this.colNames, primaryIndex, arrayList)
+                        .refreshField(true, true);
             } catch (SQLException e) {
                 throw new OperatorOperationException(e);
             }
@@ -242,7 +244,8 @@ public class FDataFrameBuilder implements DataFrameBuilder {
                         arrayList.add(parse);
                     }
                 }
-                return new FDataFrame(this.colNames, primaryIndex, arrayList);
+                return new FDataFrame(this.colNames, primaryIndex, arrayList)
+                        .refreshField(true, true);
             } catch (IOException e) {
                 throw new OperatorOperationException(e);
             }
