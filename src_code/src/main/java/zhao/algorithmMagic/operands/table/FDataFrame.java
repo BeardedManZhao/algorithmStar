@@ -120,6 +120,12 @@ public class FDataFrame implements DataFrame {
         // 第三行是所有字段在原数据表是否为主键
         String[] strings3 = new String[length];
         strings3[0] = "row_is_PrimaryKey";
+        // 第四行是所有字段的别名
+        String[] strings4 = new String[length];
+        strings4[0] = "Alias of this field";
+        strings4[1] = strings1[1];
+        strings4[2] = strings1[2];
+        strings4[3] = strings1[3];
         if (this.list.size() > 0) {
             // 获取到第一行数据，用于计算列数据情况
             Series cells = this.list.get(0);
@@ -128,6 +134,7 @@ public class FDataFrame implements DataFrame {
             // 开始将所有列名添加到其中 同时将所有列是否为数值类型添加到其中
             for (Cell<?> cell : this.colNameRow) {
                 strings1[++index] = cell.getStringValue();
+                strings4[index] = cell.toString();
             }
             index = 3;
             for (Cell<?> cell : cells) {
@@ -148,7 +155,8 @@ public class FDataFrame implements DataFrame {
                         new FinalCell<>("valueData_Number"),
                         new FinalCell<>(this.list.size()),
                         this.colNameRow.count()
-                )
+                ),
+                FinalSeries.parse(strings4)
         ).refreshField(true, true);
     }
 
@@ -343,6 +351,39 @@ public class FDataFrame implements DataFrame {
                 return limit(Math.min(integer, integer1), ASMath.absoluteValue(integer1 - integer) + 1);
             } else throw new OperatorOperationException("Unknown line: " + EndRowName);
         } else throw new OperatorOperationException("Unknown line: " + startRowName);
+    }
+
+    /**
+     * 将一个数据行插入到表中。
+     *
+     * @param rowSeries 需要被插入的数据行
+     * @return 插入之后的数据
+     */
+    @Override
+    public DataFrame insert(Series rowSeries) {
+        this.list.add(rowSeries);
+        this.rowHashMap.put(rowSeries.getCell(this.primaryIndex).toString(), this.list.size() - 1);
+        return this;
+    }
+
+    /**
+     * 将多个数据行插入到表中。
+     *
+     * @param rowSeries 需要被插入的数据行
+     * @return 插入之后的数据
+     */
+    @Override
+    public DataFrame insert(Series... rowSeries) {
+        int startLen = this.list.size() - 1;
+        this.list.addAll(Arrays.asList(rowSeries));
+        // 增量更新行索引
+        for (int i = startLen, count = 0; count < rowSeries.length; count++, i++) {
+            this.rowHashMap.put(
+                    rowSeries[count].getCell(this.primaryIndex).toString(),
+                    i
+            );
+        }
+        return this;
     }
 
     @Override

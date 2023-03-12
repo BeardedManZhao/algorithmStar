@@ -21,22 +21,20 @@ public class MAIN1 {
                 // 文件对象的主键指定允许使用列名称
                 .primaryKey("name")
                 // 执行查询
-                .execute();
-        // 按照性别分组，计算出男女生人数
+                .execute()
+                // 为列起别名
+                .select(
+                        FieldCell.$("id"),
+                        FieldCell.$("name").as("名称"),
+                        FieldCell.$("sex").as("性别")
+                );
+        // 打印出表中的所有信息数据
         long start = System.currentTimeMillis();
         System.out.println(
                 execute1
-                        // 指定查询的列，并起别名
-                        .select(FieldCell.$("sex").as("性别"))
-                        // 按照 sex 分组
                         .groupBy("性别")
-                        // 进行 组内的计数
                         .count()
-                        // 指定查询的列 并起别名
-                        .select(
-                                FieldCell.$("性别"),
-                                FieldCell.$("count()").as("人数")
-                        )
+                        .desc()
         );
         System.out.print("处理耗时（MS）：");
         System.out.println(System.currentTimeMillis() - start);

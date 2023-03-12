@@ -14,8 +14,12 @@ public interface DataFrame extends AggDataFrameData, Iterable<Series>, Serializa
 
     /**
      * 获取到当前表中的字段对象。
+     * <p>
+     * Gets the field object in the current table.
      *
-     * @return 字段对象序列
+     * @return 当前数据集中的字段行序列对象。
+     * <p>
+     * The field row sequence object in the current dataset.
      */
     Series getFields();
 
@@ -32,17 +36,29 @@ public interface DataFrame extends AggDataFrameData, Iterable<Series>, Serializa
 
     /**
      * 获取到当前表中的指定列字段数据。
+     * <p>
+     * Gets the specified column field data in the current table.
      *
      * @param colNames 所有需要被获取的列数据，可以使用 * 代替。
+     *                 <p>
+     *                 All column data to be obtained can be replaced by *.
      * @return 查询出指定列数据的DF表。
+     * <p>
+     * Find the DF table of the specified column data.
      */
     DataFrame select(String... colNames);
 
     /**
      * 获取到当前表中的指定列字段数据。
+     * <p>
+     * Gets the specified column field data in the current table.
      *
      * @param colNames 所有需要被获取的列数据，需要注意的是，在这里不允许使用 * 哦！
+     *                 <p>
+     *                 For all column data to be obtained, please note that * is not allowed here!
      * @return 查询出指定列数据的DF表。
+     * <p>
+     * Find the DF table of the specified column data.
      */
     DataFrame select(FieldCell... colNames);
 
@@ -51,6 +67,8 @@ public interface DataFrame extends AggDataFrameData, Iterable<Series>, Serializa
      *
      * @param rowNames 需要被获取到的数据行的行名称。
      * @return 查询出指定行数据的DF表
+     * <p>
+     * Find the DF table of the specified row data.
      */
     DataFrame selectRow(String... rowNames);
 
@@ -124,19 +142,43 @@ public interface DataFrame extends AggDataFrameData, Iterable<Series>, Serializa
     DataFrame limit(String startRowName, String EndRowName);
 
     /**
+     * 将一个数据行插入到表中。
+     *
+     * @param rowSeries 需要被插入的数据行
+     * @return 插入之后的数据
+     */
+    DataFrame insert(Series rowSeries);
+
+    /**
+     * 将多个数据行插入到表中。
+     *
+     * @param rowSeries 需要被插入的数据行
+     * @return 插入之后的数据
+     */
+    DataFrame insert(Series... rowSeries);
+
+    /**
      * 将计算结果输出到指定的目录的文本文件中。
+     * <p>
+     * Output the calculation results to a text file in the specified directory.
      *
      * @param outPath 需要被输出的目录
      * @return 输出之后会返回数据集本身，不会终止调用。
+     * <p>
+     * After output, the data set itself will be returned and the call will not be terminated.
      */
     DataFrame into_outfile(String outPath);
 
     /**
      * 将计算结果输出到指定的目录的文本文件中。
+     * <p>
+     * Output the calculation results to a text file in the specified directory.
      *
      * @param outPath 需要被输出的目录.
      * @param sep     在输出的时候需要使用的指定的文件单元格分隔符字符串。
      * @return 输出之后会返回数据集本身，不会终止调用。
+     * <p>
+     * After output, the data set itself will be returned and the call will not be terminated.
      */
     DataFrame into_outfile(String outPath, String sep);
 }

@@ -32,7 +32,7 @@ public class FinalSeries implements Series {
         }
     }
 
-    public static FinalSeries parse(String[] arr) {
+    public static FinalSeries parse(String... arr) {
         return new FinalSeries(
                 Arrays.stream(arr).map(FinalCell::new)
                         .toArray((IntFunction<Cell<?>[]>) value -> new Cell[arr.length])

@@ -281,7 +281,7 @@ public class MAIN1 {
 }
 ```
 
-* 支持为列取别名的操作。
+* 支持为列取别名以及新增数据行的操作。
 
 ```java
 package zhao.algorithmMagic;
@@ -289,12 +289,14 @@ package zhao.algorithmMagic;
 import zhao.algorithmMagic.operands.table.DataFrame;
 import zhao.algorithmMagic.operands.table.FDataFrame;
 import zhao.algorithmMagic.operands.table.FieldCell;
+import zhao.algorithmMagic.operands.table.FinalSeries;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class MAIN1 {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException, SQLException, IOException {
         // 准备文件对象
         File file = new File("C:\\Users\\zhao\\Desktop\\out\\res1.csv");
         // 使用 FDF 加载文件
@@ -308,6 +310,7 @@ public class MAIN1 {
                 // 执行查询
                 .execute();
         // 按照性别分组，计算出男女生人数
+        long start = System.currentTimeMillis();
         System.out.println(
                 execute1
                         // 指定查询的列，并起别名
@@ -321,9 +324,14 @@ public class MAIN1 {
                                 FieldCell.$("性别"),
                                 FieldCell.$("count()").as("人数")
                         )
+                        // 新增一行数据
+                        .insert(FinalSeries.parse("新", "10"))
         );
+        System.out.print("处理耗时（MS）：");
+        System.out.println(System.currentTimeMillis() - start);
     }
 }
+
 ```
 
 ### Version update date : xx xx-xx-xx

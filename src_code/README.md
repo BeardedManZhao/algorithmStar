@@ -286,7 +286,7 @@ public class MAIN1 {
 }
 ```
 
-* Aliases for columns are supported.
+* Support the operations of aliasing columns and adding data rows.
 
 ```java
 package zhao.algorithmMagic;
