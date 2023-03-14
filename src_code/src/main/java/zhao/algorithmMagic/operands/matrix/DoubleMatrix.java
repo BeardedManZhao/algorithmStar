@@ -2,6 +2,9 @@ package zhao.algorithmMagic.operands.matrix;
 
 import zhao.algorithmMagic.core.ASDynamicLibrary;
 import zhao.algorithmMagic.exception.OperatorOperationException;
+import zhao.algorithmMagic.operands.table.Cell;
+import zhao.algorithmMagic.operands.table.DataFrame;
+import zhao.algorithmMagic.operands.table.Series;
 import zhao.algorithmMagic.operands.vector.DoubleVector;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASMath;
@@ -146,6 +149,40 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
                 res.add(anInt);
             }
         }
+    }
+
+    /**
+     * 将一个DF数据对象中的所有单元格数据转换成为一个指定行列长度的数值类型的矩阵对象。
+     * <p>
+     * Converts all cell data in a DF data object into a matrix object of numeric type with specified row and column length.
+     *
+     * @param dataFrame 需要被进行转换的 DF 数据对象。
+     *                  <p>
+     *                  DF data object to be converted.
+     * @param height    转换之后的新矩阵的高度。
+     *                  <p>
+     *                  The height of the new matrix after conversion.
+     * @param width     转换之后的新矩阵的宽度。
+     *                  <p>
+     *                  The width of the new matrix after conversion.
+     * @return 转换成功后会返回一个数值类型的矩阵对象。
+     * <p>
+     * A matrix object of numeric type will be returned after successful conversion.
+     */
+    public static DoubleMatrix parse(DataFrame dataFrame, int height, int width) {
+        double[][] doubles = new double[height][width];
+        int h = -1;
+        for (Series cells : dataFrame) {
+            if (++h > height) break;
+            double[] row = doubles[h];
+            int w = -1;
+            for (Cell<?> cell : cells) {
+                if (cell.isNumber() && ++w < width) {
+                    row[w] = cell.getDoubleValue();
+                }
+            }
+        }
+        return parse(doubles);
     }
 
     /**

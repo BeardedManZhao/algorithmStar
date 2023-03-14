@@ -26,6 +26,14 @@ public class FDataFrame implements DataFrame {
     private final HashMap<String, Integer> colHashMap;
     private final HashMap<String, Integer> rowHashMap;
 
+    public FDataFrame(Series colNameRow, int primaryIndex, HashMap<String, Integer> colHashMap, HashMap<String, Integer> rowHashMap, Series... series) {
+        this.primaryIndex = primaryIndex;
+        list = Arrays.asList(series);
+        this.colNameRow = colNameRow;
+        this.colHashMap = colHashMap;
+        this.rowHashMap = rowHashMap;
+    }
+
     public FDataFrame(Series colNameRow, int primaryIndex, Series... series) {
         this.primaryIndex = primaryIndex;
         list = Arrays.asList(series);
@@ -78,7 +86,7 @@ public class FDataFrame implements DataFrame {
         if (rr) {
             index = -1;
             for (Series cells : this.list) {
-                rowHashMap.put(cells.getCell(primaryIndex).getStringValue(), ++index);
+                rowHashMap.put(cells.getCell(primaryIndex).toString(), ++index);
             }
         }
         return this;
@@ -119,7 +127,7 @@ public class FDataFrame implements DataFrame {
         strings2[2] = "YES";
         // 第三行是所有字段在原数据表是否为主键
         String[] strings3 = new String[length];
-        strings3[0] = "row_is_PrimaryKey";
+        strings3[0] = "col_is_PrimaryKey";
         // 第四行是所有字段的别名
         String[] strings4 = new String[length];
         strings4[0] = "Alias of this field";
@@ -141,8 +149,8 @@ public class FDataFrame implements DataFrame {
                 strings2[++index] = cell.isNumber() ? "YES" : "No";
             }
             // 开始将所有列主键信息添加到其中。
-            for (int i = 1, ok1 = primaryIndex + 3; i < strings3.length; i++) {
-                strings3[i] = i == ok1 || i == 2 ? "Yes" : "No";
+            for (int i = 1, ok1 = primaryIndex + 4; i < strings3.length; i++) {
+                strings3[i] = i == ok1 || i == 3 ? "Yes" : "No";
             }
         }
         // 开始生成数据
@@ -192,19 +200,22 @@ public class FDataFrame implements DataFrame {
         int pk = 0;
         {
             // 获取到主键列名称
-            String s = this.colNameRow.getCell(primaryIndex).toString();
+            FieldCell s = (FieldCell) this.colNameRow.getCell(primaryIndex);
+            String s1 = s.getStringValue();
+            String s2 = s.toString();
             int index1 = -1;
             // 查看新列中是否包含主键
             for (String colName : colNames) {
                 ++index1;
-                if (Objects.equals(s, colName)) {
+                if (s1.equals(colName) || (s2.equals(colName))) {
                     // 如果包含，则代表新列的新主键找到了
                     pk = index1;
                     break;
                 }
             }
         }
-        return new FDataFrame(FieldCell.parse(colNames), pk, arrayList).refreshField(false, true);
+        return new FDataFrame(FieldCell.parse(colNames), pk, arrayList)
+                .refreshField(true, true);
     }
 
     /**
@@ -246,7 +257,11 @@ public class FDataFrame implements DataFrame {
                 arrayList.add(this.list.get(integer));
             }
         }
-        return new FDataFrame(this.colNameRow, primaryIndex, arrayList.toArray(new Series[0]))
+        return new FDataFrame(
+                this.colNameRow, primaryIndex,
+                new HashMap<>(arrayList.size() + 4), this.colHashMap,
+                arrayList.toArray(new Series[0])
+        )
                 .refreshField(true, false);
     }
 
@@ -382,6 +397,58 @@ public class FDataFrame implements DataFrame {
                     rowSeries[count].getCell(this.primaryIndex).toString(),
                     i
             );
+        }
+        return this;
+    }
+
+    /**
+     * 将一列字段对应的所有数据按照指定的函数进行更新。
+     * <p>
+     * Update all data corresponding to a column of fields according to the specified function.
+     *
+     * @param fieldCell 需要被提取的列字段名称。
+     *                  <p>
+     *                  The name of the column field to be extracted.
+     * @return 更新之后的DF数据对象。
+     * <p>
+     * DF data object after update.
+     */
+    @Override
+    public DataFrame updateCol(FieldCell fieldCell, Transformation<Cell<?>, Cell<?>> transformation) {
+        Integer integer = this.colHashMap.get(fieldCell.toString());
+        if (integer != null) {
+            for (Series cells : this.list) {
+                cells.setCell(integer, transformation.function(cells.getCell(integer)));
+            }
+        }
+        return this;
+    }
+
+    /**
+     * 将一行字段对应的所有数据按照指定的函数进行更新。
+     * <p>
+     * Update all data corresponding to a column of fields according to the specified function.
+     *
+     * @param rowName 需要被提取的列字段名称。
+     *                <p>
+     *                The name of the column field to be extracted.
+     * @return 更新之后的DF数据对象。
+     * <p>
+     * DF data object after update.
+     */
+    @Override
+    public DataFrame updateRow(String rowName, Transformation<Cell<?>, Cell<?>> transformation) {
+        Integer integer = this.rowHashMap.get(rowName);
+        if (integer != null) {
+            Series cells = this.list.get(integer);
+            int index = -1;
+            for (Cell<?> cell : cells) {
+                if (++index == primaryIndex) {
+                    Cell<?> function = transformation.function(cell);
+                    this.rowHashMap.put(function.toString(), integer);
+                    cells.setCell(index, function);
+                } else cells.setCell(index, transformation.function(cell));
+            }
         }
         return this;
     }

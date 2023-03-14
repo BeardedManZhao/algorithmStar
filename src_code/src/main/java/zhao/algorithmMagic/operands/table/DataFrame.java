@@ -1,5 +1,7 @@
 package zhao.algorithmMagic.operands.table;
 
+import zhao.algorithmMagic.utils.transformation.Transformation;
+
 import java.io.Serializable;
 
 /**
@@ -156,6 +158,34 @@ public interface DataFrame extends AggDataFrameData, Iterable<Series>, Serializa
      * @return 插入之后的数据
      */
     DataFrame insert(Series... rowSeries);
+
+    /**
+     * 将一列字段对应的所有数据按照指定的函数进行更新。
+     * <p>
+     * Update all data corresponding to a column of fields according to the specified function.
+     *
+     * @param fieldCell 需要被提取的列字段名称。
+     *                  <p>
+     *                  The name of the column field to be extracted.
+     * @return 更新之后的DF数据对象。
+     * <p>
+     * DF data object after update.
+     */
+    DataFrame updateCol(FieldCell fieldCell, Transformation<Cell<?>, Cell<?>> transformation);
+
+    /**
+     * 将一行字段对应的所有数据按照指定的函数进行更新。
+     * <p>
+     * Update all data corresponding to a column of fields according to the specified function.
+     *
+     * @param rowName 需要被提取的列字段名称。
+     *                <p>
+     *                The name of the column field to be extracted.
+     * @return 更新之后的DF数据对象。
+     * <p>
+     * DF data object after update.
+     */
+    DataFrame updateRow(String rowName, Transformation<Cell<?>, Cell<?>> transformation);
 
     /**
      * 将计算结果输出到指定的目录的文本文件中。

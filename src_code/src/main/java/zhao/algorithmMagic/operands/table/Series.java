@@ -32,7 +32,7 @@ public interface Series extends Iterable<Cell<?>>, AggSeriesData, MultivaluedTab
     /**
      * 获取到当前系列中所有单元格对象的Stream对象。
      *
-     * @return
+     * @return 系列单元格中的元素封装至Java的Stream中。
      */
     Stream<Cell<?>> toStream();
 }

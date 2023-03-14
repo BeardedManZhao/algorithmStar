@@ -81,7 +81,7 @@ public class FinalCell<valueType> implements Cell<valueType> {
         if (isNumber()) {
             return ((Number) this.valueType).doubleValue();
         } else {
-            throw new OperatorOperationException("您在尝试将一个非数值的单元格按照整数的方式提取，这是不允许的。\nYou are trying to extract a non-numeric cell as an integer, which is not allowed.");
+            throw new OperatorOperationException("您在尝试将一个非数值的单元格按照浮点数的方式提取，这是不允许的。\nYou are trying to extract a non-numeric cell as an float, which is not allowed.");
         }
     }
 

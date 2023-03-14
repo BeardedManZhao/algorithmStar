@@ -11,10 +11,16 @@ import java.util.HashMap;
  */
 public class FieldCell extends FinalCell<String> {
 
-    private final static HashMap<String, FieldCell> ASName = new HashMap<>();
+    protected final static HashMap<String, FieldCell> ASName = new HashMap<>();
     private String AS;
 
-    private FieldCell(String string, boolean isNumber) {
+    /**
+     * 构造出一个列字段单元格对象，其具有存储列字段信息的效果。
+     *
+     * @param string   当前列字段的列名称。
+     * @param isNumber 当前列是否能够使用数值类的计算函数。
+     */
+    protected FieldCell(String string, boolean isNumber) {
         super(string, isNumber);
         AS = string;
     }
