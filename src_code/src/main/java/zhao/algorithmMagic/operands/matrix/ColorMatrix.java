@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Iterator;
 
@@ -120,14 +121,17 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      */
     public static ColorMatrix parseGrayscale(String inputString) {
         Color[][] colors = ASIO.parseImageGetColorArray(inputString);
-        for (Color[] color : colors) {
-            int count = -1;
-            for (Color color1 : color) {
-                int avg = (int) ASMath.avg(color1.getRed(), color1.getGreen(), color1.getBlue());
-                color[++count] = new Color(avg, avg, avg, color1.getAlpha());
-            }
-        }
-        return new ColorMatrix(colors.length, colors[0].length, colors, true);
+        return GrayscaleColors(colors);
+    }
+
+    /**
+     * 将图像URL解析，并获取对应的图像矩阵
+     *
+     * @param url 需要被解析的URL对象
+     * @return URL对象所对应的图像矩阵。
+     */
+    public static ColorMatrix parseGrayscale(URL url) {
+        return GrayscaleColors(ASIO.parseURLGetColorArray(url));
     }
 
     /**
@@ -202,6 +206,33 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             }
         }
         return ColorMatrix.parse(colors);
+    }
+
+    /**
+     * 将图像URL解析，并获取对应的图像矩阵
+     *
+     * @param url 需要被解析的URL对象
+     * @return URL对象所对应的图像矩阵。
+     */
+    public static ColorMatrix parse(URL url) {
+        return ColorMatrix.parse(ASIO.parseURLGetColorArray(url));
+    }
+
+    /**
+     * 将一个图像矩阵中的所有像素转换成为三原色均值，获取到灰度矩阵。
+     *
+     * @param colors 需要被转换的颜色矩阵（注意，该矩阵将会被修改）
+     * @return 转换之后的颜色矩阵
+     */
+    private static ColorMatrix GrayscaleColors(Color[][] colors) {
+        for (Color[] color : colors) {
+            int count = -1;
+            for (Color color1 : color) {
+                int avg = (int) ASMath.avg(color1.getRed(), color1.getGreen(), color1.getBlue());
+                color[++count] = new Color(avg, avg, avg, color1.getAlpha());
+            }
+        }
+        return new ColorMatrix(colors.length, colors[0].length, colors, true);
     }
 
     /**

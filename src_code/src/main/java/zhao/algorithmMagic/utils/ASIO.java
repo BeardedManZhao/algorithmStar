@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.*;
+import java.net.URL;
 import java.util.function.Consumer;
 
 /**
@@ -139,6 +140,20 @@ public final class ASIO {
         }
     }
 
+    /**
+     * 通过一个URL获取到图像数据，并将其解析成为矩阵对象。
+     *
+     * @param imageUrl 需要被获取的图像对象，请注意，确保此URL是一个图像文件的URL
+     * @return 解析之后的结果数据。
+     */
+    public static Color[][] parseURLGetColorArray(URL imageUrl) {
+        try {
+            return parseImageGetColorArray(ImageIO.read(imageUrl.openStream()));
+        } catch (IOException e) {
+            throw new OperatorOperationException(e);
+        }
+    }
+
     public static IntegerMatrix[] parseImageGetArrays(String inputString) {
         try {
             return parseImageGetArrays(new File(inputString));
@@ -157,8 +172,19 @@ public final class ASIO {
      * @throws IOException 解析图像矩阵发生错误的时候抛出该异常
      */
     public static Color[][] parseImageGetColorArray(File inputFile) throws IOException {
-        BufferedImage image = ImageIO.read(inputFile);
-        final byte[] pixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+        return parseImageGetColorArray(ImageIO.read(inputFile));
+    }
+
+    /**
+     * 将一个图片中的所有像素RGB值所构成的整形二维矩阵获取到！
+     *
+     * @param image 需要被读取的图像缓冲对象
+     * @return 读取成功之后返回的整形矩阵
+     */
+    private static Color[][] parseImageGetColorArray(BufferedImage image) {
+        final byte[] pixels = ((DataBufferByte) image.getRaster()
+                .getDataBuffer())
+                .getData();
         if (pixels.length == 0) {
             throw new OperatorOperationException("您不能读取一个不包含任何像素的图像，请您重新切换被读取的图像文件!!!\nYou cannot read an image that does not contain any pixels. Please switch the read image file again!!!");
         }

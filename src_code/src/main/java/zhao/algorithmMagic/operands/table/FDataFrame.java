@@ -71,6 +71,16 @@ public class FDataFrame implements DataFrame {
     }
 
     /**
+     * 创建出一个空的DF对象
+     *
+     * @param colNameRow DF中的字段序列。
+     * @return 空的DF对象。
+     */
+    public static FDataFrame craete(Series colNameRow) {
+        return new FDataFrame(colNameRow, 0, new ArrayList<>());
+    }
+
+    /**
      * 刷新字段数据，在数据集中包含针对行列字段名称构建的索引Hash表，在hash表中的字段时可以进行刷新的，经过刷新之后，原先的字段将不会消失，而是与新字段共同指向同一个数据行，一般来说，不更改行字段的情况下将不会调用该函数。
      * <p>
      * Refresh field data. The data set contains an index hash table built for row and column field names. The fields in the hash table can be refreshed. After refreshing, the original fields will not disappear, but point to the same data row with the new fields. Generally speaking, this function will not be called without changing the row fields.
@@ -266,7 +276,7 @@ public class FDataFrame implements DataFrame {
     }
 
     /**
-     * 将指定的符合条件的数据获取到。
+     * 将指定的符合条件的数据获取到，使用全表扫描。
      *
      * @param whereClause 条件判断逻辑实现。
      * @return 符合条件的数据系列组合成的新数据表。
