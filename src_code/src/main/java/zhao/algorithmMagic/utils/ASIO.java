@@ -135,7 +135,7 @@ public final class ASIO {
             return parseImageGetColorArray(new File(inputString));
         } catch (IOException e) {
             throw new OperatorOperationException("尝试获取您所给定路径图像的像素矩阵时发生了错误\nAn error occurred while trying to get the pixel matrix of the path image you gave\nERROR => " +
-                    inputString
+                    inputString, e
             );
         }
     }

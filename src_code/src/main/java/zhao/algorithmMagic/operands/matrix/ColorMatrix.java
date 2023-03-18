@@ -24,6 +24,24 @@ import java.util.Iterator;
  */
 public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Color[][]> implements SaveMatrix {
 
+    /**
+     * 红色通道编码，用于定位颜色通道的数值常量
+     */
+    public final static byte _R_ = 16;
+
+    /**
+     * 绿色通道编码，用于定位颜色通道的数值常量
+     */
+    public final static byte _G_ = 8;
+
+    /**
+     * 蓝色通道编码，用于定位颜色通道的数值常量
+     */
+    public final static byte _B_ = 0;
+
+    /**
+     * 白色RGB常量数值
+     */
     public final static int WHITE_NUM = 0xffffff;
     public final static short SINGLE_CHANNEL_MAXIMUM = 0xff;
     private boolean isGrayscale;
@@ -951,6 +969,38 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
     }
 
     /**
+     * 将图像矩阵中的指定通道的色彩数值进行规整计算，能够显著提升图像的某些特征，同时可以有效去除图像的无用特征。
+     * <p>
+     * Regularizing the color values of the specified channels in the image matrix can significantly improve some features of the image, while effectively removing unwanted features from the image.
+     *
+     * @param Mode          在进行通道色彩的获取的时候，需要指定规整时的颜色通道标准，在指定通道的基础上进行规整，该参数可以直接从 ColorMatrix 类中获取到。
+     *                      <p>
+     *                      When obtaining channel colors, it is necessary to specify the color channel standard for regularization, which is based on the specified channel. This parameter can be directly obtained from the ColorMatrix class.
+     * @param colorBoundary 颜色边界阈值，当被判断的颜色数值达到了阈值，则判断当前坐标颜色为真，返回为假。
+     *                      <p>
+     *                      The color boundary threshold value. When the judged color value reaches the threshold value, the current coordinate color is judged to be true, and the return value is false.
+     * @param trueColor     图像中所有颜色为真的坐标，需要变更为的新颜色对象。
+     *                      <p>
+     *                      Coordinates where all colors in the image are true and need to be changed to a new color object for.
+     * @param falseColor    图像中所有颜色为假的坐标，需要变更为的新颜色对象。
+     *                      <p>
+     *                      All colors in the image are fake coordinates and need to be changed to a new color object for.
+     */
+    public void regularity(byte Mode, int colorBoundary, int trueColor, int falseColor) {
+        if (colorBoundary < 0 || colorBoundary > 0xff) return;
+        Color color1 = new Color(trueColor);
+        Color color2 = new Color(falseColor);
+        for (Color[] colors : this.toArrays()) {
+            int index = -1;
+            for (Color color : colors) {
+                if (((color.getRGB() >> Mode) & 0xFF) > colorBoundary) {
+                    colors[++index] = color1;
+                } else colors[++index] = color2;
+            }
+        }
+    }
+
+    /**
      * 将图像矩阵展示出来，使得在矩阵的图像数据能够被展示出来。
      * <p>
      * Display the image matrix so that the image data in the matrix can be displayed.
@@ -1018,6 +1068,42 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
                         stream.write(String.valueOf(color.getRGB()));
                     }
                     stream.newLine();
+                }
+            } catch (IOException e) {
+                throw new OperatorOperationException("Write data exception!", e);
+            }
+        });
+    }
+
+    /**
+     * 将图像的 ASCII 图像输出到指定的目录中。
+     *
+     * @param path          需要保存的目录路径。
+     *                      <p>
+     *                      Directory path to save.
+     * @param Mode          在进行通道色彩的获取的时候，需要指定规整时的颜色通道标准，在指定通道的基础上进行规整，该参数可以直接从 ColorMatrix 类中获取到。
+     *                      <p>
+     *                      When obtaining channel colors, it is necessary to specify the color channel standard for regularization, which is based on the specified channel. This parameter can be directly obtained from the ColorMatrix class.
+     * @param colorBoundary 颜色边界阈值，当被判断的颜色数值达到了阈值，则判断当前坐标颜色为真，返回为假。
+     *                      <p>
+     *                      The color boundary threshold value. When the judged color value reaches the threshold value, the current coordinate color is judged to be true, and the return value is false.
+     * @param imageAscii1   ASCII 符号 在输出的 ASCII 图像文件中，针对大于阈值的坐标，图像的构成字符对应的ASCII数值。
+     *                      <p>
+     *                      ASCII Symbol In the output ASCII image file, the ASCII value corresponding to the constituent characters of the image for coordinates greater than the threshold value.
+     * @param imageAscii2   ASCII 符号 在输出的 ASCII 图像文件中，针对小于阈值的坐标，图像的构成字符对应的ASCII数值。
+     *                      <p>
+     *                      ASCII Symbol In the output ASCII image file, the ASCII value corresponding to the constituent characters of the image for coordinates that are less than the threshold value.
+     */
+    public void save(File path, byte Mode, int colorBoundary, char imageAscii1, char imageAscii2) {
+        ASIO.writer(path, bufferedWriter -> {
+            try {
+                for (Color[] colors : this.toArrays()) {
+                    for (Color color : colors) {
+                        if (((color.getRGB() >> Mode) & 0xFF) > colorBoundary) {
+                            bufferedWriter.write(imageAscii1);
+                        } else bufferedWriter.write(imageAscii2);
+                    }
+                    bufferedWriter.newLine();
                 }
             } catch (IOException e) {
                 throw new OperatorOperationException("Write data exception!", e);

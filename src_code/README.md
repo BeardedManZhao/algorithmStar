@@ -383,7 +383,7 @@ public class MAIN1 {
 }
 ```
 
-* 支持通过一个网络 URL 对象获取到有关图像的数据，并将其转换成为一个图像矩阵。
+* Support for obtaining image related data through a web URL object and converting it into an image matrix.
 
 ```java
 package zhao.algorithmMagic;
@@ -397,10 +397,71 @@ public class MAIN1 {
     public static void main(String[] args) throws MalformedURLException {
         // 准备图像的URL对象
         URL url = new URL("https://user-images.githubusercontent.com/113756063/194830221-abe24fcc-484b-4769-b3b7-ec6d8138f436.png");
-        // 解析URL获取到矩阵
-        ColorMatrix parse = ColorMatrix.parse(url);
+        // 解析URL获取到图像矩阵
+        ColorMatrix parse1 = ColorMatrix.parse(url);
+        // 解析URL获取到图像的灰度矩阵
+        ColorMatrix parse2 = ColorMatrix.parseGrayscale(url);
         // 查看图像
-        parse.show("image");
+        parse1.show("image");
+        parse2.show("image");
+    }
+}
+```
+
+*Support for color normalization coverage, which can display more image features or remove more redundant features by
+specifying the color values of the channel.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+
+public class MAIN1 {
+    public static void main(String[] args) throws MalformedURLException {
+        // 准备图像的URL对象
+        URL url = new URL("https://user-images.githubusercontent.com/113756063/194830221-abe24fcc-484b-4769-b3b7-ec6d8138f436.png");
+        // 解析URL获取到图像矩阵
+        ColorMatrix parse1 = ColorMatrix.parse(url);
+        // 将 URL 图像矩阵中所有 G 通道颜色数值大于 40 的颜色变更为黑色，反之变更为白色
+        // 在这里由于选择了 G 通道 因此 绿色越深 越有可能变为白色
+        parse1.regularity(ColorMatrix._G_, 40, 0, 0xffffff);
+        // 也可以使用其它颜色通道进行色彩的调整
+        parse1.regularity(ColorMatrix._R_, 40, 0, 0xffffff);
+        parse1.regularity(ColorMatrix._B_, 40, 0, 0xffffff);
+        // 查看结果图像
+        parse1.show("image");
+    }
+}
+```
+
+* Supports the construction of image ASCII images. You can quickly construct an image in ASCII, but please ensure that
+  the image size is small enough.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+public class MAIN1 {
+    public static void main(String[] args) throws MalformedURLException {
+        // 准备图像的URL对象
+        URL url = new URL("https://user-images.githubusercontent.com/113756063/194830221-abe24fcc-484b-4769-b3b7-ec6d8138f436.png");
+        // 解析URL获取到图像矩阵
+        ColorMatrix parse1 = ColorMatrix.parse(url);
+        // 查看结果图像
+        parse1.show("image");
+        // 输出图像的 ASCII 数值，输出规则为  G 通道颜色数值 大于 40 的 输出符号 'A' 其它输出符号 ' '
+        parse1.save(
+                new File("C:\\Users\\zhao\\Desktop\\fsdownload\\res.txt"),
+                ColorMatrix._G_, 40, 'A', ' '
+        );
     }
 }
 ```
