@@ -30,6 +30,13 @@ public interface Series extends Iterable<Cell<?>>, AggSeriesData, MultivaluedTab
     void setCell(int index, Cell<?> cell);
 
     /**
+     * 将每一个单元格的数组形式的数据直接获取到。
+     *
+     * @return 一行数据中所有单元格构成的数组
+     */
+    Cell<?>[] toArray();
+
+    /**
      * 获取到当前系列中所有单元格对象的Stream对象。
      *
      * @return 系列单元格中的元素封装至Java的Stream中。

@@ -50,6 +50,14 @@ public class FDataFrame implements DataFrame {
         this.primaryIndex = primaryIndex;
     }
 
+    public FDataFrame(Series colNameRow, int primaryIndex, ArrayList<Series> arrayList, HashMap<String, Integer> rowHashMap, HashMap<String, Integer> colHashMap) {
+        this.primaryIndex = primaryIndex;
+        list = arrayList;
+        this.colNameRow = colNameRow;
+        this.colHashMap = colHashMap;
+        this.rowHashMap = rowHashMap;
+    }
+
     /**
      * 从本地文件系统中读取一个数据对象，并返回对应数据对象的建造者类。
      *
@@ -74,10 +82,13 @@ public class FDataFrame implements DataFrame {
      * 创建出一个空的DF对象
      *
      * @param colNameRow DF中的字段序列。
+     * @param pk         主键列的索引数值
      * @return 空的DF对象。
      */
-    public static FDataFrame craete(Series colNameRow) {
-        return new FDataFrame(colNameRow, 0, new ArrayList<>());
+    public static FDataFrame select(Series colNameRow, int pk) {
+        return new FDataFrame(
+                colNameRow, pk, new ArrayList<>()
+        ).refreshField(false, true);
     }
 
     /**
@@ -224,6 +235,19 @@ public class FDataFrame implements DataFrame {
                 }
             }
         }
+        // 开始查看是否有刷新行主键必要
+        {
+            String primaryName = colNames[pk];
+            Cell<?> cell = this.colNameRow.getCell(primaryIndex);
+            if (cell.getStringValue().equals(primaryName) || (cell.toString().equals(primaryName))) {
+                // 如果是这种情况就代表行索引不需要更新
+                return new FDataFrame(
+                        FieldCell.parse(colNames), pk, arrayList,
+                        this.rowHashMap, new HashMap<>(colNames.length + 1)
+                )
+                        .refreshField(false, true);
+            }
+        }
         return new FDataFrame(FieldCell.parse(colNames), pk, arrayList)
                 .refreshField(true, true);
     }
@@ -344,6 +368,23 @@ public class FDataFrame implements DataFrame {
         if (colIndex != null) {
             // 将这列所有的数据都进行处理
             return new FinalGroupTable(colNameRow, primaryIndex, colIndex, this);
+        } else throw new OperatorOperationException("Unknown line: " + colName);
+    }
+
+    /**
+     * 将符合条件的数据行按照指定的列字段分组 并返回分组之后的新结果数据集。
+     *
+     * @param colName     需要被用来进行分组的字段数据
+     * @param whereClause 在分组的时候进行一次 where 的过滤操作
+     * @return 分组之后的数据对象
+     */
+    @Override
+    public GroupDataFrameData groupBy(String colName, Condition whereClause) {
+        // 获取到对应列字段的索引数值
+        Integer colIndex = this.colHashMap.get(colName);
+        if (colIndex != null) {
+            // 将这列所有的数据都进行处理
+            return new FinalGroupTable(colNameRow, primaryIndex, colIndex, this, whereClause);
         } else throw new OperatorOperationException("Unknown line: " + colName);
     }
 
@@ -522,20 +563,22 @@ public class FDataFrame implements DataFrame {
         StringBuilder split = new StringBuilder();
         String s;
         {
-            split.append('+');
-            stringBuilder.append('|');
+            split.append('├');
+            stringBuilder.append("│\t\t");
             for (Cell<?> cell : this.getFields()) {
-                stringBuilder.append('\t').append('\t').append(cell);
-                split.append("---------------");
+                stringBuilder.append(cell).append("\t│\t");
+                split.append("─────────────────");
             }
-            split.append('+').append('\n');
+            split.append('┤').append('\n');
             s = split.toString();
             stringBuilder.append('\n').append(s);
         }
         for (Series cells : this.list) {
-            stringBuilder.append('|');
+            stringBuilder.append("│\t\t");
             for (Cell<?> cell : cells) {
-                stringBuilder.append('\t').append('|').append('\t').append(cell.getValue());
+                stringBuilder
+                        .append(cell.getValue())
+                        .append("\t│\t");
             }
             stringBuilder.append('\n');
         }

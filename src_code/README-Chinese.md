@@ -410,7 +410,7 @@ public class MAIN1 {
 }
 ```
 
-* 支持进行色彩规整覆盖，能够通过指定通道的色彩数值，显示出更多的图像特征，或去除更多的冗余特征。
+* 支持进行色彩二值化规整覆盖，能够通过指定通道的色彩数值，显示出更多的图像特征，或去除更多的冗余特征。
 
 ```java
 package zhao.algorithmMagic;
@@ -428,10 +428,10 @@ public class MAIN1 {
         ColorMatrix parse1 = ColorMatrix.parse(url);
         // 将 URL 图像矩阵中所有 G 通道颜色数值大于 40 的颜色变更为黑色，反之变更为白色
         // 在这里由于选择了 G 通道 因此 绿色越深 越有可能变为白色
-        parse1.regularity(ColorMatrix._G_, 40, 0, 0xffffff);
+        parse1.globalBinary(ColorMatrix._G_, 40, 0, 0xffffff);
         // 也可以使用其它颜色通道进行色彩的调整
-        parse1.regularity(ColorMatrix._R_, 40, 0, 0xffffff);
-        parse1.regularity(ColorMatrix._B_, 40, 0, 0xffffff);
+        parse1.globalBinary(ColorMatrix._R_, 40, 0, 0xffffff);
+        parse1.globalBinary(ColorMatrix._B_, 40, 0, 0xffffff);
         // 查看结果图像
         parse1.show("image");
     }
@@ -466,4 +466,116 @@ public class MAIN1 {
 }
 ```
 
+* 能够手动创建一个空的 DataFrame 对象，并自主操作其中的数据。
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.table.DataFrame;
+import zhao.algorithmMagic.operands.table.FDataFrame;
+import zhao.algorithmMagic.operands.table.FieldCell;
+import zhao.algorithmMagic.operands.table.FinalSeries;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 创建一个空 DF 对象 以 name 列作为行主键索引
+        FDataFrame create = FDataFrame.select(FieldCell.parse("name", "sex", "phoneNum"), 1);
+        // 插入一些数据
+        DataFrame insert = create.insert(
+                FinalSeries.parse("zhao", "M", "110xxxxxxxx"),
+                FinalSeries.parse("tang", "W", "110xxxxxxxx"),
+                FinalSeries.parse("yang", "M", "110xxxxxxxx")
+        );
+        // 查看数据集
+        System.out.println(insert);
+        // 将其中的 name 列 sex 列 查询
+        System.out.println(
+                insert.select(
+                        FieldCell.$("name").as("AllName"),
+                        FieldCell.$("sex").as("AllSex")
+                )
+        );
+    }
+}
+```
+
+* 支持在 group 的时候指定 where子句，使得计算效率大大增强
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.table.DataFrame;
+import zhao.algorithmMagic.operands.table.FDataFrame;
+import zhao.algorithmMagic.operands.table.FieldCell;
+import zhao.algorithmMagic.operands.table.FinalSeries;
+
+import java.net.MalformedURLException;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 创建一个空 DF 对象 以 name 列作为行主键索引
+        FDataFrame create = FDataFrame.select(FieldCell.parse("name", "sex", "phoneNum"), 1);
+        // 插入一些数据
+        DataFrame insert = create.insert(
+                FinalSeries.parse("zhao1", "M", "110xxxxxxxx"),
+                FinalSeries.parse("tang2", "W", "120xxxxxxxx"),
+                FinalSeries.parse("yang3", "W", "110xxxxxxxx"),
+                FinalSeries.parse("zhao4", "M", "120xxxxxxxx"),
+                FinalSeries.parse("tang5", "W", "110xxxxxxxx"),
+                FinalSeries.parse("yang6", "W", "110xxxxxxxx"),
+                FinalSeries.parse("zhao7", "M", "120xxxxxxxx"),
+                FinalSeries.parse("tang8", "W", "110xxxxxxxx"),
+                FinalSeries.parse("yang9", "W", "110xxxxxxxx")
+        );
+        // 查看数据集
+        System.out.println(insert);
+        // 将其中手机号前三位不为 120 的数据行按照其中的 sex 分组 在这里直接使用分组时过滤即可
+        System.out.println(
+                insert.groupBy("sex", v -> {
+                    // 获取到手机号的字符串
+                    String s = v.getCell(2).toString();
+                    // 判断前 3 个字符是否为 120 （是否以 120 开头） 如果是就不添加
+                    return !s.startsWith("120");
+                }).count()
+        );
+    }
+}
+```
+
+* 支持局部二值化操作，能够有效的实现图像的二值化处理，相较于全局二值化，函数更加灵活。
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+
+public class MAIN1 {
+    public static void main(String[] args) throws MalformedURLException {
+        // 获取到图像矩阵
+        ColorMatrix parse = ColorMatrix.parse(new URL("https://img-blog.csdnimg.cn/img_convert/5765bdab08ef6e117d434e7e225b9013.png"));
+        parse.show("image");
+        System.out.println("ok!!!");
+        System.out.println("长 = " + parse.getRowCount());
+        System.out.println("宽 = " + parse.getColCount());
+        // 将图像进行局部二值化
+        parse.localBinary(
+                // 指定本次二值化选择的颜色通道
+                ColorMatrix._G_, 
+                // 指定本次二值化选出的局部图像矩阵数量
+                100, 
+                // 指定本次二值化中局部矩阵中大于局部阈值的颜色编码
+                0xffffff, 
+                // 指定本次二值化中局部矩阵中小于局部阈值的颜色编码
+                0, 
+                // 指定本次二值化中局部阈值生成后要进行的微调数值，这里是降低20个阈值数值
+                -30
+        );
+        // 查看结果数据
+        parse.show("image");
+    }
+}
+```
 ### Version update date : xx xx-xx-xx

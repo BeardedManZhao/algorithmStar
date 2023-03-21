@@ -51,6 +51,42 @@ public class FinalGroupTable implements GroupDataFrameData {
     }
 
     /**
+     * 构造一个分组表数据，该表用于存储一个分组之后的新数据表，在新数据表张能够进行诸多的按组聚合需求与操作。
+     *
+     * @param colNameRow   被分组表的字段名称行数据。
+     * @param primaryIndex 被分组表的主键字段列索引数值，从0开始计算。
+     * @param index        被分组表中的分组字段索引数值，从0开始计算。
+     * @param dataFrame    需要被分组的表数据对象。
+     * @param whereClause  再进行分组的时候需要使用的过滤条件逻辑实现。
+     */
+    public FinalGroupTable(Series colNameRow, int primaryIndex, int index, DataFrame dataFrame, Condition whereClause) {
+        HashMap<String, ArrayList<Series>> hashMap1 = new HashMap<>();
+        // 开始按照 index 进行分组
+        for (Series cells : dataFrame) {
+            String key = cells.getCell(index).getStringValue();
+            ArrayList<Series> arrayLists = hashMap1.get(key);
+            if (arrayLists == null) {
+                arrayLists = new ArrayList<>();
+                if (whereClause.isComplianceEvents(cells)) {
+                    arrayLists.add(cells);
+                    hashMap1.put(key, arrayLists);
+                }
+            } else {
+                if (whereClause.isComplianceEvents(cells)) {
+                    hashMap1.get(key).add(cells);
+                }
+            }
+        }
+        hashMap = new HashMap<>();
+        hashMap1.forEach((key, value) -> {
+            hashMap.put(key, new FDataFrame(colNameRow, primaryIndex, value.toArray(new Series[0])));
+            value.clear();
+        });
+        groupKey = colNameRow.getCell(index);
+        this.colNameRow = colNameRow;
+    }
+
+    /**
      * 获取到当前D中包含的数据对象数量。
      * <p>
      * Gets the number of data objects contained in the current D.

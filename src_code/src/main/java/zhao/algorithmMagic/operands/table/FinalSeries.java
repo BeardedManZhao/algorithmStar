@@ -71,6 +71,16 @@ public class FinalSeries implements Series {
     }
 
     /**
+     * 将每一个单元格的数组形式的数据直接获取到。
+     *
+     * @return 一行数据中所有单元格构成的数组
+     */
+    @Override
+    public Cell<?>[] toArray() {
+        return this.cells;
+    }
+
+    /**
      * Returns an iterator over elements of type {@code T}.
      *
      * @return an Iterator.

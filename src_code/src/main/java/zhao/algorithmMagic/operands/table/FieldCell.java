@@ -41,7 +41,7 @@ public class FieldCell extends FinalCell<String> {
         return fieldCell1;
     }
 
-    public static Series parse(String[] fields) {
+    public static Series parse(String... fields) {
         FieldCell[] fieldCells = new FieldCell[fields.length];
         int index = -1;
         for (String field : fields) {

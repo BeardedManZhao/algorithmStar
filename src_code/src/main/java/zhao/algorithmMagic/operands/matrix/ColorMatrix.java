@@ -922,7 +922,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
     public ColorMatrix extractImage(int x1, int y1, int x2, int y2) {
         if (x1 >= x2 || y1 >= y2) {
             throw new OperatorOperationException("图像提取发生错误，您设置的提取坐标点有误!!!\nAn error occurred in image extraction. The extraction coordinate point you set is incorrect!!!\n" +
-                    "ERROR => (" + x1 + ',' + x2 + ") >= (" + x2 + ',' + y2 + ')');
+                    "ERROR => (" + x1 + ',' + y1 + ") >= (" + y1 + ',' + y2 + ')');
         }
         if (x2 >= this.getColCount() || y2 >= this.getRowCount()) {
             throw new OperatorOperationException("图像提取发生错误，您不能提取不存在于图像中的坐标点\nAn error occurred in image extraction. You cannot extract coordinate points that do not exist in the image\n" +
@@ -935,6 +935,35 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             if (color.length - x1 >= 0) System.arraycopy(row, x1, color, x1, color.length - x1);
         }
         return ColorMatrix.parse(colors);
+    }
+
+    /**
+     * 使用浅拷贝的方式将照片的多行向量提取出来并构成一个新的矩阵对象，形成一个新的图像矩阵。
+     * <p>
+     * Using a shallow copy method, the multiline vectors of a photo are extracted and formed into a new matrix object, forming a new image matrix.
+     *
+     * @param y1 提取图像的起始纵坐标轴点。
+     *           <p>
+     *           Extract the starting ordinate axis point of the image.
+     * @param y2 提取图像的终止纵坐标轴点。
+     *           <p>
+     *           Extract the ending ordinate axis point of the image.
+     * @return 原矩阵中的 y1 y2 的局部像素勾成的新图像矩阵对象。
+     * <p>
+     * The local pixels of y1 and y2 in the original matrix form a new image matrix object.
+     */
+    public ColorMatrix extractImageSrc(int y1, int y2) {
+        if (y1 >= y2) {
+            throw new OperatorOperationException("图像提取发生错误，您设置的提取坐标点有误!!!\nAn error occurred in image extraction. The extraction coordinate point you set is incorrect!!!\n" +
+                    "ERROR => (0," + y1 + ") >= (0," + y2 + ')');
+        }
+        Color[][] res_colors = new Color[y2 - y1][];
+        Color[][] colors1 = this.toArrays();
+        int index = -1;
+        for (int i = y1; i < y2; i++) {
+            res_colors[++index] = colors1[i];
+        }
+        return ColorMatrix.parse(res_colors);
     }
 
     /**
@@ -986,7 +1015,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      *                      <p>
      *                      All colors in the image are fake coordinates and need to be changed to a new color object for.
      */
-    public void regularity(byte Mode, int colorBoundary, int trueColor, int falseColor) {
+    public void globalBinary(byte Mode, int colorBoundary, int trueColor, int falseColor) {
         if (colorBoundary < 0 || colorBoundary > 0xff) return;
         Color color1 = new Color(trueColor);
         Color color2 = new Color(falseColor);
@@ -998,6 +1027,71 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
                 } else colors[++index] = color2;
             }
         }
+    }
+
+    /**
+     * 基于坐标周边点进行图像二值化的计算，该操作与全局二值化操作做之间最大的差别在于，其中的与阈值进行比对的数值并不是所有坐标点，而是当前坐标点的周边坐标点的对应通道的颜色数值，能够有效的将二值化体现出来。
+     * <p>
+     * The biggest difference between the calculation of image binarization based on coordinate peripheral points and the global binarization operation is that the value compared to the threshold value is not all coordinate points, but the color value of the corresponding channel of the peripheral coordinate points of the current coordinate point, which can effectively reflect binarization.
+     *
+     * @param Mode        在进行通道色彩的获取的时候，需要指定规整时的颜色通道标准，在指定通道的基础上进行规整，该参数可以直接从 ColorMatrix 类中获取到。
+     *                    <p>
+     *                    When obtaining channel colors, it is necessary to specify the color channel standard for regularization, which is based on the specified channel. This parameter can be directly obtained from the ColorMatrix class.
+     * @param subImageNum 局部拆分的子图像矩阵数量，该数量将有效实现矩阵的局部提取，并可以对局部进行修改。
+     *                    <p>
+     *                    The number of sub image matrices that are partially split, which will effectively achieve local extraction of the matrix, and can be modified locally.
+     * @param trueColor   图像中所有颜色为真的坐标，需要变更为的新颜色对象。
+     *                    <p>
+     *                    Coordinates where all colors in the image are true and need to be changed to a new color object for.
+     * @param falseColor  图像中所有颜色为假的坐标，需要变更为的新颜色对象。
+     *                    <p>
+     *                    All colors in the image are fake coordinates and need to be changed to a new color object for.
+     * @param polarization 局部颜色数值均值会做为局部二值化的阈值，该参数将会被均值进行加法运算，得出一个新的阈值，该参数是一个可选参数。
+     */
+    public void localBinary(byte Mode, int subImageNum, int trueColor, int falseColor, int polarization) {
+        int rowCount = this.getRowCount();
+        if (subImageNum <= 0 || subImageNum > rowCount) return;
+        // 根据选择的矩阵块数来计算出图像矩阵的纵坐标
+        double sep1 = rowCount / (double) subImageNum;
+        int sep = (int) sep1, start = 0, end = sep;
+        boolean isInt = sep1 == sep;
+        ColorMatrix[] colorMatrices = new ColorMatrix[isInt ? subImageNum : subImageNum + 1];
+        for (int i = 0; i < subImageNum; i++) {
+            colorMatrices[i] = this.extractImageSrc(start, end);
+            start += sep;
+            end += sep;
+        }
+        if (!isInt) {
+            colorMatrices[subImageNum] = this.extractImageSrc(start, rowCount - 1);
+        }
+        // 开始进行数据的处理
+        for (ColorMatrix colorMatrix : colorMatrices) {
+            colorMatrix.globalBinary(
+                    Mode, ((int) colorMatrix.avg(Mode)) + polarization, trueColor, falseColor
+            );
+        }
+    }
+
+    /**
+     * 提取出某个颜色通道的所有坐标颜色数值的均值。
+     * <p>
+     * Extract the mean value of all coordinate color values for a certain color channel.
+     *
+     * @param colorMode 需要被提取的颜色通道高。
+     *                  <p>
+     *                  The color channel that needs to be extracted is high.
+     * @return 对应颜色通道的所有像素颜色数值的均值。
+     * <p>
+     * The average value of all pixel color values corresponding to the color channel.
+     */
+    public double avg(byte colorMode) {
+        int sum = 0;
+        for (Color[] colors : this.toArrays()) {
+            for (Color color : colors) {
+                sum += (color.getRGB() >> colorMode) & 0xFF;
+            }
+        }
+        return sum / (double) (this.getNumberOfDimensions());
     }
 
     /**

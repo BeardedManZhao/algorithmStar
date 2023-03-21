@@ -108,6 +108,15 @@ public interface DataFrame extends AggDataFrameData, Iterable<Series>, Serializa
     GroupDataFrameData groupBy(String colName);
 
     /**
+     * 将符合条件的数据行按照指定的列字段分组 并返回分组之后的新结果数据集。
+     *
+     * @param colName     需要被用来进行分组的字段数据
+     * @param whereClause 在分组的时候进行一次 where 的过滤操作
+     * @return 分组之后的数据对象
+     */
+    GroupDataFrameData groupBy(String colName, Condition whereClause);
+
+    /**
      * 将数据集进行切片操作，并返回经过切片之后的新数据集结果对象。
      * <p>
      * Slice the dataset and return the new dataset result object after slicing.
