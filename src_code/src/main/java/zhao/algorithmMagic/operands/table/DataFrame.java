@@ -220,4 +220,13 @@ public interface DataFrame extends AggDataFrameData, Iterable<Series>, Serializa
      * After output, the data set itself will be returned and the call will not be terminated.
      */
     DataFrame into_outfile(String outPath, String sep);
+
+    /**
+     * 将计算结果以 HTML 表格的格式输出到指定目录的文本文件中。
+     *
+     * @param outPath   输出的目标文件所在的路径
+     * @param tableName 输出的HTML中的表名称。
+     * @return 输出之后会返回数据集本身，不会终止调用
+     */
+    DataFrame into_outHtml(String outPath, String tableName);
 }

@@ -1034,18 +1034,18 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      * <p>
      * The biggest difference between the calculation of image binarization based on coordinate peripheral points and the global binarization operation is that the value compared to the threshold value is not all coordinate points, but the color value of the corresponding channel of the peripheral coordinate points of the current coordinate point, which can effectively reflect binarization.
      *
-     * @param Mode        在进行通道色彩的获取的时候，需要指定规整时的颜色通道标准，在指定通道的基础上进行规整，该参数可以直接从 ColorMatrix 类中获取到。
-     *                    <p>
-     *                    When obtaining channel colors, it is necessary to specify the color channel standard for regularization, which is based on the specified channel. This parameter can be directly obtained from the ColorMatrix class.
-     * @param subImageNum 局部拆分的子图像矩阵数量，该数量将有效实现矩阵的局部提取，并可以对局部进行修改。
-     *                    <p>
-     *                    The number of sub image matrices that are partially split, which will effectively achieve local extraction of the matrix, and can be modified locally.
-     * @param trueColor   图像中所有颜色为真的坐标，需要变更为的新颜色对象。
-     *                    <p>
-     *                    Coordinates where all colors in the image are true and need to be changed to a new color object for.
-     * @param falseColor  图像中所有颜色为假的坐标，需要变更为的新颜色对象。
-     *                    <p>
-     *                    All colors in the image are fake coordinates and need to be changed to a new color object for.
+     * @param Mode         在进行通道色彩的获取的时候，需要指定规整时的颜色通道标准，在指定通道的基础上进行规整，该参数可以直接从 ColorMatrix 类中获取到。
+     *                     <p>
+     *                     When obtaining channel colors, it is necessary to specify the color channel standard for regularization, which is based on the specified channel. This parameter can be directly obtained from the ColorMatrix class.
+     * @param subImageNum  局部拆分的子图像矩阵数量，该数量将有效实现矩阵的局部提取，并可以对局部进行修改。
+     *                     <p>
+     *                     The number of sub image matrices that are partially split, which will effectively achieve local extraction of the matrix, and can be modified locally.
+     * @param trueColor    图像中所有颜色为真的坐标，需要变更为的新颜色对象。
+     *                     <p>
+     *                     Coordinates where all colors in the image are true and need to be changed to a new color object for.
+     * @param falseColor   图像中所有颜色为假的坐标，需要变更为的新颜色对象。
+     *                     <p>
+     *                     All colors in the image are fake coordinates and need to be changed to a new color object for.
      * @param polarization 局部颜色数值均值会做为局部二值化的阈值，该参数将会被均值进行加法运算，得出一个新的阈值，该参数是一个可选参数。
      */
     public void localBinary(byte Mode, int subImageNum, int trueColor, int falseColor, int polarization) {

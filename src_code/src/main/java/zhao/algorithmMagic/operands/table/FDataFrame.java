@@ -537,6 +537,78 @@ public class FDataFrame implements DataFrame {
     }
 
     /**
+     * 将计算结果以 HTML 表格的格式输出到指定目录的文本文件中。
+     *
+     * @param outPath   输出的目标文件所在的路径
+     * @param tableName 输出的HTML中的表名称。
+     * @return 输出之后会返回数据集本身，不会终止调用
+     */
+    @Override
+    public DataFrame into_outHtml(String outPath, String tableName) {
+        final Series colNameRow = this.colNameRow;
+        List<Series> list = this.list;
+        ASIO.writer(
+                new File(outPath), bufferedWriter -> {
+                    try {
+                        bufferedWriter.write("<!DOCTYPE html>");
+                        bufferedWriter.newLine();
+                        bufferedWriter.write("<html lang=\"zh\">");
+                        bufferedWriter.newLine();
+                        bufferedWriter.write("<style>\n\n    #" + tableName + "  {\n        /*表的背景颜色*/\n        background: black;\n    }\n\n" +
+                                "    .r0 {\n        /* 表格中的第一种数据行背景颜色 */\n        background: beige;\n    }\n" +
+                                "\n    .r1 {\n        /* 表格中的第二种数据行背景颜色 */\n        background: bisque;\n    }\n" +
+                                "    #colHead{\n        /* 表格中的字段头字体大小设置 */\nfont-size: 18px;\n}</style>");
+                        bufferedWriter.newLine();
+                        bufferedWriter.write("<head>");
+                        bufferedWriter.newLine();
+                        bufferedWriter.write("<meta charset=\"UTF-8\"><title>");
+                        bufferedWriter.write(tableName);
+                        bufferedWriter.write("Title</title>");
+                        bufferedWriter.newLine();
+                        bufferedWriter.write("</head>");
+                        bufferedWriter.newLine();
+                        bufferedWriter.write("<body>");
+                        bufferedWriter.newLine();
+                        bufferedWriter.write("<table id=\"" + tableName + "\">\n<thead>");
+                        bufferedWriter.newLine();
+                        int rowClass = 0;
+                        bufferedWriter.write("<tr id=\"colHead\" class=\"r0\">");
+                        for (Cell<?> cell : colNameRow) {
+                            bufferedWriter.write("<td>");
+                            bufferedWriter.newLine();
+                            bufferedWriter.write(cell.toString());
+                            bufferedWriter.newLine();
+                            bufferedWriter.write("</td>");
+                        }
+                        bufferedWriter.write("</tr></thead>");
+                        bufferedWriter.newLine();
+                        bufferedWriter.write("<tbody id=\"tableData\">");
+
+                        for (Series cells : list) {
+                            bufferedWriter.write("<tr class=\"r" + ((++rowClass) - (rowClass >> 1 << 1)) + "\" id=\"" + cells.getCell(primaryIndex) + "\">");
+                            for (Cell<?> cell : cells) {
+                                bufferedWriter.write("<td>");
+                                bufferedWriter.newLine();
+                                bufferedWriter.write(cell.toString());
+                                bufferedWriter.newLine();
+                                bufferedWriter.write("</td>");
+                                bufferedWriter.newLine();
+                            }
+                            bufferedWriter.write("</tr>");
+                            bufferedWriter.newLine();
+                        }
+                        bufferedWriter.write("</tbody></table>");
+                        bufferedWriter.newLine();
+                        bufferedWriter.write("</html>");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+        );
+        return this;
+    }
+
+    /**
      * Returns a string representation of the object. In general, the
      * {@code toString} method returns a string that
      * "textually represents" this object. The result should
