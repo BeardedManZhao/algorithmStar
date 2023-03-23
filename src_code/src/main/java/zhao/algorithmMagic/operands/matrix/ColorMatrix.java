@@ -5,6 +5,7 @@ import zhao.algorithmMagic.integrator.ImageRenderingIntegrator;
 import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixSpace;
 import zhao.algorithmMagic.utils.ASIO;
 import zhao.algorithmMagic.utils.ASMath;
+import zhao.algorithmMagic.utils.transformation.ManyTrans;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,12 +28,12 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
     /**
      * 红色通道编码，用于定位颜色通道的数值常量
      */
-    public final static byte _R_ = 16;
+    public final static byte _R_ = 0b10000;
 
     /**
      * 绿色通道编码，用于定位颜色通道的数值常量
      */
-    public final static byte _G_ = 8;
+    public final static byte _G_ = 0b1000;
 
     /**
      * 蓝色通道编码，用于定位颜色通道的数值常量
@@ -43,7 +44,36 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      * 白色RGB常量数值
      */
     public final static int WHITE_NUM = 0xffffff;
+    public final static Color WHITE = new Color(WHITE_NUM);
     public final static short SINGLE_CHANNEL_MAXIMUM = 0xff;
+
+    /**
+     * 颜色数值求和计算方案，在该方案中的处理逻辑为如果数值超出范围，则取0或255，如果数值没有超过范围则取数值本身，实现颜色数值的高效限制的计算方案。
+     * <p>
+     * The processing logic in the color value summation calculation scheme is to take 0 or 255 if the value exceeds the range, and take the value itself if the value does not exceed the range, achieving an efficient calculation scheme for limiting color values.
+     */
+    public final static ManyTrans<Color, Color> COLOR_SUM_REGULATE = (inputType1, inputType2) -> new Color(
+            ASMath.regularTricolor(inputType1.getRed() + inputType2.getRed()),
+            ASMath.regularTricolor(inputType1.getGreen() + inputType2.getGreen()),
+            ASMath.regularTricolor(inputType1.getBlue() + inputType2.getGreen())
+    );
+
+    /**
+     * 颜色数值求和计算方案，在该方案中的处理逻辑为：如果x为求和后的越界数值，则取 x % 256 的结果作为颜色数值。
+     * <p>
+     * The processing logic in the color value summation calculation scheme is: if x is the out-of-boundary value after the summation, the result of x% 256 is taken as the color value.
+     */
+    public final static ManyTrans<Color, Color> COLOR_SUM_REMAINDER = (inputType1, inputType2) -> {
+        int red = inputType1.getRed() + inputType2.getRed();
+        int green = inputType1.getGreen() + inputType2.getGreen();
+        int blue = inputType1.getBlue() + inputType2.getGreen();
+        return new Color(
+                red - (red >> _G_ << _G_),
+                green - (green >> _G_ << _G_),
+                blue - (blue >> _G_ << _G_)
+        );
+    };
+
     private boolean isGrayscale;
 
     /**
@@ -265,7 +295,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      */
     @Override
     public ColorMatrix add(ColorMatrix value) {
-        throw new UnsupportedOperationException("The color matrix object does not support the operation of \"addition\", \"subtraction\" and \"multiplication\", because the calculation of such operations on the color object is not necessary!");
+        return agg(value, COLOR_SUM_REMAINDER);
     }
 
     /**
@@ -280,6 +310,42 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
     @Override
     public ColorMatrix diff(ColorMatrix value) {
         throw new UnsupportedOperationException("The color matrix object does not support the operation of \"addition\", \"subtraction\" and \"multiplication\", because the calculation of such operations on the color object is not necessary!");
+    }
+
+    /**
+     * 将两个图像矩阵按照一定的规则进行计算操作，返回结果数值
+     *
+     * @param value     被求和的参数  Parameters to be summed
+     * @param manyTrans 两个操作数之间的求和逻辑实现，不同的实现有不同的结果效果。
+     *                  <p>
+     *                  The summation logic between two operands is implemented, and different implementations have different results.
+     * @return 求和之后的数值  the value after the sum
+     * <p>
+     * There is no description for the super interface, please refer to the subclass documentation
+     */
+    public ColorMatrix agg(ColorMatrix value, ManyTrans<Color, Color> manyTrans) {
+        int rowCount1 = this.getRowCount();
+        int colCount1 = this.getColCount();
+        int rowCount2 = value.getRowCount();
+        int colCount2 = value.getColCount();
+        if (rowCount1 == rowCount2 && colCount1 == colCount2) {
+            Color[][] res = new Color[rowCount1][colCount1];
+            Color[][] that = value.toArrays();
+            int y = -1;
+            for (Color[] colors1 : this.toArrays()) {
+                Color[] resRow = res[++y];
+                Color[] colors2 = that[y];
+                int x = -1;
+                for (Color color : colors1) {
+                    resRow[++x] = manyTrans.function(color, colors2[x]);
+                }
+            }
+            return ColorMatrix.parse(res);
+        } else {
+            throw new OperatorOperationException("图像矩阵在进行加法运算的时候出现了错误，因为图像中的矩阵像素数量不一致！！！\nAn error occurred during the addition operation of the image matrix because the number of matrix pixels in the image is inconsistent!!!\nERROR => mat1.row = " +
+                    rowCount1 + "\tmat2.row = " + rowCount2 + "\tmat1.col = " + colCount1 + "\tmat2.col = " + colCount2
+            );
+        }
     }
 
     /**
@@ -1094,6 +1160,21 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         return sum / (double) (this.getNumberOfDimensions());
     }
 
+/*
+    TODO 等待实现
+    /**
+     * 图像腐蚀函数，在该函数的处理之下，可以对图像某些不足够的颜色数值进行腐蚀操作，
+     * @param width     用于腐蚀的图像卷积核的宽度
+     * @param height    用于腐蚀的图像卷积核的高度
+     * @return 图像矩阵经过了腐蚀操作之后返回的新矩阵对象。
+     * /
+    public ColorMatrix erode(int width, int height){
+        for (Color[] colors : this.toArrays()) {
+
+        }
+    }
+*/
+
     /**
      * 将图像矩阵展示出来，使得在矩阵的图像数据能够被展示出来。
      * <p>
@@ -1229,7 +1310,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         jFrame.setSize(width, height);
         jFrame.setVisible(true);
         jFrame.setTitle(title);
-        jFrame.setBackground(new Color(WHITE_NUM));
+        jFrame.setBackground(WHITE);
         jFrame.setResizable(true);
         ImageIcon imageIcon = new ImageIcon(jFrame.createVolatileImage(colCount, rowCount));
         Image image = imageIcon.getImage();

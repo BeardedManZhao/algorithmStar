@@ -18,6 +18,11 @@ public class FinalCell<valueType> implements Cell<valueType> {
 
     @SuppressWarnings("unchecked")
     public FinalCell(String string) {
+        if (string.length() == 0) {
+            valueType = (valueType) Integer.valueOf(0);
+            this.isNumber = true;
+            return;
+        }
         this.isNumber = ASStr.checkIsNum(string);
         if (this.isNumber) {
             valueType = (valueType) Double.valueOf(string);

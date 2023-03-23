@@ -2164,4 +2164,5 @@ public final class ASMath {
         if (RorGorB < 0) return 0;
         return Math.min(RorGorB, 255);
     }
+
 }

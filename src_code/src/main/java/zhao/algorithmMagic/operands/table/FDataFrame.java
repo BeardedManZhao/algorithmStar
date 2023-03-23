@@ -554,7 +554,7 @@ public class FDataFrame implements DataFrame {
                         bufferedWriter.newLine();
                         bufferedWriter.write("<html lang=\"zh\">");
                         bufferedWriter.newLine();
-                        bufferedWriter.write("<style>\n\n    #" + tableName + "  {\n        /*表的背景颜色*/\n        background: black;\n    }\n\n" +
+                        bufferedWriter.write("<style>\n\n    #" + tableName + "  {\n        /*表的背景颜色*/\n        background: black;\n        /* 表中的单元格文字居中*/\ntext-align: center;    }\n\n" +
                                 "    .r0 {\n        /* 表格中的第一种数据行背景颜色 */\n        background: beige;\n    }\n" +
                                 "\n    .r1 {\n        /* 表格中的第二种数据行背景颜色 */\n        background: bisque;\n    }\n" +
                                 "    #colHead{\n        /* 表格中的字段头字体大小设置 */\nfont-size: 18px;\n}</style>");

@@ -612,4 +612,46 @@ public class MAIN1 {
     }
 }
 ```
+
+* 图像开始支持 add 函数，在add函数的操作下，可以实现图像函数的重叠合并！
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+
+import java.sql.SQLException;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 将一些图像文件转换成为一个图像矩阵对象
+        ColorMatrix colorMatrix1 = ColorMatrix.parse("C:\\Users\\Liming\\Desktop\\fsdownload\\test.bmp");
+        ColorMatrix colorMatrix2 = ColorMatrix.parse("C:\\Users\\Liming\\Desktop\\fsdownload\\test1.bmp");
+        // 将 colorMatrix2 + colorMatrix1 的结果图像展示出来
+        (colorMatrix1.add(colorMatrix2)).show("image");
+    }
+}
+```
+
+* 支持自定义聚合以及内置数据方案的聚合操作。
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+
+import java.sql.SQLException;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 将一些图像文件转换成为一个图像矩阵对象
+        ColorMatrix colorMatrix1 = ColorMatrix.parse("C:\\Users\\Liming\\Desktop\\fsdownload\\test.bmp");
+        ColorMatrix colorMatrix2 = ColorMatrix.parse("C:\\Users\\Liming\\Desktop\\fsdownload\\test1.bmp");
+        // 使用 agg 函数以及内置的计算方案进行两个矩阵的合并
+        // 下面函数中的第二个形参代表的就是矩阵中元素的聚合逻辑，这里使用的是求和，并对越界颜色数值进行规整的逻辑实现
+        colorMatrix1.agg(colorMatrix2, ColorMatrix.COLOR_SUM_REGULATE).show("image");
+    }
+}
+```
+
 ### Version update date : xx xx-xx-xx
