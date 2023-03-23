@@ -41,7 +41,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
     public final static byte _B_ = 0;
 
     /**
-     * 白色RGB常量数值
+     * 黑白色RGB常量数值
      */
     public final static int WHITE_NUM = 0xffffff;
     public final static Color WHITE = new Color(WHITE_NUM);
@@ -998,7 +998,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         Color[][] srcImage = this.toArrays();
         for (Color[] color : colors) {
             Color[] row = srcImage[y1++];
-            if (color.length - x1 >= 0) System.arraycopy(row, x1, color, x1, color.length - x1);
+            System.arraycopy(row, x1, color, 0, Math.min(color.length, row.length));
         }
         return ColorMatrix.parse(colors);
     }
@@ -1048,16 +1048,18 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      *                    The starting coordinate of this image when the merge operation is in progress.
      */
     public void merge(ColorMatrix colorMatrix, int x1, int y1) {
-        if (y1 <= 0 || y1 >= getRowCount()) {
+        if (y1 < 0 || y1 >= getRowCount()) {
             throw new OperatorOperationException("Illegal coordinate axis value y1 = " + y1);
         }
-        if (x1 <= 0 || x1 >= getColCount()) {
+        if (x1 < 0 || x1 >= getColCount()) {
             throw new OperatorOperationException("Illegal coordinate axis value x1 = " + x1);
         }
         Color[][] colors1 = this.toArrays();
-        x1 = Math.min(x1, this.getColCount() - 1);
-        y1 = Math.min(y1, this.getRowCount() - 1);
-        int length = colorMatrix.getColCount();
+        int colCount = this.getColCount();
+        int rowCount = this.getRowCount();
+        x1 = Math.min(x1, colCount - 1);
+        y1 = Math.min(y1, rowCount - 1);
+        int length = Math.min(colorMatrix.getColCount(), colCount);
         for (Color[] colors : colorMatrix.toArrays()) {
             System.arraycopy(colors, 0, colors1[y1++], x1, length);
         }
@@ -1160,20 +1162,55 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         return sum / (double) (this.getNumberOfDimensions());
     }
 
-/*
-    TODO 等待实现
     /**
      * 图像腐蚀函数，在该函数的处理之下，可以对图像某些不足够的颜色数值进行腐蚀操作，
-     * @param width     用于腐蚀的图像卷积核的宽度
-     * @param height    用于腐蚀的图像卷积核的高度
+     *
+     * @param width  用于腐蚀的图像卷积核的宽度
+     * @param height 用于腐蚀的图像卷积核的高度
+     * @param isCopy 如果设置为true 则代表在一个新的矩阵对象中进行腐蚀的操作计算，如果设置为false 则代表在原矩阵的基础上进行腐蚀不会出现新矩阵对象。
      * @return 图像矩阵经过了腐蚀操作之后返回的新矩阵对象。
-     * /
-    public ColorMatrix erode(int width, int height){
-        for (Color[] colors : this.toArrays()) {
-
+     */
+    public ColorMatrix erode(int width, int height, boolean isCopy) {
+        // 计算出来最终的图像的长宽
+        int rowCount = this.getRowCount() - (this.getRowCount() % height);
+        int colCount = this.getColCount() - (this.getColCount() % width);
+        int maxRowIndex = rowCount - height - 1;
+        int maxColIndex = colCount - width - 1;
+        ColorMatrix res = isCopy ? ColorMatrix.parse(this.copyToNewArrays()) : this;
+        // 开始不断的提取出子矩阵数据
+        for (int y = 0; y < maxRowIndex; ) {
+            int ey = y + height;
+            int ey1 = ey - 1;
+            for (int x = 0; x < maxColIndex; ) {
+                int ex = x + width;
+                // 提取每一行的所有列数据 并判断矩阵中是否有黑色，如果找到了黑色 就将 当前子矩阵中的所有颜色都变更为黑
+                ColorMatrix nowSub = res.extractImage(x, y, ex - 1, ey1);
+                boolean isR = false;
+                for (Color[] colors : nowSub.toArrays()) {
+                    for (Color color : colors) {
+                        if (color.getRGB() == 0xff000000) {
+                            // 发现了黑色 直接将该子矩阵中的所有颜色更换为黑色
+                            isR = true;
+                        }
+                    }
+                    if (isR) {
+                        for (Color[] toArray : nowSub.toArrays()) {
+                            Arrays.fill(toArray, Color.BLACK);
+                        }
+                        break;
+                    }
+                }
+                // 一行的检测结束，如果这一行中有黑色像素，那么代表子矩阵被替换完毕，进行合并
+                if (isR){
+                    // 合并子矩阵到矩阵中
+                    res.merge(nowSub, x, y);
+                }
+                x = ex;
+            }
+            y = ey;
         }
+        return res;
     }
-*/
 
     /**
      * 将图像矩阵展示出来，使得在矩阵的图像数据能够被展示出来。
