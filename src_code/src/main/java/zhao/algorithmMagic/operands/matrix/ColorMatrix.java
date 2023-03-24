@@ -1171,11 +1171,25 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      * @return 图像矩阵经过了腐蚀操作之后返回的新矩阵对象。
      */
     public ColorMatrix erode(int width, int height, boolean isCopy) {
+        return erode(width, height, isCopy, Color.BLACK);
+    }
+
+    /**
+     * 图像腐蚀函数，在该函数的处理之下，可以对图像某些不足够的颜色数值进行腐蚀操作，
+     *
+     * @param width     用于腐蚀的图像卷积核的宽度
+     * @param height    用于腐蚀的图像卷积核的高度
+     * @param isCopy    如果设置为true 则代表在一个新的矩阵对象中进行腐蚀的操作计算，如果设置为false 则代表在原矩阵的基础上进行腐蚀不会出现新矩阵对象。
+     * @param backColor 图像矩阵中的背景颜色数据对像，在该对象中有很多的颜色，您需要指定一种颜色作为图像矩阵中的腐蚀者身份。
+     * @return 图像矩阵经过了腐蚀操作之后返回的新矩阵对象。
+     */
+    public ColorMatrix erode(int width, int height, boolean isCopy, Color backColor) {
         // 计算出来最终的图像的长宽
         int rowCount = this.getRowCount() - (this.getRowCount() % height);
         int colCount = this.getColCount() - (this.getColCount() % width);
         int maxRowIndex = rowCount - height - 1;
         int maxColIndex = colCount - width - 1;
+        int colorNum = backColor.getRGB();
         ColorMatrix res = isCopy ? ColorMatrix.parse(this.copyToNewArrays()) : this;
         // 开始不断的提取出子矩阵数据
         for (int y = 0; y < maxRowIndex; ) {
@@ -1188,20 +1202,20 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
                 boolean isR = false;
                 for (Color[] colors : nowSub.toArrays()) {
                     for (Color color : colors) {
-                        if (color.getRGB() == 0xff000000) {
+                        if (color.getRGB() == colorNum) {
                             // 发现了黑色 直接将该子矩阵中的所有颜色更换为黑色
                             isR = true;
                         }
                     }
                     if (isR) {
                         for (Color[] toArray : nowSub.toArrays()) {
-                            Arrays.fill(toArray, Color.BLACK);
+                            Arrays.fill(toArray, backColor);
                         }
                         break;
                     }
                 }
                 // 一行的检测结束，如果这一行中有黑色像素，那么代表子矩阵被替换完毕，进行合并
-                if (isR){
+                if (isR) {
                     // 合并子矩阵到矩阵中
                     res.merge(nowSub, x, y);
                 }

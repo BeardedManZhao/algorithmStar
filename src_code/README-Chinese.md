@@ -1,6 +1,6 @@
 # ![image](https://user-images.githubusercontent.com/113756063/194830221-abe24fcc-484b-4769-b3b7-ec6d8138f436.png) 算法之星-机器大脑
 
-- Switch to [English Document](https://github.com/BeardedManZhao/algorithmStar/blob/main/src_code/update/1.14_1.15.md)
+- Switch to [English Document](https://github.com/BeardedManZhao/algorithmStar/blob/main/src_code/README.md)
 - knowledge base
   <a href="https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/knowledge%20base-Chinese.md">
   <img src = "https://user-images.githubusercontent.com/113756063/194838003-7ad14dac-b38c-4b57-a942-ba58f00baaf7.png"/>
@@ -669,7 +669,7 @@ public class MAIN1 {
         // 将一些图像文件转换成为一个图像矩阵对象
         ColorMatrix colorMatrix1 = ColorMatrix.parseGrayscale("C:\\Users\\Liming\\Desktop\\fsdownload\\test2.bmp");
         // 对图像进行二值化
-        colorMatrix1.globalBinary(ColorMatrix._G_, 100 , 0xffffff, 0);
+        colorMatrix1.globalBinary(ColorMatrix._G_, 100, 0xffffff, 0);
         colorMatrix1.show("腐蚀之前的 image");
         // 开始对图像矩阵进行腐蚀操作
         colorMatrix1.erode(2, 2, false).show("腐蚀之后的 image");
