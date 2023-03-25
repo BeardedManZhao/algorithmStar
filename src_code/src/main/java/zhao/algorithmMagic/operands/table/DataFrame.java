@@ -169,6 +169,23 @@ public interface DataFrame extends AggDataFrameData, Iterable<Series>, Serializa
     DataFrame insert(Series... rowSeries);
 
     /**
+     * 以当前数据集为基准，添加一列新数据，并将添加列数据之后的 Data Frame 对象返回出来。
+     * <p>
+     * Based on the current dataset, add a new column of data, and return the Data Frame object after adding the column data.
+     *
+     * @param fieldName      需要被添加的列数据所对应的列名称，要求不得与已有的DataFrame字段名称重名！
+     *                       <p>
+     *                       The column name corresponding to the column data to be added must not duplicate the existing DataFrame field name!
+     * @param transformation 在添加的列新数据的过程中，提供一个新数据的生成函数，函数中的参数是每行数据的系列对象，您可以根据行数据生成新数值，也可以根据自己的规则生成新数据。
+     *                       <p>
+     *                       During the process of adding new data for a column, a new data generation function is provided. The parameters in the function are a series of objects for each row of data. You can generate new values based on the row data or generate new data based on your own rules.
+     * @return 添加了列字段与列数据之后的DataFrame对象。
+     * <p>
+     * The DataFrame object after adding column fields and column data.
+     */
+    DataFrame insertColGetNew(FieldCell fieldName, Transformation<Series, Cell<?>> transformation);
+
+    /**
      * 将一列字段对应的所有数据按照指定的函数进行更新。
      * <p>
      * Update all data corresponding to a column of fields according to the specified function.

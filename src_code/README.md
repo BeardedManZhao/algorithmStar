@@ -667,14 +667,53 @@ import java.sql.SQLException;
 
 
 public class MAIN1 {
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) {
         // 将一些图像文件转换成为一个图像矩阵对象
         ColorMatrix colorMatrix1 = ColorMatrix.parseGrayscale("C:\\Users\\Liming\\Desktop\\fsdownload\\test2.bmp");
         // 对图像进行二值化
-        colorMatrix1.globalBinary(ColorMatrix._G_, 100 , 0xffffff, 0);
+        colorMatrix1.globalBinary(ColorMatrix._G_, 100, 0xffffff, 0);
         colorMatrix1.show("腐蚀之前的 image");
         // 开始对图像矩阵进行腐蚀操作
         colorMatrix1.erode(2, 2, false).show("腐蚀之后的 image");
+    }
+}
+```
+
+* The addition of columns is supported, but it should be noted that the addition of columns will return a new DataFrame
+  DF in which the data will be lightly copied.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.table.*;
+
+import java.sql.SQLException;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 创建一个空的 DataFrame 对象
+        FDataFrame select = FDataFrame.select(
+                FieldCell.parse("id", "name", "sex", "age"), 1
+        );
+        // 手动插入数据
+        select.insert(
+                FinalSeries.parse("1", "zhao", "M", "19"),
+                FinalSeries.parse("2", "tang", "W", "18"),
+                FinalSeries.parse("3", "yang", "W", "20"),
+                FinalSeries.parse("4", "shen", "W", "19")
+        );
+        // 打印出 DF 对象有关的信息
+        System.out.println(
+                select.desc()
+        );
+        // 添加一列数据，用于表示年龄是否为偶数
+        DataFrame ageIsE = select.insertColGetNew(
+                // 新列的列名称
+                FieldCell.$("AgeIsE"),
+                // 新列的数值生成逻辑 如果第 4 列（index == 3）的数值 % 2 == 0 就是true
+                cells -> cells.getCell(3).getIntValue() % 2 == 0 ? new FinalCell<>(true) : new FinalCell<>(false)
+        );
+        System.out.println(ageIsE);
     }
 }
 ```

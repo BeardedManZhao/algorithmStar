@@ -311,7 +311,7 @@ public class FDataFrame implements DataFrame {
         for (Series cells : this.list) {
             if (whereClause.isComplianceEvents(cells)) arrayList.add(cells);
         }
-        return new FDataFrame(this.colNameRow, this.primaryIndex, arrayList.toArray(new Series[0]))
+        return new FDataFrame(this.colNameRow, this.primaryIndex, arrayList)
                 .refreshField(true, false);
     }
 
@@ -440,7 +440,7 @@ public class FDataFrame implements DataFrame {
      */
     @Override
     public DataFrame insert(Series... rowSeries) {
-        int startLen = this.list.size() - 1;
+        int startLen = this.list.size();
         this.list.addAll(Arrays.asList(rowSeries));
         // 增量更新行索引
         for (int i = startLen, count = 0; count < rowSeries.length; count++, i++) {
@@ -450,6 +450,38 @@ public class FDataFrame implements DataFrame {
             );
         }
         return this;
+    }
+
+    /**
+     * 以当前数据集为基准，添加一列新数据，并将添加列数据之后的 Data Frame 对象返回出来。
+     * <p>
+     * Based on the current dataset, add a new column of data, and return the Data Frame object after adding the column data.
+     *
+     * @param fieldName      需要被添加的列数据所对应的列名称，要求不得与已有的DataFrame字段名称重名！
+     *                       <p>
+     *                       The column name corresponding to the column data to be added must not duplicate the existing DataFrame field name!
+     * @param transformation 在添加的列新数据的过程中，提供一个新数据的生成函数，函数中的参数是每行数据的系列对象，您可以根据行数据生成新数值，也可以根据自己的规则生成新数据。
+     *                       <p>
+     *                       During the process of adding new data for a column, a new data generation function is provided. The parameters in the function are a series of objects for each row of data. You can generate new values based on the row data or generate new data based on your own rules.
+     * @return 添加了列字段与列数据之后的DataFrame对象。
+     * <p>
+     * The DataFrame object after adding column fields and column data.
+     */
+    @Override
+    public DataFrame insertColGetNew(FieldCell fieldName, Transformation<Series, Cell<?>> transformation) {
+        ArrayList<Series> arrayList = new ArrayList<>(this.list.size() + 10);
+        for (Series cells : this.list) {
+            arrayList.add(FinalSeries.merge(
+                    cells, transformation.function(cells)
+            ));
+        }
+        return new FDataFrame(
+                FinalSeries.merge(this.colNameRow, fieldName),
+                this.primaryIndex,
+                arrayList,
+                this.rowHashMap,
+                new HashMap<>(this.colHashMap.size() + 1)
+        );
     }
 
     /**
@@ -563,7 +595,7 @@ public class FDataFrame implements DataFrame {
                         bufferedWriter.newLine();
                         bufferedWriter.write("<meta charset=\"UTF-8\"><title>");
                         bufferedWriter.write(tableName);
-                        bufferedWriter.write("Title</title>");
+                        bufferedWriter.write("</title>");
                         bufferedWriter.newLine();
                         bufferedWriter.write("</head>");
                         bufferedWriter.newLine();
@@ -608,27 +640,6 @@ public class FDataFrame implements DataFrame {
         return this;
     }
 
-    /**
-     * Returns a string representation of the object. In general, the
-     * {@code toString} method returns a string that
-     * "textually represents" this object. The result should
-     * be a concise but informative representation that is easy for a
-     * person to read.
-     * It is recommended that all subclasses override this method.
-     * <p>
-     * The {@code toString} method for class {@code Object}
-     * returns a string consisting of the name of the class of which the
-     * object is an instance, the at-sign character `{@code @}', and
-     * the unsigned hexadecimal representation of the hash code of the
-     * object. In other words, this method returns a string equal to the
-     * value of:
-     * <blockquote>
-     * <pre>
-     * getClass().getName() + '@' + Integer.toHexString(hashCode())
-     * </pre></blockquote>
-     *
-     * @return a string representation of the object.
-     */
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();

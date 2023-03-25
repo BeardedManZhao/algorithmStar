@@ -43,7 +43,7 @@ public class FinalGroupTable implements GroupDataFrameData {
         }
         hashMap = new HashMap<>();
         hashMap1.forEach((key, value) -> {
-            hashMap.put(key, new FDataFrame(colNameRow, primaryIndex, value.toArray(new Series[0])));
+            hashMap.put(key, new FDataFrame(colNameRow, primaryIndex, value));
             value.clear();
         });
         groupKey = colNameRow.getCell(index);
@@ -79,7 +79,7 @@ public class FinalGroupTable implements GroupDataFrameData {
         }
         hashMap = new HashMap<>();
         hashMap1.forEach((key, value) -> {
-            hashMap.put(key, new FDataFrame(colNameRow, primaryIndex, value.toArray(new Series[0])));
+            hashMap.put(key, new FDataFrame(colNameRow, primaryIndex, value));
             value.clear();
         });
         groupKey = colNameRow.getCell(index);

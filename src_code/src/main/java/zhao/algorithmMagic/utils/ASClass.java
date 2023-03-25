@@ -321,4 +321,44 @@ public final class ASClass {
         }
     }
 
+    /**
+     * 将两个数组合并到同一个数组中。
+     *
+     * @param res  结果数组容器
+     * @param arr1 需要被合并的第一个数组
+     * @param arr2 需要被合并的第二个数组
+     */
+    public static <arr> void mergeArray(arr[] res, arr[] arr1, arr[] arr2) {
+        int length1 = arr1.length;
+        int length2 = arr2.length;
+        if (length1 == length2) {
+            int midIndex = res.length >> 1;
+            for (int i1 = 0, i2 = midIndex, i2c = 0; i1 < midIndex && i2 < res.length; i1++, i2++) {
+                res[i1] = arr1[i1];
+                res[i2] = arr2[i2c++];
+            }
+        }
+        if (length1 < length2) {
+            int i2 = length1, i2c = 0;
+            for (int i1 = 0; i1 < length1 && i2 < res.length; i1++, i2++) {
+                res[i1] = arr1[i1];
+                res[i2] = arr2[i2c++];
+            }
+            // 剩余合并
+            while (i2 < res.length) {
+                res[i2++] = arr2[i2c++];
+            }
+        } else {
+            int i1 = 0, i2c = 0;
+            for (int i2 = length1; i1 < length2; i1++, i2++) {
+                res[i1] = arr1[i1];
+                res[i2] = arr2[i2c++];
+            }
+            // 剩余第一个数组中的数据合并
+            while (i1 < length1) {
+                res[i1] = arr1[i1++];
+            }
+        }
+    }
+
 }

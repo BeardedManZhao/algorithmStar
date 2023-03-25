@@ -1100,7 +1100,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
     /**
      * 基于坐标周边点进行图像二值化的计算，该操作与全局二值化操作做之间最大的差别在于，其中的与阈值进行比对的数值并不是所有坐标点，而是当前坐标点的周边坐标点的对应通道的颜色数值，能够有效的将二值化体现出来。
      * <p>
-     * The biggest difference between the calculation of image binarization based on coordinate peripheral points and the global binarization operation is that the value compared to the threshold value is not all coordinate points, but the color value of the corresponding channel of the peripheral coordinate points of the current coordinate point, which can effectively reflect binarization.
+     * The biggest difference between the calculation of image binary based on coordinate peripheral points and the global binary operation is that the value compared to the threshold value is not all coordinate points, but the color value of the corresponding channel of the peripheral coordinate points of the current coordinate point, which can effectively reflect binary.
      *
      * @param Mode         在进行通道色彩的获取的时候，需要指定规整时的颜色通道标准，在指定通道的基础上进行规整，该参数可以直接从 ColorMatrix 类中获取到。
      *                     <p>

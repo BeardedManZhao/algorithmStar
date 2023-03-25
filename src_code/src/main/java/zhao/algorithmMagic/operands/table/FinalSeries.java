@@ -1,6 +1,7 @@
 package zhao.algorithmMagic.operands.table;
 
 import zhao.algorithmMagic.exception.OperatorOperationException;
+import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.Event;
 import zhao.algorithmMagic.utils.transformation.Transformation;
 
@@ -30,6 +31,21 @@ public class FinalSeries implements Series {
         } else {
             throw new OperatorOperationException("FinalSeries cannot be null!!!");
         }
+    }
+
+    /**
+     * 将一个Series 和很多个单元格进行数据合并
+     *
+     * @param finalSeries 需要被合并的Series对象
+     * @param cells       合需要被合并的所有单元格
+     * @return 合并之后的数据对象
+     */
+    public static FinalSeries merge(Series finalSeries, Cell<?>... cells) {
+        Cell<?>[] cells1 = finalSeries.toArray();
+        int length1 = cells1.length;
+        Cell<?>[] res = new Cell[length1 + cells.length];
+        ASClass.mergeArray(res, cells1, cells);
+        return new FinalSeries(res);
     }
 
     public static FinalSeries parse(String... arr) {
