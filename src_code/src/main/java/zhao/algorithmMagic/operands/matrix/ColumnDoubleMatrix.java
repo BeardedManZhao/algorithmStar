@@ -636,7 +636,6 @@ public class ColumnDoubleMatrix extends DoubleMatrix implements RCNOperands<Doub
      *             <p>
      *             Directory path to save.
      * @param sep  保存时使用的分隔符。
-     *
      */
     @Override
     public void save(String path, char sep) {
@@ -652,7 +651,6 @@ public class ColumnDoubleMatrix extends DoubleMatrix implements RCNOperands<Doub
      *             <p>
      *             Directory path to save.
      * @param sep  保存时使用的分隔符。
-     *
      */
     @Override
     public void save(File path, char sep) {
