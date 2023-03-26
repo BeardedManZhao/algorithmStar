@@ -324,9 +324,9 @@ public final class ASClass {
     /**
      * 将两个数组合并到同一个数组中。
      *
-     * @param res  结果数组容器
-     * @param arr1 需要被合并的第一个数组
-     * @param arr2 需要被合并的第二个数组
+     * @param res   结果数组容器
+     * @param arr1  需要被合并的第一个数组
+     * @param arr2  需要被合并的第二个数组
      * @param <arr> 数组中所包含的元素数据类型，此处为自动类型推断。
      */
     public static <arr> void mergeArray(arr[] res, arr[] arr1, arr[] arr2) {

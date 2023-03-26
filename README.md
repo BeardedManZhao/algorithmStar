@@ -58,7 +58,7 @@ The AS library generates some log data when performing many calculation function
     </dependency>
 </dependencies>
 ```
-#### 可选依赖项
+#### Optional Dependencies
 
 When interfacing with various platforms such as databases and Sparks, the AS library needs to use third-party dependency packages, which are optional. If you do not need to use these functions, you may not need to import dependencies. If you need to, you can refer to the following configuration.
 ```xml
@@ -243,12 +243,12 @@ AS library runs.
 
 ### KnowledgeDocument
 
-The knowledge base file archive is used for the storage task of ASMB series knowledge documents. You can access it
+The knowledge base file archive is used for the storage task of AS-MB series knowledge documents. You can access it
 directly through the documents on the home page. There is no need to enter here directly. It is messy internally.
 
 ### src_code
 
-The source code storage directory of ASMB, where you can view the relevant source code of ASMB. Of course, here is the
+The source code storage directory of AS-MB, where you can view the relevant source code of AS-MB. Of course, here is the
 latest source code, which you can use to compile, so that you can obtain the latest version.
 
 Note: The latest version is often unstable, so we recommend you to use the version that has been released for a long
@@ -256,12 +256,12 @@ time!
 
 ### README-Chinese.md
 
-The Chinese version of the ASMB homepage document. You can switch languages on the homepage default page to access this
+The Chinese version of the AS-MB homepage document. You can switch languages on the homepage default page to access this
 file.
 
 ### README.md
 
-The default version of the ASMB homepage document. You can directly access this file on the homepage!
+The default version of the AS-MB homepage document. You can directly access this file on the homepage!
 
 - 切换到 [中文文档](https://github.com/BeardedManZhao/algorithmStar/blob/main/README-Chinese.md)
 

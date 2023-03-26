@@ -1279,7 +1279,6 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      *             <p>
      *             Directory path to save.
      * @param sep  保存时使用的分隔符。
-     *
      */
     @Override
     public void save(File path, char sep) {

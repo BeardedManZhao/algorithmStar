@@ -23,7 +23,7 @@ import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixSpace;
 
 public class MAIN1 {
     public static void main(String[] args) {
-        String s1 = "C:\\Users\\Liming\\Desktop\\fsdownload\\微信图片_1.jpg";
+        String s1 = "C:\\Users\\Liming\\Desktop\\fsDownload\\微信图片_1.jpg";
         IntegerMatrix integerMatrix;
         {
             // 设置权重
@@ -40,7 +40,7 @@ public class MAIN1 {
         // 输出图片1的卷积图像文件
         ImageRenderingIntegrator image = new ImageRenderingIntegrator(
                 "image",
-                new ImageRenderingMarLauncher<>(integerMatrix, "C:\\Users\\Liming\\Desktop\\fsdownload\\res12.jpg", 1)
+                new ImageRenderingMarLauncher<>(integerMatrix, "C:\\Users\\Liming\\Desktop\\fsDownload\\res12.jpg", 1)
         );
         if (image.run()) {
             System.out.println("ok!!!");
@@ -58,7 +58,7 @@ import zhao.algorithmMagic.operands.matrix.ColorMatrix;
 
 public class MAIN1 {
     public static void main(String[] args) throws InterruptedException {
-        String s1 = "C:\\Users\\Liming\\Desktop\\fsdownload\\微信图片_1.jpg";
+        String s1 = "C:\\Users\\Liming\\Desktop\\fsDownload\\微信图片_1.jpg";
         ColorMatrix parse = ColorMatrix.parse(s1);
         parse.show("image");
         Thread.sleep(1024);
@@ -117,7 +117,7 @@ import zhao.algorithmMagic.operands.matrix.ColorMatrix;
 
 public class MAIN1 {
     public static void main(String[] args) {
-        String s1 = "C:\\Users\\zhao\\Desktop\\fsdownload\\微信图片_2.jpg";
+        String s1 = "C:\\Users\\zhao\\Desktop\\fsDownload\\微信图片_2.jpg";
         // 获取到图像矩阵对象
         ColorMatrix parse = ColorMatrix.parse(s1);
         // 将图像在原图像的基础上进行颜色反转操作
@@ -125,7 +125,7 @@ public class MAIN1 {
         // 查看颜色反转之后的图像
         parse.show("image1");
         // 输出反转之后的图像
-        parse.save("C:\\Users\\zhao\\Desktop\\fsdownload\\res123.jpg");
+        parse.save("C:\\Users\\zhao\\Desktop\\fsDownload\\res123.jpg");
     }
 }
 ```
@@ -140,11 +140,11 @@ import zhao.algorithmMagic.operands.matrix.ColorMatrix;
 
 public class MAIN1 {
     public static void main(String[] args) {
-        String s1 = "C:\\Users\\Liming\\Desktop\\fsdownload\\微信图片_2.jpg";
+        String s1 = "C:\\Users\\Liming\\Desktop\\fsDownload\\微信图片_2.jpg";
         // 获取到图像矩阵对象
         ColorMatrix parse = ColorMatrix.parse(s1);
         // 输出图像RGB文本数据
-        parse.save("C:\\Users\\Liming\\Desktop\\fsdownload\\res1234.csv", ',');
+        parse.save("C:\\Users\\Liming\\Desktop\\fsDownload\\res1234.csv", ',');
     }
 }
 ```
@@ -184,7 +184,7 @@ public class MAIN1 {
                 .count() // 将每一组进行统计
                 .sort("count()") // 按照统计结果进行正序排序
                 .limit(3); // 获取最多前3行数据
-        System.out.println(select.into_outfile("C:\\Users\\zhao\\Desktop\\fsdownload\\res1.csv"));
+        System.out.println(select.into_outfile("C:\\Users\\zhao\\Desktop\\fsDownload\\res1.csv"));
         // 打印存储 FDF 中的数据行数
         System.out.println("数据行数 = " + execute.count());
         // 打印出其中的信息
@@ -459,7 +459,7 @@ public class MAIN1 {
         parse1.show("image");
         // 输出图像的 ASCII 数值，输出规则为  G 通道颜色数值 大于 40 的 输出符号 'A' 其它输出符号 ' '
         parse1.save(
-                new File("C:\\Users\\zhao\\Desktop\\fsdownload\\res.txt"),
+                new File("C:\\Users\\zhao\\Desktop\\fsDownload\\res.txt"),
                 ColorMatrix._G_, 40, 'A', ' '
         );
     }
@@ -608,7 +608,7 @@ public class MAIN1 {
         );
         // 输出表的HTML 然后查看表中的数据
         System.out.println(
-                insert.into_outHtml("C:\\Users\\Liming\\Desktop\\fsdownload\\res11234.html", "myTable")
+                insert.into_outHtml("C:\\Users\\Liming\\Desktop\\fsDownload\\res11234.html", "myTable")
         );
     }
 }
@@ -627,8 +627,8 @@ import java.sql.SQLException;
 public class MAIN1 {
     public static void main(String[] args) {
         // 将一些图像文件转换成为一个图像矩阵对象
-        ColorMatrix colorMatrix1 = ColorMatrix.parse("C:\\Users\\Liming\\Desktop\\fsdownload\\test.bmp");
-        ColorMatrix colorMatrix2 = ColorMatrix.parse("C:\\Users\\Liming\\Desktop\\fsdownload\\test1.bmp");
+        ColorMatrix colorMatrix1 = ColorMatrix.parse("C:\\Users\\Liming\\Desktop\\fsDownload\\test.bmp");
+        ColorMatrix colorMatrix2 = ColorMatrix.parse("C:\\Users\\Liming\\Desktop\\fsDownload\\test1.bmp");
         // 将 colorMatrix2 + colorMatrix1 的结果图像展示出来
         (colorMatrix1.add(colorMatrix2)).show("image");
     }
@@ -647,8 +647,8 @@ import java.sql.SQLException;
 public class MAIN1 {
     public static void main(String[] args) {
         // 将一些图像文件转换成为一个图像矩阵对象
-        ColorMatrix colorMatrix1 = ColorMatrix.parse("C:\\Users\\Liming\\Desktop\\fsdownload\\test.bmp");
-        ColorMatrix colorMatrix2 = ColorMatrix.parse("C:\\Users\\Liming\\Desktop\\fsdownload\\test1.bmp");
+        ColorMatrix colorMatrix1 = ColorMatrix.parse("C:\\Users\\Liming\\Desktop\\fsDownload\\test.bmp");
+        ColorMatrix colorMatrix2 = ColorMatrix.parse("C:\\Users\\Liming\\Desktop\\fsDownload\\test1.bmp");
         // 使用 agg 函数以及内置的计算方案进行两个矩阵的合并
         // 下面函数中的第二个形参代表的就是矩阵中元素的聚合逻辑，这里使用的是求和，并对越界颜色数值进行规整的逻辑实现
         colorMatrix1.agg(colorMatrix2, ColorMatrix.COLOR_SUM_REGULATE).show("image");
@@ -669,7 +669,7 @@ import java.sql.SQLException;
 public class MAIN1 {
     public static void main(String[] args) {
         // 将一些图像文件转换成为一个图像矩阵对象
-        ColorMatrix colorMatrix1 = ColorMatrix.parseGrayscale("C:\\Users\\Liming\\Desktop\\fsdownload\\test2.bmp");
+        ColorMatrix colorMatrix1 = ColorMatrix.parseGrayscale("C:\\Users\\Liming\\Desktop\\fsDownload\\test2.bmp");
         // 对图像进行二值化
         colorMatrix1.globalBinary(ColorMatrix._G_, 100, 0xffffff, 0);
         colorMatrix1.show("腐蚀之前的 image");
