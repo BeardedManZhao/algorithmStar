@@ -8,7 +8,7 @@
 
 ### 更新日志
 
-* 框架版本：1.15 - 1.16
+* 框架版本：1.16 - 1.17
 * 将集成器的名称修改为“Integrator”。
 * 提供卷积函数的计算支持，能够通过卷积函数将特征放大同时缩小图像矩阵的元素数量。
 
@@ -605,10 +605,10 @@ public class MAIN1 {
                 FinalSeries.parse("tang8", "W", "110xxxxxxxx", "30000"),
                 FinalSeries.parse("yang9", "W", "110xxxxxxxx", "30000")
         );
-        // 查看数据集
-        System.out.println(insert.desc());
-        // 输出表的HTML
-        insert.into_outHtml("C:\\Users\\Liming\\Desktop\\fsdownload\\res11234.html", "myTable");
+        // 输出表的HTML 然后查看表中的数据
+        System.out.println(
+                insert.into_outHtml("C:\\Users\\Liming\\Desktop\\fsdownload\\res11234.html", "myTable")
+        );
     }
 }
 ```
@@ -713,6 +713,102 @@ public class MAIN1 {
         System.out.println(ageIsE);
     }
 }
+```
+
+* 支持表数据之间的运算操作，能够将表中所有的数值类型进行求和与做差计算，计算之后将返回新DF对象。
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.table.*;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 创建一个空的 DataFrame 对象
+        FDataFrame select1 = FDataFrame.select(
+                FieldCell.parse("id", "name", "sex", "age"), 1
+        );
+        // 手动插入数据
+        select1.insert(
+                FinalSeries.parse("1", "zhao", "M", "19"),
+                FinalSeries.parse("2", "tang", "W", "18"),
+                FinalSeries.parse("3", "yang", "W", "20"),
+                FinalSeries.parse("4", "shen", "W", "19")
+        );
+        // 创建一个空的 DataFrame 对象
+        FDataFrame select2 = FDataFrame.select(
+                FieldCell.parse("id", "name", "sex", "age"), 1
+        );
+        // 手动插入数据
+        select2.insert(
+                FinalSeries.parse("1", "zhao", "M", "19"),
+                FinalSeries.parse("2", "tang", "W", "18"),
+                FinalSeries.parse("3", "yang", "W", "20")
+        );
+        // 进行求和与做差的运算操作
+        System.out.println(select1.add(select2));
+        System.out.println(select1.diff(select2));
+    }
+}
+```
+
+* DataFrame数据对象指定列合并
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.table.*;
+
+import java.sql.SQLException;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 创建一个空的 DataFrame 对象
+        FDataFrame select = FDataFrame.select(
+                FieldCell.parse("id", "name", "sex", "age"), 1
+        );
+        // 手动插入数据 然后进行分组
+        GroupDataFrameData groupDataFrameData = select.insert(
+                FinalSeries.parse("1", "zhao", "M", "19"),
+                FinalSeries.parse("2", "tang", "W", "18"),
+                FinalSeries.parse("3", "yang", "W", "20")
+        ).groupBy("sex");
+        // 打印出 M 组的数据
+        System.out.println(groupDataFrameData.getDFByGroup("M"));
+        // 打印出 W 组的数据
+        System.out.println(groupDataFrameData.getDFByGroup("W"));
+    }
+}
+```
+
+* 新版本注意事项：此版本中的所有依赖被标记为 provided 这样可以最大化的降低冗余程度，能够根据自己的实际项目来进行相关的配置，因此在进行AS库注入的时候请将以下的必须项一键导入。
+
+```xml
+
+<dependencies>
+    <!-- 使用 log4j2 的适配器进行绑定 -->
+    <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-slf4j-impl</artifactId>
+        <version>2.20.0</version>
+        <!--<scope>provided</scope>-->
+    </dependency>
+
+    <!-- log4j2 日志门面 -->
+    <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-api</artifactId>
+        <version>2.20.0</version>
+        <!--<scope>provided</scope>-->
+    </dependency>
+    <!-- log4j2 日志实面 -->
+    <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-core</artifactId>
+        <version>2.20.0</version>
+        <!--<scope>provided</scope>-->
+    </dependency>
+</dependencies>
 ```
 
 ### Version update date : xx xx-xx-xx

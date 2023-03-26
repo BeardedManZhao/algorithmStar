@@ -8,7 +8,7 @@
 
 ### Update log:
 
-* Framework version: 1.16 - x.xx
+* Framework version: 1.16 - 1.17
 * Change the name of the integrator to Integrator.
 * It provides the calculation support of convolution function, which can enlarge the features and reduce the number of
   elements in the image matrix.
@@ -606,10 +606,10 @@ public class MAIN1 {
                 FinalSeries.parse("tang8", "W", "110xxxxxxxx", "30000"),
                 FinalSeries.parse("yang9", "W", "110xxxxxxxx", "30000")
         );
-        // 查看数据集
-        System.out.println(insert.desc());
-        // 输出表的HTML
-        insert.into_outHtml("C:\\Users\\Liming\\Desktop\\fsdownload\\res11234.html", "myTable");
+        // 输出表的HTML 然后查看表中的数据
+        System.out.println(
+                insert.into_outHtml("C:\\Users\\Liming\\Desktop\\fsdownload\\res11234.html", "myTable")
+        );
     }
 }
 ```
@@ -716,6 +716,76 @@ public class MAIN1 {
         System.out.println(ageIsE);
     }
 }
+```
+
+* Supports operations between table data, and can perform summation and subtraction calculations on all numeric types in
+  the table. After calculation, a new DF object will be returned.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.table.*;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 创建一个空的 DataFrame 对象
+        FDataFrame select1 = FDataFrame.select(
+                FieldCell.parse("id", "name", "sex", "age"), 1
+        );
+        // 手动插入数据
+        select1.insert(
+                FinalSeries.parse("1", "zhao", "M", "19"),
+                FinalSeries.parse("2", "tang", "W", "18"),
+                FinalSeries.parse("3", "yang", "W", "20"),
+                FinalSeries.parse("4", "shen", "W", "19")
+        );
+        // 创建一个空的 DataFrame 对象
+        FDataFrame select2 = FDataFrame.select(
+                FieldCell.parse("id", "name", "sex", "age"), 1
+        );
+        // 手动插入数据
+        select2.insert(
+                FinalSeries.parse("1", "zhao", "M", "19"),
+                FinalSeries.parse("2", "tang", "W", "18"),
+                FinalSeries.parse("3", "yang", "W", "20")
+        );
+        // 进行求和与做差的运算操作
+        System.out.println(select1.add(select2));
+        System.out.println(select1.diff(select2));
+    }
+}
+```
+
+* Note for the new version: All dependencies in this version are marked as provided, which can minimize redundancy and
+  enable related configuration based on your actual project. Therefore, when performing AS library injection, please
+  import the following required items in one click.
+
+```xml
+
+<dependencies>
+    <!-- 使用 log4j2 的适配器进行绑定 -->
+    <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-slf4j-impl</artifactId>
+        <version>2.20.0</version>
+        <!--<scope>provided</scope>-->
+    </dependency>
+
+    <!-- log4j2 日志门面 -->
+    <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-api</artifactId>
+        <version>2.20.0</version>
+        <!--<scope>provided</scope>-->
+    </dependency>
+    <!-- log4j2 日志实面 -->
+    <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-core</artifactId>
+        <version>2.20.0</version>
+        <!--<scope>provided</scope>-->
+    </dependency>
+</dependencies>
 ```
 
 ### Version update date : xx xx-xx-xx

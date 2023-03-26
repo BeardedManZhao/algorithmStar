@@ -1,5 +1,7 @@
 package zhao.algorithmMagic.operands.table;
 
+import zhao.algorithmMagic.operands.Operands;
+
 import java.io.Serializable;
 import java.util.stream.Stream;
 
@@ -9,7 +11,7 @@ import java.util.stream.Stream;
  * @author 赵凌宇
  * 2023/3/7 21:42
  */
-public interface Series extends Iterable<Cell<?>>, AggSeriesData, MultivaluedTableData, Serializable {
+public interface Series extends Iterable<Cell<?>>, AggSeriesData, MultivaluedTableData, Serializable, Operands<Series> {
 
     /**
      * @param index 需要获取的目标单元格的在列表中的索引编号。

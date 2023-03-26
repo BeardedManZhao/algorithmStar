@@ -357,8 +357,11 @@ public class FDataFrame implements DataFrame {
         }
         // 开始重新排序
         treeSet.addAll(this.list);
-        return new FDataFrame(this.colNameRow, this.primaryIndex, treeSet.toArray(new Series[0]))
-                .refreshField(true, false);
+        return new FDataFrame(
+                this.colNameRow, this.primaryIndex,
+                this.colHashMap, this.rowHashMap, treeSet.toArray(new Series[0])
+        )
+                .refreshField(false, false);
     }
 
     @Override
@@ -481,7 +484,7 @@ public class FDataFrame implements DataFrame {
                 arrayList,
                 this.rowHashMap,
                 new HashMap<>(this.colHashMap.size() + 1)
-        );
+        ).refreshField(false, true);
     }
 
     /**
@@ -640,6 +643,20 @@ public class FDataFrame implements DataFrame {
         return this;
     }
 
+    /**
+     * 将DF对象中的所有数据转换成为一个list容器。
+     * <p>
+     * Converts all data in a DF object into a list container.
+     *
+     * @return 返回一个包含所有行系列的list容器，在这里的容器是浅拷贝出来的，不会有过多的冗余占用。
+     * <p>
+     * Returns a list container that contains all row series. Here, the container is lightly copied, without excessive redundancy.
+     */
+    @Override
+    public List<Series> toList() {
+        return this.list;
+    }
+
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
@@ -744,5 +761,56 @@ public class FDataFrame implements DataFrame {
     @Override
     public Iterator<Series> iterator() {
         return this.list.iterator();
+    }
+
+    /**
+     * 将两个操作数进行求和的方法，具体用法请参阅API说明。
+     * <p>
+     * The method for summing two operands, please refer to the API description for specific usage.
+     *
+     * @param value 被求和的参数  Parameters to be summed
+     * @return 求和之后的数值  the value after the sum
+     * <p>
+     * There is no description for the super interface, please refer to the subclass documentation
+     */
+    @Override
+    public DataFrame add(DataFrame value) {
+        ArrayList<Series> arrayList = new ArrayList<>(this.list.size() + 3);
+        List<Series> seriesList1 = this.list;
+        List<Series> seriesList2 = value.toList();
+        int size1 = seriesList1.size();
+        int i = 0;
+        for (int seriesListSize = Math.min(size1, seriesList2.size()); i < seriesListSize; i++) {
+            arrayList.add(seriesList1.get(i).add(seriesList2.get(i)));
+        }
+        return new FDataFrame(
+                this.colNameRow, this.primaryIndex, arrayList,
+                new HashMap<>(), this.colHashMap
+        ).refreshField(true, false);
+    }
+
+    /**
+     * 在两个操作数之间做差的方法，具体用法请参阅API说明。
+     * <p>
+     * The method of making a difference between two operands, please refer to the API description for specific usage.
+     *
+     * @param value 被做差的参数（被减数）  The parameter to be subtracted (minuend)
+     * @return 差异数值  difference value
+     * There is no description for the super interface, please refer to the subclass documentation
+     */
+    @Override
+    public DataFrame diff(DataFrame value) {
+        ArrayList<Series> arrayList = new ArrayList<>(this.list.size() + 2);
+        List<Series> seriesList1 = this.list;
+        List<Series> seriesList2 = value.toList();
+        int size1 = seriesList1.size();
+        int i = 0;
+        for (int seriesListSize = Math.min(size1, seriesList2.size()); i < seriesListSize; i++) {
+            arrayList.add(seriesList1.get(i).diff(seriesList2.get(i)));
+        }
+        return new FDataFrame(
+                this.colNameRow, this.primaryIndex, arrayList,
+                new HashMap<>(), this.colHashMap
+        ).refreshField(true, false);
     }
 }

@@ -42,10 +42,7 @@ public class FinalGroupTable implements GroupDataFrameData {
             } else hashMap1.get(key).add(cells);
         }
         hashMap = new HashMap<>();
-        hashMap1.forEach((key, value) -> {
-            hashMap.put(key, new FDataFrame(colNameRow, primaryIndex, value));
-            value.clear();
-        });
+        hashMap1.forEach((key, value) -> hashMap.put(key, new FDataFrame(colNameRow, primaryIndex, value)));
         groupKey = colNameRow.getCell(index);
         this.colNameRow = colNameRow;
     }
@@ -78,12 +75,22 @@ public class FinalGroupTable implements GroupDataFrameData {
             }
         }
         hashMap = new HashMap<>();
-        hashMap1.forEach((key, value) -> {
-            hashMap.put(key, new FDataFrame(colNameRow, primaryIndex, value));
-            value.clear();
-        });
+        hashMap1.forEach((key, value) -> hashMap.put(key, new FDataFrame(colNameRow, primaryIndex, value)));
         groupKey = colNameRow.getCell(index);
         this.colNameRow = colNameRow;
+    }
+
+    /**
+     * @param groupByName 需要获取的组名称。
+     *                    <p>
+     *                    The group name that needs to be obtained.
+     * @return 组名称对应的组数据组成的DataFrame对象。
+     * <p>
+     * A DataFrame object composed of group data corresponding to a group name.
+     */
+    @Override
+    public DataFrame getDFByGroup(String groupByName) {
+        return this.hashMap.get(groupByName);
     }
 
     /**

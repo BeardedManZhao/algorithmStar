@@ -1,8 +1,10 @@
 package zhao.algorithmMagic.operands.table;
 
+import zhao.algorithmMagic.operands.Operands;
 import zhao.algorithmMagic.utils.transformation.Transformation;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 该数据类型是一种表结构的数据类型，其是所有表数据的父类，其应能够实现诸多的计算函数。
@@ -12,7 +14,7 @@ import java.io.Serializable;
  * @author 赵凌宇
  * 2023/3/8 10:46
  */
-public interface DataFrame extends AggDataFrameData, Iterable<Series>, Serializable {
+public interface DataFrame extends AggDataFrameData, Iterable<Series>, Serializable, Operands<DataFrame> {
 
     /**
      * 获取到当前表中的字段对象。
@@ -171,7 +173,7 @@ public interface DataFrame extends AggDataFrameData, Iterable<Series>, Serializa
     /**
      * 以当前数据集为基准，添加一列新数据，并将添加列数据之后的 Data Frame 对象返回出来。
      * <p>
-     * Based on the current dataset, add a new column of data, and return the Data Frame object after adding the column data.
+     * Based on the current dataset, add a new column of data, and return the Data Frame objects after adding the column data.
      *
      * @param fieldName      需要被添加的列数据所对应的列名称，要求不得与已有的DataFrame字段名称重名！
      *                       <p>
@@ -193,6 +195,9 @@ public interface DataFrame extends AggDataFrameData, Iterable<Series>, Serializa
      * @param fieldCell 需要被提取的列字段名称。
      *                  <p>
      *                  The name of the column field to be extracted.
+     * @param transformation 列数据更新逻辑实现，在这里传递进来的是被修改的列数据字段。
+     *
+     *                       Column data update logic implementation, where the modified column data field is passed in.
      * @return 更新之后的DF数据对象。
      * <p>
      * DF data object after update.
@@ -207,6 +212,9 @@ public interface DataFrame extends AggDataFrameData, Iterable<Series>, Serializa
      * @param rowName 需要被提取的列字段名称。
      *                <p>
      *                The name of the column field to be extracted.
+     * @param transformation 列数据更新逻辑实现，在这里传递进来的是被修改的列数据字段。
+     *
+     *                       Column data update logic implementation, where the modified column data field is passed in.
      * @return 更新之后的DF数据对象。
      * <p>
      * DF data object after update.
@@ -246,4 +254,15 @@ public interface DataFrame extends AggDataFrameData, Iterable<Series>, Serializa
      * @return 输出之后会返回数据集本身，不会终止调用
      */
     DataFrame into_outHtml(String outPath, String tableName);
+
+    /**
+     * 将DF对象中的所有数据转换成为一个list容器。
+     * <p>
+     * Converts all data in a DF object into a list container.
+     *
+     * @return 返回一个包含所有行系列的list容器，在这里的容器是浅拷贝出来的，不会有过多的冗余占用。
+     * <p>
+     * Returns a list container that contains all row series. Here, the container is lightly copied, without excessive redundancy.
+     */
+    List<Series> toList();
 }

@@ -8,17 +8,79 @@
 
 各种算法、向量计算、坐标计算、空间坐标等功能皆含于内，API操作简单，机器学习与数学、医学、人工智能等领域具有很高的实用性。
 
-### Maven 依赖
+## Maven 依赖
 
 您可以通过maven将算术之星（AS-MB）集成到您的项目中，maven的配置如下所示。您可以将其添加到maven项目中，也可以从Releases下载并手动将其集成到项目中。
 
 ```xml
-
+<!-- algorithmStar 机器学习与数据计算库程序 maven 坐标 -->
 <dependencies>
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>algorithmStar</artifactId>
-        <version>1.16</version>
+        <version>1.17</version>
+    </dependency>
+</dependencies>
+```
+### AS库的所需依赖
+
+在1.17版本之后，AS库的所有依赖被剥离，更好避免依赖的捆绑问题，减少项目发生冲突的可能性，同时也可以按照开发者的需求使用更加适合的依赖配置项，您可以在这里查看到AS库所依赖的第三方库依赖。
+
+#### 必选依赖项
+AS库在进行诸多计算函数的时候会产生一些日志数据，因此AS库的使用需要导入日志依赖项，这个依赖项是必不可少的，请按照如下的方式导入依赖。
+```xml
+<dependencies>
+    <!-- 使用 log4j2 的适配器进行绑定 -->
+    <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-slf4j-impl</artifactId>
+        <version>2.20.0</version>
+        <!--<scope>provided</scope>-->
+    </dependency>
+
+    <!-- log4j2 日志门面 -->
+    <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-api</artifactId>
+        <version>2.20.0</version>
+        <!--<scope>provided</scope>-->
+    </dependency>
+    <!-- log4j2 日志实面 -->
+    <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-core</artifactId>
+        <version>2.20.0</version>
+        <!--<scope>provided</scope>-->
+    </dependency>
+</dependencies>
+```
+#### 可选依赖项
+
+AS库在针对数据库，Spark等各种平台对接的时候，需要使用到第三方依赖程序包，这些包是可选的，如果您不需要使用这些功能，您可以不去导入依赖，如果您需要，可以参考下面的配置。
+```xml
+<dependencies>
+  <!-- MySQL数据库连接驱动 如果您需要连接的关系型数据库是其它类型，这里也可以随之修改 -->
+    <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>8.0.30</version>
+    </dependency>
+  <!-- spark 三大模块的依赖程序开发包，如果您需要使用这里也可以选择导入，如果不需要则不导入 -->
+    <dependency>
+        <groupId>org.apache.spark</groupId>
+        <artifactId>spark-core_2.12</artifactId>
+        <version>3.1.3</version>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.spark</groupId>
+        <artifactId>spark-sql_2.12</artifactId>
+        <version>3.1.3</version>
+    </dependency>
+    
+    <dependency>
+        <groupId>org.apache.spark</groupId>
+        <artifactId>spark-mllib_2.12</artifactId>
+        <version>3.1.3</version>
     </dependency>
 </dependencies>
 ```

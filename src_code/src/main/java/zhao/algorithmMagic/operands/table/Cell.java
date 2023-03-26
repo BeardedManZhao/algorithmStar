@@ -1,5 +1,7 @@
 package zhao.algorithmMagic.operands.table;
 
+import zhao.algorithmMagic.operands.Operands;
+
 import java.io.Serializable;
 
 /**
@@ -8,7 +10,7 @@ import java.io.Serializable;
  * @author 赵凌宇
  * 2023/3/7 21:32
  */
-public interface Cell<valueType> extends Serializable {
+public interface Cell<valueType> extends Serializable, Operands<Cell<?>> {
 
     /**
      * @return 获取到当前单元格中的数据是否属于数值类型，如果返回 true 代表当前单元格中存储的是一个数值类型的数据。

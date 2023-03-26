@@ -197,7 +197,7 @@ public class FDataFrameBuilder implements DataFrameBuilder {
      */
     @Override
     public DataFrame execute() {
-        if (this.inMode == Mode.SQL) {
+        if (this.getInMode() == Mode.SQL) {
             try {
                 assert this.connection != null;
                 PreparedStatement preparedStatement;

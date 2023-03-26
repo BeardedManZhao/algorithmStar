@@ -21,7 +21,70 @@ can add it to your maven project, or you can download it from Releases and manua
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>algorithmStar</artifactId>
-        <version>1.16</version>
+        <version>1.17</version>
+    </dependency>
+</dependencies>
+```
+
+### Required dependencies of the AS library
+
+After version 1.17, all dependencies of the AS library have been stripped to better avoid binding dependencies and reduce the possibility of project conflicts. At the same time, more suitable dependency configuration items can be used according to the needs of developers. You can view third-party library dependencies on which the AS library depends here.
+
+#### Required Dependencies
+The AS library generates some log data when performing many calculation functions. Therefore, the use of the AS library requires importing log dependencies, which are essential. Please import the dependencies as follows.
+```xml
+<dependencies>
+    <!-- Binding using the adapter of log4j2 -->
+    <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-slf4j-impl</artifactId>
+        <version>2.20.0</version>
+        <!--<scope>provided</scope>-->
+    </dependency>
+
+    <!-- Log4j2 log facade -->
+    <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-api</artifactId>
+        <version>2.20.0</version>
+        <!--<scope>provided</scope>-->
+    </dependency>
+    <!-- Log4j2 log real surface -->
+    <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-core</artifactId>
+        <version>2.20.0</version>
+        <!--<scope>provided</scope>-->
+    </dependency>
+</dependencies>
+```
+#### 可选依赖项
+
+When interfacing with various platforms such as databases and Sparks, the AS library needs to use third-party dependency packages, which are optional. If you do not need to use these functions, you may not need to import dependencies. If you need to, you can refer to the following configuration.
+```xml
+<dependencies>
+  <!-- MySQL database connection driver If the relational database you want to connect to is of another type, you can also modify it here -->
+    <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>8.0.30</version>
+    </dependency>
+  <!-- The dependency development package for the three major Spark modules can also be imported if you need to use it here, or not if you don't need it -->
+    <dependency>
+        <groupId>org.apache.spark</groupId>
+        <artifactId>spark-core_2.12</artifactId>
+        <version>3.1.3</version>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.spark</groupId>
+        <artifactId>spark-sql_2.12</artifactId>
+        <version>3.1.3</version>
+    </dependency>
+    
+    <dependency>
+        <groupId>org.apache.spark</groupId>
+        <artifactId>spark-mllib_2.12</artifactId>
+        <version>3.1.3</version>
     </dependency>
 </dependencies>
 ```

@@ -15,6 +15,16 @@ import java.util.List;
 public interface GroupDataFrameData {
 
     /**
+     * @param groupByName 需要获取的组名称。
+     *                    <p>
+     *                    The group name that needs to be obtained.
+     * @return 组名称对应的组数据组成的DataFrame对象。
+     * <p>
+     * A DataFrame object composed of group data corresponding to a group name.
+     */
+    DataFrame getDFByGroup(String groupByName);
+
+    /**
      * 获取到当前D中包含的数据对象数量。
      * <p>
      * Gets the number of data objects contained in the current D.
@@ -23,7 +33,7 @@ public interface GroupDataFrameData {
      * <p>
      * The number of cell data objects in the current row.
      */
-    FDataFrame count();
+    DataFrame count();
 
     /**
      * 获取到当前D中所有数值类型的数据之和。
@@ -34,7 +44,7 @@ public interface GroupDataFrameData {
      * <p>
      * The sum of all numeric objects in the current D of objects.
      */
-    FDataFrame sum();
+    DataFrame sum();
 
     /**
      * 获取到当前D中所有数值类型的数据平均值。
@@ -45,7 +55,7 @@ public interface GroupDataFrameData {
      * <p>
      * The avg of all numeric objects in the current D of objects.
      */
-    FDataFrame avg();
+    DataFrame avg();
 
     /**
      * 使用自定义聚合函数的方式对诸多数值进行聚合计算操作。
@@ -59,5 +69,5 @@ public interface GroupDataFrameData {
      * <p>
      * The result value after calculation.
      */
-    FDataFrame agg(Transformation<List<Series>, Series> transformation);
+    DataFrame agg(Transformation<List<Series>, Series> transformation);
 }

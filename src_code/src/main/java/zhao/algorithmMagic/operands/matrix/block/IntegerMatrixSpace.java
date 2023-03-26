@@ -185,6 +185,9 @@ public class IntegerMatrixSpace extends MatrixSpace<IntegerMatrixSpace, Integer,
      *
      * @param width  矩阵进行卷积运算的时的子图像宽度，最好选择能够被矩阵的列数整除的数值。
      * @param height 矩阵进行卷积运算时的子图像高度，最好选中能够被矩阵的行数整除的数值。
+     * @param weightMat 在进行卷积计算时需要的卷积核矩阵对象，该对象的宽高应与卷积函数的形参一致。
+     *
+     *                  The convolution kernel matrix object required for convolution computation, whose width and height should be consistent with the formal parameters of the convolution function.
      * @return 矩阵空间卷积结果特征图，保持三通道的格式返回。
      */
     public IntegerMatrixSpace folding(int width, int height, IntegerMatrixSpace weightMat) {
@@ -251,6 +254,10 @@ public class IntegerMatrixSpace extends MatrixSpace<IntegerMatrixSpace, Integer,
      *
      * @param width  矩阵进行卷积运算的时的子图像宽度，最好选择能够被矩阵的列数整除的数值。
      * @param height 矩阵进行卷积运算时的子图像高度，最好选中能够被矩阵的行数整除的数值。
+     * @param weightMat 在进行卷积计算时需要的卷积核矩阵对象，该对象的宽高应与卷积函数的形参一致。
+     *
+     *                  The convolution kernel matrix object required for convolution computation, whose width and height should be consistent with the formal parameters of the convolution function.
+     *
      * @return 矩阵空间卷积结果特征图，以三原色通道之和的方式返回一个矩阵。
      */
     public final IntegerMatrix foldingAndSum(int width, int height, IntegerMatrixSpace weightMat) {
