@@ -3,6 +3,7 @@ package zhao.algorithmMagic.operands.matrix;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.integrator.ImageRenderingIntegrator;
 import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixSpace;
+import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASIO;
 import zhao.algorithmMagic.utils.ASMath;
 import zhao.algorithmMagic.utils.transformation.ManyTrans;
@@ -67,6 +68,33 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         int red = inputType1.getRed() + inputType2.getRed();
         int green = inputType1.getGreen() + inputType2.getGreen();
         int blue = inputType1.getBlue() + inputType2.getGreen();
+        return new Color(
+                red - (red >> _G_ << _G_),
+                green - (green >> _G_ << _G_),
+                blue - (blue >> _G_ << _G_)
+        );
+    };
+
+    /**
+     * 颜色数值求差计算方案，在该方案中的处理逻辑为如果数值超出范围，则取0或255，如果数值没有超过范围则取数值本身，实现颜色数值的高效限制的计算方案。
+     * <p>
+     * The processing logic in the color value difference calculation scheme is to take 0 or 255 if the value exceeds the range, and take the value itself if the value does not exceed the range, achieving an efficient calculation scheme for limiting color values.
+     */
+    public final static ManyTrans<Color, Color> COLOR_DIFF_REGULATE = (inputType1, inputType2) -> new Color(
+            ASMath.regularTricolor(inputType1.getRed() - inputType2.getRed()),
+            ASMath.regularTricolor(inputType1.getGreen() - inputType2.getGreen()),
+            ASMath.regularTricolor(inputType1.getBlue() - inputType2.getGreen())
+    );
+
+    /**
+     * 颜色数值求差计算方案，在该方案中的处理逻辑为：如果x为求和后的越界数值，则取 x % 256 的结果作为颜色数值。
+     * <p>
+     * The processing logic in the color value difference calculation scheme is: if x is the out-of-boundary value after the sum, the result of x% 256 is taken as the color value.
+     */
+    public final static ManyTrans<Color, Color> COLOR_DIFF_REMAINDER = (inputType1, inputType2) -> {
+        int red = inputType1.getRed() - inputType2.getRed();
+        int green = inputType1.getGreen() - inputType2.getGreen();
+        int blue = inputType1.getBlue() - inputType2.getGreen();
         return new Color(
                 red - (red >> _G_ << _G_),
                 green - (green >> _G_ << _G_),
@@ -309,7 +337,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      */
     @Override
     public ColorMatrix diff(ColorMatrix value) {
-        throw new UnsupportedOperationException("The color matrix object does not support the operation of \"addition\", \"subtraction\" and \"multiplication\", because the calculation of such operations on the color object is not necessary!");
+        return agg(value, COLOR_DIFF_REMAINDER);
     }
 
     /**
@@ -516,7 +544,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
     public Color[][] copyToNewArrays() {
         Color[][] colors = this.toArrays();
         Color[][] res = new Color[colors.length][colors[0].length];
-        System.arraycopy(colors, 0, res, 0, colors.length);
+        ASClass.array2DCopy(colors, res);
         return res;
     }
 
@@ -1203,7 +1231,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
                 for (Color[] colors : nowSub.toArrays()) {
                     for (Color color : colors) {
                         if (color.getRGB() == colorNum) {
-                            // 发现了黑色 直接将该子矩阵中的所有颜色更换为黑色
+                            // 发现了腐蚀色 直接将该子矩阵中的所有颜色更换为腐蚀色
                             isR = true;
                         }
                     }

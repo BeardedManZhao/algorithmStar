@@ -262,18 +262,12 @@ public final class ASClass {
      * @return 拷贝完成的数组对象，其本身是 dest
      */
     public static int[][] array2DCopy(int[][] src, int[][] dest) {
-        array2DCopy(src, dest, Math.min(src.length, dest.length));
+        int index = -1;
+        for (int[] objects : src) {
+            int[] res = dest[++index];
+            System.arraycopy(objects, 0, res, 0, Math.min(objects.length, res.length));
+        }
         return dest;
-    }
-
-    /**
-     * 将一个二维数组中的数据原样拷贝到新的二维数组中
-     *
-     * @param src  需要被拷贝的原数组
-     * @param dest 需要被拷贝的目标数组
-     */
-    private static void array2DCopy(int[][] src, int[][] dest, int length) {
-        System.arraycopy(src, 0, dest, 0, length);
     }
 
     /**
@@ -284,7 +278,11 @@ public final class ASClass {
      * @return 拷贝完成的数组对象，其本身是 dest
      */
     public static double[][] array2DCopy(double[][] src, double[][] dest) {
-        array2DCopy(src, dest, Math.min(src.length, dest.length));
+        int index = -1;
+        for (double[] objects : src) {
+            double[] res = dest[++index];
+            System.arraycopy(objects, 0, res, 0, Math.min(objects.length, res.length));
+        }
         return dest;
     }
 
@@ -294,18 +292,12 @@ public final class ASClass {
      * @param src  需要被拷贝的原数组
      * @param dest 需要被拷贝的目标数组
      */
-    private static void array2DCopy(double[][] src, double[][] dest, int length) {
-        System.arraycopy(src, 0, dest, 0, length);
-    }
-
-    /**
-     * 将一个二维数组中的数据原样拷贝到新的二维数组中
-     *
-     * @param src  需要被拷贝的原数组
-     * @param dest 需要被拷贝的目标数组
-     */
     public static void array2DCopy(Object[][] src, Object[][] dest) {
-        System.arraycopy(src, 0, dest, 0, Math.min(src.length, dest.length));
+        int index = -1;
+        for (Object[] objects : src) {
+            Object[] res = dest[++index];
+            System.arraycopy(objects, 0, res, 0, Math.min(objects.length, res.length));
+        }
     }
 
     /**
