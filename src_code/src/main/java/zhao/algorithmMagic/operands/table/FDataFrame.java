@@ -197,6 +197,9 @@ public class FDataFrame implements DataFrame {
      */
     @Override
     public DataFrame select(String... colNames) {
+        if (colNames.length == 1 && "*".equals(colNames[0])) {
+            return this;
+        }
         ArrayList<Series> arrayList = new ArrayList<>(list.size() + 4);
         int[] index = new int[colNames.length];
         {

@@ -34,7 +34,29 @@ public class MAIN1 {
 }
 ```
 
-* 修正二维数组拷贝时，只在在数组层深拷贝问题（二维度数组中的一维数组没有进行深拷贝）现在已经重新设计，使得深拷贝操作开始重新生效。
+* 为图像矩阵添加了一种聚合实现逻辑，差值绝对值，在做差之后返回绝对值。
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 创建一个图像矩阵
+        ColorMatrix parse = ColorMatrix.parseGrayscale("C:\\Users\\Liming\\Desktop\\fsdownload\\test3.bmp");
+        // 为图像矩阵进行腐蚀和膨胀操作
+        // 黑色作为背景色腐蚀
+        ColorMatrix erode1 = parse.erode(3, 3, true);
+        // 白色作为背景色膨胀
+        ColorMatrix erode2 = parse.erode(3, 3, true, ColorMatrix.WHITE);
+        // 将膨胀的矩阵对象 使用agg函数 减去 腐蚀的矩阵对象
+        (erode2.agg(erode1, ColorMatrix.COLOR_DIFF_ABS)).show("image");
+    }
+}
+```
+
+* 修正二维数组拷贝时，只在数组层深拷贝问题（二维度数组中的一维数组没有进行深拷贝）现在已经重新设计，使得深拷贝操作开始重新生效。
 
 ```java
 package zhao.algorithmMagic;
@@ -48,6 +70,101 @@ public class MAIN1 {
         // 获取一张图像的像素矩阵
         ColorMatrix parse1 = ColorMatrix.parseGrayscale("C:\\Users\\Liming\\Desktop\\fsdownload\\test1.bmp");
         Color[][] colors = parse1.copyToNewArrays();
+    }
+}
+```
+
+* 新增矩阵内运算函数，该函数能够实现矩阵中所有坐标元素的计算操作，下面是所有支持的计算操作，并返回一个计算之后的矩阵对象。
+
+| 计算常量                      | 效果                      | 作用             |
+|---------------------------|-------------------------|----------------|
+| CALCULATE_GRADIENT_RL     | mid = right - left      | 计算图像在左右的梯度。    |
+| CALCULATE_GRADIENT_LH     | mid = low - high        | 计算图像在上下的梯度。    |
+| CALCULATE_GRADIENT_RL_ABS | mid = abs(right - left) | 计算图像在左右的梯度绝对值。 |
+| CALCULATE_GRADIENT_LH_ABS | mid = abs(low - high)   | 计算图像在上下的梯度绝对值。 |
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        ColorMatrix calculate1;
+        ColorMatrix calculate2;
+        {
+            // 创建一个图像矩阵
+            ColorMatrix parse = ColorMatrix.parseGrayscale("C:\\Users\\Liming\\Desktop\\fsdownload\\test3.bmp");
+            // 进行左右的梯度计算
+            parse.calculate(ColorMatrix.CALCULATE_GRADIENT_RL, true).show("image1");
+            // 进行上下的梯度计算
+            parse.calculate(ColorMatrix.CALCULATE_GRADIENT_LH, true).show("image2");
+            // 进行左右的绝对值梯度计算
+            calculate1 = parse.calculate(ColorMatrix.CALCULATE_GRADIENT_RL_ABS, true);
+            calculate1.show("image3");
+            // 进行上下的绝对值梯度计算
+            calculate2 = parse.calculate(ColorMatrix.CALCULATE_GRADIENT_LH_ABS, true);
+            calculate2.show("image4");
+        }
+        // 进行两幅图像的加法合并 并打印新矩阵
+        (calculate1.add(calculate2)).show("image");
+    }
+}
+```
+
+* DF 对象的 select * 被支持，使用 * 做查询占位符将不会进行任何运算，而是直接返回数据。
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.table.*;
+
+public class MAIN1 {
+  public static void main(String[] args) {
+    // 创建一个空的 DataFrame 对象
+    FDataFrame dataFrame = FDataFrame.select(
+            FieldCell.parse("id", "name", "sex", "age"), 1
+    );
+    // 手动插入数据
+    dataFrame.insert(
+            FinalSeries.parse("1", "zhao", "M", "19"),
+            FinalSeries.parse("2", "tang", "W", "18"),
+            FinalSeries.parse("3", "yang", "W", "20"),
+            FinalSeries.parse("4", "shen", "W", "19")
+    );
+    // 打印出 select * 的数据
+    System.out.println(
+            dataFrame.select("*")
+    );
+  }
+}
+```
+
+* 图像矩阵 agg 函数，新增矩阵坐标相对应坐标的颜色数值相乘的计算逻辑实现。
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+
+import java.awt.*;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        Color[] colors = {Color.CYAN, Color.GREEN, Color.PINK, Color.red};
+        // 手动创建图像矩阵
+        ColorMatrix parse = ColorMatrix.parse(
+                colors, colors, colors, colors
+        );
+        // 查看图像矩阵
+        parse.show("image", 100, 100);
+        // 将图像中的所有像素与自身矩阵进行规整乘法计算
+        ColorMatrix agg1 = parse.agg(parse, ColorMatrix.COLOR_MULTIPLY_REGULATE);
+        // 将图像中的所有像素与自身矩阵进行取余乘法计算
+        ColorMatrix agg2 = parse.agg(parse, ColorMatrix.COLOR_MULTIPLY_REMAINDER);
+        // 查看两个图像数据
+        agg1.show("image1", 100, 100);
+        agg2.show("image2", 100, 100);
     }
 }
 ```

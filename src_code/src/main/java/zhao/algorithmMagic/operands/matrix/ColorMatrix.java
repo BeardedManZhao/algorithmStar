@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.function.Consumer;
 
 /**
  * 颜色矩阵对象，其中存储的每一个元素都是一个 Color 对象，适合用来进行图像的绘制等工作。
@@ -100,6 +101,112 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
                 green - (green >> _G_ << _G_),
                 blue - (blue >> _G_ << _G_)
         );
+    };
+
+    /**
+     * 颜色数值求差计算方案，在该方案中的处理逻辑为如果数值超出范围，则取0或255，如果数值没有超过范围则取数值本身，实现颜色数值的高效限制的计算方案。
+     * <p>
+     * The processing logic in the color value difference calculation scheme is to take 0 or 255 if the value exceeds the range, and take the value itself if the value does not exceed the range, achieving an efficient calculation scheme for limiting color values.
+     */
+    public final static ManyTrans<Color, Color> COLOR_DIFF_ABS = (inputType1, inputType2) -> new Color(
+            ASMath.absoluteValue(inputType1.getRed() - inputType2.getRed()),
+            ASMath.absoluteValue(inputType1.getGreen() - inputType2.getGreen()),
+            ASMath.absoluteValue(inputType1.getBlue() - inputType2.getGreen())
+    );
+
+    /**
+     * 颜色数值求积计算方案，在该方案中的处理逻辑为如果数值超出范围，则取0或255，如果数值没有超过范围则取数值本身，实现颜色数值的高效限制的计算方案。
+     *
+     * The processing logic in the color value quadrature calculation scheme is to take 0 or 255 if the value exceeds the range, and take the value itself if the value does not exceed the range, achieving an efficient calculation scheme for limiting color values.
+     */
+    public final static ManyTrans<Color, Color> COLOR_MULTIPLY_REGULATE = (inputType1, inputType2) -> new Color(
+            ASMath.regularTricolor(inputType1.getRed() * inputType2.getRed()),
+            ASMath.regularTricolor(inputType1.getGreen() * inputType2.getGreen()),
+            ASMath.regularTricolor(inputType1.getBlue() * inputType2.getGreen())
+    );
+
+    /**
+     * 颜色数值求积计算方案，在该方案中的才处理逻辑为如果数值超出范围，则取当前数值 % 256 的结果数值作为当前颜色数值。
+     *
+     * The processing logic in the color value quadrature calculation scheme is to take 0 or 255 if the value exceeds the range, and take the value itself if the value does not exceed the range, achieving an efficient calculation scheme for limiting color values.
+     */
+    public final static ManyTrans<Color, Color> COLOR_MULTIPLY_REMAINDER = (inputType1, inputType2) -> {
+        int red = inputType1.getRed() + inputType2.getRed();
+        int green = inputType1.getGreen() + inputType2.getGreen();
+        int blue = inputType1.getBlue() + inputType2.getGreen();
+        return new Color(
+                red - (red >> _G_ << _G_),
+                green - (green >> _G_ << _G_),
+                blue - (blue >> _G_ << _G_)
+        );
+    };
+
+    /**
+     * 将矩阵中所有坐标点计算为： 当前坐标点 = 右坐标 - 左坐标
+     */
+    public final static Consumer<Color[][]> CALCULATE_GRADIENT_RL = colors -> {
+        if (colors[0].length <= 2) return;
+        for (Color[] color : colors) {
+            Color left = color[0], right = color[2];
+            color[0] = color[1];
+            for (int i = 1, maxI = color.length - 2; i < maxI; ) {
+                Color now = right;
+                color[i] = COLOR_DIFF_REGULATE.function(right, left);
+                left = now;
+                right = color[++i];
+            }
+        }
+    };
+
+    /**
+     * 将矩阵中所有坐标点计算为： 当前坐标点 = 下坐标 - 上坐标
+     */
+    public final static Consumer<Color[][]> CALCULATE_GRADIENT_LH = colors -> {
+        if (colors.length <= 2) return;
+        Color[] back = colors[0], next = colors[2];
+        for (int i = 1, maxI = colors.length - 2; i < maxI; ) {
+            Color[] now1 = colors[i].clone();
+            Color[] now2 = next;
+            for (int index = 0; index < now2.length; index++) {
+                now2[index] = COLOR_DIFF_REGULATE.function(next[index], back[index]);
+            }
+            back = now1;
+            next = colors[++i];
+        }
+    };
+
+    /**
+     * 将矩阵中所有坐标点计算为： 当前坐标点 = 右坐标 - 左坐标
+     */
+    public final static Consumer<Color[][]> CALCULATE_GRADIENT_RL_ABS = colors -> {
+        if (colors[0].length <= 2) return;
+        for (Color[] color : colors) {
+            Color left = color[0], right = color[2];
+            color[0] = color[1];
+            for (int i = 1, maxI = color.length - 2; i < maxI; ) {
+                Color now = right;
+                color[i] = COLOR_DIFF_ABS.function(right, left);
+                left = now;
+                right = color[++i];
+            }
+        }
+    };
+
+    /**
+     * 将矩阵中所有坐标点计算为： 当前坐标点 = 下坐标 - 上坐标
+     */
+    public final static Consumer<Color[][]> CALCULATE_GRADIENT_LH_ABS = colors -> {
+        if (colors.length <= 2) return;
+        Color[] back = colors[0], next = colors[2];
+        for (int i = 1, maxI = colors.length - 2; i < maxI; ) {
+            Color[] now1 = colors[i].clone();
+            Color[] now2 = next;
+            for (int index = 0; index < now2.length; index++) {
+                now2[index] = COLOR_DIFF_ABS.function(next[index], back[index]);
+            }
+            back = now1;
+            next = colors[++i];
+        }
     };
 
     private boolean isGrayscale;
@@ -373,6 +480,32 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             throw new OperatorOperationException("图像矩阵在进行加法运算的时候出现了错误，因为图像中的矩阵像素数量不一致！！！\nAn error occurred during the addition operation of the image matrix because the number of matrix pixels in the image is inconsistent!!!\nERROR => mat1.row = " +
                     rowCount1 + "\tmat2.row = " + rowCount2 + "\tmat1.col = " + colCount1 + "\tmat2.col = " + colCount2
             );
+        }
+    }
+
+    /**
+     * 在矩阵内部发生计算，使得矩阵可以满足我们的需求与计算操作。
+     * <p>
+     * Computing occurs within the matrix, enabling the matrix to meet our needs and computational operations.
+     *
+     * @param action 计算实现逻辑，支持自定义也支持直接使用内置实现。
+     *               <p>
+     *               Computational implementation logic supports customization and direct use of built-in implementations.
+     * @param isCopy 计算操作是否要在拷贝之后的数组中执行，如果设置为 true 代表计算操作将发生于新数据中，不会影响原矩阵对象。
+     *               <p>
+     *               Whether the calculation operation should be performed in the copied array. If set to true, it means that the calculation operation will occur in the new data and will not affect the original matrix object.
+     * @return 计算之后的矩阵对象。
+     * <p>
+     * The calculated matrix object.
+     */
+    public ColorMatrix calculate(Consumer<Color[][]> action, boolean isCopy) {
+        if (isCopy) {
+            Color[][] colors = this.copyToNewArrays();
+            action.accept(colors);
+            return ColorMatrix.parse(colors);
+        } else {
+            action.accept(this.toArrays());
+            return this;
         }
     }
 
