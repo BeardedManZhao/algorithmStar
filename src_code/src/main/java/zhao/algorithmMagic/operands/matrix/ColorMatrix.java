@@ -116,7 +116,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
 
     /**
      * 颜色数值求积计算方案，在该方案中的处理逻辑为如果数值超出范围，则取0或255，如果数值没有超过范围则取数值本身，实现颜色数值的高效限制的计算方案。
-     *
+     * <p>
      * The processing logic in the color value quadrature calculation scheme is to take 0 or 255 if the value exceeds the range, and take the value itself if the value does not exceed the range, achieving an efficient calculation scheme for limiting color values.
      */
     public final static ManyTrans<Color, Color> COLOR_MULTIPLY_REGULATE = (inputType1, inputType2) -> new Color(
@@ -127,7 +127,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
 
     /**
      * 颜色数值求积计算方案，在该方案中的才处理逻辑为如果数值超出范围，则取当前数值 % 256 的结果数值作为当前颜色数值。
-     *
+     * <p>
      * The processing logic in the color value quadrature calculation scheme is to take 0 or 255 if the value exceeds the range, and take the value itself if the value does not exceed the range, achieving an efficient calculation scheme for limiting color values.
      */
     public final static ManyTrans<Color, Color> COLOR_MULTIPLY_REMAINDER = (inputType1, inputType2) -> {
@@ -1321,6 +1321,40 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             }
         }
         return sum / (double) (this.getNumberOfDimensions());
+    }
+
+    /**
+     * 计算出轮廓内的面积大小，以像素为单位。
+     * <p>
+     * Calculate the size of the area within the contour, in pixels.
+     *
+     * @param contourColor 轮廓线的颜色对象，如果像素的颜色数值与此值一致，则认为其属于边框。
+     *                     <p>
+     *                     The color object of the outline. If the color value of a pixel matches this value, it is considered to belong to the border.
+     * @return 轮廓内的所有像素数量。
+     * <p>
+     * The number of all pixels within the contour.
+     */
+    public int contourArea(Color contourColor) {
+        int rgb = contourColor.getRGB();
+        int res = 0;
+        for (Color[] colors : this.toArrays()) {
+            boolean isOk = false;
+            for (Color color : colors) {
+                if (isOk) {
+                    ++res;
+                    if (color.getRGB() == rgb) {
+                        isOk = false;
+                    }
+                    continue;
+                }
+                if (color.getRGB() == rgb) {
+                    isOk = true;
+                    ++res;
+                }
+            }
+        }
+        return res;
     }
 
     /**

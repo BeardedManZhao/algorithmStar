@@ -125,27 +125,28 @@ package zhao.algorithmMagic;
 import zhao.algorithmMagic.operands.table.*;
 
 public class MAIN1 {
-  public static void main(String[] args) {
-    // 创建一个空的 DataFrame 对象
-    FDataFrame dataFrame = FDataFrame.select(
-            FieldCell.parse("id", "name", "sex", "age"), 1
-    );
-    // 手动插入数据
-    dataFrame.insert(
-            FinalSeries.parse("1", "zhao", "M", "19"),
-            FinalSeries.parse("2", "tang", "W", "18"),
-            FinalSeries.parse("3", "yang", "W", "20"),
-            FinalSeries.parse("4", "shen", "W", "19")
-    );
-    // 打印出 select * 的数据
-    System.out.println(
-            dataFrame.select("*")
-    );
-  }
+    public static void main(String[] args) {
+        // 创建一个空的 DataFrame 对象
+        FDataFrame dataFrame = FDataFrame.select(
+                FieldCell.parse("id", "name", "sex", "age"), 1
+        );
+        // 手动插入数据
+        dataFrame.insert(
+                FinalSeries.parse("1", "zhao", "M", "19"),
+                FinalSeries.parse("2", "tang", "W", "18"),
+                FinalSeries.parse("3", "yang", "W", "20"),
+                FinalSeries.parse("4", "shen", "W", "19")
+        );
+        // 打印出 select * 的数据
+        System.out.println(
+                dataFrame.select("*")
+        );
+    }
 }
 ```
 
-* In a color value quadrature calculation scheme, the processing logic is to take the current value of% 256 as the current color value if the value exceeds the range.
+* In a color value quadrature calculation scheme, the processing logic is to take the current value of% 256 as the
+  current color value if the value exceeds the range.
 
 ```java
 package zhao.algorithmMagic;
@@ -173,4 +174,45 @@ public class MAIN1 {
     }
 }
 ```
+
+* Support area calculation of image contours, using pixels as the calculation unit during calculation, and support
+  customization of contour colors.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+
+import java.awt.*;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        ColorMatrix resImage1;
+        {
+            // 获取一张图像的像素矩阵
+            ColorMatrix colors = ColorMatrix.parse("C:\\Users\\Liming\\Desktop\\fsdownload\\test1.bmp");
+            // 将图像拷贝一份出来
+            ColorMatrix parse1 = ColorMatrix.parse(colors.copyToNewArrays());
+            // 将 parse1 进行二值化 // 请注意阈值
+            parse1.globalBinary(ColorMatrix._G_, 60, 0, 0xffffff);
+            // 将 parse1 矩阵腐蚀，然后将腐蚀的结果获取到
+            ColorMatrix parse2 = parse1.erode(2, 2, true, Color.BLACK);
+            // 将 parse1 矩阵中的白色作为腐蚀背景色（膨胀）
+            parse1.erode(2, 2, false, Color.WHITE);
+            // 查看临时结果
+            parse1.show("image1");
+            parse2.show("image2");
+            // 将两个矩阵进行做差运算，并查看做差之后的图像
+            resImage1 = parse1.diff(parse2);
+            resImage1.show("轮廓图像");
+        }
+        // 查看结果数据
+        resImage1.show("绘制之后的结果图像");
+        // 开始提取白色轮廓线内的面积
+        System.out.print("轮廓内面积 = ");
+        System.out.println(resImage1.contourArea(ColorMatrix.WHITE));
+    }
+}
+```
+
 ### Version update date : xx xx-xx-xx
