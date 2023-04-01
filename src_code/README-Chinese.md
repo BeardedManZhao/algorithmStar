@@ -342,6 +342,8 @@ public class MAIN1 {
                 colorMatrix2,
                 // 需要被计算的颜色通道
                 ColorMatrix._G_,
+                // 卷积时的步长数值
+                10,
                 // 相似度越小 匹配度越大
                 false
         );

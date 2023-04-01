@@ -1476,10 +1476,11 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      * @param distanceAlgorithm 需要使用的度量计算组件。
      * @param template          在进行模板匹配时的被匹配模板。
      * @param channel           在进行计算时，需要被计算的颜色通道。
+     * @param sep 图像卷积步长数值。该数值增加，会增强计算的速度与性能，该数值的减小，会增强计算的精确度。
      * @param isMAX             如果设置为 true 代表取相似度系数最大的子图像坐标作为。
      * @return 经过计算之后，与当前矩阵对象最相似的子图像的左上角坐标数值对象。
      */
-    public final IntegerCoordinateTwo templateMatching(DistanceAlgorithm distanceAlgorithm, ColorMatrix template, int channel, boolean isMAX) {
+    public final IntegerCoordinateTwo templateMatching(DistanceAlgorithm distanceAlgorithm, ColorMatrix template, int channel, int sep, boolean isMAX) {
         // 开始匹配
         IntegerMatrix channel1 = template.getChannel(channel);
         // 首先提取出矩阵1中相同大小的子矩阵图像
@@ -1496,7 +1497,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         if (rowCount1 == rowCount2) {
             // 这种情况代表可以使用优化方案
             int ye = rowCount2 - 1;
-            for (int y = 0; y < rowCount1; y++, ye++) {
+            for (int y = 0; y < rowCount1; y+=sep, ye+=sep) {
                 double trueDistance = distanceAlgorithm.getTrueDistance(this.extractImageSrc(y, ye).getChannel(channel), channel1);
                 if (isMAX) {
                     if (value < trueDistance) {
@@ -1513,9 +1514,9 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             return new IntegerCoordinateTwo(xy[0], xy[1]);
         }
         int ye = rowCount2 - 1;
-        for (int y = 0; ye < rowCount1; y++, ye++) {
+        for (int y = 0; ye < rowCount1; y+=sep, ye+=sep) {
             int xe = colCount2 - 1;
-            for (int x = 0; xe < colCount1; x++, xe++) {
+            for (int x = 0; xe < colCount1; x+=sep, xe+=sep) {
                 // 计算出相似度
                 double trueDistance = distanceAlgorithm.getTrueDistance(this.extractImage(x, y, xe, ye).getChannel(channel), channel1);
                 if (isMAX) {

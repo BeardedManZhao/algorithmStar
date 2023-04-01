@@ -4,23 +4,35 @@ import zhao.algorithmMagic.algorithm.distanceAlgorithm.ManhattanDistance;
 import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
 import zhao.algorithmMagic.operands.matrix.ColorMatrix;
 
+import java.awt.*;
+
+
 public class MAIN1 {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws CloneNotSupportedException {
         ColorMatrix colorMatrix1, colorMatrix2;
-        // 将图像与样本读取进来
-        colorMatrix1 = ColorMatrix.parse("C:\\Users\\zhao\\Desktop\\fsdownload\\test3.bmp");
-        colorMatrix2 = ColorMatrix.parse("C:\\Users\\zhao\\Desktop\\fsdownload\\test3YB.bmp");
-        // 使用模板匹配 获取到 colorMat1 中 与 colorMat2 最相近的子矩阵
-        IntegerCoordinateTwo topLeft = colorMatrix1.templateMatching(
-                // 相似度计算组件
-                ManhattanDistance.getInstance("MAN"),
-                // 模板图像
-                colorMatrix2,
-                // 需要被计算的颜色通道
-                ColorMatrix._G_,
-                // 相似度越小 匹配度越大
-                false
-        );
-        System.out.println(topLeft);
+        {        // 将图像与样本读取进来
+            colorMatrix1 = ColorMatrix.parse("C:\\Users\\zhao\\Desktop\\fsdownload\\YB.bmp");
+            colorMatrix2 = ColorMatrix.parse("C:\\Users\\zhao\\Desktop\\fsdownload\\test22.jpg");
+            ColorMatrix temp = ColorMatrix.parse(colorMatrix2.copyToNewArrays());
+            // 开始二值化
+            colorMatrix1.localBinary(ColorMatrix._G_, 10, 0xffffff, 0, 1);
+            temp.localBinary(ColorMatrix._G_, 5, 0xffffff, 0, 0);
+            // 开始进行模板匹配
+            IntegerCoordinateTwo man = temp.templateMatching(
+                    ManhattanDistance.getInstance("MAN"),
+                    colorMatrix1,
+                    ColorMatrix._G_,
+                    10,
+                    false
+            );
+            // 开始进行绘制
+            colorMatrix2.drawRectangle(
+                    man,
+                    new IntegerCoordinateTwo(man.getX() + colorMatrix1.getColCount(), man.getY() + colorMatrix1.getRowCount()),
+                    Color.MAGENTA
+            );
+        }
+        colorMatrix1.show("人脸样本");
+        colorMatrix2.show("识别结果");
     }
 }
