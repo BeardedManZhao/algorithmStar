@@ -326,7 +326,7 @@ import zhao.algorithmMagic.algorithm.distanceAlgorithm.ManhattanDistance;
 import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
 import zhao.algorithmMagic.operands.matrix.ColorMatrix;
 
-import java.awt.*;
+import java.util.Map;
 
 public class MAIN1 {
     public static void main(String[] args) {
@@ -334,8 +334,9 @@ public class MAIN1 {
         // 将图像与样本读取进来
         colorMatrix1 = ColorMatrix.parse("C:\\Users\\zhao\\Desktop\\fsdownload\\test3.bmp");
         colorMatrix2 = ColorMatrix.parse("C:\\Users\\zhao\\Desktop\\fsdownload\\test3YB.bmp");
-        // 使用模板匹配 获取到 colorMat1 中 与 colorMat2 最相近的子矩阵
-        IntegerCoordinateTwo topLeft = colorMatrix1.templateMatching(
+        // 使用模板匹配 获取到 colorMat1 中 与 colorMat2 最相近的子矩阵信息
+        // 其中 key 为最相似子矩阵匹配系数 value 为最相似子矩阵左上角坐标
+        Map.Entry<Double, IntegerCoordinateTwo> matching = colorMatrix1.templateMatching(
                 // 相似度计算组件
                 ManhattanDistance.getInstance("MAN"),
                 // 模板图像
@@ -347,7 +348,7 @@ public class MAIN1 {
                 // 相似度越小 匹配度越大
                 false
         );
-        System.out.println(topLeft);
+        System.out.println(matching);
     }
 }
 ```

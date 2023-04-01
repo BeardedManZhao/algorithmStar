@@ -8,6 +8,7 @@ import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixSpace;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASIO;
 import zhao.algorithmMagic.utils.ASMath;
+import zhao.algorithmMagic.utils.filter.DoubleFiltering;
 import zhao.algorithmMagic.utils.transformation.ManyTrans;
 
 import javax.swing.*;
@@ -15,8 +16,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.Iterator;
+import java.util.*;
 import java.util.function.Consumer;
 
 /**
@@ -1474,15 +1474,26 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      * 将图像进行模板匹配计算
      *
      * @param distanceAlgorithm 需要使用的度量计算组件。
+     *                          <p>
+     *                          The metric calculation component that needs to be used.
      * @param template          在进行模板匹配时的被匹配模板。
+     *                          <p>
+     *                          The template to be matched during template matching.
      * @param channel           在进行计算时，需要被计算的颜色通道。
-     * @param sep 图像卷积步长数值。该数值增加，会增强计算的速度与性能，该数值的减小，会增强计算的精确度。
+     *                          <p>
+     *                          When calculating, the color channel to be calculated is required.
+     * @param sep               图像卷积步长数值。该数值增加，会增强计算的速度与性能，该数值的减小，会增强计算的精确度。
+     *                          <p>
+     *                          Image convolution step size value. An increase in this value will enhance the speed and performance of the calculation, while a decrease in this value will enhance the accuracy of the calculation.
      * @param isMAX             如果设置为 true 代表取相似度系数最大的子图像坐标作为。
+     *                          <p>
+     *                          If set to true, the coordinate of the sub image with the largest similarity coefficient is taken as the coordinate.
      * @return 经过计算之后，与当前矩阵对象最相似的子图像的左上角坐标数值对象。
      */
-    public final IntegerCoordinateTwo templateMatching(DistanceAlgorithm distanceAlgorithm, ColorMatrix template, int channel, int sep, boolean isMAX) {
+    public final Map.Entry<Double, IntegerCoordinateTwo> templateMatching(DistanceAlgorithm distanceAlgorithm, ColorMatrix template, int channel, int sep, boolean isMAX) {
         // 开始匹配
         IntegerMatrix channel1 = template.getChannel(channel);
+        IntegerMatrix channel2 = this.getChannel(channel);
         // 首先提取出矩阵1中相同大小的子矩阵图像
         int rowCount1 = this.getRowCount();
         int colCount1 = this.getColCount();
@@ -1497,8 +1508,8 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         if (rowCount1 == rowCount2) {
             // 这种情况代表可以使用优化方案
             int ye = rowCount2 - 1;
-            for (int y = 0; y < rowCount1; y+=sep, ye+=sep) {
-                double trueDistance = distanceAlgorithm.getTrueDistance(this.extractImageSrc(y, ye).getChannel(channel), channel1);
+            for (int y = 0; y < rowCount1; y += sep, ye += sep) {
+                double trueDistance = distanceAlgorithm.getTrueDistance(channel2.extractSrcMat(y, ye), channel1);
                 if (isMAX) {
                     if (value < trueDistance) {
                         value = trueDistance;
@@ -1511,14 +1522,14 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
                     }
                 }
             }
-            return new IntegerCoordinateTwo(xy[0], xy[1]);
+            return new AbstractMap.SimpleEntry<>(value, new IntegerCoordinateTwo(xy[0], xy[1]));
         }
         int ye = rowCount2 - 1;
-        for (int y = 0; ye < rowCount1; y+=sep, ye+=sep) {
+        for (int y = 0; ye < rowCount1; y += sep, ye += sep) {
             int xe = colCount2 - 1;
-            for (int x = 0; xe < colCount1; x+=sep, xe+=sep) {
+            for (int x = 0; xe < colCount1; x += sep, xe += sep) {
                 // 计算出相似度
-                double trueDistance = distanceAlgorithm.getTrueDistance(this.extractImage(x, y, xe, ye).getChannel(channel), channel1);
+                double trueDistance = distanceAlgorithm.getTrueDistance(channel2.extractMat(x, y, xe, ye), channel1);
                 if (isMAX) {
                     if (value < trueDistance) {
                         value = trueDistance;
@@ -1534,7 +1545,60 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
                 }
             }
         }
-        return new IntegerCoordinateTwo(xy[0], xy[1]);
+        return new AbstractMap.SimpleEntry<>(value, new IntegerCoordinateTwo(xy[0], xy[1]));
+    }
+
+    /**
+     * @param distanceAlgorithm 需要使用的度量计算组件。
+     *                          <p>
+     *                          The metric calculation component that needs to be used.
+     * @param template          在进行模板匹配时的被匹配模板。
+     *                          <p>
+     *                          The template to be matched during template matching.
+     * @param channel           在进行计算时，需要被计算的颜色通道。
+     *                          <p>
+     *                          When calculating, the color channel to be calculated is required.
+     * @param sep               图像卷积步长数值。该数值增加，会增强计算的速度与性能，该数值的减小，会增强计算的精确度。
+     *                          <p>
+     *                          Image convolution step size value. An increase in this value will enhance the speed and performance of the calculation, while a decrease in this value will enhance the accuracy of the calculation.
+     * @param cFilter           相似系数过滤逻辑实现，在这里您将可以自定义的书写相似度系数的过滤操作，符合的系数对应的信息将会被添加到结果数据中。
+     * @return 图像中所有符合过滤条件的子矩阵信息数据对象。
+     * <p>
+     * All sub matrix information data objects in the image that meet the filtering conditions.
+     */
+    public final ArrayList<Map.Entry<Double, IntegerCoordinateTwo>> templateMatching(DistanceAlgorithm distanceAlgorithm, ColorMatrix template, int channel, int sep, DoubleFiltering cFilter) {
+        // 开始匹配
+        IntegerMatrix channel1 = template.getChannel(channel);
+        IntegerMatrix channel2 = this.getChannel(channel);
+        // 首先提取出矩阵1中相同大小的子矩阵图像
+        int rowCount1 = this.getRowCount(), colCount1 = this.getColCount();
+        int rowCount2 = template.getRowCount(), colCount2 = template.getColCount();
+        if (rowCount1 < rowCount2 || colCount1 < colCount2) {
+            throw new OperatorOperationException("您的模板矩阵尺寸过大!!");
+        }
+        ArrayList<Map.Entry<Double, IntegerCoordinateTwo>> res = new ArrayList<>();
+        if (rowCount1 == rowCount2) {
+            // 这种情况代表可以使用优化方案
+            int ye = rowCount2 - 1;
+            for (int y = 0; y < rowCount1; y += sep, ye += sep) {
+                double trueDistance = distanceAlgorithm.getTrueDistance(channel2.extractSrcMat(y, ye), channel1);
+                if (cFilter.isComplianceEvents(trueDistance))
+                    res.add(new AbstractMap.SimpleEntry<>(trueDistance, new IntegerCoordinateTwo(0, y)));
+            }
+            return res;
+        }
+        // 这里就代表不能够使用优化方案
+        int ye = rowCount2 - 1;
+        for (int y = 0; ye < rowCount1; y += sep, ye += sep) {
+            int xe = colCount2 - 1;
+            for (int x = 0; xe < colCount1; x += sep, xe += sep) {
+                // 计算出相似度
+                double trueDistance = distanceAlgorithm.getTrueDistance(channel2.extractMat(x, y, xe, ye), channel1);
+                if (cFilter.isComplianceEvents(trueDistance))
+                    res.add(new AbstractMap.SimpleEntry<>(trueDistance, new IntegerCoordinateTwo(x, y)));
+            }
+        }
+        return res;
     }
 
     /**
