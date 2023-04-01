@@ -1,7 +1,9 @@
 package zhao.algorithmMagic.operands.matrix;
 
+import zhao.algorithmMagic.algorithm.distanceAlgorithm.DistanceAlgorithm;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.integrator.ImageRenderingIntegrator;
+import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
 import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixSpace;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASIO;
@@ -1149,7 +1151,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
     public ColorMatrix extractImage(int x1, int y1, int x2, int y2) {
         if (x1 >= x2 || y1 >= y2) {
             throw new OperatorOperationException("图像提取发生错误，您设置的提取坐标点有误!!!\nAn error occurred in image extraction. The extraction coordinate point you set is incorrect!!!\n" +
-                    "ERROR => (" + x1 + ',' + y1 + ") >= (" + y1 + ',' + y2 + ')');
+                    "ERROR => (" + x1 + ',' + y1 + ") >= (" + x2 + ',' + y2 + ')');
         }
         if (x2 >= this.getColCount() || y2 >= this.getRowCount()) {
             throw new OperatorOperationException("图像提取发生错误，您不能提取不存在于图像中的坐标点\nAn error occurred in image extraction. You cannot extract coordinate points that do not exist in the image\n" +
@@ -1419,6 +1421,119 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             y = ey;
         }
         return res;
+    }
+
+    /**
+     * 将图像矩阵中的指定通道的颜色整数数值矩阵获取到。
+     *
+     * @param colorMode 需要被获取到颜色通道编码。
+     * @return 对应颜色通道的颜色数值组成的颜色矩阵对象。
+     */
+    public final IntegerMatrix getChannel(int colorMode) {
+        int[][] res = new int[this.getRowCount()][this.getColCount()];
+        int y = -1;
+        for (Color[] colors : this.toArrays()) {
+            int[] re = res[++y];
+            int x = -1;
+            for (Color color : colors) {
+                re[++x] = (color.getRGB() >> colorMode) & 0xFF;
+            }
+        }
+        return IntegerMatrix.parse(res);
+    }
+
+    /**
+     * 向矩阵中绘制一个矩阵。
+     *
+     * @param start 矩阵的左上角坐标对象。
+     * @param end   矩阵的右下角坐标对象。
+     * @param color 绘制的轮廓颜色对象。
+     */
+    public void drawRectangle(IntegerCoordinateTwo start, IntegerCoordinateTwo end, Color color) {
+        Color[][] colors = this.toArrays();
+        int x1 = start.getX();
+        int x2 = end.getX();
+        int y1 = start.getY();
+        int y2 = end.getY();
+        // 首先将起始终止点的 x 轴变更为 color 颜色（使用y轴获取）
+        Color[] color1 = colors[start.getY()];
+        Color[] color2 = colors[end.getY()];
+        for (int i = x1; i <= x2; i++) {
+            color1[i] = color;
+            color2[i] = color;
+        }
+        // 然后将剩余所有点的 y 轴变为 color 颜色（使用x轴获取）
+        for (int i = y1; i <= y2; i++) {
+            Color[] colorRow = colors[i];
+            colorRow[x1] = color;
+            colorRow[x2] = color;
+        }
+    }
+
+    /**
+     * 将图像进行模板匹配计算
+     *
+     * @param distanceAlgorithm 需要使用的度量计算组件。
+     * @param template          在进行模板匹配时的被匹配模板。
+     * @param channel           在进行计算时，需要被计算的颜色通道。
+     * @param isMAX             如果设置为 true 代表取相似度系数最大的子图像坐标作为。
+     * @return 经过计算之后，与当前矩阵对象最相似的子图像的左上角坐标数值对象。
+     */
+    public final IntegerCoordinateTwo templateMatching(DistanceAlgorithm distanceAlgorithm, ColorMatrix template, int channel, boolean isMAX) {
+        // 开始匹配
+        IntegerMatrix channel1 = template.getChannel(channel);
+        // 首先提取出矩阵1中相同大小的子矩阵图像
+        int rowCount1 = this.getRowCount();
+        int colCount1 = this.getColCount();
+        int rowCount2 = template.getRowCount();
+        int colCount2 = template.getColCount();
+        if (rowCount1 < rowCount2 || colCount1 < colCount2) {
+            throw new OperatorOperationException("您的模板矩阵尺寸过大!!");
+        }
+        int[] xy = new int[2];
+        double value = isMAX ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+
+        if (rowCount1 == rowCount2) {
+            // 这种情况代表可以使用优化方案
+            int ye = rowCount2 - 1;
+            for (int y = 0; y < rowCount1; y++, ye++) {
+                double trueDistance = distanceAlgorithm.getTrueDistance(this.extractImageSrc(y, ye).getChannel(channel), channel1);
+                if (isMAX) {
+                    if (value < trueDistance) {
+                        value = trueDistance;
+                        xy[1] = y;
+                    }
+                } else {
+                    if (value > trueDistance) {
+                        value = trueDistance;
+                        xy[1] = y;
+                    }
+                }
+            }
+            return new IntegerCoordinateTwo(xy[0], xy[1]);
+        }
+        int ye = rowCount2 - 1;
+        for (int y = 0; ye < rowCount1; y++, ye++) {
+            int xe = colCount2 - 1;
+            for (int x = 0; xe < colCount1; x++, xe++) {
+                // 计算出相似度
+                double trueDistance = distanceAlgorithm.getTrueDistance(this.extractImage(x, y, xe, ye).getChannel(channel), channel1);
+                if (isMAX) {
+                    if (value < trueDistance) {
+                        value = trueDistance;
+                        xy[0] = x;
+                        xy[1] = y;
+                    }
+                } else {
+                    if (value > trueDistance) {
+                        value = trueDistance;
+                        xy[0] = x;
+                        xy[1] = y;
+                    }
+                }
+            }
+        }
+        return new IntegerCoordinateTwo(xy[0], xy[1]);
     }
 
     /**

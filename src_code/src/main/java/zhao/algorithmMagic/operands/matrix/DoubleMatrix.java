@@ -185,6 +185,15 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
         return parse(doubles);
     }
 
+    public static DoubleMatrix parse(IntegerMatrix parse1) {
+        double[][] doubles = new double[parse1.getRowCount()][];
+        int index = -1;
+        for (int[] ints : parse1.toArrays()) {
+            doubles[++index] = ASClass.IntArray_To_DoubleArray(ints);
+        }
+        return new DoubleMatrix(doubles.length, parse1.getColCount(), doubles);
+    }
+
     /**
      * 获取到矩阵中指定坐标点的数值
      *
@@ -315,15 +324,11 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
     @Override
     public Double moduleLength() {
         double res = 0;
-        int rowPointer = this.RowPointer;
-        PointerReset();
-        while (this.MovePointerDown()) {
-            double[] doubles1 = this.toArray();
-            for (double v : doubles1) {
-                res += ASMath.Power2(v);
+        for (double[] ints : this.toArrays()) {
+            for (double anInt : ints) {
+                res += anInt * anInt;
             }
         }
-        this.RowPointer = rowPointer;
         return res;
     }
 
@@ -630,6 +635,32 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
             if (color.length - x1 >= 0) System.arraycopy(row, x1, color, x1, color.length - x1);
         }
         return DoubleMatrix.parse(colors);
+    }
+
+    /**
+     * 提取出子矩阵对象
+     *
+     * @param y1 被提取矩阵在原矩阵中的起始坐标点。
+     *           <p>
+     *           The starting coordinate point of the extracted matrix in the original matrix.
+     * @param y2 被提取矩阵在原矩阵中的终止坐标点。
+     *           <p>
+     *           The end coordinate point of the extracted matrix in the original matrix.
+     * @return 整形矩阵对象中的子矩阵对象。
+     */
+    @Override
+    public DoubleMatrix extractSrcMat(int y1, int y2) {
+        if (y1 >= y2) {
+            throw new OperatorOperationException("整形矩阵提取发生错误，您设置的提取坐标点有误!!!\nAn error occurred in mat extraction. The extraction coordinate point you set is incorrect!!!\n" +
+                    "ERROR => (" + y1 + ") >= (" + y2 + ')');
+        }
+        double[][] res_colors = new double[y2 - y1][];
+        double[][] colors1 = this.toArrays();
+        int index = -1;
+        for (int i = y1; i < y2; i++) {
+            res_colors[++index] = colors1[i];
+        }
+        return DoubleMatrix.parse(res_colors);
     }
 
     @Override

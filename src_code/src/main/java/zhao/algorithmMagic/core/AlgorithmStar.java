@@ -191,6 +191,50 @@ public final class AlgorithmStar<diffValue, featureReturn> {
     }
 
     /**
+     * 计算两个矩阵对象之间的距离度量函数，通过该函数可以实现两个矩阵对象度量系数的计算。
+     * <p>
+     * Calculates the distance metric function between two matrix objects, through which the metric coefficients of two matrix objects can be calculated.
+     *
+     * @param distanceAlgorithm 距离计算组件，是您在调用本次函数之后，函数用来计算的距离计算组件对象。
+     *                          <p>
+     *                          The distance calculation component is the distance calculation component object that the function uses to calculate after you call this function.
+     * @param matrix1           需要被进行计算的矩阵对象。
+     *                          <p>
+     *                          The matrix object that needs to be calculated.
+     * @param matrix2           需要被进行计算的矩阵对象。
+     *                          <p>
+     *                          The matrix object that needs to be calculated.
+     * @return 计算出来的度量结果系数。
+     * <p>
+     * The calculated measurement result coefficient.
+     */
+    public double getTrueDistance(DistanceAlgorithm distanceAlgorithm, IntegerMatrix matrix1, IntegerMatrix matrix2) {
+        return distanceAlgorithm.getTrueDistance(matrix1, matrix2);
+    }
+
+    /**
+     * 计算两个矩阵对象之间的距离度量函数，通过该函数可以实现两个矩阵对象度量系数的计算。
+     * <p>
+     * Calculates the distance metric function between two matrix objects, through which the metric coefficients of two matrix objects can be calculated.
+     *
+     * @param distanceAlgorithm 距离计算组件，是您在调用本次函数之后，函数用来计算的距离计算组件对象。
+     *                          <p>
+     *                          The distance calculation component is the distance calculation component object that the function uses to calculate after you call this function.
+     * @param matrix1           需要被进行计算的矩阵对象。
+     *                          <p>
+     *                          The matrix object that needs to be calculated.
+     * @param matrix2           需要被进行计算的矩阵对象。
+     *                          <p>
+     *                          The matrix object that needs to be calculated.
+     * @return 计算出来的度量结果系数。
+     * <p>
+     * The calculated measurement result coefficient.
+     */
+    public double getTrueDistance(DistanceAlgorithm distanceAlgorithm, DoubleMatrix matrix1, DoubleMatrix matrix2) {
+        return distanceAlgorithm.getTrueDistance(matrix1, matrix2);
+    }
+
+    /**
      * 计算向量距离原点的距离。
      *
      * @param rangeVector   距离计算组件，是您在调用本次函数之后，函数用来计算的距离计算组件对象。

@@ -59,23 +59,26 @@ public class RectangleMatrix extends ColorMatrix {
         int outlineWidthR = 0;
         // 获取到起始与终止索引
         boolean isH = false;
+        boolean isW = false;
         int rc = -1;
         for (Color[] colors : colorMatrix.toArrays()) {
             ++rc;
+            boolean isRw = false;
             int cc = -1;
-            boolean isW = false;
             boolean isOk = false;
             for (Color color : colors) {
                 ++cc;
                 // 先判断宽
                 if (color.getRGB() != 0xff000000) {
                     isOk = true;
-                    if (isW) {
-                        if (cc > outlineWidthR) outlineWidthR = cc;
-                    } else if (cc < outlineWidthL) {
+                    if (!isRw && cc < outlineWidthL) {
                         outlineWidthL = cc;
                         outlineWidthR = cc;
                         isW = true;
+                        isRw = true;
+                    }
+                    if (isW) {
+                        if (cc > outlineWidthR) outlineWidthR = cc;
                     }
                 }
             }
@@ -83,7 +86,7 @@ public class RectangleMatrix extends ColorMatrix {
             if (isOk) {
                 if (isH) {
                     if (rc > outlineHeightR) outlineHeightR = rc;
-                } else if (rc < outlineWidthL) {
+                } else if (rc < outlineHeightL) {
                     outlineHeightL = rc;
                     outlineHeightR = rc;
                     isH = true;

@@ -215,4 +215,150 @@ public class MAIN1 {
 }
 ```
 
+* Supports the operation of enclosing rectangles with contours. With the help of this function, all contours in the
+  image will be unified into a circle, forming a large matrix.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+import zhao.algorithmMagic.operands.matrix.RectangleMatrix;
+
+import java.awt.*;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        ColorMatrix parse1;
+        {
+            // 获取一张图像的像素矩阵
+            ColorMatrix colors = ColorMatrix.parse("C:\\Users\\zhao\\Desktop\\fsdownload\\test3.bmp");
+            // 将图像拷贝一份出来
+            parse1 = ColorMatrix.parse(colors.copyToNewArrays());
+            // 将结果二值化
+            parse1.globalBinary(ColorMatrix._G_, 150, 0xffffff, 0);
+        }
+        // 将轮廓线转化成矩形轮廓
+        ColorMatrix parse = RectangleMatrix.parse(parse1, Color.GREEN);
+        parse.show("二值化后的图像");
+        System.out.print(parse);
+        // 将矩形轮廓添加到原矩阵 这里的规则是，如果颜色数值为 0xff000000 就不合并
+        ColorMatrix res = parse1.agg(
+                // 需要被进行添加的矩阵对象
+                parse,
+                // 添加的逻辑 这里使用的是将非黑色的颜色像素直接覆盖 因为除了黑色以外的像素都是轮廓所需
+                (inputType1, inputType2) -> inputType2.getRGB() == 0xff000000 ? inputType1 : inputType2
+        );
+        res.show("结果");
+    }
+}
+```
+
+* Support the calculation of matrix similarity functions. Here, you can calculate the rectangular similarity using the
+  following example.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.algorithm.distanceAlgorithm.ManhattanDistance;
+import zhao.algorithmMagic.algorithm.distanceAlgorithm.StandardizedEuclideanDistance;
+import zhao.algorithmMagic.core.AlgorithmStar;
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
+import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 获取到三个图像矩阵的颜色RGB数值
+        IntegerMatrix parse1, parse2, parse3;
+        {
+            parse1 = IntegerMatrix.parse("C:\\Users\\zhao\\Desktop\\fsdownload\\test3.bmp");
+            parse2 = IntegerMatrix.parse("C:\\Users\\zhao\\Desktop\\fsdownload\\test32.bmp");
+            parse3 = IntegerMatrix.parse("C:\\Users\\zhao\\Desktop\\fsdownload\\test33.bmp");
+        }
+        // 计算出三个图像的相似度系数
+        AlgorithmStar<Object, Object> algorithmStar = AlgorithmStar.getInstance();
+        System.out.println(algorithmStar.getTrueDistance(ManhattanDistance.getInstance("MAN"), parse1, parse2));
+        System.out.println(algorithmStar.getTrueDistance(ManhattanDistance.getInstance("MAN"), parse1, parse3));
+
+        // 将三个图像矩阵的所有数值转换成为double类型，获取到Double矩阵
+        DoubleMatrix parse11, parse22, parse33;
+        {
+            parse11 = DoubleMatrix.parse(parse1);
+            parse22 = DoubleMatrix.parse(parse2);
+            parse33 = DoubleMatrix.parse(parse3);
+        }
+        // 计算出三个图像的相似度系数
+        System.out.println(algorithmStar.getTrueDistance(ManhattanDistance.getInstance("MAN"), parse11, parse22));
+        System.out.println(algorithmStar.getTrueDistance(ManhattanDistance.getInstance("MAN"), parse11, parse33));
+
+        // TODO 值得注意的是 标准化欧几里得暂不支持这类操作的计算 这一块会报错
+        double se = algorithmStar.getTrueDistance(StandardizedEuclideanDistance.getInstance2("SE"), parse11, parse22);
+        System.out.println(se);
+    }
+}
+```
+
+* Support the rendering of regular graphics (rectangles) in the image matrix, and the rendering process will not
+  generate redundant computational data.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+
+import java.awt.*;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        ColorMatrix colorMatrix1;
+        // 将图像与样本读取进来
+        colorMatrix1 = ColorMatrix.parse("C:\\Users\\zhao\\Desktop\\fsdownload\\test3.bmp");
+        // 将图像矩阵绘制到原矩阵中，并查看结果
+        colorMatrix1.drawRectangle(
+                // 矩形的左上角坐标
+                new IntegerCoordinateTwo(40, 30),
+                // 矩形的右下角坐标
+                new IntegerCoordinateTwo(140, 130),
+                // 矩形边框的颜色对象
+                Color.MAGENTA
+        );
+        colorMatrix1.show("res");
+    }
+}
+```
+
+* Support template matching operations for image matrices, where the convolution core size is the template size. When
+  the width of the template and the image rectangle coincide, an optimization algorithm is used.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.algorithm.distanceAlgorithm.ManhattanDistance;
+import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+
+import java.awt.*;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        ColorMatrix colorMatrix1, colorMatrix2;
+        // 将图像与样本读取进来
+        colorMatrix1 = ColorMatrix.parse("C:\\Users\\zhao\\Desktop\\fsdownload\\test3.bmp");
+        colorMatrix2 = ColorMatrix.parse("C:\\Users\\zhao\\Desktop\\fsdownload\\test3YB.bmp");
+        // 使用模板匹配 获取到 colorMat1 中 与 colorMat2 最相近的子矩阵
+        IntegerCoordinateTwo topLeft = colorMatrix1.templateMatching(
+                // 相似度计算组件
+                ManhattanDistance.getInstance("MAN"),
+                // 模板图像
+                colorMatrix2,
+                // 需要被计算的颜色通道
+                ColorMatrix._G_,
+                // 相似度越小 匹配度越大
+                false
+        );
+        System.out.println(topLeft);
+    }
+}
+```
+
 ### Version update date : xx xx-xx-xx

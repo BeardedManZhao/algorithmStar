@@ -338,15 +338,11 @@ public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], i
     @Override
     public Integer moduleLength() {
         int res = 0;
-        int rowPointer = this.RowPointer;
-        PointerReset();
-        while (this.MovePointerDown()) {
-            int[] ints = toArray();
-            for (int v : ints) {
-                res += ASMath.Power2(v);
+        for (int[] ints : this.toArrays()) {
+            for (int anInt : ints) {
+                res += anInt * anInt;
             }
         }
-        this.RowPointer = rowPointer;
         return res;
     }
 
@@ -629,7 +625,7 @@ public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], i
     public IntegerMatrix extractMat(int x1, int y1, int x2, int y2) {
         if (x1 >= x2 || y1 >= y2) {
             throw new OperatorOperationException("整形矩阵提取发生错误，您设置的提取坐标点有误!!!\nAn error occurred in mat extraction. The extraction coordinate point you set is incorrect!!!\n" +
-                    "ERROR => (" + x1 + ',' + x2 + ") >= (" + x2 + ',' + y2 + ')');
+                    "ERROR => (" + x1 + ',' + y1 + ") >= (" + x2 + ',' + y2 + ')');
         }
         if (x2 >= this.getColCount() || y2 >= this.getRowCount()) {
             throw new OperatorOperationException("整形矩阵提取发生错误，您不能提取不存在于矩阵中的坐标点\nAn error occurred in mat extraction. You cannot extract coordinate points that do not exist in the image\n" +
@@ -642,6 +638,32 @@ public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], i
             System.arraycopy(row, x1, color, 0, color.length);
         }
         return IntegerMatrix.parse(colors);
+    }
+
+    /**
+     * 提取出子矩阵对象
+     *
+     * @param y1 被提取矩阵在原矩阵中的起始坐标点。
+     *           <p>
+     *           The starting coordinate point of the extracted matrix in the original matrix.
+     * @param y2 被提取矩阵在原矩阵中的终止坐标点。
+     *           <p>
+     *           The end coordinate point of the extracted matrix in the original matrix.
+     * @return 整形矩阵对象中的子矩阵对象。
+     */
+    @Override
+    public IntegerMatrix extractSrcMat(int y1, int y2) {
+        if (y1 >= y2) {
+            throw new OperatorOperationException("整形矩阵提取发生错误，您设置的提取坐标点有误!!!\nAn error occurred in mat extraction. The extraction coordinate point you set is incorrect!!!\n" +
+                    "ERROR => (" + y1 + ") >= (" + y2 + ')');
+        }
+        int[][] res_colors = new int[y2 - y1][];
+        int[][] colors1 = this.toArrays();
+        int index = -1;
+        for (int i = y1; i < y2; i++) {
+            res_colors[++index] = colors1[i];
+        }
+        return IntegerMatrix.parse(res_colors);
     }
 
     /**
