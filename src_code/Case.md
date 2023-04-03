@@ -219,9 +219,8 @@ public class MAIN1 {
 
 这里展示的是通过模板匹配操作，圈出图像中的指定数字的字符，图像数据集与图像的处理代码如下所示。
 
-- 图像数据集
-    这里有所有数字的图像数据以及被处理的图像。
-    
+- 图像数据集 这里有所有数字的图像数据以及被处理的图像。
+
 ![1](https://user-images.githubusercontent.com/113756063/229441539-03d9adb6-4883-4c2c-a86d-e008b2a620d6.jpg)
 ![2](https://user-images.githubusercontent.com/113756063/229441568-a273d88e-a411-4d70-907b-67084ec404a8.jpg)
 ![3](https://user-images.githubusercontent.com/113756063/229441606-fa1f7195-0bbb-4c86-91dc-c0b7d3267850.jpg)
@@ -243,26 +242,29 @@ import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
 import zhao.algorithmMagic.operands.matrix.ColorMatrix;
 
 import java.awt.*;
-import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class MAIN1 {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws MalformedURLException {
         HashMap<Integer, ColorMatrix> hashMap = new HashMap<>(0b1100);
-        // 将样本读取进来
+        // 将样本通过网络读取进来
         {
-            int count = 0;
-            for (File file : Objects.requireNonNull(new File("C:\\Users\\Liming\\Desktop\\fsdownload\\number").listFiles())) {
-                ColorMatrix parse = ColorMatrix.parse(file.getPath());
-                parse.globalBinary(ColorMatrix._G_, 200, 0xffffff, 0);
-                hashMap.put(++count, parse);
-            }
+            hashMap.put(1, ColorMatrix.parse(new URL("https://user-images.githubusercontent.com/113756063/229441539-03d9adb6-4883-4c2c-a86d-e008b2a620d6.jpg")));
+            hashMap.put(2, ColorMatrix.parse(new URL("https://user-images.githubusercontent.com/113756063/229441568-a273d88e-a411-4d70-907b-67084ec404a8.jpg")));
+            hashMap.put(3, ColorMatrix.parse(new URL("https://user-images.githubusercontent.com/113756063/229441606-fa1f7195-0bbb-4c86-91dc-c0b7d3267850.jpg")));
+            hashMap.put(4, ColorMatrix.parse(new URL("https://user-images.githubusercontent.com/113756063/229441641-f0e01024-df8a-432f-a028-462327beb3c0.jpg")));
+            hashMap.put(5, ColorMatrix.parse(new URL("https://user-images.githubusercontent.com/113756063/229441669-ae0b3a20-fbf0-447f-bf76-20ea84016751.jpg")));
+            hashMap.put(6, ColorMatrix.parse(new URL("https://user-images.githubusercontent.com/113756063/229441694-c80357da-865e-40ec-815b-7dcebe743897.jpg")));
+            hashMap.put(7, ColorMatrix.parse(new URL("https://user-images.githubusercontent.com/113756063/229441706-5ae85394-ae91-4d77-85d8-5c088693277b.jpg")));
+            hashMap.put(8, ColorMatrix.parse(new URL("https://user-images.githubusercontent.com/113756063/229441723-c51b2a73-c007-436e-9a5c-e841a5312424.jpg")));
+            hashMap.put(9, ColorMatrix.parse(new URL("https://user-images.githubusercontent.com/113756063/229441430-7b9b8ded-b207-4415-b5a0-0b3e594d7846.jpg")));
         }
-        // 将需要被进行数字提取的图像获取到
-        ColorMatrix parse = ColorMatrix.parse("C:\\Users\\Liming\\Desktop\\fsdownload\\test4.bmp");
+        // 将需要被进行数字提取的图像通过网络获取到
+        ColorMatrix parse = ColorMatrix.parse(new URL("https://user-images.githubusercontent.com/113756063/229441864-ec1770d5-1154-4e9c-837e-a4acfc5fb259.jpg"));
         // 将原矩阵复制一份，稍后用于结果展示
         ColorMatrix parse1 = ColorMatrix.parse(parse.copyToNewArrays());
         // 将需要被处理的图像进行二值化，使其颜色不会干扰匹配
@@ -279,7 +281,7 @@ public class MAIN1 {
                 1,
                 v -> {
                     System.out.println(v);
-                    return v < 3500;
+                    return v < 5000;
                 }
         );
         // 将所有的轮廓绘制到用于展示的矩阵对象上。

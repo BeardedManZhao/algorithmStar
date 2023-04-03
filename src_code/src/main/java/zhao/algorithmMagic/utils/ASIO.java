@@ -148,7 +148,10 @@ public final class ASIO {
      */
     public static Color[][] parseURLGetColorArray(URL imageUrl) {
         try {
-            return parseImageGetColorArray(ImageIO.read(imageUrl.openStream()));
+            InputStream inputStream = imageUrl.openStream();
+            Color[][] colors = parseImageGetColorArray(ImageIO.read(inputStream));
+            inputStream.close();
+            return colors;
         } catch (IOException e) {
             throw new OperatorOperationException(e);
         }
