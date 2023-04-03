@@ -353,4 +353,39 @@ public class MAIN1 {
 }
 ```
 
+* 支持矩阵的归一化操作，使得归一化计算能够用于更加广泛的对象。
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.algorithm.normalization.LinearNormalization;
+import zhao.algorithmMagic.core.AlgorithmStar;
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
+import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        IntegerMatrix integerMatrix = IntegerMatrix.parse(
+                new int[]{1, 2, 3, 4, 5},
+                new int[]{5, 4, 3, 4, 5},
+                new int[]{5, 4, 3, 2, 1}
+        );
+        // 归一化计算组件
+        LinearNormalization line = LinearNormalization.getInstance("line").setMax(3).setMin(-3);
+        AlgorithmStar<Object, Object> algorithmStar = AlgorithmStar.getInstance();
+        // 开始进行归一化操作
+        IntegerMatrix pretreatment1 = algorithmStar.pretreatment(
+               line,
+                // 需要被归一化的矩阵对象
+                integerMatrix
+        );
+        System.out.print(pretreatment1);
+
+        DoubleMatrix doubleMatrix = DoubleMatrix.parse(integerMatrix);
+        DoubleMatrix pretreatment2 = algorithmStar.pretreatment(line, doubleMatrix);
+        System.out.print(pretreatment2);
+    }
+}
+```
+
 ### Version update date : xx xx-xx-xx

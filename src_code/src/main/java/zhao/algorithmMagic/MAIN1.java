@@ -5,49 +5,55 @@ import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
 import zhao.algorithmMagic.operands.matrix.ColorMatrix;
 
 import java.awt.*;
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class MAIN1 {
     public static void main(String[] args) throws CloneNotSupportedException {
-        ColorMatrix colorMatrix1, colorMatrix2;
-        {        // 将图像与样本读取进来
-            colorMatrix1 = ColorMatrix.parse("C:\\Users\\zhao\\Desktop\\fsdownload\\YB.bmp");
-            colorMatrix2 = ColorMatrix.parse("C:\\Users\\zhao\\Desktop\\fsdownload\\test22.jpg");
-            ColorMatrix temp = ColorMatrix.parse(colorMatrix2.copyToNewArrays());
-            // 开始二值化
-            colorMatrix1.localBinary(ColorMatrix._G_, 10, 0xffffff, 0, 1);
-            temp.localBinary(ColorMatrix._G_, 5, 0xffffff, 0, 15);
-            temp.erode(2, 2, false);
-            temp.show("temp");
-            // 开始进行模板匹配 并返回最匹配的结果数值，在这里返回的就是所有匹配的结果数据
-            // 其中每一个元素都是一个匹配到的符合条件的结果信息对象 key为匹配系数  value为匹配结果
-            ArrayList<Map.Entry<Double, IntegerCoordinateTwo>> entries = temp.templateMatching(
-                    // 计算相似度需要使用的计算组件
-                    ManhattanDistance.getInstance("MAN"),
-                    // 需要被计算的矩阵对象
-                    colorMatrix1,
-                    // 计算时需要使用的颜色通道
-                    ColorMatrix._G_,
-                    // 计算时需要使用的卷积步长
-                    16,
-                    // 相似度阈值设定条件
-                    v -> v < 1200000
-            );
-            // 将所有的边框绘制到原图中
-            for (Map.Entry<Double, IntegerCoordinateTwo> matching : entries) {
-                // 开始进行绘制 在这里首先获取到坐标数据
-                IntegerCoordinateTwo coordinateTwo = matching.getValue();
-                System.out.print("匹配系数 = ");
-                System.out.println(matching.getKey());
-                colorMatrix2.drawRectangle(
-                        coordinateTwo,
-                        new IntegerCoordinateTwo(coordinateTwo.getX() + colorMatrix1.getColCount(), coordinateTwo.getY() + colorMatrix1.getRowCount()),
-                        Color.MAGENTA
-                );
+        HashMap<Integer, ColorMatrix> hashMap = new HashMap<>(0b1100);
+        // 将样本读取进来
+        {
+            int count = 0;
+            for (File file : Objects.requireNonNull(new File("C:\\Users\\Liming\\Desktop\\fsdownload\\number").listFiles())) {
+                ColorMatrix parse = ColorMatrix.parse(file.getPath());
+                parse.globalBinary(ColorMatrix._G_, 200, 0xffffff, 0);
+                hashMap.put(++count, parse);
             }
         }
-        colorMatrix1.show("人脸样本");
-        colorMatrix2.show("识别结果");
+        // 将需要被进行数字提取的图像获取到
+        ColorMatrix parse = ColorMatrix.parse("C:\\Users\\Liming\\Desktop\\fsdownload\\test4.bmp");
+        // 将原矩阵复制一份，稍后用于结果展示
+        ColorMatrix parse1 = ColorMatrix.parse(parse.copyToNewArrays());
+        // 将需要被处理的图像进行二值化，使其颜色不会干扰匹配
+        parse.localBinary(ColorMatrix._G_, 4, 0xffffff, 0, -15);
+        parse.show("二值化结果");
+        // 在这里获取到 4 数值对应的样本
+        ColorMatrix temp = hashMap.get(4);
+        temp.show("模板数据");
+        // 开始进行模板匹配操作，该操作将会返回所有度量系数小于 3500 的子图像左上角坐标
+        ArrayList<Map.Entry<Double, IntegerCoordinateTwo>> matching = parse.templateMatching(
+                ManhattanDistance.getInstance("MAN"),
+                temp,
+                ColorMatrix._G_,
+                1,
+                v -> {
+                    System.out.println(v);
+                    return v < 3500;
+                }
+        );
+        // 将所有的轮廓绘制到用于展示的矩阵对象上。
+        for (Map.Entry<Double, IntegerCoordinateTwo> doubleIntegerCoordinateTwoEntry : matching) {
+            IntegerCoordinateTwo value = doubleIntegerCoordinateTwoEntry.getValue();
+            parse1.drawRectangle(
+                    value,
+                    new IntegerCoordinateTwo(value.getX() + temp.getColCount() - 1, value.getY() + temp.getRowCount() - 1),
+                    Color.MAGENTA
+            );
+        }
+        // 查看结果
+        parse1.show("res");
     }
 }
