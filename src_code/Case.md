@@ -221,6 +221,17 @@ public class MAIN1 {
 
 - 图像数据集
     这里有所有数字的图像数据以及被处理的图像。
+    
+![1](https://user-images.githubusercontent.com/113756063/229441539-03d9adb6-4883-4c2c-a86d-e008b2a620d6.jpg)
+![2](https://user-images.githubusercontent.com/113756063/229441568-a273d88e-a411-4d70-907b-67084ec404a8.jpg)
+![3](https://user-images.githubusercontent.com/113756063/229441606-fa1f7195-0bbb-4c86-91dc-c0b7d3267850.jpg)
+![4](https://user-images.githubusercontent.com/113756063/229441641-f0e01024-df8a-432f-a028-462327beb3c0.jpg)
+![5](https://user-images.githubusercontent.com/113756063/229441669-ae0b3a20-fbf0-447f-bf76-20ea84016751.jpg)
+![6](https://user-images.githubusercontent.com/113756063/229441694-c80357da-865e-40ec-815b-7dcebe743897.jpg)
+![7](https://user-images.githubusercontent.com/113756063/229441706-5ae85394-ae91-4d77-85d8-5c088693277b.jpg)
+![8](https://user-images.githubusercontent.com/113756063/229441723-c51b2a73-c007-436e-9a5c-e841a5312424.jpg)
+![9](https://user-images.githubusercontent.com/113756063/229441430-7b9b8ded-b207-4415-b5a0-0b3e594d7846.jpg)
+![test4](https://user-images.githubusercontent.com/113756063/229441864-ec1770d5-1154-4e9c-837e-a4acfc5fb259.jpg)
 
 - 图像识别代码，通过下面的代码实现了图像中数字 4 的圈出操作。
 
