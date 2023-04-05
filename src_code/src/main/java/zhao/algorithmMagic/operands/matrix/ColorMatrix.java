@@ -3,13 +3,16 @@ package zhao.algorithmMagic.operands.matrix;
 import zhao.algorithmMagic.algorithm.distanceAlgorithm.DistanceAlgorithm;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.integrator.ImageRenderingIntegrator;
+import zhao.algorithmMagic.io.InputComponent;
 import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
 import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixSpace;
+import zhao.algorithmMagic.operands.table.Cell;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASIO;
 import zhao.algorithmMagic.utils.ASMath;
 import zhao.algorithmMagic.utils.filter.DoubleFiltering;
 import zhao.algorithmMagic.utils.transformation.ManyTrans;
+import zhao.algorithmMagic.utils.transformation.ProTransForm;
 
 import javax.swing.*;
 import java.awt.*;
@@ -211,6 +214,84 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         }
     };
 
+    /**
+     * 矩阵左右反转操作，其参数是可选的，如果您想要传递参数，请按照如下方式传递。
+     * key = "isCopy"   value = boolean 数值   代表反转操作是否需要拷贝出新矩阵，如果不需要则在原矩阵中进行反转。
+     */
+    public final static ProTransForm<ColorMatrix, ColorMatrix> REVERSE_LR = (colorMatrix, value) -> {
+        if (value != null) {
+            Cell<?> isCopy = value.get("isCopy");
+            if (isCopy != null) {
+                return colorMatrix.reverseLR(Boolean.parseBoolean(isCopy.toString()));
+            }
+        }
+        return colorMatrix.reverseLR(true);
+    };
+
+    /**
+     * 矩阵左右反转操作，其参数是可选的，如果您想要传递参数，请按照如下方式传递。
+     * key = "isCopy"   value = boolean 数值
+     */
+    public final static ProTransForm<ColorMatrix, ColorMatrix> REVERSE_BT = (colorMatrix, value) -> {
+        if (value != null) {
+            Cell<?> isCopy = value.get("isCopy");
+            if (isCopy != null) {
+                return colorMatrix.reverseBT(Boolean.parseBoolean(isCopy.toString()));
+            }
+        }
+        return colorMatrix.reverseBT(true);
+    };
+
+    /**
+     * 矩阵按照左右的方向进行拉伸操作，使得图像变宽，需要传递参数 times。
+     */
+    public final static ProTransForm<ColorMatrix, ColorMatrix> SLIT_LR = (colorMatrix, value) -> {
+        if (value == null || !value.containsKey("times")) {
+            throw new OperatorOperationException("矩阵拉伸操作需要您传递配置项 times 其代表每一个像素在原矩阵中的横向拉伸倍数。");
+        }
+        // 获取到横向拉伸倍数
+        int times = value.get("times").getIntValue();
+        // 开始拉伸
+        Color[][] res = new Color[colorMatrix.getRowCount()][colorMatrix.getColCount() * times];
+        int index = -1;
+        for (Color[] colors : colorMatrix.toArrays()) {
+            Color[] re = res[++index];
+            int x1 = 0, x2 = times;
+            for (Color color : colors) {
+                // 在这里拉伸一个像素为原来的 times 倍宽
+                for (int x = x1; x < x2; x++) {
+                    re[x] = color;
+                }
+                x1 += times;
+                x2 += times;
+            }
+        }
+        return ColorMatrix.parse(res);
+    };
+
+    /**
+     * 矩阵按照上下的方向进行拉伸操作，使得图像变宽，需要传递参数 times。
+     */
+    public final static ProTransForm<ColorMatrix, ColorMatrix> SLIT_BT = (colorMatrix, value) -> {
+        if (value == null || !value.containsKey("times")) {
+            throw new OperatorOperationException("矩阵拉伸操作需要您传递配置项 times 其代表每一个像素在原矩阵中的横向拉伸倍数。");
+        }
+        // 获取到横向拉伸倍数
+        int times = value.get("times").getIntValue();
+        // 开始拉伸
+        Color[][] res = new Color[colorMatrix.getRowCount() * times][colorMatrix.getColCount()];
+        int x1 = 0, x2 = times;
+        for (Color[] colors : colorMatrix.toArrays()) {
+            // 在这里将行拉伸 times 倍
+            for (int i = x1; i < x2; i++) {
+                res[i] = colors.clone();
+            }
+            x1 += times;
+            x2 += times;
+        }
+        return ColorMatrix.parse(res);
+    };
+
     private boolean isGrayscale;
 
     /**
@@ -306,17 +387,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      */
     public static ColorMatrix parseGrayscale(String inputString) {
         Color[][] colors = ASIO.parseImageGetColorArray(inputString);
-        return GrayscaleColors(colors);
-    }
-
-    /**
-     * 将图像URL解析，并获取对应的图像矩阵
-     *
-     * @param url 需要被解析的URL对象
-     * @return URL对象所对应的图像矩阵。
-     */
-    public static ColorMatrix parseGrayscale(URL url) {
-        return GrayscaleColors(ASIO.parseURLGetColorArray(url));
+        return ColorMatrix.GrayscaleColors(colors);
     }
 
     /**
@@ -401,6 +472,38 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      */
     public static ColorMatrix parse(URL url) {
         return ColorMatrix.parse(ASIO.parseURLGetColorArray(url));
+    }
+
+
+    /**
+     * 将图像URL解析，并获取对应的图像矩阵
+     *
+     * @param url 需要被解析的URL对象
+     * @return URL对象所对应的图像矩阵。
+     */
+    public static ColorMatrix parseGrayscale(URL url) {
+        return ColorMatrix.GrayscaleColors(ASIO.parseURLGetColorArray(url));
+    }
+
+    /**
+     * 使用组件将一个图像数据提取，并获取对应的图像矩阵。
+     *
+     * @param inputComponent 能够被提取出图像矩阵的数据组件。
+     * @return 从组件中提取出来的图像矩阵对象。
+     */
+    public static ColorMatrix parse(InputComponent inputComponent) {
+        boolean isOk;
+        if (!inputComponent.isOpen()) {
+            isOk = inputComponent.open();
+        } else {
+            isOk = true;
+        }
+        if (isOk) {
+            // 开始进行数据提取
+            ColorMatrix parse = ColorMatrix.parse(ASIO.parseImageGetColorArray(inputComponent.getBufferedImage()));
+            ASIO.close(inputComponent);
+            return parse;
+        } else throw new OperatorOperationException("Unable to open your camera.");
     }
 
     /**
@@ -509,6 +612,17 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             action.accept(this.toArrays());
             return this;
         }
+    }
+
+    /**
+     * 矩阵变换操作函数，在此函数中您可以传递多个矩阵变换模式，实现多种不同的矩阵转换效果，同时还可以自定义矩阵变换时需要使用的逻辑。
+     *
+     * @param transformation 矩阵变换逻辑。
+     * @param value          矩阵中的变换操作计算时需要的其它参数对象。
+     * @return 矩阵变换之后返回的新矩阵对象。
+     */
+    public ColorMatrix converter(ProTransForm<ColorMatrix, ColorMatrix> transformation, HashMap<String, Cell<?>> value) {
+        return transformation.function(this, value);
     }
 
     /**

@@ -413,14 +413,16 @@ Table 是AS库中用于进行数据分析的数据对象，其表现形式属于
 
 ### DataFrameBuilder 与 DataFrame
 
-DataFrameBuilder 与 DataFrame 分别用于数据的加载与数据的分析操作，在数据的加载过程中可以通过 DataFameBuilder 数据对象快捷同时容易理解的函数构造出一个DataFrame，并使用DataFrame进行数据的处理。
+DataFrameBuilder 与 DataFrame 分别用于数据的加载与数据的分析操作，在数据的加载过程中可以通过 DataFameBuilder
+数据对象快捷同时容易理解的函数构造出一个DataFrame，并使用DataFrame进行数据的处理。
 
 DataFrame 简称 "DF" 在数据的处理阶段，诸多函数采用SQL风格设计，能够有效降低学习成本，使得精力专注于更重要的事情上，接下来展示下 DataFrameBuilder 的基本使用。
 
 #### 使用 FDataFrame 加载数据
-- 读取数据库
-  在AS库中您可以将数据加载成为 FDataFrame 数据对象，该对象能够实现基本的数据读取与数据处理功能，能够实现有效的数据管控，您可以将数据库中的数据加载成为一个 FDataFrame ，接下来就是有关数据库数据加载的代码示例。
-  - 需要注意的是，在读取数据库的时候请在项目中导入 JDBC 的驱动类。
+
+- 读取数据库 在AS库中您可以将数据加载成为 FDataFrame 数据对象，该对象能够实现基本的数据读取与数据处理功能，能够实现有效的数据管控，您可以将数据库中的数据加载成为一个 FDataFrame
+  ，接下来就是有关数据库数据加载的代码示例。
+    - 需要注意的是，在读取数据库的时候请在项目中导入 JDBC 的驱动类。
 
 ```java
 package zhao.algorithmMagic;
@@ -447,8 +449,8 @@ public class MAIN1 {
   }
 }
 ```
-- 读取文件系统
-  针对文件系统的读取，FDataFrame 是可以轻松做到本地文件系统读取的，不需要依赖任何的第三方库就可以实现文件系统的读取，接下来就实现一下具体的步骤！
+
+- 读取文件系统 针对文件系统的读取，FDataFrame 是可以轻松做到本地文件系统读取的，不需要依赖任何的第三方库就可以实现文件系统的读取，接下来就实现一下具体的步骤！
 
 ```java
 package zhao.algorithmMagic;
@@ -481,6 +483,7 @@ public class MAIN1 {
   }
 }
 ```
+
 #### 综合案例
 
 ```java

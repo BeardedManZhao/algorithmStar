@@ -115,6 +115,14 @@ final class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mll
   override def getNumberOfDimensions: Int = size
 
   /**
+   *
+   * @return 将本对象中存储的向量序列数组拷贝到一个新数组并将新数组返回，这里返回的是一个新数组，支持修改等操作。
+   *
+   *         Copy the vector sequence array stored in this object to a new array and return the new array. Here, a new array is returned, which supports modification and other operations.
+   */
+  override def copyToNewArray(): Array[Double] = vector.toArray
+
+  /**
    * 在两个操作数之间做差的方法，具体用法请参阅API说明。
    * <p>
    * The method of making a difference between two operands, please refer to the API description for specific usage.
@@ -159,14 +167,6 @@ final class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mll
    *         Objects after disruption.
    */
   override def shuffle(seed: Long): SparkVector = SparkVector.parse(sparkContext, ASMath.shuffle(this.copyToNewArray(), seed, false))
-
-  /**
-   *
-   * @return 将本对象中存储的向量序列数组拷贝到一个新数组并将新数组返回，这里返回的是一个新数组，支持修改等操作。
-   *
-   *         Copy the vector sequence array stored in this object to a new array and return the new array. Here, a new array is returned, which supports modification and other operations.
-   */
-  override def copyToNewArray(): Array[Double] = vector.toArray
 }
 
 object SparkVector {

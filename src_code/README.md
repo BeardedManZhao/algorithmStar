@@ -387,7 +387,7 @@ public class MAIN1 {
         AlgorithmStar<Object, Object> algorithmStar = AlgorithmStar.getInstance();
         // 开始进行归一化操作
         IntegerMatrix pretreatment1 = algorithmStar.pretreatment(
-               line,
+                line,
                 // 需要被归一化的矩阵对象
                 integerMatrix
         );
@@ -400,7 +400,8 @@ public class MAIN1 {
 }
 ```
 
-* Support the addition and merging calculation of matrices, which can merge two image matrices into the same new image matrix.
+* Support the addition and merging calculation of matrices, which can merge two image matrices into the same new image
+  matrix.
 
 ```java
 package zhao.algorithmMagic;
@@ -429,4 +430,36 @@ public class MAIN1 {
     }
 }
 ```
+
+* Support obtaining image matrix through camera.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.io.InputCamera;
+import zhao.algorithmMagic.io.InputCameraBuilder;
+import zhao.algorithmMagic.io.InputComponent;
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
+import zhao.algorithmMagic.operands.table.FinalCell;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 获取到摄像头输入设备
+        InputComponent inputComponent = InputCamera.builder()
+                // 要使用的摄像头的名字 索引 或def默认，我们这里使用的是 def 代表使用默认摄像头
+                .addInputArg(InputCameraBuilder.Camera_Index, new FinalCell<>("def"))
+                // 要使用的拍摄图像格式
+                .addInputArg(InputCameraBuilder.Image_Format, new FinalCell<>("JPG"))
+                // 图像尺寸 这里的数值是 WebcamResolution 枚举类的属性字段 VGA
+                .addInputArg(InputCameraBuilder.CUSTOM_VIEW_SIZES, new FinalCell<>("VGA"))
+                .create();
+        ColorMatrix parse1 = ColorMatrix.parse(inputComponent);
+        parse1.show("image1");
+        double[][] double2Array = inputComponent.getDouble2Array();
+        DoubleMatrix parse = DoubleMatrix.parse(double2Array);
+    }
+}
+```
+
 ### Version update date : xx xx-xx-xx

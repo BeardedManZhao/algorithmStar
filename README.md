@@ -28,11 +28,18 @@ can add it to your maven project, or you can download it from Releases and manua
 
 ### Required dependencies of the AS library
 
-After version 1.17, all dependencies of the AS library have been stripped to better avoid binding dependencies and reduce the possibility of project conflicts. At the same time, more suitable dependency configuration items can be used according to the needs of developers. You can view third-party library dependencies on which the AS library depends here.
+After version 1.17, all dependencies of the AS library have been stripped to better avoid binding dependencies and
+reduce the possibility of project conflicts. At the same time, more suitable dependency configuration items can be used
+according to the needs of developers. You can view third-party library dependencies on which the AS library depends
+here.
 
 #### Required Dependencies
-The AS library generates some log data when performing many calculation functions. Therefore, the use of the AS library requires importing log dependencies, which are essential. Please import the dependencies as follows.
+
+The AS library generates some log data when performing many calculation functions. Therefore, the use of the AS library
+requires importing log dependencies, which are essential. Please import the dependencies as follows.
+
 ```xml
+
 <dependencies>
     <!-- Binding using the adapter of log4j2 -->
     <dependency>
@@ -58,18 +65,23 @@ The AS library generates some log data when performing many calculation function
     </dependency>
 </dependencies>
 ```
+
 #### Optional Dependencies
 
-When interfacing with various platforms such as databases and Sparks, the AS library needs to use third-party dependency packages, which are optional. If you do not need to use these functions, you may not need to import dependencies. If you need to, you can refer to the following configuration.
+When interfacing with various platforms such as databases and Sparks, the AS library needs to use third-party dependency
+packages, which are optional. If you do not need to use these functions, you may not need to import dependencies. If you
+need to, you can refer to the following configuration.
+
 ```xml
+
 <dependencies>
-  <!-- MySQL database connection driver If the relational database you want to connect to is of another type, you can also modify it here -->
+    <!-- MySQL database connection driver If the relational database you want to connect to is of another type, you can also modify it here -->
     <dependency>
         <groupId>mysql</groupId>
         <artifactId>mysql-connector-java</artifactId>
         <version>8.0.30</version>
     </dependency>
-  <!-- The dependency development package for the three major Spark modules can also be imported if you need to use it here, or not if you don't need it -->
+    <!-- The dependency development package for the three major Spark modules can also be imported if you need to use it here, or not if you don't need it -->
     <dependency>
         <groupId>org.apache.spark</groupId>
         <artifactId>spark-core_2.12</artifactId>
@@ -80,11 +92,18 @@ When interfacing with various platforms such as databases and Sparks, the AS lib
         <artifactId>spark-sql_2.12</artifactId>
         <version>3.1.3</version>
     </dependency>
-    
+
     <dependency>
         <groupId>org.apache.spark</groupId>
         <artifactId>spark-mllib_2.12</artifactId>
         <version>3.1.3</version>
+    </dependency>
+
+    <!-- Camera device dependency library. If you have a need to obtain data objects through the camera, you can import this dependency -->
+    <dependency>
+        <groupId>com.github.sarxos</groupId>
+        <artifactId>webcam-capture</artifactId>
+        <version>0.3.12</version>
     </dependency>
 </dependencies>
 ```

@@ -375,7 +375,7 @@ public class MAIN1 {
         AlgorithmStar<Object, Object> algorithmStar = AlgorithmStar.getInstance();
         // 开始进行归一化操作
         IntegerMatrix pretreatment1 = algorithmStar.pretreatment(
-               line,
+                line,
                 // 需要被归一化的矩阵对象
                 integerMatrix
         );
@@ -417,4 +417,75 @@ public class MAIN1 {
     }
 }
 ```
+
+* 支持图像矩阵的通用变换函数操作，在这个函数中，您可以手动的指定矩形变换模式，也可以手动实现图像变换逻辑。
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+import zhao.algorithmMagic.operands.table.Cell;
+import zhao.algorithmMagic.operands.table.FinalCell;
+
+import java.util.HashMap;
+
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 被处理图像路径
+        String dataPath = "C:\\Users\\Liming\\Desktop\\fsdownload\\test7.jpg";
+        ColorMatrix colorMatrix1 = ColorMatrix.parse(dataPath);
+        // 将矩阵变换 首先需要创建出不同模式中需要的配置信息 这里是反转和拉伸矩阵的配置
+        HashMap<String, Cell<?>> pro = new HashMap<>();
+        // 反转矩阵时指定拷贝操作
+        pro.put("isCopy", new FinalCell<>(true));
+        // 拉伸矩阵时指定拉伸倍数
+        pro.put("times", new FinalCell<>(2));
+        // 上下 反转
+        ColorMatrix converter1 = colorMatrix1.converter(ColorMatrix.REVERSE_BT, pro);
+        converter1.show("REVERSE_BT");
+        // 左右 反转
+        converter1 = colorMatrix1.converter(ColorMatrix.REVERSE_LR, pro);
+        converter1.show("REVERSE_LR");
+        // 上下 拉伸
+        converter1 = colorMatrix1.converter(ColorMatrix.SLIT_BT, pro);
+        converter1.show("SLIT_BT");
+        // 左右 拉伸
+        converter1 = colorMatrix1.converter(ColorMatrix.SLIT_LR, pro);
+        converter1.show("SLIT_LR");
+    }
+}
+```
+
+* 支持通过摄像头获取到图像矩阵。
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.io.InputCamera;
+import zhao.algorithmMagic.io.InputCameraBuilder;
+import zhao.algorithmMagic.io.InputComponent;
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
+import zhao.algorithmMagic.operands.table.FinalCell;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 获取到摄像头输入设备
+        InputComponent inputComponent = InputCamera.builder()
+                // 要使用的摄像头的名字 索引 或def默认，我们这里使用的是 def 代表使用默认摄像头
+                .addInputArg(InputCameraBuilder.Camera_Index, new FinalCell<>("def"))
+                // 要使用的拍摄图像格式
+                .addInputArg(InputCameraBuilder.Image_Format, new FinalCell<>("JPG"))
+                // 图像尺寸 这里的数值是 WebcamResolution 枚举类的属性字段 VGA
+                .addInputArg(InputCameraBuilder.CUSTOM_VIEW_SIZES, new FinalCell<>("VGA"))
+                .create();
+        ColorMatrix parse1 = ColorMatrix.parse(inputComponent);
+        parse1.show("image1");
+        double[][] double2Array = inputComponent.getDouble2Array();
+        DoubleMatrix parse = DoubleMatrix.parse(double2Array);
+    }
+}
+```
+
 ### Version update date : xx xx-xx-xx

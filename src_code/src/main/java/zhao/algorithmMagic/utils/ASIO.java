@@ -184,7 +184,7 @@ public final class ASIO {
      * @param image 需要被读取的图像缓冲对象
      * @return 读取成功之后返回的整形矩阵
      */
-    private static Color[][] parseImageGetColorArray(BufferedImage image) {
+    public static Color[][] parseImageGetColorArray(BufferedImage image) {
         final byte[] pixels = ((DataBufferByte) image.getRaster()
                 .getDataBuffer())
                 .getData();
@@ -238,6 +238,10 @@ public final class ASIO {
      */
     public static int[][] parseImageGetArray(File inputFile) throws IOException {
         BufferedImage image = ImageIO.read(inputFile);
+        return parseImageGetArray(image);
+    }
+
+    public static int[][] parseImageGetArray(BufferedImage image) {
         final byte[] pixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
         final int width = image.getWidth(), height = image.getHeight();
         final boolean hasAlphaChannel = image.getAlphaRaster() != null;
@@ -318,5 +322,18 @@ public final class ASIO {
         return new IntegerMatrix[]{
                 IntegerMatrix.parse(RMat), IntegerMatrix.parse(GMat), IntegerMatrix.parse(BMat)
         };
+    }
+
+    /**
+     * @param closeable 需要被关闭的对象。
+     */
+    public static void close(Closeable closeable) {
+        if (closeable != null) {
+            try {
+                closeable.close();
+            } catch (IOException ignored) {
+
+            }
+        }
     }
 }
