@@ -47,10 +47,20 @@ public final class LinearRegression extends ModelAlgorithm {
         }
     }
 
+    /**
+     * 设置自变量的列编号
+     *
+     * @param featureIndex 自变量的列编号
+     */
     public void setFeatureIndex(int featureIndex) {
         this.featureIndex = featureIndex;
     }
 
+    /**
+     * 设置因变量的列编号
+     *
+     * @param targetIndex 因变量的列编号
+     */
     public void setTargetIndex(int targetIndex) {
         this.targetIndex = targetIndex;
     }

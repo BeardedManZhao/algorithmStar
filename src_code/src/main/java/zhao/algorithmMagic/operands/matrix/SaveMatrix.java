@@ -1,5 +1,7 @@
 package zhao.algorithmMagic.operands.matrix;
 
+import zhao.algorithmMagic.io.OutputComponent;
+
 import java.io.File;
 
 /**
@@ -50,4 +52,15 @@ public interface SaveMatrix {
      *             Separator used when saving.
      */
     void save(File path, char sep);
+
+    /**
+     * 将对象交由第三方数据输出组件进行数据的输出。
+     * <p>
+     * Submit the object to a third-party data output component for data output.
+     *
+     * @param outputComponent 第三方数据输出设备对象实现。
+     *                        <p>
+     *                        Implementation of third-party data output device objects.
+     */
+    void save(OutputComponent outputComponent);
 }

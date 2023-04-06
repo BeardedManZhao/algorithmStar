@@ -4,6 +4,7 @@ import zhao.algorithmMagic.algorithm.distanceAlgorithm.DistanceAlgorithm;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.integrator.ImageRenderingIntegrator;
 import zhao.algorithmMagic.io.InputComponent;
+import zhao.algorithmMagic.io.OutputComponent;
 import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
 import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixSpace;
 import zhao.algorithmMagic.operands.table.Cell;
@@ -1825,6 +1826,25 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
                 throw new OperatorOperationException("Write data exception!", e);
             }
         });
+    }
+
+    /**
+     * 将对象交由第三方数据输出组件进行数据的输出。
+     * <p>
+     * Submit the object to a third-party data output component for data output.
+     *
+     * @param outputComponent 第三方数据输出设备对象实现。
+     *                        <p>
+     *                        Implementation of third-party data output device objects.
+     */
+    @Override
+    public void save(OutputComponent outputComponent) {
+        if (!outputComponent.isOpen()) {
+            if (!outputComponent.open())
+                throw new OperatorOperationException("您的数据输出组件打开失败。\nYour data output component failed to open.");
+        }
+        outputComponent.writeImage(this);
+        ASIO.close(outputComponent);
     }
 
     /**

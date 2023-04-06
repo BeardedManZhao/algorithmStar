@@ -1,6 +1,7 @@
 package zhao.algorithmMagic.operands.table;
 
 import zhao.algorithmMagic.exception.OperatorOperationException;
+import zhao.algorithmMagic.io.InputComponent;
 import zhao.algorithmMagic.utils.ASIO;
 import zhao.algorithmMagic.utils.ASMath;
 import zhao.algorithmMagic.utils.transformation.Transformation;
@@ -89,6 +90,16 @@ public class FDataFrame implements DataFrame {
         return new FDataFrame(
                 colNameRow, pk, new ArrayList<>()
         ).refreshField(false, true);
+    }
+
+    /**
+     * 使用第三方数据源输入组件进行数据的加载，并获取到对应的DataFrame对象。
+     *
+     * @param inputComponent 需要使用的第三方数据输入组件对象
+     * @return 获取到的DataFrame对象。
+     */
+    public static DataFrame builder(InputComponent inputComponent) {
+        return inputComponent.getDataFrame();
     }
 
     /**
