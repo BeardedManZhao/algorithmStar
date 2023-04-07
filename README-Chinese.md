@@ -94,6 +94,14 @@ AS库在针对数据库，Spark等各种平台对接的时候，需要使用到�
     <artifactId>webcam-capture</artifactId>
     <version>0.3.12</version>
   </dependency>
+
+  <!-- HDFS 输入输出设备依赖库，如果您有需要通过HDFS分布式存储平台进行数据读写的需求，可以引入本库 -->
+  <dependency>
+    <groupId>org.apache.hadoop</groupId>
+    <artifactId>hadoop-client</artifactId>
+    <version>3.3.1</version>
+  </dependency>
+  
 </dependencies>
 ```
 

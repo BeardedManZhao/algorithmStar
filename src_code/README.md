@@ -8,7 +8,7 @@
 
 ### Update log:
 
-* Framework version: 1.17 - x.xx
+* Framework version: 1.17 - 1.18
 * Add implementation support for the diff function to the image matrix, and add powerful subtractive aggregation
   calculation functions to the matrix object.
 
@@ -460,6 +460,12 @@ public class MAIN1 {
         DoubleMatrix parse = DoubleMatrix.parse(double2Array);
     }
 }
+```
+
+* Support the saving operation of obtaining operand objects and data through HDFS.
+
+```java
+// TODO 等待书写
 ```
 
 ### Version update date : xx xx-xx-xx

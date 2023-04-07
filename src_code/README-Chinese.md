@@ -8,7 +8,7 @@
 
 ### 更新日志
 
-* 框架版本：1.17 - x.xx
+* 框架版本：1.17 - 1.18
 * 为图像矩阵添加diff函数的实现支持，同时为该矩阵对象添加强大的求差聚合计算功能。
 
 ```java
@@ -486,6 +486,12 @@ public class MAIN1 {
         DoubleMatrix parse = DoubleMatrix.parse(double2Array);
     }
 }
+```
+
+* 支持通过 HDFS 获取到操作数对象以及数据的保存操作。
+
+```java
+// TODO 等待书写
 ```
 
 ### Version update date : xx xx-xx-xx

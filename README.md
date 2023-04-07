@@ -99,12 +99,20 @@ need to, you can refer to the following configuration.
         <version>3.1.3</version>
     </dependency>
 
-    <!-- Camera device dependency library. If you have a need to obtain data objects through the camera, you can import this dependency -->
+    <!-- Camera device dependency library. If you have a need to obtain data objects through the camera, you can import this dependency. -->
     <dependency>
         <groupId>com.github.sarxos</groupId>
         <artifactId>webcam-capture</artifactId>
         <version>0.3.12</version>
     </dependency>
+
+  <!-- HDFS input/output device dependency library. If you have a need for data reading and writing through the HDFS distributed storage platform, you can introduce this library. -->
+  <dependency>
+    <groupId>org.apache.hadoop</groupId>
+    <artifactId>hadoop-client</artifactId>
+    <version>3.3.1</version>
+  </dependency>
+  
 </dependencies>
 ```
 
