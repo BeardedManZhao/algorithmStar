@@ -1,5 +1,6 @@
 package zhao.algorithmMagic.operands.table;
 
+import zhao.algorithmMagic.io.OutputComponent;
 import zhao.algorithmMagic.operands.Operands;
 import zhao.algorithmMagic.utils.transformation.Transformation;
 
@@ -254,6 +255,16 @@ public interface DataFrame extends AggDataFrameData, Iterable<Series>, Serializa
      * @return 输出之后会返回数据集本身，不会终止调用
      */
     DataFrame into_outHtml(String outPath, String tableName);
+
+    /**
+     * 将计算结果提供给指定的数据输出组件进行数据的输出操作，
+     *
+     * @param outputComponent 输出数据需要使用的数据输出组件
+     * @return 输出之后会返回数据集本身，不会终止调用。
+     * <p>
+     * After output, the data set itself will be returned and the call will not be terminated.
+     */
+    DataFrame into_outComponent(OutputComponent outputComponent);
 
     /**
      * 将DF对象中的所有数据转换成为一个list容器。

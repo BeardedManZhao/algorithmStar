@@ -62,7 +62,7 @@ public class InputHDFS implements InputComponent {
      * Start building this data component object.
      */
     public static InputBuilder builder() {
-        return new InputCameraBuilder();
+        return new InputHDFSBuilder();
     }
 
     /**

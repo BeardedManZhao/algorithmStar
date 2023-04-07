@@ -87,15 +87,22 @@
             <groupId>com.github.sarxos</groupId>
             <artifactId>webcam-capture</artifactId>
             <version>0.3.12</version>
-            <scope>provided</scope>
+            <!--            <scope>provided</scope>-->
         </dependency>
 
         <!-- HDFS 输入输出设备依赖库 -->
         <dependency>
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-client</artifactId>
-            <version>3.3.1</version>
-            <scope>provided</scope>
+            <version>3.3.2</version>
+            <!--            <scope>provided</scope>-->
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-hdfs</artifactId>
+            <version>3.3.2</version>
+            <!--            <scope>provided</scope>-->
         </dependency>
     </dependencies>
 

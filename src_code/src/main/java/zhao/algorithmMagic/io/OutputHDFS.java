@@ -64,6 +64,10 @@ public class OutputHDFS implements OutputComponent {
         this.sep = sep;
     }
 
+    public static OutputBuilder builder() {
+        return new OutputHDFSBuidler();
+    }
+
     /**
      * 启动数据输出组件.
      * <p>
@@ -211,6 +215,7 @@ public class OutputHDFS implements OutputComponent {
                 bufferedWriter.write(sep);
                 bufferedWriter.write(cell.getStringValue());
             }
+            bufferedWriter.newLine();
             int count = 0;
             for (Series cells : dataFrame) {
                 bufferedWriter.write(String.valueOf(++count));

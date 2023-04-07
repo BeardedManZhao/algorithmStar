@@ -4,6 +4,7 @@ import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import zhao.algorithmMagic.operands.table.Cell;
 import zhao.algorithmMagic.operands.table.FinalCell;
+import zhao.algorithmMagic.utils.ASClass;
 
 import java.util.HashMap;
 
@@ -78,7 +79,7 @@ public class InputHDFSBuilder extends HashMap<String, Cell<?>> implements InputB
         return new InputHDFS(
                 (FileSystem) this.get(FILE_SYSTEM).getValue(),
                 new Path(this.get(IN_PATH).toString()),
-                (char) this.getOrDefault(SEP, new FinalCell<>(',')).getIntValue(),
+                ASClass.<Cell<?>, Cell<Character>>transform(this.getOrDefault(SEP, new FinalCell<>(','))).getValue(),
                 this.getOrDefault(CHAR_SET, new FinalCell<>("utf-8")).toString(),
                 (String[]) this.get(FIELD).getValue(),
                 this.getOrDefault(PK, new FinalCell<>(0)).getIntValue()

@@ -25,7 +25,7 @@ public class MAIN1 {
                 .create();
 
         ColorMatrix colorMatrix1, colorMatrix2;
-        colorMatrix1 = ColorMatrix.parse("C:\\Users\\liming\\Desktop\\fsdownload\\YB.bmp");
+        colorMatrix1 = ColorMatrix.parse("C:\\Users\\zhao\\Desktop\\fsdownload\\YB.bmp");
         int count = 0;
         while (++count < 5) {
             colorMatrix2 = ColorMatrix.parse(inputComponent);

@@ -4,6 +4,7 @@ import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import zhao.algorithmMagic.operands.table.Cell;
 import zhao.algorithmMagic.operands.table.FinalCell;
+import zhao.algorithmMagic.utils.ASClass;
 
 import java.util.HashMap;
 
@@ -71,7 +72,7 @@ public class OutputHDFSBuidler extends HashMap<String, Cell<?>> implements Outpu
                 (FileSystem) this.get(FILE_SYSTEM).getValue(),
                 (Path) this.get(OUT_PATH).getValue(),
                 this.get(FORMAT).toString(),
-                (char) this.get(SEP).getIntValue()
+                ASClass.<Cell<?>, Cell<Character>>transform(this.getOrDefault(SEP, new FinalCell<>(','))).getValue()
         );
     }
 }

@@ -2,6 +2,7 @@ package zhao.algorithmMagic.operands.table;
 
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.io.InputComponent;
+import zhao.algorithmMagic.io.OutputComponent;
 import zhao.algorithmMagic.utils.ASIO;
 import zhao.algorithmMagic.utils.ASMath;
 import zhao.algorithmMagic.utils.transformation.Transformation;
@@ -99,7 +100,12 @@ public class FDataFrame implements DataFrame {
      * @return 获取到的DataFrame对象。
      */
     public static DataFrame builder(InputComponent inputComponent) {
-        return inputComponent.getDataFrame();
+        if (inputComponent.open()) {
+            DataFrame dataFrame = inputComponent.getDataFrame();
+            ASIO.close(inputComponent);
+            return dataFrame;
+        }
+        throw new OperatorOperationException("inputComponent open error!!!");
     }
 
     /**
@@ -654,6 +660,23 @@ public class FDataFrame implements DataFrame {
                     }
                 }
         );
+        return this;
+    }
+
+    /**
+     * 将计算结果提供给指定的数据输出组件进行数据的输出操作，
+     *
+     * @param outputComponent 输出数据需要使用的数据输出组件
+     * @return 输出之后会返回数据集本身，不会终止调用。
+     * <p>
+     * After output, the data set itself will be returned and the call will not be terminated.
+     */
+    @Override
+    public DataFrame into_outComponent(OutputComponent outputComponent) {
+        if (outputComponent.open()) {
+            outputComponent.writeDataFrame(this);
+            ASIO.close(outputComponent);
+        } else throw new OperatorOperationException("into_outComponent(OutputComponent outputComponent) error!!!");
         return this;
     }
 

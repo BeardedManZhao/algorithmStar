@@ -465,7 +465,73 @@ public class MAIN1 {
 * Support the saving operation of obtaining operand objects and data through HDFS.
 
 ```java
-// TODO 等待书写
+package zhao.algorithmMagic;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import zhao.algorithmMagic.io.*;
+import zhao.algorithmMagic.operands.table.DataFrame;
+import zhao.algorithmMagic.operands.table.FDataFrame;
+import zhao.algorithmMagic.operands.table.FinalCell;
+
+import java.io.IOException;
+
+
+public class MAIN1 {
+  public static void main(String[] args) throws IOException {
+    // 获取到 HDFS 数据输入输出设备对象 首先将两者需要的参数创建出来
+    FileSystem fileSystem;
+    String inPath;
+    String[] field;
+    {
+      Path path = new Path("hdfs://192.168.0.141:8020");
+      // 构建HDFS文件系统对象
+      fileSystem = path.getFileSystem(new Configuration());
+      // 设置需要被读取的文件对象
+      inPath = "hdfs://192.168.0.141:8020/data/test.txt";
+      // 设置字段头部
+      field = new String[]{"name", "sex", "age"};
+    }
+
+    /* *****************************************************
+     * TODO 从HDFS中加载数据
+     * *****************************************************/
+    // 开始将所有的参数配置到设备对象中，构建出数据输入设备
+    InputComponent inputComponent = InputHDFS.builder()
+            .addInputArg(InputHDFSBuilder.FILE_SYSTEM, new FinalCell<>(fileSystem))
+            .addInputArg(InputHDFSBuilder.IN_PATH, new FinalCell<>(inPath))
+            .addInputArg(InputHDFSBuilder.FIELD, new FinalCell<>(field))
+            // 设置分隔符
+            .addInputArg(InputHDFSBuilder.SEP, new FinalCell<>('\t'))
+            .create();
+
+    /* *****************************************************
+     * TODO 处理加载出来的 DataFrame 对象，这里是按照 age 正序排序
+     * *****************************************************/
+    // 开始将 HDFS 中的数据加载成为一个 DataFrame对象
+    DataFrame dataFrame = FDataFrame
+            .builder(inputComponent)
+            .sort("age");
+
+    /* *****************************************************
+     * TODO 将处理好的数据输出到 HDFS 的 /data/res.csv 中
+     * *****************************************************/
+    // 实例化出来目标路径
+    Path path = new Path("hdfs://192.168.0.141:8020/data/res.csv");
+    // 开始构建数据输出组件
+    OutputComponent outputComponent = OutputHDFS.builder()
+            .addOutputArg(OutputHDFSBuidler.FILE_SYSTEM, new FinalCell<>(fileSystem))
+            .addOutputArg(OutputHDFSBuidler.SEP, new FinalCell<>(','))
+            .addOutputArg(OutputHDFSBuidler.OUT_PATH, new FinalCell<>(path))
+            .addOutputArg(OutputHDFSBuidler.FORMAT, new FinalCell<>("csv"))
+            .create();
+    // 开始通过组件将数据输出 同时打印出结果
+    System.out.println(
+            dataFrame.into_outComponent(outputComponent)
+    );
+  }
+}
 ```
 
 ### Version update date : xx xx-xx-xx
