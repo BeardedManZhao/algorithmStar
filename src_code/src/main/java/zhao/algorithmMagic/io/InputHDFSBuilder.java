@@ -81,7 +81,7 @@ public class InputHDFSBuilder extends HashMap<String, Cell<?>> implements InputB
                 new Path(this.get(IN_PATH).toString()),
                 ASClass.<Cell<?>, Cell<Character>>transform(this.getOrDefault(SEP, new FinalCell<>(','))).getValue(),
                 this.getOrDefault(CHAR_SET, new FinalCell<>("utf-8")).toString(),
-                (String[]) this.get(FIELD).getValue(),
+                ASClass.<Cell<?>, Cell<String[]>>transform(this.get(FIELD)),
                 this.getOrDefault(PK, new FinalCell<>(0)).getIntValue()
         );
     }

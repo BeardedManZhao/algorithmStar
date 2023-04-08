@@ -32,6 +32,8 @@ import java.io.OutputStreamWriter;
 public class OutputHDFS implements OutputComponent {
 
     private final static Logger LOGGER = LoggerFactory.getLogger("OutputHDFS");
+
+
     private final FileSystem fileSystem;
     private final Path outputPath;
     private final String format;
@@ -243,6 +245,7 @@ public class OutputHDFS implements OutputComponent {
      */
     @Override
     public void close() {
+        LOGGER.info("close()");
         ASIO.close(this.bufferedWriter);
         ASIO.close(this.fsDataOutputStream);
     }

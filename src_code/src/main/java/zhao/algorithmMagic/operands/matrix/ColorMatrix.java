@@ -17,6 +17,7 @@ import zhao.algorithmMagic.utils.transformation.ProTransForm;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -493,8 +494,18 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      * @return 从组件中提取出来的图像矩阵对象。
      */
     public static ColorMatrix parse(InputComponent inputComponent) {
+        return parse(inputComponent, true);
+    }
+
+    /**
+     * 使用组件将一个图像数据提取，并获取对应的图像矩阵。
+     *
+     * @param inputComponent 能够被提取出图像矩阵的数据组件。
+     * @return 从组件中提取出来的图像矩阵对象。
+     */
+    public static ColorMatrix parse(InputComponent inputComponent, boolean isOC) {
         boolean isOk;
-        if (!inputComponent.isOpen()) {
+        if (!inputComponent.isOpen() && isOC) {
             isOk = inputComponent.open();
         } else {
             isOk = true;
@@ -502,9 +513,9 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         if (isOk) {
             // 开始进行数据提取
             ColorMatrix parse = ColorMatrix.parse(ASIO.parseImageGetColorArray(inputComponent.getBufferedImage()));
-            ASIO.close(inputComponent);
+            if (isOC) ASIO.close(inputComponent);
             return parse;
-        } else throw new OperatorOperationException("Unable to open your camera.");
+        } else throw new OperatorOperationException("Unable to open your inputComponent.");
     }
 
     /**
@@ -522,6 +533,58 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             }
         }
         return new ColorMatrix(colors.length, colors[0].length, colors, true);
+    }
+
+    /**
+     * 获取到文本数据输出逻辑实现对象
+     *
+     * @param colorMatrix 需要被输出的图像矩形
+     * @param sep         输出时需要使用的分隔符
+     * @return 一个专用于将图像中的颜色数值按照CSV的格式输出到指定文件中的实现逻辑。
+     */
+    public static Consumer<BufferedWriter> getSAVE_TEXT(ColorMatrix colorMatrix, char sep) {
+        return (stream) -> {
+            try {
+                int rowCount = 0;
+                for (Color[] colors : colorMatrix.toArrays()) {
+                    stream.write(String.valueOf(++rowCount));
+                    for (Color color : colors) {
+                        stream.write(sep);
+                        stream.write(String.valueOf(color.getRGB()));
+                    }
+                    stream.newLine();
+                }
+            } catch (IOException e) {
+                throw new OperatorOperationException("Write data exception!", e);
+            }
+        };
+    }
+
+    /**
+     * 将图像以ASCII的形式输出到指定文件中。
+     *
+     * @param colorMatrix   需要被输出的图像对象
+     * @param Mode          需要被输出的颜色通道
+     * @param colorBoundary 输出时的颜色边界数值
+     * @param imageAscii1   输出时的ASCII
+     * @param imageAscii2   输出时的ASCII
+     * @return 一个ASCII符号组成的文本图像
+     */
+    public static Consumer<BufferedWriter> getSAVE_ASCII(ColorMatrix colorMatrix, byte Mode, int colorBoundary, char imageAscii1, char imageAscii2) {
+        return bufferedWriter -> {
+            try {
+                for (Color[] colors : colorMatrix.toArrays()) {
+                    for (Color color : colors) {
+                        if (((color.getRGB() >> Mode) & 0xFF) > colorBoundary) {
+                            bufferedWriter.write(imageAscii1);
+                        } else bufferedWriter.write(imageAscii2);
+                    }
+                    bufferedWriter.newLine();
+                }
+            } catch (IOException e) {
+                throw new OperatorOperationException("Write data exception!", e);
+            }
+        };
     }
 
     /**
@@ -1811,21 +1874,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      */
     @Override
     public void save(File path, char sep) {
-        ASIO.writer(path, (stream) -> {
-            try {
-                int rowCount = 0;
-                for (Color[] colors : this.toArrays()) {
-                    stream.write(String.valueOf(++rowCount));
-                    for (Color color : colors) {
-                        stream.write(sep);
-                        stream.write(String.valueOf(color.getRGB()));
-                    }
-                    stream.newLine();
-                }
-            } catch (IOException e) {
-                throw new OperatorOperationException("Write data exception!", e);
-            }
-        });
+        ASIO.writer(path, getSAVE_TEXT(this, sep));
     }
 
     /**
@@ -1867,20 +1916,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      *                      ASCII Symbol In the output ASCII image file, the ASCII value corresponding to the constituent characters of the image for coordinates that are less than the threshold value.
      */
     public void save(File path, byte Mode, int colorBoundary, char imageAscii1, char imageAscii2) {
-        ASIO.writer(path, bufferedWriter -> {
-            try {
-                for (Color[] colors : this.toArrays()) {
-                    for (Color color : colors) {
-                        if (((color.getRGB() >> Mode) & 0xFF) > colorBoundary) {
-                            bufferedWriter.write(imageAscii1);
-                        } else bufferedWriter.write(imageAscii2);
-                    }
-                    bufferedWriter.newLine();
-                }
-            } catch (IOException e) {
-                throw new OperatorOperationException("Write data exception!", e);
-            }
-        });
+        ASIO.writer(path, getSAVE_ASCII(this, Mode, colorBoundary, imageAscii1, imageAscii2));
     }
 
     /**

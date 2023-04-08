@@ -24,7 +24,9 @@ public interface InputComponent extends Closeable {
     boolean open();
 
     /**
-     * @return 如果组件已经启动了，在这里返回true
+     * @return 如果组件已经启动了，在这里返回true。
+     * <p>
+     * If the component has already started, return true here.
      */
     boolean isOpen();
 

@@ -1,8 +1,5 @@
 package zhao.algorithmMagic.io;
 
-import org.apache.hadoop.fs.FSDataInputStream;
-import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.fs.Path;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import zhao.algorithmMagic.exception.OperatorOperationException;
@@ -12,57 +9,50 @@ import zhao.algorithmMagic.utils.ASStr;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.util.Scanner;
 
 /**
- * HDFS数据输入组件对象，能够从HDFS平台中获取到文件数据。
+ * 从一个数据输入流中获取数据的实现类，该类中封装了一系列通过数据输入流获取到数据的操作。
  * <p>
- * HDFS data input component object, which can obtain file data from the HDFS platform.
+ * An implementation class that obtains data from a data input stream, encapsulating a series of operations to obtain data through the data input stream.
  *
- * @author 赵凌宇
- * 2023/4/6 8:40
+ * @author zhao
  */
-public class InputHDFS implements InputComponent {
+public class InputByStream implements InputComponent {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger("InputHDFS");
-    private final FileSystem fileSystem;
-    private final Path inputPath;
-    private final char sep;
-    private final String charset;
-    private final Series field;
+    private final static Logger LOGGER = LoggerFactory.getLogger("InputByStream");
+    private final InputStream inputStream;
+    private final Scanner scanner;
+    private final Charset charSet;
+    private final int rowLength;
     private final int pk;
-    private FSDataInputStream fsDataInputStream;
-    private BufferedReader bufferedReader;
-    private boolean isOpen;
+    private final char sep;
 
     /**
-     * @param fileSystem HDFS 文件系统对象
-     * @param inputPath  需要被读取的文件路径
-     * @param sep        读取时需要使用的分隔符
-     * @param charset    读取时需要使用字符集
-     * @param field      读取时的表字段名称行
-     * @param pk         读取时的表主键对象
+     * @param inputStream 需要被读取的数据输入流对象
+     * @param charSet     数据输入分隔符，结构化数据需要使用此参数
+     * @param rowLength   数据输入行数，结构化数据需要使用此参数
+     * @param pk          数据主键，DF数据输入需要使用此参数
+     * @param sep         数据输入分隔符，结构化数据输入需要此参数
      */
-    protected InputHDFS(FileSystem fileSystem, Path inputPath, char sep, String charset, Cell<String[]> field, int pk) {
-        if (fileSystem == null || inputPath == null || field == null) {
-            throw new OperatorOperationException("The parameter in [FileSystem fileSystem, Path inputPath, String[] field] cannot be null!!!!");
+    public InputByStream(Cell<InputStream> inputStream, Cell<Charset> charSet, int rowLength, int pk, char sep) {
+        if (inputStream == null || charSet == null) {
+            throw new OperatorOperationException("The parameter in [Cell<InputStream> inputStream, Cell<Charset> charSet] cannot be null!!!!");
         }
-        this.fileSystem = fileSystem;
-        this.inputPath = inputPath;
-        this.sep = sep;
-        this.charset = charset;
-        this.field = FieldCell.parse(field.getValue());
+        this.inputStream = inputStream.getValue();
+        scanner = new Scanner(this.inputStream);
+        this.charSet = Charset.forName(charSet.toString());
+        this.rowLength = rowLength;
         this.pk = pk;
-        this.isOpen = false;
+        this.sep = sep;
     }
 
-    /**
-     * @return 开始构建本数据组件对象。
-     * <p>
-     * Start building this data component object.
-     */
     public static InputBuilder builder() {
-        return new InputHDFSBuilder();
+        return new InputByStreamBuilder();
     }
 
     /**
@@ -72,24 +62,20 @@ public class InputHDFS implements InputComponent {
      */
     @Override
     public boolean open() {
-        try {
-            LOGGER.info("InputHDFS.open()");
-            this.fsDataInputStream = fileSystem.open(this.inputPath);
-            this.bufferedReader = new BufferedReader(new InputStreamReader(fsDataInputStream));
-            return true;
-        } catch (IOException e) {
-            LOGGER.error("InputHDFS.open() error!!!", e);
-            return false;
-        }
+        LOGGER.info("open()");
+        LOGGER.info("The data input stream component is ready!!!!");
+        return isOpen();
     }
 
     /**
-     * @return 如果组件已经启动了，在这里返回true
+     * @return 如果组件已经启动了，在这里返回true。
+     * <p>
+     * If the component has already started, return true here.
      */
     @Override
     public boolean isOpen() {
-        LOGGER.info("InputHDFS.isOpen()");
-        return this.isOpen;
+        LOGGER.info("isOpen()");
+        return true;
     }
 
     /**
@@ -104,8 +90,8 @@ public class InputHDFS implements InputComponent {
         LOGGER.info("getByteArray()");
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         try {
-            while (bufferedReader.ready()) {
-                byteArrayOutputStream.write(bufferedReader.readLine().getBytes(charset));
+            while (scanner.hasNext()) {
+                byteArrayOutputStream.write(scanner.nextLine().getBytes(charSet));
             }
             return byteArrayOutputStream.toByteArray();
         } catch (IOException e) {
@@ -125,8 +111,18 @@ public class InputHDFS implements InputComponent {
     @Override
     public int[][] getInt2Array() {
         LOGGER.info("getInt2Array()");
-        LOGGER.warn("Not currently supported getInt2Array()!!!");
-        return new int[0][];
+        int[][] res = new int[this.rowLength][];
+        int index = -1;
+        while (++index < this.rowLength) {
+            String[] strings = ASStr.splitByChar(scanner.nextLine(), sep);
+            int[] row = new int[strings.length];
+            int index_2 = -1;
+            for (String string : strings) {
+                row[++index_2] = Integer.parseInt(string);
+            }
+            res[index] = row;
+        }
+        return res;
     }
 
     /**
@@ -139,8 +135,18 @@ public class InputHDFS implements InputComponent {
     @Override
     public double[][] getDouble2Array() {
         LOGGER.info("getDouble2Array()");
-        LOGGER.warn("Not currently supported getDouble2Array()!!!");
-        return new double[0][];
+        double[][] res = new double[this.rowLength][];
+        int index = -1;
+        while (++index < this.rowLength) {
+            String[] strings = ASStr.splitByChar(scanner.nextLine(), sep);
+            double[] row = new double[strings.length];
+            int index_2 = -1;
+            for (String string : strings) {
+                row[++index_2] = Double.parseDouble(string);
+            }
+            res[index] = row;
+        }
+        return res;
     }
 
     /**
@@ -155,15 +161,14 @@ public class InputHDFS implements InputComponent {
     @Override
     public DataFrame getDataFrame() {
         LOGGER.info("getDataFrame()");
-        DataFrame select = FDataFrame.select(this.field, pk);
-        try {
-            while (bufferedReader.ready()) {
-                select.insert(FinalSeries.parse(ASStr.splitByChar(bufferedReader.readLine(), sep)));
-            }
-            return select;
-        } catch (IOException e) {
-            throw new OperatorOperationException(e);
+        DataFrame select = FDataFrame.select(
+                FieldCell.parse(ASStr.splitByChar(scanner.nextLine(), sep)), pk
+        );
+        int index = -1;
+        while (++index < this.rowLength) {
+            select.insert(FinalSeries.parse(ASStr.splitByChar(scanner.nextLine(), sep)));
         }
+        return select;
     }
 
     /**
@@ -176,7 +181,7 @@ public class InputHDFS implements InputComponent {
     @Override
     public InputStream getInputStream() {
         LOGGER.info("getInputStream()");
-        return this.fsDataInputStream;
+        return inputStream;
     }
 
     /**
@@ -190,7 +195,7 @@ public class InputHDFS implements InputComponent {
     public BufferedImage getBufferedImage() {
         LOGGER.info("getBufferedImage()");
         try {
-            return ImageIO.read(this.fsDataInputStream);
+            return ImageIO.read(inputStream);
         } catch (IOException e) {
             throw new OperatorOperationException(e);
         }
@@ -210,7 +215,6 @@ public class InputHDFS implements InputComponent {
     @Override
     public void close() {
         LOGGER.info("close()");
-        ASIO.close(this.bufferedReader);
-        isOpen = false;
+        ASIO.close(this.scanner);
     }
 }

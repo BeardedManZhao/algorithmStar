@@ -488,7 +488,71 @@ public class MAIN1 {
 }
 ```
 
-* 支持通过 HDFS 获取到操作数对象以及数据的保存操作。
+* 支持通过 HDFS 获取到 ColorMatrix 操作数对象以及 ColorMatrix 数据对象的保存操作。
+
+```java
+package zhao.algorithmMagic;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import zhao.algorithmMagic.io.*;
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+import zhao.algorithmMagic.operands.table.FinalCell;
+
+import java.io.IOException;
+
+
+public class MAIN1 {
+    public static void main(String[] args) throws IOException {
+        // 获取到 HDFS 数据输入输出设备对象 首先将两者需要的参数创建出来
+        FileSystem fileSystem;
+        String inPath;
+        {
+            Path path = new Path("hdfs://192.168.0.141:8020");
+            // 构建HDFS文件系统对象
+            fileSystem = path.getFileSystem(new Configuration());
+            // 设置需要被读取的文件对象
+            inPath = "hdfs://192.168.0.141:8020/data/test.png";
+        }
+
+        /* *****************************************************
+         * TODO 从HDFS中加载数据
+         * *****************************************************/
+        // 开始将所有的参数配置到设备对象中，构建出数据输入设备
+        InputComponent inputComponent = InputHDFS.builder()
+                .addInputArg(InputHDFSBuilder.FILE_SYSTEM, new FinalCell<>(fileSystem))
+                .addInputArg(InputHDFSBuilder.IN_PATH, new FinalCell<>(inPath))
+                // 由于图像不需要字段名称，但是内部有“防止空值校验”，因此这里随意传递一个字符串组即可
+                .addInputArg(InputHDFSBuilder.FIELD, new FinalCell<>(new String[]{"null"}))
+                .create();
+
+        /* *****************************************************
+         * TODO 处理加载出来的 Color 对象，这里是将颜色进行反转
+         * *****************************************************/
+        // 开始将 HDFS 中的数据加载成为一个 图像矩阵 对象 并将其进行颜色反转操作
+        ColorMatrix colorMatrix = ColorMatrix.parse(inputComponent);
+        colorMatrix.colorReversal(false);
+
+        /* *****************************************************
+         * TODO 将处理好的数据输出到 HDFS 的 /data/res.jpg 中
+         * *****************************************************/
+        // 实例化出来目标路径
+        Path path = new Path("hdfs://192.168.0.141:8020/data/res.jpg");
+        // 开始构建数据输出组件
+        OutputComponent outputComponent = OutputHDFS.builder()
+                .addOutputArg(OutputHDFSBuidler.FILE_SYSTEM, new FinalCell<>(fileSystem))
+                .addOutputArg(OutputHDFSBuidler.OUT_PATH, new FinalCell<>(path))
+                .addOutputArg(OutputHDFSBuidler.FORMAT, new FinalCell<>("JPG"))
+                .create();
+        // 开始通过组件将数据输出 同时打印出结果
+        colorMatrix.show("res");
+        colorMatrix.save(outputComponent);
+    }
+}
+```
+
+* 支持通过 HDFS 获取到 DataFrame 操作数对象，同时还支持该对象的数据输出。
 
 ```java
 package zhao.algorithmMagic;
@@ -501,62 +565,108 @@ import zhao.algorithmMagic.operands.table.DataFrame;
 import zhao.algorithmMagic.operands.table.FDataFrame;
 import zhao.algorithmMagic.operands.table.FinalCell;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+
+
+public class MAIN1 {
+    public static void main(String[] args) throws IOException {
+        // 获取到 HDFS 数据输入输出设备对象 首先将两者需要的参数创建出来
+        FileSystem fileSystem;
+        String inPath;
+        {
+            Path path = new Path("hdfs://192.168.0.141:8020");
+            // 构建HDFS文件系统对象
+            fileSystem = path.getFileSystem(new Configuration());
+            // 设置需要被读取的文件对象
+            inPath = "hdfs://192.168.0.141:8020/data/test.txt";
+        }
+
+        /* *****************************************************
+         * TODO 从HDFS中加载数据
+         * *****************************************************/
+        // 开始将所有的参数配置到设备对象中，构建出数据输入设备
+        InputComponent inputComponent = InputHDFS.builder()
+                .addInputArg(InputHDFSBuilder.FILE_SYSTEM, new FinalCell<>(fileSystem))
+                .addInputArg(InputHDFSBuilder.IN_PATH, new FinalCell<>(inPath))
+                // 设置文件中内容的字段名称
+                .addInputArg(InputHDFSBuilder.FIELD, new FinalCell<>(new String[]{"name", "sex", "age"}))
+                // 设置文件中每列分隔符
+                .addInputArg(InputHDFSBuilder.SEP, new FinalCell<>('\t'))
+                // 设置文件中读取的字符集
+                .addInputArg(InputHDFSBuilder.CHAR_SET, new FinalCell<>("utf-8"))
+                .create();
+
+        /* *****************************************************
+         * TODO 处理加载出来的 DataFrame 对象，这里是按照 age 正序排序
+         * *****************************************************/
+        // 开始将 HDFS 中的数据加载成为一个 DataFrame 对象 并将其进行age正序排序操作
+        DataFrame builder = FDataFrame
+                .builder(inputComponent)
+                .sort("age");
+
+        /* *****************************************************
+         * TODO 将处理好的数据输出到 HDFS 的 /data/res.csv 中
+         * *****************************************************/
+        // 实例化出来目标路径
+        Path path = new Path("hdfs://192.168.0.141:8020/data/res.csv");
+        // 开始构建数据输出组件
+        OutputComponent outputComponent = OutputHDFS.builder()
+                // 设置输出时的HDFS文件系统以及其路径
+                .addOutputArg(OutputHDFSBuidler.FILE_SYSTEM, new FinalCell<>(fileSystem))
+                .addOutputArg(OutputHDFSBuidler.OUT_PATH, new FinalCell<>(path))
+                // 设置输出格式，这里是输出一个CSV的文件
+                .addOutputArg(OutputHDFSBuidler.FORMAT, new FinalCell<>("csv"))
+                // 输出时的分隔符
+                .addOutputArg(OutputHDFSBuidler.SEP, new FinalCell<>(','))
+                .create();
+        // 开始通过组件将数据输出 同时使用 show 函数在控制台打印出结果 值得注意的是，show 函数不会关闭数据流对象
+        BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(System.out));
+        builder.show(bufferedWriter);
+        System.out.println("ok!!!!");
+        builder.into_outComponent(outputComponent);
+    }
+}
+```
+
+* 支持通过数据流获取到数据对象，在这里我们从系统输入流中获取到 DataFrame 对象，做演示。
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.io.InputByStream;
+import zhao.algorithmMagic.io.InputByStreamBuilder;
+import zhao.algorithmMagic.io.InputComponent;
+import zhao.algorithmMagic.operands.table.DataFrame;
+import zhao.algorithmMagic.operands.table.FDataFrame;
+import zhao.algorithmMagic.operands.table.FinalCell;
+
 import java.io.IOException;
 
 
 public class MAIN1 {
-  public static void main(String[] args) throws IOException {
-    // 获取到 HDFS 数据输入输出设备对象 首先将两者需要的参数创建出来
-    FileSystem fileSystem;
-    String inPath;
-    String[] field;
-    {
-      Path path = new Path("hdfs://192.168.0.141:8020");
-      // 构建HDFS文件系统对象
-      fileSystem = path.getFileSystem(new Configuration());
-      // 设置需要被读取的文件对象
-      inPath = "hdfs://192.168.0.141:8020/data/test.txt";
-      // 设置字段头部
-      field = new String[]{"name", "sex", "age"};
+    public static void main(String[] args) {
+        /* *****************************************************
+         * TODO 从数据流中读取到数据 并构建 DF 对象
+         * *****************************************************/
+        // 开始将所有的参数配置到设备对象中，构建出数据输入设备
+        InputComponent inputComponent = InputByStream.builder()
+                // 准备数据输入流，在这里准备的是终端数据输入流
+                .addInputArg(InputByStreamBuilder.INPUT_STREAM, new FinalCell<>(System.in))
+                // 设置数据输入的字符集
+                .addInputArg(InputByStreamBuilder.CHARSET, new FinalCell<>("utf-8"))
+                // 由于 DF 数据加载是结构化模式加载，因此需要设置数据输入的分隔符
+                .addInputArg(InputByStreamBuilder.SEP, new FinalCell<>(','))
+                // 由于 DF 数据对象有主键功能，因此需要指定主键索引编号 这里是从0开始的索引
+                .addInputArg(InputByStreamBuilder.PK, new FinalCell<>(1))
+                // 设置本次数据要输入的行数量 代表我们要输入 3 行数据
+                .addInputArg(InputByStreamBuilder.ROW_LEN, new FinalCell<>(3))
+                .create();
+        // 开始进行数据的加载 需要注意的是，由于我们使用的是终端数据流，因此不需要框架来关闭数据流，需要指定isOC为false
+        DataFrame builder = FDataFrame.builder(inputComponent, true);
+        builder.show();
     }
-
-    /* *****************************************************
-     * TODO 从HDFS中加载数据
-     * *****************************************************/
-    // 开始将所有的参数配置到设备对象中，构建出数据输入设备
-    InputComponent inputComponent = InputHDFS.builder()
-            .addInputArg(InputHDFSBuilder.FILE_SYSTEM, new FinalCell<>(fileSystem))
-            .addInputArg(InputHDFSBuilder.IN_PATH, new FinalCell<>(inPath))
-            .addInputArg(InputHDFSBuilder.FIELD, new FinalCell<>(field))
-            // 设置分隔符
-            .addInputArg(InputHDFSBuilder.SEP, new FinalCell<>('\t'))
-            .create();
-
-    /* *****************************************************
-     * TODO 处理加载出来的 DataFrame 对象，这里是按照 age 正序排序
-     * *****************************************************/
-    // 开始将 HDFS 中的数据加载成为一个 DataFrame对象
-    DataFrame dataFrame = FDataFrame
-            .builder(inputComponent)
-            .sort("age");
-
-    /* *****************************************************
-     * TODO 将处理好的数据输出到 HDFS 的 /data/res.csv 中
-     * *****************************************************/
-    // 实例化出来目标路径
-    Path path = new Path("hdfs://192.168.0.141:8020/data/res.csv");
-    // 开始构建数据输出组件
-    OutputComponent outputComponent = OutputHDFS.builder()
-            .addOutputArg(OutputHDFSBuidler.FILE_SYSTEM, new FinalCell<>(fileSystem))
-            .addOutputArg(OutputHDFSBuidler.SEP, new FinalCell<>(','))
-            .addOutputArg(OutputHDFSBuidler.OUT_PATH, new FinalCell<>(path))
-            .addOutputArg(OutputHDFSBuidler.FORMAT, new FinalCell<>("csv"))
-            .create();
-    // 开始通过组件将数据输出 同时打印出结果
-    System.out.println(
-            dataFrame.into_outComponent(outputComponent)
-    );
-  }
 }
 ```
 

@@ -3,6 +3,7 @@ package zhao.algorithmMagic.operands.table;
 import zhao.algorithmMagic.operands.Operands;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 单元格数据类型，该数据类型被 Multi-type 矩阵所使用，并进行相对应的处理与操作。
@@ -34,11 +35,25 @@ public interface Cell<valueType> extends Serializable, Operands<Cell<?>> {
     int getIntValue();
 
     /**
+     * @return 当前单元格中存储的整数数值类型，该操作返回的将不是原先的对象。
+     * <p>
+     * The integer numeric type stored in the current cell. This operation will not return the original object.
+     */
+    long getLongValue();
+
+    /**
      * @return 当前单元格中存储的Double数值类型，该操作返回的将不是原先的对象。
      * <p>
      * The Double numeric type stored in the current cell. This operation will not return the original object.
      */
     double getDoubleValue();
+
+    /**
+     * @return 当前单元格中存储的 Date 数值类型，该操作返回的将不是原先的对象。
+     * <p>
+     * The Date numeric type stored in the current cell. This operation will not return the original object.
+     */
+    Date getDate();
 
     /**
      * @return 当前单元格中存储的字符串数值类型，该操作返回的将不是原先的对象。

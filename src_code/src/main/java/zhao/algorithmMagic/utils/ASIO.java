@@ -66,6 +66,18 @@ public final class ASIO {
     }
 
     /**
+     * 写数据的工具函数，该函数将有效的管理数据流。
+     *
+     * @param outputStream 文本数据输出流
+     * @param voidTrans    文本数据输出使用输出流
+     */
+    public static void writer(OutputStream outputStream, Consumer<BufferedWriter> voidTrans) {
+        BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream));
+        voidTrans.accept(bufferedWriter);
+        ASIO.close(bufferedWriter);
+    }
+
+    /**
      * 将一个byte数组输出到指定的路径
      *
      * @param path                  数据输出路径

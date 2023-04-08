@@ -3,6 +3,8 @@ package zhao.algorithmMagic.operands.table;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.utils.ASStr;
 
+import java.util.Date;
+
 /**
  * 不可变数值的单元格对象，该数据类型将可存储一个单元格，并允许其类型是多样的。
  * <p>
@@ -77,6 +79,20 @@ public class FinalCell<valueType> implements Cell<valueType> {
     }
 
     /**
+     * @return 当前单元格中存储的整数数值类型，该操作返回的将不是原先的对象。
+     * <p>
+     * The integer numeric type stored in the current cell. This operation will not return the original object.
+     */
+    @Override
+    public final long getLongValue() {
+        if (isNumber()) {
+            return ((Number) this.valueType).longValue();
+        } else {
+            throw new OperatorOperationException("您在尝试将一个非数值的单元格按照整数的方式提取，这是不允许的。\nYou are trying to extract a non-numeric cell as an integer, which is not allowed.");
+        }
+    }
+
+    /**
      * @return 当前单元格中存储的Double数值类型，该操作返回的将不是原先的对象。
      * <p>
      * The Double numeric type stored in the current cell. This operation will not return the original object.
@@ -87,6 +103,22 @@ public class FinalCell<valueType> implements Cell<valueType> {
             return ((Number) this.valueType).doubleValue();
         } else {
             throw new OperatorOperationException("您在尝试将一个非数值的单元格按照浮点数的方式提取，这是不允许的。\nYou are trying to extract a non-numeric cell as an float, which is not allowed.");
+        }
+    }
+
+    /**
+     * @return 当前单元格中存储的 Date 数值类型，该操作返回的将不是原先的对象。
+     * <p>
+     * The Date numeric type stored in the current cell. This operation will not return the original object.
+     */
+    @Override
+    public Date getDate() {
+        if (isNumber()) {
+            return new Date(this.getLongValue());
+        } else {
+            if (this.valueType instanceof Date) return (Date) this.valueType;
+            else
+                throw new OperatorOperationException("您无法从单元格中提取数据，因为其不属于毫秒数值也不属于日期对象。\nYou cannot extract data from a cell because it does not belong to a millisecond value or a date object.");
         }
     }
 
