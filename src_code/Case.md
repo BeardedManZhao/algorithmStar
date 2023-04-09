@@ -114,7 +114,7 @@ public class MAIN1 {
 
 - 人脸识别 通过人脸模板匹配曼哈顿相似系数，进而得出人脸识别结果，在这里我们需要使用以下的图像作为样本。
 
-
+![YB](https://user-images.githubusercontent.com/113756063/230775389-4477aad4-795c-47c2-a946-0afeadafad44.jpg)
 
 ```java
 package zhao.algorithmMagic;
