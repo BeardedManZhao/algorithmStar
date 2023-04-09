@@ -57,6 +57,7 @@ requires importing log dependencies, which are essential. Please import the depe
         <!--<scope>provided</scope>-->
     </dependency>
     <!-- Log4j2 log real surface -->
+    
     <dependency>
         <groupId>org.apache.logging.log4j</groupId>
         <artifactId>log4j-core</artifactId>
@@ -81,12 +82,14 @@ need to, you can refer to the following configuration.
         <artifactId>mysql-connector-java</artifactId>
         <version>8.0.30</version>
     </dependency>
+    
     <!-- The dependency development package for the three major Spark modules can also be imported if you need to use it here, or not if you don't need it -->
     <dependency>
         <groupId>org.apache.spark</groupId>
         <artifactId>spark-core_2.12</artifactId>
         <version>3.1.3</version>
     </dependency>
+    
     <dependency>
         <groupId>org.apache.spark</groupId>
         <artifactId>spark-sql_2.12</artifactId>
@@ -106,13 +109,13 @@ need to, you can refer to the following configuration.
         <version>0.3.12</version>
     </dependency>
 
-  <!-- HDFS input/output device dependency library. If you have a need for data reading and writing through the HDFS distributed storage platform, you can introduce this library. -->
-  <dependency>
-    <groupId>org.apache.hadoop</groupId>
-    <artifactId>hadoop-client</artifactId>
-    <version>3.3.1</version>
-  </dependency>
-  
+    <!-- HDFS input/output device dependency library. If you have a need for data reading and writing through the HDFS distributed storage platform, you can introduce this library. -->
+    <dependency>
+        <groupId>org.apache.hadoop</groupId>
+        <artifactId>hadoop-client</artifactId>
+        <version>3.3.1</version>
+    </dependency>
+
 </dependencies>
 ```
 
