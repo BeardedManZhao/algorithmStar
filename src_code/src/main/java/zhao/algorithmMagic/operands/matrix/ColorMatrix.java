@@ -501,6 +501,9 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      * 使用组件将一个图像数据提取，并获取对应的图像矩阵。
      *
      * @param inputComponent 能够被提取出图像矩阵的数据组件。
+     * @param isOC           如果设置为 true 代表数据输入设备对象的打开与关闭交由框架管理，在外界将不需要对组件进行打开或关闭操作，反之则代表框架只使用组件，但不会打开与关闭组件对象。
+     *                       <p>
+     *                       If set to true, it means that the opening and closing of data input device objects are managed by the framework, and there will be no need to open or close components externally. Conversely, it means that the framework only uses components, but will not open or close component objects.
      * @return 从组件中提取出来的图像矩阵对象。
      */
     public static ColorMatrix parse(InputComponent inputComponent, boolean isOC) {

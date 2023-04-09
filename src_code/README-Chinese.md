@@ -14,6 +14,7 @@
 ```java
 package zhao.algorithmMagic;
 
+import zhao.algorithmMagic.core.AlgorithmStar;
 import zhao.algorithmMagic.operands.matrix.ColorMatrix;
 
 import java.awt.*;
@@ -21,7 +22,7 @@ import java.awt.*;
 public class MAIN1 {
     public static void main(String[] args) {
         // 获取一张图像的像素矩阵
-        ColorMatrix parse1 = ColorMatrix.parseGrayscale("C:\\Users\\Liming\\Desktop\\fsdownload\\test1.bmp");
+        ColorMatrix parse1 = AlgorithmStar.parseGrayscaleImage("C:\\Users\\Liming\\Desktop\\fsdownload\\test1.bmp");
         // 将 parse1 进行二值化
         parse1.localBinary(ColorMatrix._G_, 30, 0, 0xffffff, 1);
         // 将 parse1 矩阵腐蚀，然后将腐蚀的结果获取到
@@ -44,7 +45,7 @@ import zhao.algorithmMagic.operands.matrix.ColorMatrix;
 public class MAIN1 {
     public static void main(String[] args) {
         // 创建一个图像矩阵
-        ColorMatrix parse = ColorMatrix.parseGrayscale("C:\\Users\\Liming\\Desktop\\fsdownload\\test3.bmp");
+        ColorMatrix parse = AlgorithmStar.parseGrayscaleImage("C:\\Users\\Liming\\Desktop\\fsdownload\\test3.bmp");
         // 为图像矩阵进行腐蚀和膨胀操作
         // 黑色作为背景色腐蚀
         ColorMatrix erode1 = parse.erode(3, 3, true);
@@ -68,7 +69,7 @@ import java.awt.*;
 public class MAIN1 {
     public static void main(String[] args) {
         // 获取一张图像的像素矩阵
-        ColorMatrix parse1 = ColorMatrix.parseGrayscale("C:\\Users\\Liming\\Desktop\\fsdownload\\test1.bmp");
+        ColorMatrix parse1 = AlgorithmStar.parseGrayscaleImage("C:\\Users\\Liming\\Desktop\\fsdownload\\test1.bmp");
         Color[][] colors = parse1.copyToNewArrays();
     }
 }
@@ -94,7 +95,7 @@ public class MAIN1 {
         ColorMatrix calculate2;
         {
             // 创建一个图像矩阵
-            ColorMatrix parse = ColorMatrix.parseGrayscale("C:\\Users\\Liming\\Desktop\\fsdownload\\test3.bmp");
+            ColorMatrix parse = AlgorithmStar.parseGrayscaleImage("C:\\Users\\Liming\\Desktop\\fsdownload\\test3.bmp");
             // 进行左右的梯度计算
             parse.calculate(ColorMatrix.CALCULATE_GRADIENT_RL, true).show("image1");
             // 进行上下的梯度计算
@@ -666,6 +667,107 @@ public class MAIN1 {
         // 开始进行数据的加载 需要注意的是，由于我们使用的是终端数据流，因此不需要框架来关闭数据流，需要指定isOC为false
         DataFrame builder = FDataFrame.builder(inputComponent, true);
         builder.show();
+    }
+}
+```
+
+* 支持通过 AlgorithmStar 读取到数值矩阵与结构化 DF 数据对象，这种方式创建与通过 实现类静态的parse函数创建的效果一样。
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.core.AlgorithmStar;
+import zhao.algorithmMagic.io.InputByStream;
+import zhao.algorithmMagic.io.InputByStreamBuilder;
+import zhao.algorithmMagic.io.InputComponent;
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
+import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
+import zhao.algorithmMagic.operands.table.DataFrame;
+import zhao.algorithmMagic.operands.table.FinalCell;
+
+import java.io.File;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+
+public class MAIN1 {
+    public static void main(String[] args) throws SQLException {
+        /* *****************************************************
+         * TODO 从数据流中读取到数据
+         * *****************************************************/
+        // 开始将所有的参数配置到设备对象中，构建出数据输入设备
+        InputComponent inputComponent = InputByStream.builder()
+                .addInputArg(InputByStreamBuilder.INPUT_STREAM, new FinalCell<>(System.in))
+                .addInputArg(InputByStreamBuilder.CHARSET, new FinalCell<>("utf-8"))
+                .addInputArg(InputByStreamBuilder.SEP, new FinalCell<>(','))
+                .addInputArg(InputByStreamBuilder.PK, new FinalCell<>(1))
+                .addInputArg(InputByStreamBuilder.ROW_LEN, new FinalCell<>(3))
+                .create();
+
+        // TODO 开始通过 algorithmStar 构建出数值矩阵 这里是整数与浮点数两种类型
+        IntegerMatrix integerMatrix = AlgorithmStar.parseIntMat(
+                new int[]{1, 2, 3}, new int[]{5, 6, 7}, new int[]{8, 9, 0}
+        );
+        DoubleMatrix doubleMatrix = AlgorithmStar.parseDoubleMat(
+                new double[]{1, 2, 3}, new double[]{5, 6, 7}, new double[]{8, 9, 0}
+        );
+        System.out.println(integerMatrix);
+        System.out.println(doubleMatrix);
+
+        // TODO 开始通过 algorithmStar 构建出DataFrame对象 这里是通过文件 数据库 数据输入组件 来进行构建
+        File file = new File("C:\\Users\\zhao\\Downloads\\test.csv");
+        DataFrame dataFrame1 = AlgorithmStar.parseDF(file).setSep(',')
+                .create("year", "month", "day", "week", "temp_2", "temp_1", "average", "actual", "friend")
+                .execute();
+        dataFrame1.show();
+
+        DataFrame dataFrame2 = AlgorithmStar.parseDF(inputComponent, false);
+        dataFrame2.show();
+
+        Connection connection = DriverManager.getConnection("");
+        DataFrame dataFrame3 = AlgorithmStar.parseDF(connection)
+                .from("xxx")
+                .execute();
+        dataFrame3.show();
+    }
+}
+```
+
+* 支持通过 AlgorithmStar静态 读取到图像矩阵，能够从文件，URL，以及数据输入组件中获取到图像对象，这种方式创建与通过 实现类静态的parse函数创建的效果一样。
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.core.AlgorithmStar;
+import zhao.algorithmMagic.io.InputCamera;
+import zhao.algorithmMagic.io.InputCameraBuilder;
+import zhao.algorithmMagic.io.InputComponent;
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+import zhao.algorithmMagic.operands.table.FinalCell;
+
+import java.io.IOException;
+import java.net.URL;
+import java.sql.SQLException;
+
+
+public class MAIN1 {
+    public static void main(String[] args) throws IOException {
+        InputComponent inputComponent = InputCamera.builder()
+                .addInputArg(InputCameraBuilder.Camera_Index, new FinalCell<>(0))
+                .addInputArg(InputCameraBuilder.Image_Format, new FinalCell<>("JPG"))
+                .create();
+        // 通过数据输入设备对象获取到图像矩阵
+        ColorMatrix colorMatrix = AlgorithmStar.parseImage(inputComponent, true);
+        colorMatrix.show("image");
+        // 通过 URL 获取到图像矩阵 （为了简洁书写在这里没有进行赋值动作）
+        URL url = new URL("https://user-images.githubusercontent.com/113756063/194830221-abe24fcc-484b-4769-b3b7-ec6d8138f436.png");
+        AlgorithmStar.parseImage(url).show("image");
+        AlgorithmStar.parseGrayscaleImage(url).show("image");
+        // 通过 文件 获取到图像矩阵
+        AlgorithmStar.parseImage("C:\\Users\\zhao\\Desktop\\fsdownload\\test.bmp").show("image");
+        AlgorithmStar.parseGrayscaleImage("C:\\Users\\zhao\\Desktop\\fsdownload\\test.bmp").show("image");
     }
 }
 ```

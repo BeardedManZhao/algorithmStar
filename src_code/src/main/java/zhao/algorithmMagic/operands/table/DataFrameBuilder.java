@@ -16,6 +16,14 @@ public interface DataFrameBuilder {
     Mode getInMode();
 
     /**
+     * 设置读取数据时需要使用的分隔符。在读取一个文件对象的时候会有效果。
+     *
+     * @param sep 指定的数据分隔符，该分隔符将会在读取的时候被调用与获取，最终计算出符合条件的数据行对象。
+     * @return 链式调用
+     */
+    FDataFrameBuilder setSep(char sep);
+
+    /**
      * 将指定的数据查询出来
      *
      * @param colNames 所有需要被查询的列数据。

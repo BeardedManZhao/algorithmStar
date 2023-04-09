@@ -715,4 +715,107 @@ public class MAIN1 {
 }
 ```
 
+* Supports reading numerical matrices and structured DF data objects through AlgorithmStar, creating the same effect as
+  creating class static parse functions.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.core.AlgorithmStar;
+import zhao.algorithmMagic.io.InputByStream;
+import zhao.algorithmMagic.io.InputByStreamBuilder;
+import zhao.algorithmMagic.io.InputComponent;
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
+import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
+import zhao.algorithmMagic.operands.table.DataFrame;
+import zhao.algorithmMagic.operands.table.FinalCell;
+
+import java.io.File;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+
+public class MAIN1 {
+    public static void main(String[] args) throws SQLException {
+        /* *****************************************************
+         * TODO 从数据流中读取到数据
+         * *****************************************************/
+        // 开始将所有的参数配置到设备对象中，构建出数据输入设备
+        InputComponent inputComponent = InputByStream.builder()
+                .addInputArg(InputByStreamBuilder.INPUT_STREAM, new FinalCell<>(System.in))
+                .addInputArg(InputByStreamBuilder.CHARSET, new FinalCell<>("utf-8"))
+                .addInputArg(InputByStreamBuilder.SEP, new FinalCell<>(','))
+                .addInputArg(InputByStreamBuilder.PK, new FinalCell<>(1))
+                .addInputArg(InputByStreamBuilder.ROW_LEN, new FinalCell<>(3))
+                .create();
+
+        // TODO 开始通过 algorithmStar 构建出数值矩阵 这里是整数与浮点数两种类型
+        IntegerMatrix integerMatrix = AlgorithmStar.parseIntMat(
+                new int[]{1, 2, 3}, new int[]{5, 6, 7}, new int[]{8, 9, 0}
+        );
+        DoubleMatrix doubleMatrix = AlgorithmStar.parseDoubleMat(
+                new double[]{1, 2, 3}, new double[]{5, 6, 7}, new double[]{8, 9, 0}
+        );
+        System.out.println(integerMatrix);
+        System.out.println(doubleMatrix);
+
+        // TODO 开始通过 algorithmStar 构建出DataFrame对象 这里是通过文件 数据库 数据输入组件 来进行构建
+        File file = new File("C:\\Users\\zhao\\Downloads\\test.csv");
+        DataFrame dataFrame1 = AlgorithmStar.parseDF(file).setSep(',')
+                .create("year", "month", "day", "week", "temp_2", "temp_1", "average", "actual", "friend")
+                .execute();
+        dataFrame1.show();
+
+        DataFrame dataFrame2 = AlgorithmStar.parseDF(inputComponent, false);
+        dataFrame2.show();
+
+        Connection connection = DriverManager.getConnection("");
+        DataFrame dataFrame3 = AlgorithmStar.parseDF(connection)
+                .from("xxx")
+                .execute();
+        dataFrame3.show();
+    }
+}
+```
+
+* Support static reading of image matrices through AlgorithmStar, and the ability to obtain image objects from files,
+  URLs, and data input components. This method of creation has the same effect as creating class static parse functions.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.core.AlgorithmStar;
+import zhao.algorithmMagic.io.InputCamera;
+import zhao.algorithmMagic.io.InputCameraBuilder;
+import zhao.algorithmMagic.io.InputComponent;
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+import zhao.algorithmMagic.operands.table.FinalCell;
+
+import java.io.IOException;
+import java.net.URL;
+import java.sql.SQLException;
+
+
+public class MAIN1 {
+    public static void main(String[] args) throws IOException {
+        InputComponent inputComponent = InputCamera.builder()
+                .addInputArg(InputCameraBuilder.Camera_Index, new FinalCell<>(0))
+                .addInputArg(InputCameraBuilder.Image_Format, new FinalCell<>("JPG"))
+                .create();
+        // 通过数据输入设备对象获取到图像矩阵
+        ColorMatrix colorMatrix = AlgorithmStar.parseImage(inputComponent, true);
+        colorMatrix.show("image");
+        // 通过 URL 获取到图像矩阵 （为了简洁书写在这里没有进行赋值动作）
+        URL url = new URL("https://user-images.githubusercontent.com/113756063/194830221-abe24fcc-484b-4769-b3b7-ec6d8138f436.png");
+        AlgorithmStar.parseImage(url).show("image");
+        AlgorithmStar.parseGrayscaleImage(url).show("image");
+        // 通过 文件 获取到图像矩阵
+        AlgorithmStar.parseImage("C:\\Users\\zhao\\Desktop\\fsdownload\\test.bmp").show("image");
+        AlgorithmStar.parseGrayscaleImage("C:\\Users\\zhao\\Desktop\\fsdownload\\test.bmp").show("image");
+    }
+}
+```
+
 ### Version update date : xx xx-xx-xx

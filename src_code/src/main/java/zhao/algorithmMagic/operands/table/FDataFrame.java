@@ -114,6 +114,9 @@ public class FDataFrame implements DataFrame {
      * 使用第三方数据源输入组件进行数据的加载，并获取到对应的DataFrame对象。
      *
      * @param inputComponent 需要使用的第三方数据输入组件对象
+     * @param isOC           如果设置为 true 代表数据输入设备对象的打开与关闭交由框架管理，在外界将不需要对组件进行打开或关闭操作，反之则代表框架只使用组件，但不会打开与关闭组件对象。
+     *                       <p>
+     *                       If set to true, it means that the opening and closing of data input device objects are managed by the framework, and there will be no need to open or close components externally. Conversely, it means that the framework only uses components, but will not open or close component objects.
      * @return 获取到的DataFrame对象。
      */
     public static DataFrame builder(InputComponent inputComponent, boolean isOC) {

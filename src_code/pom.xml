@@ -5,7 +5,7 @@
 
     <groupId>io.github.BeardedManZhao</groupId>
     <artifactId>algorithmStar</artifactId>
-    <version>1.17</version>
+    <version>1.18</version>
     <packaging>jar</packaging>
     <name>algorithmStar</name>
     <description>algorithmStar-java</description>
@@ -38,7 +38,7 @@
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-slf4j-impl</artifactId>
             <version>2.20.0</version>
-            <!--<scope>provided</scope>-->
+            <scope>provided</scope>
         </dependency>
 
         <!-- log4j2 日志门面 -->
@@ -46,14 +46,14 @@
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
             <version>2.20.0</version>
-            <!--<scope>provided</scope>-->
+            <scope>provided</scope>
         </dependency>
         <!-- log4j2 日志实面 -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
             <version>2.20.0</version>
-            <!--<scope>provided</scope>-->
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -82,27 +82,27 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- 摄像头设备依赖库 -->
+        <!-- 摄像头设备依赖库，如果需要使用摄像头进行数据的输入，可以引用该依赖。 -->
         <dependency>
             <groupId>com.github.sarxos</groupId>
             <artifactId>webcam-capture</artifactId>
             <version>0.3.12</version>
-            <!--            <scope>provided</scope>-->
+            <scope>provided</scope>
         </dependency>
 
-        <!-- HDFS 输入输出设备依赖库 -->
+        <!-- HDFS 输入输出设备依赖库如果需要使用 HDFS 进行数据的IO，可以引用该依赖。 -->
         <dependency>
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-client</artifactId>
             <version>3.3.2</version>
-            <!--            <scope>provided</scope>-->
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-hdfs</artifactId>
             <version>3.3.2</version>
-            <!--            <scope>provided</scope>-->
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
