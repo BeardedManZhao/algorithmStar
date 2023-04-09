@@ -148,6 +148,21 @@ final class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mll
 
   /**
    *
+   * @return 将本对象中存储的向量序列数组拷贝到一个新数组并将新数组返回，这里返回的是一个新数组，支持修改等操作。
+   *
+   *         Copy the vector sequence array stored in this object to a new array and return the new array. Here, a new array is returned, which supports modification and other operations.
+   */
+  override def copyToNewArray(): Array[Double] = vector.toArray
+
+  /**
+   * @return 向量中包含的维度数量
+   *         <p>
+   *         the number of dimensions contained in the vector
+   */
+  override def getNumberOfDimensions: Int = size
+
+  /**
+   *
    * @return 第三方向量中所维护的向量序列，通过此函数您可以直接获取到第三方库中的对象。
    *
    *         The vector sequence maintained in the third direction quantity. Through this function, you can directly obtain the objects in the third party library.
