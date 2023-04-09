@@ -106,13 +106,13 @@ need to, you can refer to the following configuration.
         <version>0.3.12</version>
     </dependency>
 
-  <!-- HDFS input/output device dependency library. If you have a need for data reading and writing through the HDFS distributed storage platform, you can introduce this library. -->
-  <dependency>
-    <groupId>org.apache.hadoop</groupId>
-    <artifactId>hadoop-client</artifactId>
-    <version>3.3.1</version>
-  </dependency>
-  
+    <!-- HDFS input/output device dependency library. If you have a need for data reading and writing through the HDFS distributed storage platform, you can introduce this library. -->
+    <dependency>
+        <groupId>org.apache.hadoop</groupId>
+        <artifactId>hadoop-client</artifactId>
+        <version>3.3.1</version>
+    </dependency>
+
 </dependencies>
 ```
 
