@@ -78,4 +78,17 @@ public abstract class NumberMatrix<ImplementationType extends Matrix<?, ?, ?, ?,
      * @return 整形矩阵对象中的子矩阵对象。
      */
     public abstract ImplementationType extractMat(int x1, int y1, int x2, int y2);
+
+    /**
+     * 提取出子矩阵对象
+     *
+     * @param y1 被提取矩阵在原矩阵中的起始坐标点。
+     *           <p>
+     *           The starting coordinate point of the extracted matrix in the original matrix.
+     * @param y2 被提取矩阵在原矩阵中的终止坐标点。
+     *           <p>
+     *           The end coordinate point of the extracted matrix in the original matrix.
+     * @return 整形矩阵对象中的子矩阵对象。
+     */
+    public abstract ImplementationType extractSrcMat(int y1, int y2);
 }

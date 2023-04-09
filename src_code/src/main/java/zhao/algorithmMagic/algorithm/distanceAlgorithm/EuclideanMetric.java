@@ -9,6 +9,8 @@ import zhao.algorithmMagic.exception.TargetNotRealizedException;
 import zhao.algorithmMagic.operands.coordinate.Coordinate;
 import zhao.algorithmMagic.operands.coordinate.FloatingPointCoordinates;
 import zhao.algorithmMagic.operands.coordinate.IntegerCoordinates;
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
+import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
 import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute;
 import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute2D;
 import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute;
@@ -330,6 +332,58 @@ public class EuclideanMetric<I extends IntegerCoordinates<I> & Coordinate<I>, D 
     @Override
     public double getTrueDistance(IntegerConsanguinityRoute2D integerConsanguinityRoute2D) {
         return getTrueDistance(integerConsanguinityRoute2D.getStartingCoordinate().toArray(), integerConsanguinityRoute2D.getEndPointCoordinate().toArray());
+    }
+
+    /**
+     * 计算两个矩阵对象之间的距离度量函数，通过该函数可以实现两个矩阵对象度量系数的计算。
+     * <p>
+     * Calculates the distance metric function between two matrix objects, through which the metric coefficients of two matrix objects can be calculated.
+     *
+     * @param integerMatrix1 需要被进行计算的矩阵对象。
+     *                       <p>
+     *                       The matrix object that needs to be calculated.
+     * @param matrix2        需要被进行计算的矩阵对象。
+     *                       <p>
+     *                       The matrix object that needs to be calculated.
+     * @return 计算出来的度量结果系数。
+     * <p>
+     * The calculated measurement result coefficient.
+     */
+    @Override
+    public double getTrueDistance(IntegerMatrix integerMatrix1, IntegerMatrix matrix2) {
+        int res = 0;
+        for (int[] ints : integerMatrix1.diff(matrix2)) {
+            for (int anInt : ints) {
+                res += ASMath.Power2(anInt);
+            }
+        }
+        return Math.sqrt(res);
+    }
+
+    /**
+     * 计算两个矩阵对象之间的距离度量函数，通过该函数可以实现两个矩阵对象度量系数的计算。
+     * <p>
+     * Calculates the distance metric function between two matrix objects, through which the metric coefficients of two matrix objects can be calculated.
+     *
+     * @param matrix1 需要被进行计算的矩阵对象。
+     *                <p>
+     *                The matrix object that needs to be calculated.
+     * @param matrix2 需要被进行计算的矩阵对象。
+     *                <p>
+     *                The matrix object that needs to be calculated.
+     * @return 计算出来的度量结果系数。
+     * <p>
+     * The calculated measurement result coefficient.
+     */
+    @Override
+    public double getTrueDistance(DoubleMatrix matrix1, DoubleMatrix matrix2) {
+        double res = 0;
+        for (double[] ints : matrix1.diff(matrix2)) {
+            for (double anInt : ints) {
+                res += ASMath.Power2(anInt);
+            }
+        }
+        return Math.sqrt(res);
     }
 
     /**

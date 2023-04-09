@@ -1,12 +1,16 @@
 package zhao.algorithmMagic.operands.table;
 
 import zhao.algorithmMagic.exception.OperatorOperationException;
+import zhao.algorithmMagic.io.InputComponent;
+import zhao.algorithmMagic.io.OutputComponent;
 import zhao.algorithmMagic.utils.ASIO;
 import zhao.algorithmMagic.utils.ASMath;
 import zhao.algorithmMagic.utils.transformation.Transformation;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.sql.Connection;
 import java.util.*;
 
@@ -89,6 +93,41 @@ public class FDataFrame implements DataFrame {
         return new FDataFrame(
                 colNameRow, pk, new ArrayList<>()
         ).refreshField(false, true);
+    }
+
+    /**
+     * 使用第三方数据源输入组件进行数据的加载，并获取到对应的DataFrame对象。
+     *
+     * @param inputComponent 需要使用的第三方数据输入组件对象
+     * @return 获取到的DataFrame对象。
+     */
+    public static DataFrame builder(InputComponent inputComponent) {
+        if (inputComponent.open()) {
+            DataFrame dataFrame = inputComponent.getDataFrame();
+            ASIO.close(inputComponent);
+            return dataFrame;
+        }
+        throw new OperatorOperationException("inputComponent open error!!!");
+    }
+
+    /**
+     * 使用第三方数据源输入组件进行数据的加载，并获取到对应的DataFrame对象。
+     *
+     * @param inputComponent 需要使用的第三方数据输入组件对象
+     * @param isOC           如果设置为 true 代表数据输入设备对象的打开与关闭交由框架管理，在外界将不需要对组件进行打开或关闭操作，反之则代表框架只使用组件，但不会打开与关闭组件对象。
+     *                       <p>
+     *                       If set to true, it means that the opening and closing of data input device objects are managed by the framework, and there will be no need to open or close components externally. Conversely, it means that the framework only uses components, but will not open or close component objects.
+     * @return 获取到的DataFrame对象。
+     */
+    public static DataFrame builder(InputComponent inputComponent, boolean isOC) {
+        if (isOC) {
+            if (inputComponent.open()) {
+                DataFrame dataFrame = inputComponent.getDataFrame();
+                ASIO.close(inputComponent);
+                return dataFrame;
+            }
+            throw new OperatorOperationException("inputComponent open error!!!");
+        } else return inputComponent.getDataFrame();
     }
 
     /**
@@ -197,6 +236,9 @@ public class FDataFrame implements DataFrame {
      */
     @Override
     public DataFrame select(String... colNames) {
+        if (colNames.length == 1 && "*".equals(colNames[0])) {
+            return this;
+        }
         ArrayList<Series> arrayList = new ArrayList<>(list.size() + 4);
         int[] index = new int[colNames.length];
         {
@@ -641,6 +683,109 @@ public class FDataFrame implements DataFrame {
                 }
         );
         return this;
+    }
+
+    /**
+     * 将计算结果提供给指定的数据输出组件进行数据的输出操作，
+     *
+     * @param outputComponent 输出数据需要使用的数据输出组件
+     * @return 输出之后会返回数据集本身，不会终止调用。
+     * <p>
+     * After output, the data set itself will be returned and the call will not be terminated.
+     */
+    @Override
+    public DataFrame into_outComponent(OutputComponent outputComponent) {
+        if (outputComponent.open()) {
+            outputComponent.writeDataFrame(this);
+            ASIO.close(outputComponent);
+        } else throw new OperatorOperationException("into_outComponent(OutputComponent outputComponent) error!!!");
+        return this;
+    }
+
+    /**
+     * 默认方式查看 DF 数据对象中的数据。
+     * <p>
+     * The default method is to view data in DF data objects.
+     */
+    @Override
+    public void show() {
+        this.show(System.out);
+    }
+
+    /**
+     * 直接在输出流中将图表中的数据展示出来，相较于 toString 该函数性能更加优秀。
+     *
+     * @param bufferedWriter 需要使用的数据输出流。
+     */
+    @Override
+    public void show(BufferedWriter bufferedWriter) {
+        StringBuilder split = new StringBuilder();
+        StringBuilder field = new StringBuilder();
+        String s;
+        try {
+            s = getFieldRowStr(split, field);
+            bufferedWriter.append('\n')
+                    .append(s)
+                    .append(field)
+                    .append('\n')
+                    .write(s);
+            for (Series cells : this.list) {
+                bufferedWriter.write("│\t\t");
+                for (Cell<?> cell : cells) {
+                    bufferedWriter
+                            .append(cell.getValue().toString())
+                            .write("\t│\t");
+                }
+                bufferedWriter.write('\n');
+            }
+            bufferedWriter.append(s);
+        } catch (IOException e) {
+            throw new OperatorOperationException(e);
+        }
+    }
+
+    public final String getFieldRowStr(StringBuilder split, StringBuilder field) {
+        String s;
+        split.append('├');
+        field.append("│\t\t");
+        for (Cell<?> cell : this.getFields()) {
+            field.append(cell.toString());
+            field.append("\t│\t");
+            split.append("─────────────────");
+        }
+        split.append('┤').append('\n');
+        s = split.toString();
+        return s;
+    }
+
+    /**
+     * 直接在输出流中将图表中的数据展示出来，相较于 toString 该函数性能更加优秀。
+     *
+     * @param printStream 需要使用的数据输出流。
+     */
+    @Override
+    public void show(PrintStream printStream) {
+        StringBuilder split = new StringBuilder();
+        StringBuilder field = new StringBuilder();
+        String s;
+        {
+            s = getFieldRowStr(split, field);
+            printStream.append('\n')
+                    .append(s)
+                    .append(field)
+                    .append('\n')
+                    .append(s);
+        }
+        for (Series cells : this.list) {
+            printStream.append("│\t\t");
+            for (Cell<?> cell : cells) {
+                printStream
+                        .append(cell.getValue().toString())
+                        .append("\t│\t");
+            }
+            printStream.append('\n');
+        }
+        printStream.append(s);
     }
 
     /**

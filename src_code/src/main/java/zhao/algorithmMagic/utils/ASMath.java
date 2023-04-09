@@ -63,6 +63,43 @@ public final class ASMath {
         return new int[]{max, min};
     }
 
+    /**
+     * 计算一个序列的最大值与最小值
+     *
+     * @param doubles 被计算的序列
+     * @return 计算结果，第一个参数是最大值，第二个参数是最小值
+     */
+    public static double[] MaxAndMin(double[][] doubles) {
+        // 计算最大值最小值
+        double max = doubles[0][0];
+        double min = doubles[0][0];
+        for (double[] aDouble : doubles) {
+            for (double v : aDouble) {
+                if (v > max) max = v;
+                if (v < min) min = v;
+            }
+        }
+        return new double[]{max, min};
+    }
+
+    /**
+     * 计算一个序列的最大值与最小值
+     *
+     * @param doubles 被计算的序列
+     * @return 计算结果，第一个参数是最大值，第二个参数是最小值
+     */
+    public static int[] MaxAndMin(int[][] doubles) {
+        // 计算最大值最小值
+        int max = doubles[0][0];
+        int min = doubles[0][0];
+        for (int[] aDouble : doubles) {
+            for (int v : aDouble) {
+                if (v > max) max = v;
+                if (v < min) min = v;
+            }
+        }
+        return new int[]{max, min};
+    }
 
     /**
      * 计算一个序列中的最大值或最小值

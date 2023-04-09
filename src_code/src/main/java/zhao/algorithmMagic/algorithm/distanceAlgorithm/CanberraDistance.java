@@ -7,12 +7,16 @@ import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
 import zhao.algorithmMagic.operands.coordinate.*;
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
+import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
 import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute;
 import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute2D;
 import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute;
 import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute2D;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASMath;
+
+import java.util.Iterator;
 
 /**
  * Java类于 2022/10/14 12:47:02 创建
@@ -297,5 +301,59 @@ public class CanberraDistance<I extends IntegerCoordinates<I> & Coordinate<I>, D
         IntegerCoordinateTwo startingCoordinate = integerConsanguinityRoute2D.getStartingCoordinate();
         IntegerCoordinateTwo endPointCoordinate = integerConsanguinityRoute2D.getEndPointCoordinate();
         return getTrueDistance(startingCoordinate.toArray(), endPointCoordinate.toArray());
+    }
+
+    /**
+     * 计算两个矩阵对象之间的距离度量函数，通过该函数可以实现两个矩阵对象度量系数的计算。
+     * <p>
+     * Calculates the distance metric function between two matrix objects, through which the metric coefficients of two matrix objects can be calculated.
+     *
+     * @param integerMatrix1 需要被进行计算的矩阵对象。
+     *                       <p>
+     *                       The matrix object that needs to be calculated.
+     * @param matrix2        需要被进行计算的矩阵对象。
+     *                       <p>
+     *                       The matrix object that needs to be calculated.
+     * @return 计算出来的度量结果系数。
+     * <p>
+     * The calculated measurement result coefficient.
+     */
+    @Override
+    public double getTrueDistance(IntegerMatrix integerMatrix1, IntegerMatrix matrix2) {
+        DistanceAlgorithm.checkMat(integerMatrix1, matrix2);
+        Iterator<int[]> iterator1 = integerMatrix1.iterator();
+        Iterator<int[]> iterator2 = matrix2.iterator();
+        double res = 0;
+        while (iterator1.hasNext() && iterator2.hasNext()) {
+            res += getTrueDistance(iterator1.next(), iterator2.next());
+        }
+        return res;
+    }
+
+    /**
+     * 计算两个矩阵对象之间的距离度量函数，通过该函数可以实现两个矩阵对象度量系数的计算。
+     * <p>
+     * Calculates the distance metric function between two matrix objects, through which the metric coefficients of two matrix objects can be calculated.
+     *
+     * @param matrix1 需要被进行计算的矩阵对象。
+     *                <p>
+     *                The matrix object that needs to be calculated.
+     * @param matrix2 需要被进行计算的矩阵对象。
+     *                <p>
+     *                The matrix object that needs to be calculated.
+     * @return 计算出来的度量结果系数。
+     * <p>
+     * The calculated measurement result coefficient.
+     */
+    @Override
+    public double getTrueDistance(DoubleMatrix matrix1, DoubleMatrix matrix2) {
+        DistanceAlgorithm.checkMat(matrix1, matrix2);
+        Iterator<double[]> iterator1 = matrix1.iterator();
+        Iterator<double[]> iterator2 = matrix2.iterator();
+        double res = 0;
+        while (iterator1.hasNext() && iterator2.hasNext()) {
+            res += getTrueDistance(iterator1.next(), iterator2.next());
+        }
+        return res;
     }
 }

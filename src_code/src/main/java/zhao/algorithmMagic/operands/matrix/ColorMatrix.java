@@ -1,19 +1,28 @@
 package zhao.algorithmMagic.operands.matrix;
 
+import zhao.algorithmMagic.algorithm.distanceAlgorithm.DistanceAlgorithm;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.integrator.ImageRenderingIntegrator;
+import zhao.algorithmMagic.io.InputComponent;
+import zhao.algorithmMagic.io.OutputComponent;
+import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
 import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixSpace;
+import zhao.algorithmMagic.operands.table.Cell;
+import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASIO;
 import zhao.algorithmMagic.utils.ASMath;
+import zhao.algorithmMagic.utils.filter.DoubleFiltering;
 import zhao.algorithmMagic.utils.transformation.ManyTrans;
+import zhao.algorithmMagic.utils.transformation.ProTransForm;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.Iterator;
+import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * 颜色矩阵对象，其中存储的每一个元素都是一个 Color 对象，适合用来进行图像的绘制等工作。
@@ -72,6 +81,217 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
                 green - (green >> _G_ << _G_),
                 blue - (blue >> _G_ << _G_)
         );
+    };
+
+    /**
+     * 颜色数值求差计算方案，在该方案中的处理逻辑为如果数值超出范围，则取0或255，如果数值没有超过范围则取数值本身，实现颜色数值的高效限制的计算方案。
+     * <p>
+     * The processing logic in the color value difference calculation scheme is to take 0 or 255 if the value exceeds the range, and take the value itself if the value does not exceed the range, achieving an efficient calculation scheme for limiting color values.
+     */
+    public final static ManyTrans<Color, Color> COLOR_DIFF_REGULATE = (inputType1, inputType2) -> new Color(
+            ASMath.regularTricolor(inputType1.getRed() - inputType2.getRed()),
+            ASMath.regularTricolor(inputType1.getGreen() - inputType2.getGreen()),
+            ASMath.regularTricolor(inputType1.getBlue() - inputType2.getGreen())
+    );
+
+    /**
+     * 颜色数值求差计算方案，在该方案中的处理逻辑为：如果x为求和后的越界数值，则取 x % 256 的结果作为颜色数值。
+     * <p>
+     * The processing logic in the color value difference calculation scheme is: if x is the out-of-boundary value after the sum, the result of x% 256 is taken as the color value.
+     */
+    public final static ManyTrans<Color, Color> COLOR_DIFF_REMAINDER = (inputType1, inputType2) -> {
+        int red = inputType1.getRed() - inputType2.getRed();
+        int green = inputType1.getGreen() - inputType2.getGreen();
+        int blue = inputType1.getBlue() - inputType2.getGreen();
+        return new Color(
+                red - (red >> _G_ << _G_),
+                green - (green >> _G_ << _G_),
+                blue - (blue >> _G_ << _G_)
+        );
+    };
+
+    /**
+     * 颜色数值求差计算方案，在该方案中的处理逻辑为如果数值超出范围，则取0或255，如果数值没有超过范围则取数值本身，实现颜色数值的高效限制的计算方案。
+     * <p>
+     * The processing logic in the color value difference calculation scheme is to take 0 or 255 if the value exceeds the range, and take the value itself if the value does not exceed the range, achieving an efficient calculation scheme for limiting color values.
+     */
+    public final static ManyTrans<Color, Color> COLOR_DIFF_ABS = (inputType1, inputType2) -> new Color(
+            ASMath.absoluteValue(inputType1.getRed() - inputType2.getRed()),
+            ASMath.absoluteValue(inputType1.getGreen() - inputType2.getGreen()),
+            ASMath.absoluteValue(inputType1.getBlue() - inputType2.getGreen())
+    );
+
+    /**
+     * 颜色数值求积计算方案，在该方案中的处理逻辑为如果数值超出范围，则取0或255，如果数值没有超过范围则取数值本身，实现颜色数值的高效限制的计算方案。
+     * <p>
+     * The processing logic in the color value quadrature calculation scheme is to take 0 or 255 if the value exceeds the range, and take the value itself if the value does not exceed the range, achieving an efficient calculation scheme for limiting color values.
+     */
+    public final static ManyTrans<Color, Color> COLOR_MULTIPLY_REGULATE = (inputType1, inputType2) -> new Color(
+            ASMath.regularTricolor(inputType1.getRed() * inputType2.getRed()),
+            ASMath.regularTricolor(inputType1.getGreen() * inputType2.getGreen()),
+            ASMath.regularTricolor(inputType1.getBlue() * inputType2.getGreen())
+    );
+
+    /**
+     * 颜色数值求积计算方案，在该方案中的才处理逻辑为如果数值超出范围，则取当前数值 % 256 的结果数值作为当前颜色数值。
+     * <p>
+     * The processing logic in the color value quadrature calculation scheme is to take 0 or 255 if the value exceeds the range, and take the value itself if the value does not exceed the range, achieving an efficient calculation scheme for limiting color values.
+     */
+    public final static ManyTrans<Color, Color> COLOR_MULTIPLY_REMAINDER = (inputType1, inputType2) -> {
+        int red = inputType1.getRed() + inputType2.getRed();
+        int green = inputType1.getGreen() + inputType2.getGreen();
+        int blue = inputType1.getBlue() + inputType2.getGreen();
+        return new Color(
+                red - (red >> _G_ << _G_),
+                green - (green >> _G_ << _G_),
+                blue - (blue >> _G_ << _G_)
+        );
+    };
+
+    /**
+     * 将矩阵中所有坐标点计算为： 当前坐标点 = 右坐标 - 左坐标
+     */
+    public final static Consumer<Color[][]> CALCULATE_GRADIENT_RL = colors -> {
+        if (colors[0].length <= 2) return;
+        for (Color[] color : colors) {
+            Color left = color[0], right = color[2];
+            color[0] = color[1];
+            for (int i = 1, maxI = color.length - 2; i < maxI; ) {
+                Color now = right;
+                color[i] = COLOR_DIFF_REGULATE.function(right, left);
+                left = now;
+                right = color[++i];
+            }
+        }
+    };
+
+    /**
+     * 将矩阵中所有坐标点计算为： 当前坐标点 = 下坐标 - 上坐标
+     */
+    public final static Consumer<Color[][]> CALCULATE_GRADIENT_LH = colors -> {
+        if (colors.length <= 2) return;
+        Color[] back = colors[0], next = colors[2];
+        for (int i = 1, maxI = colors.length - 2; i < maxI; ) {
+            Color[] now1 = colors[i].clone();
+            Color[] now2 = next;
+            for (int index = 0; index < now2.length; index++) {
+                now2[index] = COLOR_DIFF_REGULATE.function(next[index], back[index]);
+            }
+            back = now1;
+            next = colors[++i];
+        }
+    };
+
+    /**
+     * 将矩阵中所有坐标点计算为： 当前坐标点 = 右坐标 - 左坐标
+     */
+    public final static Consumer<Color[][]> CALCULATE_GRADIENT_RL_ABS = colors -> {
+        if (colors[0].length <= 2) return;
+        for (Color[] color : colors) {
+            Color left = color[0], right = color[2];
+            color[0] = color[1];
+            for (int i = 1, maxI = color.length - 2; i < maxI; ) {
+                Color now = right;
+                color[i] = COLOR_DIFF_ABS.function(right, left);
+                left = now;
+                right = color[++i];
+            }
+        }
+    };
+
+    /**
+     * 将矩阵中所有坐标点计算为： 当前坐标点 = 下坐标 - 上坐标
+     */
+    public final static Consumer<Color[][]> CALCULATE_GRADIENT_LH_ABS = colors -> {
+        if (colors.length <= 2) return;
+        Color[] back = colors[0], next = colors[2];
+        for (int i = 1, maxI = colors.length - 2; i < maxI; ) {
+            Color[] now1 = colors[i].clone();
+            Color[] now2 = next;
+            for (int index = 0; index < now2.length; index++) {
+                now2[index] = COLOR_DIFF_ABS.function(next[index], back[index]);
+            }
+            back = now1;
+            next = colors[++i];
+        }
+    };
+
+    /**
+     * 矩阵左右反转操作，其参数是可选的，如果您想要传递参数，请按照如下方式传递。
+     * key = "isCopy"   value = boolean 数值   代表反转操作是否需要拷贝出新矩阵，如果不需要则在原矩阵中进行反转。
+     */
+    public final static ProTransForm<ColorMatrix, ColorMatrix> REVERSE_LR = (colorMatrix, value) -> {
+        if (value != null) {
+            Cell<?> isCopy = value.get("isCopy");
+            if (isCopy != null) {
+                return colorMatrix.reverseLR(Boolean.parseBoolean(isCopy.toString()));
+            }
+        }
+        return colorMatrix.reverseLR(true);
+    };
+
+    /**
+     * 矩阵左右反转操作，其参数是可选的，如果您想要传递参数，请按照如下方式传递。
+     * key = "isCopy"   value = boolean 数值
+     */
+    public final static ProTransForm<ColorMatrix, ColorMatrix> REVERSE_BT = (colorMatrix, value) -> {
+        if (value != null) {
+            Cell<?> isCopy = value.get("isCopy");
+            if (isCopy != null) {
+                return colorMatrix.reverseBT(Boolean.parseBoolean(isCopy.toString()));
+            }
+        }
+        return colorMatrix.reverseBT(true);
+    };
+
+    /**
+     * 矩阵按照左右的方向进行拉伸操作，使得图像变宽，需要传递参数 times。
+     */
+    public final static ProTransForm<ColorMatrix, ColorMatrix> SLIT_LR = (colorMatrix, value) -> {
+        if (value == null || !value.containsKey("times")) {
+            throw new OperatorOperationException("矩阵拉伸操作需要您传递配置项 times 其代表每一个像素在原矩阵中的横向拉伸倍数。");
+        }
+        // 获取到横向拉伸倍数
+        int times = value.get("times").getIntValue();
+        // 开始拉伸
+        Color[][] res = new Color[colorMatrix.getRowCount()][colorMatrix.getColCount() * times];
+        int index = -1;
+        for (Color[] colors : colorMatrix.toArrays()) {
+            Color[] re = res[++index];
+            int x1 = 0, x2 = times;
+            for (Color color : colors) {
+                // 在这里拉伸一个像素为原来的 times 倍宽
+                for (int x = x1; x < x2; x++) {
+                    re[x] = color;
+                }
+                x1 += times;
+                x2 += times;
+            }
+        }
+        return ColorMatrix.parse(res);
+    };
+
+    /**
+     * 矩阵按照上下的方向进行拉伸操作，使得图像变宽，需要传递参数 times。
+     */
+    public final static ProTransForm<ColorMatrix, ColorMatrix> SLIT_BT = (colorMatrix, value) -> {
+        if (value == null || !value.containsKey("times")) {
+            throw new OperatorOperationException("矩阵拉伸操作需要您传递配置项 times 其代表每一个像素在原矩阵中的横向拉伸倍数。");
+        }
+        // 获取到横向拉伸倍数
+        int times = value.get("times").getIntValue();
+        // 开始拉伸
+        Color[][] res = new Color[colorMatrix.getRowCount() * times][colorMatrix.getColCount()];
+        int x1 = 0, x2 = times;
+        for (Color[] colors : colorMatrix.toArrays()) {
+            // 在这里将行拉伸 times 倍
+            for (int i = x1; i < x2; i++) {
+                res[i] = colors.clone();
+            }
+            x1 += times;
+            x2 += times;
+        }
+        return ColorMatrix.parse(res);
     };
 
     private boolean isGrayscale;
@@ -169,17 +389,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      */
     public static ColorMatrix parseGrayscale(String inputString) {
         Color[][] colors = ASIO.parseImageGetColorArray(inputString);
-        return GrayscaleColors(colors);
-    }
-
-    /**
-     * 将图像URL解析，并获取对应的图像矩阵
-     *
-     * @param url 需要被解析的URL对象
-     * @return URL对象所对应的图像矩阵。
-     */
-    public static ColorMatrix parseGrayscale(URL url) {
-        return GrayscaleColors(ASIO.parseURLGetColorArray(url));
+        return ColorMatrix.GrayscaleColors(colors);
     }
 
     /**
@@ -266,6 +476,51 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         return ColorMatrix.parse(ASIO.parseURLGetColorArray(url));
     }
 
+
+    /**
+     * 将图像URL解析，并获取对应的图像矩阵
+     *
+     * @param url 需要被解析的URL对象
+     * @return URL对象所对应的图像矩阵。
+     */
+    public static ColorMatrix parseGrayscale(URL url) {
+        return ColorMatrix.GrayscaleColors(ASIO.parseURLGetColorArray(url));
+    }
+
+    /**
+     * 使用组件将一个图像数据提取，并获取对应的图像矩阵。
+     *
+     * @param inputComponent 能够被提取出图像矩阵的数据组件。
+     * @return 从组件中提取出来的图像矩阵对象。
+     */
+    public static ColorMatrix parse(InputComponent inputComponent) {
+        return parse(inputComponent, true);
+    }
+
+    /**
+     * 使用组件将一个图像数据提取，并获取对应的图像矩阵。
+     *
+     * @param inputComponent 能够被提取出图像矩阵的数据组件。
+     * @param isOC           如果设置为 true 代表数据输入设备对象的打开与关闭交由框架管理，在外界将不需要对组件进行打开或关闭操作，反之则代表框架只使用组件，但不会打开与关闭组件对象。
+     *                       <p>
+     *                       If set to true, it means that the opening and closing of data input device objects are managed by the framework, and there will be no need to open or close components externally. Conversely, it means that the framework only uses components, but will not open or close component objects.
+     * @return 从组件中提取出来的图像矩阵对象。
+     */
+    public static ColorMatrix parse(InputComponent inputComponent, boolean isOC) {
+        boolean isOk;
+        if (!inputComponent.isOpen() && isOC) {
+            isOk = inputComponent.open();
+        } else {
+            isOk = true;
+        }
+        if (isOk) {
+            // 开始进行数据提取
+            ColorMatrix parse = ColorMatrix.parse(ASIO.parseImageGetColorArray(inputComponent.getBufferedImage()));
+            if (isOC) ASIO.close(inputComponent);
+            return parse;
+        } else throw new OperatorOperationException("Unable to open your inputComponent.");
+    }
+
     /**
      * 将一个图像矩阵中的所有像素转换成为三原色均值，获取到灰度矩阵。
      *
@@ -281,6 +536,58 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             }
         }
         return new ColorMatrix(colors.length, colors[0].length, colors, true);
+    }
+
+    /**
+     * 获取到文本数据输出逻辑实现对象
+     *
+     * @param colorMatrix 需要被输出的图像矩形
+     * @param sep         输出时需要使用的分隔符
+     * @return 一个专用于将图像中的颜色数值按照CSV的格式输出到指定文件中的实现逻辑。
+     */
+    public static Consumer<BufferedWriter> getSAVE_TEXT(ColorMatrix colorMatrix, char sep) {
+        return (stream) -> {
+            try {
+                int rowCount = 0;
+                for (Color[] colors : colorMatrix.toArrays()) {
+                    stream.write(String.valueOf(++rowCount));
+                    for (Color color : colors) {
+                        stream.write(sep);
+                        stream.write(String.valueOf(color.getRGB()));
+                    }
+                    stream.newLine();
+                }
+            } catch (IOException e) {
+                throw new OperatorOperationException("Write data exception!", e);
+            }
+        };
+    }
+
+    /**
+     * 将图像以ASCII的形式输出到指定文件中。
+     *
+     * @param colorMatrix   需要被输出的图像对象
+     * @param Mode          需要被输出的颜色通道
+     * @param colorBoundary 输出时的颜色边界数值
+     * @param imageAscii1   输出时的ASCII
+     * @param imageAscii2   输出时的ASCII
+     * @return 一个ASCII符号组成的文本图像
+     */
+    public static Consumer<BufferedWriter> getSAVE_ASCII(ColorMatrix colorMatrix, byte Mode, int colorBoundary, char imageAscii1, char imageAscii2) {
+        return bufferedWriter -> {
+            try {
+                for (Color[] colors : colorMatrix.toArrays()) {
+                    for (Color color : colors) {
+                        if (((color.getRGB() >> Mode) & 0xFF) > colorBoundary) {
+                            bufferedWriter.write(imageAscii1);
+                        } else bufferedWriter.write(imageAscii2);
+                    }
+                    bufferedWriter.newLine();
+                }
+            } catch (IOException e) {
+                throw new OperatorOperationException("Write data exception!", e);
+            }
+        };
     }
 
     /**
@@ -309,7 +616,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      */
     @Override
     public ColorMatrix diff(ColorMatrix value) {
-        throw new UnsupportedOperationException("The color matrix object does not support the operation of \"addition\", \"subtraction\" and \"multiplication\", because the calculation of such operations on the color object is not necessary!");
+        return agg(value, COLOR_DIFF_REMAINDER);
     }
 
     /**
@@ -346,6 +653,43 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
                     rowCount1 + "\tmat2.row = " + rowCount2 + "\tmat1.col = " + colCount1 + "\tmat2.col = " + colCount2
             );
         }
+    }
+
+    /**
+     * 在矩阵内部发生计算，使得矩阵可以满足我们的需求与计算操作。
+     * <p>
+     * Computing occurs within the matrix, enabling the matrix to meet our needs and computational operations.
+     *
+     * @param action 计算实现逻辑，支持自定义也支持直接使用内置实现。
+     *               <p>
+     *               Computational implementation logic supports customization and direct use of built-in implementations.
+     * @param isCopy 计算操作是否要在拷贝之后的数组中执行，如果设置为 true 代表计算操作将发生于新数据中，不会影响原矩阵对象。
+     *               <p>
+     *               Whether the calculation operation should be performed in the copied array. If set to true, it means that the calculation operation will occur in the new data and will not affect the original matrix object.
+     * @return 计算之后的矩阵对象。
+     * <p>
+     * The calculated matrix object.
+     */
+    public ColorMatrix calculate(Consumer<Color[][]> action, boolean isCopy) {
+        if (isCopy) {
+            Color[][] colors = this.copyToNewArrays();
+            action.accept(colors);
+            return ColorMatrix.parse(colors);
+        } else {
+            action.accept(this.toArrays());
+            return this;
+        }
+    }
+
+    /**
+     * 矩阵变换操作函数，在此函数中您可以传递多个矩阵变换模式，实现多种不同的矩阵转换效果，同时还可以自定义矩阵变换时需要使用的逻辑。
+     *
+     * @param transformation 矩阵变换逻辑。
+     * @param value          矩阵中的变换操作计算时需要的其它参数对象。
+     * @return 矩阵变换之后返回的新矩阵对象。
+     */
+    public ColorMatrix converter(ProTransForm<ColorMatrix, ColorMatrix> transformation, HashMap<String, Cell<?>> value) {
+        return transformation.function(this, value);
     }
 
     /**
@@ -516,7 +860,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
     public Color[][] copyToNewArrays() {
         Color[][] colors = this.toArrays();
         Color[][] res = new Color[colors.length][colors[0].length];
-        System.arraycopy(colors, 0, res, 0, colors.length);
+        ASClass.array2DCopy(colors, res);
         return res;
     }
 
@@ -988,7 +1332,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
     public ColorMatrix extractImage(int x1, int y1, int x2, int y2) {
         if (x1 >= x2 || y1 >= y2) {
             throw new OperatorOperationException("图像提取发生错误，您设置的提取坐标点有误!!!\nAn error occurred in image extraction. The extraction coordinate point you set is incorrect!!!\n" +
-                    "ERROR => (" + x1 + ',' + y1 + ") >= (" + y1 + ',' + y2 + ')');
+                    "ERROR => (" + x1 + ',' + y1 + ") >= (" + x2 + ',' + y2 + ')');
         }
         if (x2 >= this.getColCount() || y2 >= this.getRowCount()) {
             throw new OperatorOperationException("图像提取发生错误，您不能提取不存在于图像中的坐标点\nAn error occurred in image extraction. You cannot extract coordinate points that do not exist in the image\n" +
@@ -1163,6 +1507,40 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
     }
 
     /**
+     * 计算出轮廓内的面积大小，以像素为单位。
+     * <p>
+     * Calculate the size of the area within the contour, in pixels.
+     *
+     * @param contourColor 轮廓线的颜色对象，如果像素的颜色数值与此值一致，则认为其属于边框。
+     *                     <p>
+     *                     The color object of the outline. If the color value of a pixel matches this value, it is considered to belong to the border.
+     * @return 轮廓内的所有像素数量。
+     * <p>
+     * The number of all pixels within the contour.
+     */
+    public int contourArea(Color contourColor) {
+        int rgb = contourColor.getRGB();
+        int res = 0;
+        for (Color[] colors : this.toArrays()) {
+            boolean isOk = false;
+            for (Color color : colors) {
+                if (isOk) {
+                    ++res;
+                    if (color.getRGB() == rgb) {
+                        isOk = false;
+                    }
+                    continue;
+                }
+                if (color.getRGB() == rgb) {
+                    isOk = true;
+                    ++res;
+                }
+            }
+        }
+        return res;
+    }
+
+    /**
      * 图像腐蚀函数，在该函数的处理之下，可以对图像某些不足够的颜色数值进行腐蚀操作，
      *
      * @param width  用于腐蚀的图像卷积核的宽度
@@ -1203,7 +1581,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
                 for (Color[] colors : nowSub.toArrays()) {
                     for (Color color : colors) {
                         if (color.getRGB() == colorNum) {
-                            // 发现了黑色 直接将该子矩阵中的所有颜色更换为黑色
+                            // 发现了腐蚀色 直接将该子矩阵中的所有颜色更换为腐蚀色
                             isR = true;
                         }
                     }
@@ -1222,6 +1600,223 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
                 x = ex;
             }
             y = ey;
+        }
+        return res;
+    }
+
+    /**
+     * 浅拷贝的方式获取到两个矩阵上下或左右合并之后产生的新矩阵对象，需要注意的是，该操作不会链接矩阵，更不会更改调用方的的数据。
+     * <p>
+     * The shallow copy method obtains a new matrix object generated by merging two matrices up and down or left and right. Note that this operation does not link the matrix, nor does it change the caller's data.
+     *
+     * @param colorMatrix 需要被追加的颜色矩阵对象。
+     *                    <p>
+     *                    The color matrix object that needs to be appended.
+     * @param isLR        如果设置为 true 代表使用左右追加的方式进行追加， 如果设置为 false 代表使用上下追加的方式进行追加。
+     *                    <p>
+     *                    If set to true, it means appending using the left and right appending method. If set to false, it means appending using the up and down appending method.
+     * @return 追加之后的矩阵对象，该矩阵对象中的行与原矩阵是无关联的。
+     * <p>
+     * The appended matrix object has no rows associated with the original matrix.
+     */
+    public ColorMatrix append(ColorMatrix colorMatrix, boolean isLR) {
+        if (isLR) {
+            Color[][] colors1 = this.toArrays();
+            Color[][] colors2 = colorMatrix.toArrays();
+            if (colors1.length != colors2.length) {
+                throw new OperatorOperationException("左右追加的矩阵对象需要保持行数相同！");
+            }
+            Color[][] res = new Color[colors1.length][this.getColCount() + colorMatrix.getColCount()];
+            int index = -1;
+            for (Color[] re : res) {
+                ASClass.mergeArray(re, colors1[++index], colors2[index]);
+            }
+            return ColorMatrix.parse(res);
+        }
+        Color[][] colors1 = this.copyToNewArrays();
+        Color[][] colors2 = colorMatrix.copyToNewArrays();
+        if (colors1.length != colors2.length) {
+            throw new OperatorOperationException("上下追加的矩阵对象需要保持列数相同！");
+        }
+        Color[][] res = new Color[colors1.length + colors2.length][];
+        ASClass.mergeArray(res, colors1, colors2);
+        return ColorMatrix.parse(res);
+    }
+
+    /**
+     * 将图像矩阵中的指定通道的颜色整数数值矩阵获取到。
+     *
+     * @param colorMode 需要被获取到颜色通道编码。
+     * @return 对应颜色通道的颜色数值组成的颜色矩阵对象。
+     */
+    public final IntegerMatrix getChannel(int colorMode) {
+        int[][] res = new int[this.getRowCount()][this.getColCount()];
+        int y = -1;
+        for (Color[] colors : this.toArrays()) {
+            int[] re = res[++y];
+            int x = -1;
+            for (Color color : colors) {
+                re[++x] = (color.getRGB() >> colorMode) & 0xFF;
+            }
+        }
+        return IntegerMatrix.parse(res);
+    }
+
+    /**
+     * 向矩阵中绘制一个矩阵。
+     *
+     * @param start 矩阵的左上角坐标对象。
+     * @param end   矩阵的右下角坐标对象。
+     * @param color 绘制的轮廓颜色对象。
+     */
+    public void drawRectangle(IntegerCoordinateTwo start, IntegerCoordinateTwo end, Color color) {
+        Color[][] colors = this.toArrays();
+        int x1 = start.getX();
+        int x2 = end.getX();
+        int y1 = start.getY();
+        int y2 = end.getY();
+        // 首先将起始终止点的 x 轴变更为 color 颜色（使用y轴获取）
+        Color[] color1 = colors[start.getY()];
+        Color[] color2 = colors[end.getY()];
+        for (int i = x1; i <= x2; i++) {
+            color1[i] = color;
+            color2[i] = color;
+        }
+        // 然后将剩余所有点的 y 轴变为 color 颜色（使用x轴获取）
+        for (int i = y1; i <= y2; i++) {
+            Color[] colorRow = colors[i];
+            colorRow[x1] = color;
+            colorRow[x2] = color;
+        }
+    }
+
+    /**
+     * 将图像进行模板匹配计算
+     *
+     * @param distanceAlgorithm 需要使用的度量计算组件。
+     *                          <p>
+     *                          The metric calculation component that needs to be used.
+     * @param template          在进行模板匹配时的被匹配模板。
+     *                          <p>
+     *                          The template to be matched during template matching.
+     * @param channel           在进行计算时，需要被计算的颜色通道。
+     *                          <p>
+     *                          When calculating, the color channel to be calculated is required.
+     * @param sep               图像卷积步长数值。该数值增加，会增强计算的速度与性能，该数值的减小，会增强计算的精确度。
+     *                          <p>
+     *                          Image convolution step size value. An increase in this value will enhance the speed and performance of the calculation, while a decrease in this value will enhance the accuracy of the calculation.
+     * @param isMAX             如果设置为 true 代表取相似度系数最大的子图像坐标作为。
+     *                          <p>
+     *                          If set to true, the coordinate of the sub image with the largest similarity coefficient is taken as the coordinate.
+     * @return 经过计算之后，与当前矩阵对象最相似的子图像的左上角坐标数值对象。
+     */
+    public final Map.Entry<Double, IntegerCoordinateTwo> templateMatching(DistanceAlgorithm distanceAlgorithm, ColorMatrix template, int channel, int sep, boolean isMAX) {
+        // 开始匹配
+        IntegerMatrix channel1 = template.getChannel(channel);
+        IntegerMatrix channel2 = this.getChannel(channel);
+        // 首先提取出矩阵1中相同大小的子矩阵图像
+        int rowCount1 = this.getRowCount();
+        int colCount1 = this.getColCount();
+        int rowCount2 = template.getRowCount();
+        int colCount2 = template.getColCount();
+        if (rowCount1 < rowCount2 || colCount1 < colCount2) {
+            throw new OperatorOperationException("您的模板矩阵尺寸过大!!");
+        }
+        int[] xy = new int[2];
+        double value = isMAX ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+
+        if (rowCount1 == rowCount2) {
+            // 这种情况代表可以使用优化方案
+            int ye = rowCount2 - 1;
+            for (int y = 0; y < rowCount1; y += sep, ye += sep) {
+                double trueDistance = distanceAlgorithm.getTrueDistance(channel2.extractSrcMat(y, ye), channel1);
+                if (isMAX) {
+                    if (value < trueDistance) {
+                        value = trueDistance;
+                        xy[1] = y;
+                    }
+                } else {
+                    if (value > trueDistance) {
+                        value = trueDistance;
+                        xy[1] = y;
+                    }
+                }
+            }
+            return new AbstractMap.SimpleEntry<>(value, new IntegerCoordinateTwo(xy[0], xy[1]));
+        }
+        int ye = rowCount2 - 1;
+        for (int y = 0; ye < rowCount1; y += sep, ye += sep) {
+            int xe = colCount2 - 1;
+            for (int x = 0; xe < colCount1; x += sep, xe += sep) {
+                // 计算出相似度
+                double trueDistance = distanceAlgorithm.getTrueDistance(channel2.extractMat(x, y, xe, ye), channel1);
+                if (isMAX) {
+                    if (value < trueDistance) {
+                        value = trueDistance;
+                        xy[0] = x;
+                        xy[1] = y;
+                    }
+                } else {
+                    if (value > trueDistance) {
+                        value = trueDistance;
+                        xy[0] = x;
+                        xy[1] = y;
+                    }
+                }
+            }
+        }
+        return new AbstractMap.SimpleEntry<>(value, new IntegerCoordinateTwo(xy[0], xy[1]));
+    }
+
+    /**
+     * @param distanceAlgorithm 需要使用的度量计算组件。
+     *                          <p>
+     *                          The metric calculation component that needs to be used.
+     * @param template          在进行模板匹配时的被匹配模板。
+     *                          <p>
+     *                          The template to be matched during template matching.
+     * @param channel           在进行计算时，需要被计算的颜色通道。
+     *                          <p>
+     *                          When calculating, the color channel to be calculated is required.
+     * @param sep               图像卷积步长数值。该数值增加，会增强计算的速度与性能，该数值的减小，会增强计算的精确度。
+     *                          <p>
+     *                          Image convolution step size value. An increase in this value will enhance the speed and performance of the calculation, while a decrease in this value will enhance the accuracy of the calculation.
+     * @param cFilter           相似系数过滤逻辑实现，在这里您将可以自定义的书写相似度系数的过滤操作，符合的系数对应的信息将会被添加到结果数据中。
+     * @return 图像中所有符合过滤条件的子矩阵信息数据对象。
+     * <p>
+     * All sub matrix information data objects in the image that meet the filtering conditions.
+     */
+    public final ArrayList<Map.Entry<Double, IntegerCoordinateTwo>> templateMatching(DistanceAlgorithm distanceAlgorithm, ColorMatrix template, int channel, int sep, DoubleFiltering cFilter) {
+        // 开始匹配
+        IntegerMatrix channel1 = template.getChannel(channel);
+        IntegerMatrix channel2 = this.getChannel(channel);
+        // 首先提取出矩阵1中相同大小的子矩阵图像
+        int rowCount1 = this.getRowCount(), colCount1 = this.getColCount();
+        int rowCount2 = template.getRowCount(), colCount2 = template.getColCount();
+        if (rowCount1 < rowCount2 || colCount1 < colCount2) {
+            throw new OperatorOperationException("您的模板矩阵尺寸过大!!");
+        }
+        ArrayList<Map.Entry<Double, IntegerCoordinateTwo>> res = new ArrayList<>();
+        if (rowCount1 == rowCount2) {
+            // 这种情况代表可以使用优化方案
+            int ye = rowCount2 - 1;
+            for (int y = 0; y < rowCount1; y += sep, ye += sep) {
+                double trueDistance = distanceAlgorithm.getTrueDistance(channel2.extractSrcMat(y, ye), channel1);
+                if (cFilter.isComplianceEvents(trueDistance))
+                    res.add(new AbstractMap.SimpleEntry<>(trueDistance, new IntegerCoordinateTwo(0, y)));
+            }
+            return res;
+        }
+        // 这里就代表不能够使用优化方案
+        int ye = rowCount2 - 1;
+        for (int y = 0; ye < rowCount1; y += sep, ye += sep) {
+            int xe = colCount2 - 1;
+            for (int x = 0; xe < colCount1; x += sep, xe += sep) {
+                // 计算出相似度
+                double trueDistance = distanceAlgorithm.getTrueDistance(channel2.extractMat(x, y, xe, ye), channel1);
+                if (cFilter.isComplianceEvents(trueDistance))
+                    res.add(new AbstractMap.SimpleEntry<>(trueDistance, new IntegerCoordinateTwo(x, y)));
+            }
         }
         return res;
     }
@@ -1282,21 +1877,26 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      */
     @Override
     public void save(File path, char sep) {
-        ASIO.writer(path, (stream) -> {
-            try {
-                int rowCount = 0;
-                for (Color[] colors : this.toArrays()) {
-                    stream.write(String.valueOf(++rowCount));
-                    for (Color color : colors) {
-                        stream.write(sep);
-                        stream.write(String.valueOf(color.getRGB()));
-                    }
-                    stream.newLine();
-                }
-            } catch (IOException e) {
-                throw new OperatorOperationException("Write data exception!", e);
-            }
-        });
+        ASIO.writer(path, getSAVE_TEXT(this, sep));
+    }
+
+    /**
+     * 将对象交由第三方数据输出组件进行数据的输出。
+     * <p>
+     * Submit the object to a third-party data output component for data output.
+     *
+     * @param outputComponent 第三方数据输出设备对象实现。
+     *                        <p>
+     *                        Implementation of third-party data output device objects.
+     */
+    @Override
+    public void save(OutputComponent outputComponent) {
+        if (!outputComponent.isOpen()) {
+            if (!outputComponent.open())
+                throw new OperatorOperationException("您的数据输出组件打开失败。\nYour data output component failed to open.");
+        }
+        outputComponent.writeImage(this);
+        ASIO.close(outputComponent);
     }
 
     /**
@@ -1319,20 +1919,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      *                      ASCII Symbol In the output ASCII image file, the ASCII value corresponding to the constituent characters of the image for coordinates that are less than the threshold value.
      */
     public void save(File path, byte Mode, int colorBoundary, char imageAscii1, char imageAscii2) {
-        ASIO.writer(path, bufferedWriter -> {
-            try {
-                for (Color[] colors : this.toArrays()) {
-                    for (Color color : colors) {
-                        if (((color.getRGB() >> Mode) & 0xFF) > colorBoundary) {
-                            bufferedWriter.write(imageAscii1);
-                        } else bufferedWriter.write(imageAscii2);
-                    }
-                    bufferedWriter.newLine();
-                }
-            } catch (IOException e) {
-                throw new OperatorOperationException("Write data exception!", e);
-            }
-        });
+        ASIO.writer(path, getSAVE_ASCII(this, Mode, colorBoundary, imageAscii1, imageAscii2));
     }
 
     /**

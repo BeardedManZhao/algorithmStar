@@ -13,22 +13,26 @@ import zhao.algorithmMagic.algorithm.normalization.DataStandardization;
 import zhao.algorithmMagic.algorithm.normalization.RangeDataStandardization;
 import zhao.algorithmMagic.algorithm.probabilisticAlgorithm.ProbabilisticAlgorithm;
 import zhao.algorithmMagic.algorithm.schemeAlgorithm.SchemeAlgorithm;
+import zhao.algorithmMagic.io.InputComponent;
 import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateMany;
 import zhao.algorithmMagic.operands.coordinate.FloatingPointCoordinates;
 import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateMany;
 import zhao.algorithmMagic.operands.coordinate.IntegerCoordinates;
-import zhao.algorithmMagic.operands.matrix.ColumnDoubleMatrix;
-import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
-import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
-import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
+import zhao.algorithmMagic.operands.matrix.*;
 import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute;
 import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute2D;
 import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute;
 import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute2D;
+import zhao.algorithmMagic.operands.table.DataFrame;
+import zhao.algorithmMagic.operands.table.DataFrameBuilder;
+import zhao.algorithmMagic.operands.table.FDataFrame;
 import zhao.algorithmMagic.operands.vector.*;
 import zhao.algorithmMagic.utils.filter.ArrayDoubleFiltering;
 import zhao.algorithmMagic.utils.filter.ArrayIntegerFiltering;
 
+import java.io.File;
+import java.net.URL;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -91,6 +95,132 @@ public final class AlgorithmStar<diffValue, featureReturn> {
      */
 
     /**
+     * 构造一个矩阵，矩阵的列数量以矩阵的第一行为准！
+     * <p>
+     * Construct a matrix, the number of columns of the matrix is based on the first row of the matrix!
+     *
+     * @param v 用于构造矩阵的二维数组
+     *          <p>
+     *          2D array for constructing the matrix
+     * @return matrix object
+     */
+    public static IntegerMatrix parseIntMat(int[]... v) {
+        return IntegerMatrix.parse(v);
+    }
+
+    /**
+     * 构造一个矩阵，矩阵的列数量以矩阵的第一行为准！
+     * <p>
+     * Construct a matrix, the number of columns of the matrix is based on the first row of the matrix!
+     *
+     * @param v 用于构造矩阵的二维数组
+     *          <p>
+     *          2D array for constructing the matrix
+     * @return matrix object
+     */
+    public static DoubleMatrix parseDoubleMat(double[]... v) {
+        return DoubleMatrix.parse(v);
+    }
+
+    /**
+     * 从本地文件系统中读取一个数据对象，并返回对应数据对象的建造者类。
+     *
+     * @param file 需要被读取的文件对象。
+     * @return 读取之后会返回该数据集对应的一个建造者对象，在该对象中可以对读取操作进行更加详细的设置，
+     */
+    public static DataFrameBuilder parseDF(File file) {
+        return FDataFrame.builder(file);
+    }
+
+    /**
+     * 从远程数据库中读取一个数据对象，并返回数据对象对应的建造者类。
+     *
+     * @param DBC 在连接数据库时需要使用的数据库连接对象。
+     * @return 数据库连接设置完毕将会返回一个建造者对象，在该对象中可以对读取数据库操作进行更加详细的设置。
+     */
+    public static DataFrameBuilder parseDF(Connection DBC) {
+        return FDataFrame.builder(DBC);
+    }
+
+    /**
+     * 使用第三方数据源输入组件进行数据的加载，并获取到对应的DataFrame对象。
+     *
+     * @param inputComponent 需要使用的第三方数据输入组件对象
+     * @param isOC           如果设置为 true 代表数据输入设备对象的打开与关闭交由框架管理，在外界将不需要对组件进行打开或关闭操作，反之则代表框架只使用组件，但不会打开与关闭组件对象。
+     *                       <p>
+     *                       If set to true, it means that the opening and closing of data input device objects are managed by the framework, and there will be no need to open or close components externally. Conversely, it means that the framework only uses components, but will not open or close component objects.
+     * @return 获取到的DataFrame对象。
+     */
+    public static DataFrame parseDF(InputComponent inputComponent, boolean isOC) {
+        return FDataFrame.builder(inputComponent, isOC);
+    }
+
+    /**
+     * 使用组件将一个图像数据提取，并获取对应的图像矩阵。
+     *
+     * @param inputComponent 能够被提取出图像矩阵的数据组件。
+     * @param isOC           如果设置为 true 代表数据输入设备对象的打开与关闭交由框架管理，在外界将不需要对组件进行打开或关闭操作，反之则代表框架只使用组件，但不会打开与关闭组件对象。
+     *                       <p>
+     *                       If set to true, it means that the opening and closing of data input device objects are managed by the framework, and there will be no need to open or close components externally. Conversely, it means that the framework only uses components, but will not open or close component objects.
+     * @return 从组件中提取出来的图像矩阵对象。
+     */
+    public static ColorMatrix parseImage(InputComponent inputComponent, boolean isOC) {
+        return ColorMatrix.parse(inputComponent, isOC);
+    }
+
+    /**
+     * 将图像URL解析，并获取对应的图像矩阵
+     *
+     * @param url 需要被解析的URL对象
+     * @return URL对象所对应的图像矩阵。
+     */
+    public static ColorMatrix parseImage(URL url) {
+        return ColorMatrix.parse(url);
+    }
+
+    /**
+     * 将图像URL解析，并获取对应的图像矩阵
+     *
+     * @param url 需要被解析的URL对象
+     * @return URL对象所对应的图像矩阵。
+     */
+    public static ColorMatrix parseGrayscaleImage(URL url) {
+        return ColorMatrix.parseGrayscale(url);
+    }
+
+    /**
+     * 根据图像文件获取到整形矩阵对象，在整形矩阵对象中会包含该图像的每一个像素点对应的灰度整形数值。
+     * <p>
+     * The reshaping matrix object is obtained from the image file, and the reshaping value corresponding to each pixel of the image will be included in the reshaping matrix object.
+     *
+     * @param imagePath 要读取的目标图像文件路径。
+     *                  <p>
+     *                  The target image file path to read.
+     * @return 根据图像获取到的矩阵对象。
+     * <p>
+     * The matrix object obtained from the image.
+     */
+    public static ColorMatrix parseImage(String imagePath) {
+        return ColorMatrix.parse(imagePath);
+    }
+
+    /**
+     * 根据图像文件获取到整形矩阵对象，在整形矩阵对象中会包含该图像的每一个像素点对应的灰度整形数值。
+     * <p>
+     * The reshaping matrix object is obtained from the image file, and the reshaping value corresponding to each pixel of the image will be included in the reshaping matrix object.
+     *
+     * @param imagePath 要读取的目标图像文件路径。
+     *                  <p>
+     *                  The target image file path to read.
+     * @return 根据图像获取到的矩阵对象。
+     * <p>
+     * The matrix object obtained from the image.
+     */
+    public static ColorMatrix parseGrayscaleImage(String imagePath) {
+        return ColorMatrix.parseGrayscale(imagePath);
+    }
+
+    /**
      * 计算一个路线的起始点与终止点的真实距离。具体的距离实现，需要您查阅算法实现的文档。
      * <p>
      * Calculates the true distance between the start and end points of a route.
@@ -138,6 +268,13 @@ public final class AlgorithmStar<diffValue, featureReturn> {
     public double getTrueDistance(DistanceAlgorithm distanceAlgorithm, int[] ints1, int[] ints2) {
         return distanceAlgorithm.getTrueDistance(ints1, ints2);
     }
+
+    /*
+     ********************************************************************
+     * 聚合算法组件计算函数开始分界线
+     * Aggregation algorithm component calculation function start boundary
+     ********************************************************************
+     */
 
     /**
      * 计算一个路线的起始点与终止点的真实距离。具体的距离实现，需要您查阅算法实现的文档。
@@ -191,6 +328,58 @@ public final class AlgorithmStar<diffValue, featureReturn> {
     }
 
     /**
+     * 计算两个矩阵对象之间的距离度量函数，通过该函数可以实现两个矩阵对象度量系数的计算。
+     * <p>
+     * Calculates the distance metric function between two matrix objects, through which the metric coefficients of two matrix objects can be calculated.
+     *
+     * @param distanceAlgorithm 距离计算组件，是您在调用本次函数之后，函数用来计算的距离计算组件对象。
+     *                          <p>
+     *                          The distance calculation component is the distance calculation component object that the function uses to calculate after you call this function.
+     * @param matrix1           需要被进行计算的矩阵对象。
+     *                          <p>
+     *                          The matrix object that needs to be calculated.
+     * @param matrix2           需要被进行计算的矩阵对象。
+     *                          <p>
+     *                          The matrix object that needs to be calculated.
+     * @return 计算出来的度量结果系数。
+     * <p>
+     * The calculated measurement result coefficient.
+     */
+    public double getTrueDistance(DistanceAlgorithm distanceAlgorithm, IntegerMatrix matrix1, IntegerMatrix matrix2) {
+        return distanceAlgorithm.getTrueDistance(matrix1, matrix2);
+    }
+
+    /**
+     * 计算两个矩阵对象之间的距离度量函数，通过该函数可以实现两个矩阵对象度量系数的计算。
+     * <p>
+     * Calculates the distance metric function between two matrix objects, through which the metric coefficients of two matrix objects can be calculated.
+     *
+     * @param distanceAlgorithm 距离计算组件，是您在调用本次函数之后，函数用来计算的距离计算组件对象。
+     *                          <p>
+     *                          The distance calculation component is the distance calculation component object that the function uses to calculate after you call this function.
+     * @param matrix1           需要被进行计算的矩阵对象。
+     *                          <p>
+     *                          The matrix object that needs to be calculated.
+     * @param matrix2           需要被进行计算的矩阵对象。
+     *                          <p>
+     *                          The matrix object that needs to be calculated.
+     * @return 计算出来的度量结果系数。
+     * <p>
+     * The calculated measurement result coefficient.
+     */
+    public double getTrueDistance(DistanceAlgorithm distanceAlgorithm, DoubleMatrix matrix1, DoubleMatrix matrix2) {
+        return distanceAlgorithm.getTrueDistance(matrix1, matrix2);
+    }
+
+
+    /*
+     ********************************************************************
+     * 分类算法组件计算函数开始分界线
+     * Classification algorithm component calculation function start boundary
+     ********************************************************************
+     */
+
+    /**
      * 计算向量距离原点的距离。
      *
      * @param rangeVector   距离计算组件，是您在调用本次函数之后，函数用来计算的距离计算组件对象。
@@ -202,13 +391,6 @@ public final class AlgorithmStar<diffValue, featureReturn> {
     public double getTrueDistance(RangeDistance rangeDistance, RangeVector<?, ?, ?, ?> rangeVector) {
         return rangeDistance.getTrueDistance(rangeVector);
     }
-
-    /*
-     ********************************************************************
-     * 聚合算法组件计算函数开始分界线
-     * Aggregation algorithm component calculation function start boundary
-     ********************************************************************
-     */
 
     /**
      * 计算函数，将某个数组中的所有元素按照某个规则进行聚合
@@ -226,7 +408,6 @@ public final class AlgorithmStar<diffValue, featureReturn> {
     public double calculation(AggregationAlgorithm aggregationAlgorithm, double... doubles) {
         return aggregationAlgorithm.calculation(doubles);
     }
-
 
     /**
      * 计算函数，将某个数组中的所有元素按照某个规则进行聚合
@@ -305,14 +486,6 @@ public final class AlgorithmStar<diffValue, featureReturn> {
     public double calculation(RangeAggregation rangeAggregation, RangeVector<?, ?, ?, ?> rangeVector) {
         return rangeAggregation.calculation(rangeVector);
     }
-
-
-    /*
-     ********************************************************************
-     * 分类算法组件计算函数开始分界线
-     * Classification algorithm component calculation function start boundary
-     ********************************************************************
-     */
 
     /**
      * 无样本的距离计算，您在此进行分类，不需要传递很多的数据样本，只需要由实现类按照自己的算法进行类别推断即可。
@@ -400,6 +573,13 @@ public final class AlgorithmStar<diffValue, featureReturn> {
         return noSampleClassification.classification(keys, doubles);
     }
 
+    /*
+     ********************************************************************
+     * 差异算法组件计算函数开始分界线                                         *
+     * diff algorithm component calculation function start boundary *
+     ********************************************************************
+     */
+
     /**
      * 无样本的距离计算，您在此进行分类，不需要传递很多的数据样本，只需要由实现类按照自己的算法进行类别推断即可。
      * <p>
@@ -421,6 +601,13 @@ public final class AlgorithmStar<diffValue, featureReturn> {
     public HashMap<String, ArrayList<ColumnIntegerVector>> classification(NoSampleClassification noSampleClassification, String[] keys, ColumnIntegerMatrix columnIntegerMatrix) {
         return noSampleClassification.classification(keys, columnIntegerMatrix);
     }
+
+    /*
+     ********************************************************************
+     * 特征提取算法组件计算函数开始分界线                                         *
+     * FeatureExtraction algorithm component calculation function start boundary *
+     ********************************************************************
+     */
 
     /**
      * 无样本的距离计算，您在此进行分类，不需要传递很多的数据样本，只需要由实现类按照自己的算法进行类别推断即可。
@@ -444,6 +631,12 @@ public final class AlgorithmStar<diffValue, featureReturn> {
         return noSampleClassification.classification(keys, columnDoubleMatrix);
     }
 
+    /*
+     ********************************************************************
+     * 数据预处理算法组件计算函数开始分界线                                         *
+     * Data preprocessing algorithm component calculation function start boundary *
+     ********************************************************************
+     */
 
     /**
      * 计算一个矩阵中所有行或列的数据类别，并将计算之后的数据类别样本返回出去。
@@ -549,14 +742,6 @@ public final class AlgorithmStar<diffValue, featureReturn> {
         return sampleClassification.classification(data, categorySample);
     }
 
-    /*
-     ********************************************************************
-     * 差异算法组件计算函数开始分界线                                         *
-     * diff algorithm component calculation function start boundary *
-     ********************************************************************
-     */
-
-
     /**
      * 计算两个事物之间从差异系数百分比
      * <p>
@@ -571,13 +756,6 @@ public final class AlgorithmStar<diffValue, featureReturn> {
         return differenceAlgorithm.getDifferenceRatio(value1, value2);
     }
 
-    /*
-     ********************************************************************
-     * 特征提取算法组件计算函数开始分界线                                         *
-     * FeatureExtraction algorithm component calculation function start boundary *
-     ********************************************************************
-     */
-
     /**
      * 将很多字符串组合起来进行特征向量的提取，其中的每一个词都是一个特征值。
      * <p>
@@ -590,13 +768,6 @@ public final class AlgorithmStar<diffValue, featureReturn> {
     public featureReturn extract(StringArrayFeature<featureReturn> stringArrayFeature, String... data) {
         return stringArrayFeature.extract(data);
     }
-
-    /*
-     ********************************************************************
-     * 数据预处理算法组件计算函数开始分界线                                         *
-     * Data preprocessing algorithm component calculation function start boundary *
-     ********************************************************************
-     */
 
     /**
      * 将一个序列进行标准化，具体的标准化有不同的实现
@@ -626,6 +797,43 @@ public final class AlgorithmStar<diffValue, featureReturn> {
      */
     public IntegerCoordinates<IntegerCoordinateMany> pretreatment(DataStandardization dataStandardization, IntegerCoordinateMany v) {
         return dataStandardization.pretreatment(v);
+    }
+
+    /*
+     ********************************************************************
+     * 概率算法组件计算函数开始分界线
+     * Probability algorithm component calculation function start boundary
+     ********************************************************************
+     */
+
+    /**
+     * 将一个序列进行标准化，具体的标准化有不同的实现
+     *
+     * @param dataStandardization 需要使用的数据预处理算法组件对象。
+     * @param integerMatrix       需要被标准化的数值，可以是坐标或向量，更多信息需要查阅实现
+     *                            <p>
+     *                            The value to be normalized, which can be a coordinate or a vector. For more information, see the implementation
+     * @return v的标准化样式
+     * <p>
+     * Normalized style of v
+     */
+    public IntegerMatrix pretreatment(DataStandardization dataStandardization, IntegerMatrix integerMatrix) {
+        return dataStandardization.pretreatment(integerMatrix);
+    }
+
+    /**
+     * 将一个序列进行标准化，具体的标准化有不同的实现
+     *
+     * @param dataStandardization 需要使用的数据预处理算法组件对象。
+     * @param doubleMatrix        需要被标准化的数值，可以是坐标或向量，更多信息需要查阅实现
+     *                            <p>
+     *                            The value to be normalized, which can be a coordinate or a vector. For more information, see the implementation
+     * @return v的标准化样式
+     * <p>
+     * Normalized style of v
+     */
+    public DoubleMatrix pretreatment(DataStandardization dataStandardization, DoubleMatrix doubleMatrix) {
+        return dataStandardization.pretreatment(doubleMatrix);
     }
 
     /**
@@ -691,13 +899,6 @@ public final class AlgorithmStar<diffValue, featureReturn> {
     public DoubleVector pretreatment(RangeDataStandardization rangeDataStandardization, FastRangeDoubleVector fastRangeDoubleVector) {
         return rangeDataStandardization.pretreatment(fastRangeDoubleVector);
     }
-
-    /*
-     ********************************************************************
-     * 概率算法组件计算函数开始分界线
-     * Probability algorithm component calculation function start boundary
-     ********************************************************************
-     */
 
     /**
      * 计算一个矩阵中的某些条件限制下的联合概率结果 P(A|B) 其中的分子与分母值！
@@ -833,7 +1034,6 @@ public final class AlgorithmStar<diffValue, featureReturn> {
         return decision(schemeAlgorithm, doubleMatrix.toArrays(), 2, arrayDoubleFiltering);
     }
 
-
     /**
      * 通过决策树，对传进进来的决策序列重新排列，使其成为最优解。
      * <p>
@@ -877,7 +1077,6 @@ public final class AlgorithmStar<diffValue, featureReturn> {
     public ArrayList<ArrayDoubleFiltering> decision(SchemeAlgorithm schemeAlgorithm, double[][] ints, ArrayDoubleFiltering... arrayDoubleFiltering) {
         return decision(schemeAlgorithm, ints, 2, arrayDoubleFiltering);
     }
-
 
     /**
      * 通过决策树，对传进进来的决策序列重新排列，使其成为最优解。

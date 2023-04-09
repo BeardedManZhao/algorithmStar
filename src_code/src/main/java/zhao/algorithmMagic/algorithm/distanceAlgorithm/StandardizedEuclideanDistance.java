@@ -4,30 +4,22 @@ import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.algorithm.normalization.Z_ScoreNormalization;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
-import zhao.algorithmMagic.operands.coordinate.*;
+import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateMany;
+import zhao.algorithmMagic.operands.coordinate.FloatingPointCoordinates;
+import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateMany;
+import zhao.algorithmMagic.operands.coordinate.IntegerCoordinates;
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
+import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
 import zhao.algorithmMagic.utils.ASClass;
-import zhao.algorithmMagic.utils.DependentAlgorithmNameLibrary;
 
 /**
  * Java类于 2022/10/13 10:30:50 创建
  * <p>
  * 标准化欧几里得度量，先将每一个维度的量进行标准化，然后再进行欧几里得计算
  *
- * @param <I> 本类中参与运算的整数坐标的类型，您需要在此类种指定该类可以运算的整形坐标
- *            <p>
- *            The type of integer coordinates involved in the operation in this class, you need to specify the integer coordinates that this class can operate on in this class.
- * @param <D> 本类中参与运算的浮点坐标的类型，您需要在此类种指定该类可以运算的浮点坐标
- *            <p>
- *            The type of floating-point coordinates involved in the operation in this class. You need to specify the floating-point coordinates that this class can operate on.
  * @author LingYuZhao
  */
-public class StandardizedEuclideanDistance<I extends IntegerCoordinates<I> & Coordinate<I>, D extends FloatingPointCoordinates<?>> extends EuclideanMetric<I, D> {
-
-    private final EuclideanMetric<IntegerCoordinateMany, DoubleCoordinateMany> euclideanMetric = EuclideanMetric.getInstance(DependentAlgorithmNameLibrary.EUCLIDEAN_METRIC_NAME);
-
-    protected StandardizedEuclideanDistance() {
-        super();
-    }
+public class StandardizedEuclideanDistance extends EuclideanMetric<IntegerCoordinateMany, DoubleCoordinateMany> {
 
     protected StandardizedEuclideanDistance(String algorithmName) {
         super(algorithmName);
@@ -37,37 +29,22 @@ public class StandardizedEuclideanDistance<I extends IntegerCoordinates<I> & Coo
      * 获取到该算法的类对象，
      *
      * @param Name 该算法的名称
-     * @param <II> 该算法用来处理的整形坐标是什么数据类型
-     *             <p>
-     *             What data type is the integer coordinate used by this algorithm?
-     * @param <DD> 该算法用来处理的浮点坐标是什么数据类型
      * @return 算法类对象
      * @throws TargetNotRealizedException 当您传入的算法名称对应的组件不能被成功提取的时候会抛出异常
      */
-    public static <II extends IntegerCoordinates<II> & Coordinate<II>, DD extends FloatingPointCoordinates<?>> StandardizedEuclideanDistance<II, DD> getInstance2(String Name) {
+    public static StandardizedEuclideanDistance getInstance2(String Name) {
         if (OperationAlgorithmManager.containsAlgorithmName(Name)) {
             OperationAlgorithm operationAlgorithm = OperationAlgorithmManager.getInstance().get(Name);
-            if (operationAlgorithm instanceof StandardizedEuclideanDistance<?, ?>) {
+            if (operationAlgorithm instanceof StandardizedEuclideanDistance) {
                 return ASClass.transform(operationAlgorithm);
             } else {
                 throw new TargetNotRealizedException("您提取的[" + Name + "]算法被找到了，但是它不属于StandardizedEuclideanDistance类型，请您为这个算法重新定义一个名称。\n" +
                         "The [" + Name + "] algorithm you extracted has been found, but it does not belong to the StandardizedEuclideanDistance type. Please redefine a name for this algorithm.");
             }
         } else {
-            StandardizedEuclideanDistance<II, DD> standardizedEuclideanDistance = new StandardizedEuclideanDistance<>(Name);
+            StandardizedEuclideanDistance standardizedEuclideanDistance = new StandardizedEuclideanDistance(Name);
             OperationAlgorithmManager.getInstance().register(standardizedEuclideanDistance);
             return standardizedEuclideanDistance;
-        }
-    }
-
-    public EuclideanMetric<IntegerCoordinateMany, DoubleCoordinateMany> toEuclideanMetric() {
-        if (this.euclideanMetric != null) {
-            return this.euclideanMetric;
-        } else {
-            String euclideanMetricName = DependentAlgorithmNameLibrary.EUCLIDEAN_METRIC_NAME;
-            logger.warn("名称为：[" + euclideanMetricName + "]的算法被删除了，为了避免异常，标准化欧几里德算法模块所需的欧几里德算法依赖，已经直接绑定到OperationAlgorithmManager，如果您想要避免该警告，请您在不删除[EuclideanMetric]算法的前提下重启程序！\n" +
-                    "The algorithm named: [" + euclideanMetricName + "] has been removed. To avoid exceptions, the Euclidean algorithm dependencies required by the standardized Euclidean algorithm module have been directly bound to the Operation Algorithm Manager, if you want to avoid the warning , please restart the program without deleting the [" + euclideanMetricName + "] algorithm!");
-            return EuclideanMetric.getInstance(euclideanMetricName);
         }
     }
 
@@ -82,13 +59,13 @@ public class StandardizedEuclideanDistance<I extends IntegerCoordinates<I> & Coo
      * @return Euclidean distance from its own coordinates to the origin
      */
     @Override
-    public double getTrueDistance(FloatingPointCoordinates<D> iFloatingPointCoordinates) {
+    public double getTrueDistance(FloatingPointCoordinates<DoubleCoordinateMany> iFloatingPointCoordinates) {
         double[] doubles1 = iFloatingPointCoordinates.toArray();
         double[] doublesZ = Z_ScoreNormalization.StandardizedSequence(doubles1);
         if (OperationAlgorithmManager.PrintCalculationComponentLog) {
             logger.info("√ ⁿ∑₁( (iFloatingPointCoordinates(n) / StandardSequence(n))² )");
         }
-        return this.euclideanMetric.getTrueDistance(new DoubleCoordinateMany(DivideByNormalization(doubles1, doublesZ)));
+        return super.getTrueDistance(new DoubleCoordinateMany(DivideByNormalization(doubles1, doublesZ)));
     }
 
     /**
@@ -132,13 +109,13 @@ public class StandardizedEuclideanDistance<I extends IntegerCoordinates<I> & Coo
      * @return Euclidean distance from its own coordinates to the origin
      */
     @Override
-    public double getTrueDistance(IntegerCoordinates<I> integerCoordinates) {
+    public double getTrueDistance(IntegerCoordinates<IntegerCoordinateMany> integerCoordinates) {
         int[] doubles1 = integerCoordinates.toArray();
         int[] doublesZ = Z_ScoreNormalization.StandardizedSequence(doubles1);
         if (OperationAlgorithmManager.PrintCalculationComponentLog) {
             logger.info("√ ⁿ∑₁( (integerCoordinates(n) / StandardSequence(n))² )");
         }
-        return this.euclideanMetric.getTrueDistance(new IntegerCoordinateMany(DivideByNormalization(doubles1, doublesZ)));
+        return super.getTrueDistance(new IntegerCoordinateMany(DivideByNormalization(doubles1, doublesZ)));
     }
 
     /**
@@ -152,13 +129,13 @@ public class StandardizedEuclideanDistance<I extends IntegerCoordinates<I> & Coo
      * @return True Euclidean distance between two points
      */
     @Override
-    public double getTrueDistance(IntegerCoordinates<I> integerCoordinateMany1, IntegerCoordinates<I> integerCoordinateMany2) {
+    public double getTrueDistance(IntegerCoordinates<IntegerCoordinateMany> integerCoordinateMany1, IntegerCoordinates<IntegerCoordinateMany> integerCoordinateMany2) {
         if (OperationAlgorithmManager.PrintCalculationComponentLog) {
             logger.info("√ ⁿ∑₁( " + integerCoordinateMany1 + " - " + integerCoordinateMany2 + ").map(i -> (i / StandardSequence)²)");
         }
         int[] doubles1 = integerCoordinateMany1.extend().diff(integerCoordinateMany2.extend()).toArray();
         int[] doublesZ = Z_ScoreNormalization.StandardizedSequence(doubles1);
-        return this.euclideanMetric.getTrueDistance(new IntegerCoordinateMany(DivideByNormalization(doubles1, doublesZ)));
+        return super.getTrueDistance(new IntegerCoordinateMany(DivideByNormalization(doubles1, doublesZ)));
     }
 
     /**
@@ -171,13 +148,13 @@ public class StandardizedEuclideanDistance<I extends IntegerCoordinates<I> & Coo
      * @return True Euclidean distance between two points
      */
     @Override
-    public double getTrueDistance(FloatingPointCoordinates<D> doubleCoordinateMany1, FloatingPointCoordinates<D> doubleCoordinateMany2) {
+    public double getTrueDistance(FloatingPointCoordinates<DoubleCoordinateMany> doubleCoordinateMany1, FloatingPointCoordinates<DoubleCoordinateMany> doubleCoordinateMany2) {
         if (OperationAlgorithmManager.PrintCalculationComponentLog) {
             logger.info("√ ⁿ∑₁( " + doubleCoordinateMany1 + " - " + doubleCoordinateMany2 + ").map(d -> (d / StandardSequence)²)");
         }
         double[] doubles1 = doubleCoordinateMany1.diff(doubleCoordinateMany2.extend()).toArray();
         double[] doublesZ = Z_ScoreNormalization.StandardizedSequence(doubles1);
-        return this.euclideanMetric.getTrueDistance(new DoubleCoordinateMany(DivideByNormalization(doubles1, doublesZ)));
+        return super.getTrueDistance(new DoubleCoordinateMany(DivideByNormalization(doubles1, doublesZ)));
     }
 
 
@@ -223,7 +200,7 @@ public class StandardizedEuclideanDistance<I extends IntegerCoordinates<I> & Coo
     public double getTrueDistance(double[] doubles1, double[] doubles2) {
         double[] doubles11 = new DoubleCoordinateMany(doubles1).diff(new DoubleCoordinateMany(doubles2)).toArray();
         double[] doubles22 = Z_ScoreNormalization.StandardizedSequence(doubles11);
-        return this.euclideanMetric.getTrueDistance(new DoubleCoordinateMany(DivideByNormalization(doubles11, doubles22)));
+        return super.getTrueDistance(new DoubleCoordinateMany(DivideByNormalization(doubles11, doubles22)));
     }
 
     /**
@@ -241,6 +218,46 @@ public class StandardizedEuclideanDistance<I extends IntegerCoordinates<I> & Coo
     public double getTrueDistance(int[] ints1, int[] ints2) {
         double[] doubles11 = new DoubleCoordinateMany(ints1).diff(new DoubleCoordinateMany(ints2)).toArray();
         double[] doubles22 = Z_ScoreNormalization.StandardizedSequence(doubles11);
-        return this.euclideanMetric.getTrueDistance(new DoubleCoordinateMany(DivideByNormalization(doubles11, doubles22)));
+        return super.getTrueDistance(new DoubleCoordinateMany(DivideByNormalization(doubles11, doubles22)));
+    }
+
+    /**
+     * 计算两个矩阵对象之间的距离度量函数，通过该函数可以实现两个矩阵对象度量系数的计算。
+     * <p>
+     * Calculates the distance metric function between two matrix objects, through which the metric coefficients of two matrix objects can be calculated.
+     *
+     * @param integerMatrix1 需要被进行计算的矩阵对象。
+     *                       <p>
+     *                       The matrix object that needs to be calculated.
+     * @param matrix2        需要被进行计算的矩阵对象。
+     *                       <p>
+     *                       The matrix object that needs to be calculated.
+     * @return 计算出来的度量结果系数。
+     * <p>
+     * The calculated measurement result coefficient.
+     */
+    @Override
+    public double getTrueDistance(IntegerMatrix integerMatrix1, IntegerMatrix matrix2) {
+        throw new UnsupportedOperationException("The matrix does not currently support serialization operations");
+    }
+
+    /**
+     * 计算两个矩阵对象之间的距离度量函数，通过该函数可以实现两个矩阵对象度量系数的计算。
+     * <p>
+     * Calculates the distance metric function between two matrix objects, through which the metric coefficients of two matrix objects can be calculated.
+     *
+     * @param matrix1 需要被进行计算的矩阵对象。
+     *                <p>
+     *                The matrix object that needs to be calculated.
+     * @param matrix2 需要被进行计算的矩阵对象。
+     *                <p>
+     *                The matrix object that needs to be calculated.
+     * @return 计算出来的度量结果系数。
+     * <p>
+     * The calculated measurement result coefficient.
+     */
+    @Override
+    public double getTrueDistance(DoubleMatrix matrix1, DoubleMatrix matrix2) {
+        throw new UnsupportedOperationException("The matrix does not currently support serialization operations");
     }
 }

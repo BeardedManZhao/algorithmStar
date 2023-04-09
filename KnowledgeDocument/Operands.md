@@ -427,19 +427,27 @@ public class MAIN1 {
     }
 }
 ```
+
 ## Table
 
-Table is the data object used for data analysis in the AS database. Its representation is a table with row and column indexes, which can realize convenient data processing tasks. Data can be loaded and processed in the AS database through the DataFrame object.
+Table is the data object used for data analysis in the AS database. Its representation is a table with row and column
+indexes, which can realize convenient data processing tasks. Data can be loaded and processed in the AS database through
+the DataFrame object.
 
 ### DataFrameBuilder & DataFrame
 
-DataFrameBuilder and DataFrame are used for data loading and data analysis respectively. In the process of data loading, a DataFrame can be constructed through DataFameBuilder data object fast and easy to understand functions, and the DataFrame can be used for data processing.
-DataFrame is called "DF" for short. In the data processing stage, many functions are designed in SQL style, which can effectively reduce learning costs and focus on more important things. Next, we will show the basic use of DataFrameBuilder.
+DataFrameBuilder and DataFrame are used for data loading and data analysis respectively. In the process of data loading,
+a DataFrame can be constructed through DataFameBuilder data object fast and easy to understand functions, and the
+DataFrame can be used for data processing. DataFrame is called "DF" for short. In the data processing stage, many
+functions are designed in SQL style, which can effectively reduce learning costs and focus on more important things.
+Next, we will show the basic use of DataFrameBuilder.
 
 #### Load data using FDataFrame
--Read Database
-  In the AS database, you can load data into an FDataFrame data object, which can realize basic data reading and data processing functions, and effective data control. You can load data in the database into an FDataFrame. Next is the code example about database data loading.
-    -It should be noted that when reading the database, please import the JDBC driver class in the project.
+
+-Read Database In the AS database, you can load data into an FDataFrame data object, which can realize basic data
+reading and data processing functions, and effective data control. You can load data in the database into an FDataFrame.
+Next is the code example about database data loading. -It should be noted that when reading the database, please import
+the JDBC driver class in the project.
 
 ```java
 package zhao.algorithmMagic;
@@ -466,8 +474,9 @@ public class MAIN1 {
   }
 }
 ```
--Read file system
-  For the reading of the file system, FDataFrame can easily read the local file system without relying on any third-party library. Next, we will implement the specific steps!
+
+-Read file system For the reading of the file system, FDataFrame can easily read the local file system without relying
+on any third-party library. Next, we will implement the specific steps!
 
 ```java
 package zhao.algorithmMagic;
@@ -500,6 +509,7 @@ public class MAIN1 {
   }
 }
 ```
+
 #### Comprehensive case
 
 ```java

@@ -93,6 +93,20 @@ public final class ImageRenderingIntegrator implements AlgorithmIntegrator<Image
      * @return 如果返回true 代表绘制成功！
      */
     public static boolean draw(String outFilePath, Color[][] colors, int imageWidth, int imageHeight, int pixelMagnification, boolean writeNumber) {
+        BufferedImage image = drawBufferedImage(colors, imageWidth, imageHeight, pixelMagnification, writeNumber);
+        // 输出图片
+        return ASIO.outImage(image, outFilePath);
+    }
+
+    /**
+     * @param colors             需要被用来作为图像输出的像素矩阵对象
+     * @param imageWidth         需要绘制图像的宽度
+     * @param imageHeight        需要绘制图像的高度
+     * @param pixelMagnification 矩阵中一个元素代表的像素块倍率，也是一个像素块大小
+     * @param writeNumber        如果设置为true，代表输出图片的时候将颜色编号打上去
+     * @return 如果返回true 代表绘制成功！
+     */
+    public static BufferedImage drawBufferedImage(Color[][] colors, int imageWidth, int imageHeight, int pixelMagnification, boolean writeNumber) {
         // 创建一个图片
         int width = imageWidth * pixelMagnification;
         int height = imageHeight * pixelMagnification;
@@ -125,8 +139,7 @@ public final class ImageRenderingIntegrator implements AlgorithmIntegrator<Image
                 x1 = 0;
             }
         }
-        // 输出图片
-        return ASIO.outImage(image, outFilePath);
+        return image;
     }
 
     @Override

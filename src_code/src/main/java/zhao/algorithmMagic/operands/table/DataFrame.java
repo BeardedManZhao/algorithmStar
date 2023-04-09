@@ -1,8 +1,11 @@
 package zhao.algorithmMagic.operands.table;
 
+import zhao.algorithmMagic.io.OutputComponent;
 import zhao.algorithmMagic.operands.Operands;
 import zhao.algorithmMagic.utils.transformation.Transformation;
 
+import java.io.BufferedWriter;
+import java.io.PrintStream;
 import java.io.Serializable;
 import java.util.List;
 
@@ -254,6 +257,34 @@ public interface DataFrame extends AggDataFrameData, Iterable<Series>, Serializa
      * @return 输出之后会返回数据集本身，不会终止调用
      */
     DataFrame into_outHtml(String outPath, String tableName);
+
+    /**
+     * 将计算结果提供给指定的数据输出组件进行数据的输出操作，
+     *
+     * @param outputComponent 输出数据需要使用的数据输出组件
+     * @return 输出之后会返回数据集本身，不会终止调用。
+     * <p>
+     * After output, the data set itself will be returned and the call will not be terminated.
+     */
+    DataFrame into_outComponent(OutputComponent outputComponent);
+
+    /**
+     * 默认方式查看 DF 数据对象中的数据。
+     * <p>
+     * The default method is to view data in DF data objects.
+     */
+    void show();
+
+    /**
+     * 指定数据流的方式查看 DF 数据对象中的数据，该操作将会使得 DF 数据被输出到数据流中。
+     * <p>
+     * Specify the method of viewing data in the DF data object through a data stream, which will cause the DF data to be output into the data stream.
+     *
+     * @param bufferedWriter 需要传递数据的数据流对象。
+     */
+    void show(BufferedWriter bufferedWriter);
+
+    void show(PrintStream printStream);
 
     /**
      * 将DF对象中的所有数据转换成为一个list容器。

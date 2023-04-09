@@ -1,6 +1,6 @@
 # ![image](https://user-images.githubusercontent.com/113756063/194830221-abe24fcc-484b-4769-b3b7-ec6d8138f436.png) Algorithm Star-MachineBrain
 
-- 切换到 [中文文档](https://github.com/BeardedManZhao/algorithmStar/blob/main/src_code/README-Chinese.md)
+- 切换到 [中文文档](https://github.com/BeardedManZhao/algorithmStar/blob/Zhao-develop/src_code/README-Chinese.md)
 - knowledge base
   <a href="https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/knowledge%20base.md">
   <img src = "https://user-images.githubusercontent.com/113756063/194832492-f8c184c1-55e8-4f16-943a-34b99ac751d4.png"/>
@@ -8,784 +8,814 @@
 
 ### Update log:
 
-* Framework version: 1.16 - 1.17
-* Change the name of the integrator to Integrator.
-* It provides the calculation support of convolution function, which can enlarge the features and reduce the number of
-  elements in the image matrix.
+* Framework version: 1.17 - 1.18
+* Add implementation support for the diff function to the image matrix, and add powerful subtractive aggregation
+  calculation functions to the matrix object.
 
 ```java
 package zhao.algorithmMagic;
 
-import zhao.algorithmMagic.integrator.ImageRenderingIntegrator;
-import zhao.algorithmMagic.integrator.launcher.ImageRenderingMarLauncher;
-import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
-import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixSpace;
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+
+import java.awt.*;
 
 public class MAIN1 {
     public static void main(String[] args) {
-        String s1 = "C:\\Users\\Liming\\Desktop\\fsDownload\\微信图片_1.jpg";
-        IntegerMatrix integerMatrix;
+        // 获取一张图像的像素矩阵
+        ColorMatrix parse1 = ColorMatrix.parseGrayscale("C:\\Users\\Liming\\Desktop\\fsdownload\\test1.bmp");
+        // 将 parse1 进行二值化
+        parse1.localBinary(ColorMatrix._G_, 30, 0, 0xffffff, 1);
+        // 将 parse1 矩阵腐蚀，然后将腐蚀的结果获取到
+        ColorMatrix parse2 = parse1.erode(3, 3, true, Color.BLACK);
+        // 将两个矩阵进行做差运算，并查看做差之后的图像 该函数等同于取余做差
+        (parse1.diff(parse2)).show("结果图像1");
+        // 将两个矩阵进行 agg 函数的做差运算，这里使用的是 规整做差
+        (parse1.agg(parse2, ColorMatrix.COLOR_DIFF_REGULATE)).show("结果图像2");
+    }
+}
+```
+
+* An aggregation implementation logic has been added to the image matrix, where the absolute value of the difference is
+  returned after the difference is made.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 创建一个图像矩阵
+        ColorMatrix parse = ColorMatrix.parseGrayscale("C:\\Users\\Liming\\Desktop\\fsdownload\\test3.bmp");
+        // 为图像矩阵进行腐蚀和膨胀操作
+        // 黑色作为背景色腐蚀
+        ColorMatrix erode1 = parse.erode(3, 3, true);
+        // 白色作为背景色膨胀
+        ColorMatrix erode2 = parse.erode(3, 3, true, ColorMatrix.WHITE);
+        // 将膨胀的矩阵对象 使用agg函数 减去 腐蚀的矩阵对象
+        (erode2.agg(erode1, ColorMatrix.COLOR_DIFF_ABS)).show("image");
+    }
+}
+```
+
+* When fixing the problem of copying two-dimensional arrays, only deep copies were made at the array level (
+  one-dimensional arrays in two-dimensional arrays did not undergo deep copies). This has now been redesigned to make
+  the deep copy operation effective again.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+
+import java.awt.*;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 获取一张图像的像素矩阵
+        ColorMatrix parse1 = ColorMatrix.parseGrayscale("C:\\Users\\Liming\\Desktop\\fsdownload\\test1.bmp");
+        Color[][] colors = parse1.copyToNewArrays();
+    }
+}
+```
+
+* 新增矩阵内运算函数，该函数能够实现矩阵中所有坐标元素的计算操作，下面是所有支持的计算操作，并返回一个计算之后的矩阵对象。
+
+| Calculating Constants     | effect                  | use                                                                             |
+|---------------------------|-------------------------|---------------------------------------------------------------------------------|
+| CALCULATE_GRADIENT_RL     | mid = right - left      | Calculate the gradient of the image on the left and right.                      |
+| CALCULATE_GRADIENT_LH     | mid = low - high        | Calculate the gradient of the image up and down.                                |
+| CALCULATE_GRADIENT_RL_ABS | mid = abs(right - left) | Calculate the absolute gradient value of the image at the left and right sides. |
+| CALCULATE_GRADIENT_LH_ABS | mid = abs(low - high)   | Calculate the absolute gradient value of the image at the top and bottom.       |
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        ColorMatrix calculate1;
+        ColorMatrix calculate2;
         {
-            // 设置权重
-            IntegerMatrix weight = IntegerMatrix.parse(
-                    new int[]{0, -1},
-                    new int[]{-1, 2},
-                    new int[]{0, 0}
-            );
-            // 读取图像并获取到三通道矩阵空间
-            IntegerMatrixSpace parse = IntegerMatrixSpace.parse(s1);
-            // 对图像进行卷积，获取三个色彩通道的矩阵空间的和
-            integerMatrix = parse.foldingAndSum(2, 3, IntegerMatrixSpace.parse(weight, weight, weight));
+            // 创建一个图像矩阵
+            ColorMatrix parse = ColorMatrix.parseGrayscale("C:\\Users\\Liming\\Desktop\\fsdownload\\test3.bmp");
+            // 进行左右的梯度计算
+            parse.calculate(ColorMatrix.CALCULATE_GRADIENT_RL, true).show("image1");
+            // 进行上下的梯度计算
+            parse.calculate(ColorMatrix.CALCULATE_GRADIENT_LH, true).show("image2");
+            // 进行左右的绝对值梯度计算
+            calculate1 = parse.calculate(ColorMatrix.CALCULATE_GRADIENT_RL_ABS, true);
+            calculate1.show("image3");
+            // 进行上下的绝对值梯度计算
+            calculate2 = parse.calculate(ColorMatrix.CALCULATE_GRADIENT_LH_ABS, true);
+            calculate2.show("image4");
         }
-        // 输出图片1的卷积图像文件
-        ImageRenderingIntegrator image = new ImageRenderingIntegrator(
-                "image",
-                new ImageRenderingMarLauncher<>(integerMatrix, "C:\\Users\\Liming\\Desktop\\fsDownload\\res12.jpg", 1)
-        );
-        if (image.run()) {
-            System.out.println("ok!!!");
-        }
+        // 进行两幅图像的加法合并 并打印新矩阵
+        (calculate1.add(calculate2)).show("image");
     }
 }
 ```
 
-* The image matrix supports displaying images on the screen directly through the show function.
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.operands.matrix.ColorMatrix;
-
-public class MAIN1 {
-    public static void main(String[] args) throws InterruptedException {
-        String s1 = "C:\\Users\\Liming\\Desktop\\fsDownload\\微信图片_1.jpg";
-        ColorMatrix parse = ColorMatrix.parse(s1);
-        parse.show("image");
-        Thread.sleep(1024);
-        parse.colorReversal(false);
-        parse.show("image");
-    }
-}
-```
-
-* Optimize the algorithm of maximum random scrambling times in the random scrambling function shuffle, so that it will
-  not have out-of-bounds exceptions.
-* Optimize the function logic of random access to data in the matrix through column names, and use hash to map
-  addresses.
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.operands.matrix.ColumnDoubleMatrix;
-
-import java.util.Arrays;
-import java.util.Random;
-
-public class MAIN1 {
-    public static void main(String[] args) {
-        // 构建一份矩阵数据
-        double[][] data = new double[][]{
-                new double[]{10, 11, 14, 10, 100},
-                new double[]{11, 11, 14, 10, 100},
-                new double[]{25, 20, 28, 20, 100},
-                new double[]{26, 20, 28, 20, 100}
-        };
-        // 将矩阵数据使用指定列与行名称的方式创建出来
-        ColumnDoubleMatrix columnDoubleMatrix = ColumnDoubleMatrix.parse(
-                new String[]{"col1", "col2", "col3", "col4", "col5"},
-                new String[]{"row1", "row2", "row3", "row4"},
-                data
-        );
-        // 使用不创建新矩阵的方式打乱其中的数据顺序 且最多打乱 10 次
-        columnDoubleMatrix.shuffle(new Random(), false, 10);
-        // 打印出矩阵数据
-        System.out.println(columnDoubleMatrix);
-        // 打印出矩阵中的 col2 列 在新版中该函数采取哈希实现 速度提升很明显
-        System.out.println(Arrays.toString(columnDoubleMatrix.getArrayByColName("col2")));
-        // 打印出矩阵中的 row2 行 在新版中该函数采取哈希实现 速度提升很明显
-        System.out.println(Arrays.toString(columnDoubleMatrix.getArrayByRowName("row2")));
-    }
-}
-```
-
-* It supports the call operation of the quick save function of the image, making the saving of the image file easier.
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.operands.matrix.ColorMatrix;
-
-public class MAIN1 {
-    public static void main(String[] args) {
-        String s1 = "C:\\Users\\zhao\\Desktop\\fsDownload\\微信图片_2.jpg";
-        // 获取到图像矩阵对象
-        ColorMatrix parse = ColorMatrix.parse(s1);
-        // 将图像在原图像的基础上进行颜色反转操作
-        parse.colorReversal(false);
-        // 查看颜色反转之后的图像
-        parse.show("image1");
-        // 输出反转之后的图像
-        parse.save("C:\\Users\\zhao\\Desktop\\fsDownload\\res123.jpg");
-    }
-}
-```
-
-* The "SaveMatrix" interface is added. All matrices that implement this interface can be saved in structured or
-  unstructured way.
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.operands.matrix.ColorMatrix;
-
-public class MAIN1 {
-    public static void main(String[] args) {
-        String s1 = "C:\\Users\\Liming\\Desktop\\fsDownload\\微信图片_2.jpg";
-        // 获取到图像矩阵对象
-        ColorMatrix parse = ColorMatrix.parse(s1);
-        // 输出图像RGB文本数据
-        parse.save("C:\\Users\\Liming\\Desktop\\fsDownload\\res1234.csv", ',');
-    }
-}
-```
-
-* A data analysis library is added to the AS library, which uses SQL styles to process data. Through this library, data
-  in the database can be easily obtained into memory for processing.
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.operands.table.DataFrame;
-import zhao.algorithmMagic.operands.table.FDataFrame;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-
-public class MAIN1 {
-    public static void main(String[] args) throws SQLException {
-        // 准备数据库连接对象
-        Connection connection = DriverManager.getConnection("jdbc:mysql://192.168.0.101:38243/tq_SCHOOL", "liming", "liming7887");
-        // 将数据库数据对象加载成 FDF
-        DataFrame execute = FDataFrame.builder(connection) // 指定数据库连接
-                .create("*") // 指定查询字段
-                .from("STU_FIVE") // 指定查询表
-                .primaryKey(0) // 指定内存AS表的主键（AS会自动建立行索引）数据库查询需要使用索引指定哦！
-                .execute();// 开始查询
-        // 打印出 FDF 中的数据
-        System.out.println(execute);
-
-        // 开始查询 FDF
-        // 正序打印出 FDF 中 所有name长度为3的人员中男女生的人数 打印出前 3 行数据
-        DataFrame select = execute
-                .select("name", "sex") // 查询其中的 name sex 列
-                .where(v -> v.getCell(0).getStringValue().length() == 3) // 获取到其中的名字长度为 3 的数据行
-                .groupBy("sex") // 按照 sex 列分组
-                .count() // 将每一组进行统计
-                .sort("count()") // 按照统计结果进行正序排序
-                .limit(3); // 获取最多前3行数据
-        System.out.println(select.into_outfile("C:\\Users\\zhao\\Desktop\\fsDownload\\res1.csv"));
-        // 打印存储 FDF 中的数据行数
-        System.out.println("数据行数 = " + execute.count());
-        // 打印出其中的信息
-        System.out.println(execute.desc());
-        // 获取到 赵凌宇 的信息 由于 name 列是主键，因此可以直接通过这里获取到数据
-        System.out.println(execute.selectRow("赵凌宇"));
-    }
-}
-```
-
-* Use FDataFrame to load the data in the database and file.
+* The DF object's select * is supported. Using * as a query placeholder will not perform any operations, but will
+  directly return data.
 
 ```java
 package zhao.algorithmMagic;
 
 import zhao.algorithmMagic.operands.table.*;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-
-public class MAIN1 {
-    public static void main(String[] args) throws SQLException {
-        // 准备数据库连接对象
-        Connection connection = DriverManager.getConnection("jdbc:mysql://192.168.0.101:38243/tq_SCHOOL", "liming", "liming7887");
-        // 将数据库数据对象加载成 FDF
-        DataFrame execute = FDataFrame.builder(connection) // 指定数据库连接
-                .create("*") // 指定查询字段
-                .from("STU_FIVE") // 指定查询表
-                .where(" name = '赵凌宇' ") // 指定查询条件
-                .primaryKey(0) // 指定内存AS表的主键（AS会自动建立行索引）数据库查询需要使用索引指定哦！
-                .execute();// 开始查询
-        // 打印出 FDF 中的数据
-        System.out.println(execute);
-    }
-}
-```
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.operands.table.DataFrame;
-import zhao.algorithmMagic.operands.table.FDataFrame;
-
-import java.io.File;
-import java.sql.SQLException;
-import java.util.Objects;
-
 public class MAIN1 {
     public static void main(String[] args) {
-        // 准备文件对象
-        File file = new File("C:\\Users\\zhao\\Desktop\\out\\res1.csv");
-        // 使用 FDF 加载文件
-        DataFrame execute1 = FDataFrame.builder(file)
-                // 文件对象的读取需要指定文本分隔符
-                .setSep(',')
-                // 文件对象需要指定好列名称，不能使用 * 这里代表的不是查询，而是创建一个DF的列字段
-                .create("id", "name", "sex")
-                // 文件对象需要使用lambda表达式进行数据的过滤
-                .where(v -> Objects.equals(v.getCell(1).getStringValue(), "赵凌宇"))
-                // 文件对象的主键指定允许使用列名称
-                .primaryKey("name")
-                // 执行查询
-                .execute();
-        // 打印出结果数据
-        System.out.println(execute1);
-    }
-}
-  ```
-
-* Limit FDF by line name
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.operands.table.DataFrame;
-import zhao.algorithmMagic.operands.table.FDataFrame;
-
-import java.io.File;
-import java.sql.SQLException;
-
-public class MAIN1 {
-    public static void main(String[] args) {
-        // 准备文件对象
-        File file = new File("C:\\Users\\zhao\\Desktop\\out\\res1.csv");
-        // 使用 FDF 加载文件
-        DataFrame execute1 = FDataFrame.builder(file)
-                // 文件对象的读取需要指定文本分隔符
-                .setSep(',')
-                // 文件对象需要指定好列名称，不能使用 * 这里代表的不是查询，而是创建一个DF的列字段
-                .create("id", "name", "sex")
-                // 文件对象的主键指定允许使用列名称
-                .primaryKey("name")
-                // 执行查询
-                .execute();
-        // 打印出结果数据 这里打印出从 赵 到 贾 之间的数据行
-        System.out.println(execute1.limit("赵", "贾"));
-    }
-}
-```
-
-* Support the operations of aliasing columns and adding data rows.
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.operands.table.DataFrame;
-import zhao.algorithmMagic.operands.table.FDataFrame;
-import zhao.algorithmMagic.operands.table.FieldCell;
-
-import java.io.File;
-import java.sql.SQLException;
-
-public class MAIN1 {
-    public static void main(String[] args) {
-        // 准备文件对象
-        File file = new File("C:\\Users\\zhao\\Desktop\\out\\res1.csv");
-        // 使用 FDF 加载文件
-        DataFrame execute1 = FDataFrame.builder(file)
-                // 文件对象的读取需要指定文本分隔符
-                .setSep(',')
-                // 文件对象需要指定好列名称，不能使用 * 这里代表的不是查询，而是创建一个DF的列字段
-                .create("id", "name", "sex")
-                // 文件对象的主键指定允许使用列名称
-                .primaryKey("name")
-                // 执行查询
-                .execute();
-        // 按照性别分组，计算出男女生人数
+        // 创建一个空的 DataFrame 对象
+        FDataFrame dataFrame = FDataFrame.select(
+                FieldCell.parse("id", "name", "sex", "age"), 1
+        );
+        // 手动插入数据
+        dataFrame.insert(
+                FinalSeries.parse("1", "zhao", "M", "19"),
+                FinalSeries.parse("2", "tang", "W", "18"),
+                FinalSeries.parse("3", "yang", "W", "20"),
+                FinalSeries.parse("4", "shen", "W", "19")
+        );
+        // 打印出 select * 的数据
         System.out.println(
-                execute1
-                        // 指定查询的列，并起别名
-                        .select(FieldCell.$("sex").as("性别"))
-                        // 按照 sex 分组
-                        .groupBy("性别")
-                        // 进行 组内的计数
-                        .count()
-                        // 指定查询的列 并起别名
-                        .select(
-                                FieldCell.$("性别"),
-                                FieldCell.$("count()").as("人数")
-                        )
+                dataFrame.select("*")
         );
     }
 }
 ```
 
-* Capable of functional update of row or column data for all values in DF data set objects, and supports conversion from
-  DF data objects to matrices.
+* In a color value quadrature calculation scheme, the processing logic is to take the current value of% 256 as the
+  current color value if the value exceeds the range.
 
 ```java
 package zhao.algorithmMagic;
 
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+
+import java.awt.*;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        Color[] colors = {Color.CYAN, Color.GREEN, Color.PINK, Color.red};
+        // 手动创建图像矩阵
+        ColorMatrix parse = ColorMatrix.parse(
+                colors, colors, colors, colors
+        );
+        // 查看图像矩阵
+        parse.show("image", 100, 100);
+        // 将图像中的所有像素与自身矩阵进行规整乘法计算
+        ColorMatrix agg1 = parse.agg(parse, ColorMatrix.COLOR_MULTIPLY_REGULATE);
+        // 将图像中的所有像素与自身矩阵进行取余乘法计算
+        ColorMatrix agg2 = parse.agg(parse, ColorMatrix.COLOR_MULTIPLY_REMAINDER);
+        // 查看两个图像数据
+        agg1.show("image1", 100, 100);
+        agg2.show("image2", 100, 100);
+    }
+}
+```
+
+* Support area calculation of image contours, using pixels as the calculation unit during calculation, and support
+  customization of contour colors.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+
+import java.awt.*;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        ColorMatrix resImage1;
+        {
+            // 获取一张图像的像素矩阵
+            ColorMatrix colors = ColorMatrix.parse("C:\\Users\\Liming\\Desktop\\fsdownload\\test1.bmp");
+            // 将图像拷贝一份出来
+            ColorMatrix parse1 = ColorMatrix.parse(colors.copyToNewArrays());
+            // 将 parse1 进行二值化 // 请注意阈值
+            parse1.globalBinary(ColorMatrix._G_, 60, 0, 0xffffff);
+            // 将 parse1 矩阵腐蚀，然后将腐蚀的结果获取到
+            ColorMatrix parse2 = parse1.erode(2, 2, true, Color.BLACK);
+            // 将 parse1 矩阵中的白色作为腐蚀背景色（膨胀）
+            parse1.erode(2, 2, false, Color.WHITE);
+            // 查看临时结果
+            parse1.show("image1");
+            parse2.show("image2");
+            // 将两个矩阵进行做差运算，并查看做差之后的图像
+            resImage1 = parse1.diff(parse2);
+            resImage1.show("轮廓图像");
+        }
+        // 查看结果数据
+        resImage1.show("绘制之后的结果图像");
+        // 开始提取白色轮廓线内的面积
+        System.out.print("轮廓内面积 = ");
+        System.out.println(resImage1.contourArea(ColorMatrix.WHITE));
+    }
+}
+```
+
+* Supports the operation of enclosing rectangles with contours. With the help of this function, all contours in the
+  image will be unified into a circle, forming a large matrix.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+import zhao.algorithmMagic.operands.matrix.RectangleMatrix;
+
+import java.awt.*;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        ColorMatrix parse1;
+        {
+            // 获取一张图像的像素矩阵
+            ColorMatrix colors = ColorMatrix.parse("C:\\Users\\zhao\\Desktop\\fsdownload\\test3.bmp");
+            // 将图像拷贝一份出来
+            parse1 = ColorMatrix.parse(colors.copyToNewArrays());
+            // 将结果二值化
+            parse1.globalBinary(ColorMatrix._G_, 150, 0xffffff, 0);
+        }
+        // 将轮廓线转化成矩形轮廓
+        ColorMatrix parse = RectangleMatrix.parse(parse1, Color.GREEN);
+        parse.show("二值化后的图像");
+        System.out.print(parse);
+        // 将矩形轮廓添加到原矩阵 这里的规则是，如果颜色数值为 0xff000000 就不合并
+        ColorMatrix res = parse1.agg(
+                // 需要被进行添加的矩阵对象
+                parse,
+                // 添加的逻辑 这里使用的是将非黑色的颜色像素直接覆盖 因为除了黑色以外的像素都是轮廓所需
+                (inputType1, inputType2) -> inputType2.getRGB() == 0xff000000 ? inputType1 : inputType2
+        );
+        res.show("结果");
+    }
+}
+```
+
+* Support the calculation of matrix similarity functions. Here, you can calculate the rectangular similarity using the
+  following example.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.algorithm.distanceAlgorithm.ManhattanDistance;
+import zhao.algorithmMagic.algorithm.distanceAlgorithm.StandardizedEuclideanDistance;
+import zhao.algorithmMagic.core.AlgorithmStar;
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
+import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 获取到三个图像矩阵的颜色RGB数值
+        IntegerMatrix parse1, parse2, parse3;
+        {
+            parse1 = IntegerMatrix.parse("C:\\Users\\zhao\\Desktop\\fsdownload\\test3.bmp");
+            parse2 = IntegerMatrix.parse("C:\\Users\\zhao\\Desktop\\fsdownload\\test32.bmp");
+            parse3 = IntegerMatrix.parse("C:\\Users\\zhao\\Desktop\\fsdownload\\test33.bmp");
+        }
+        // 计算出三个图像的相似度系数
+        AlgorithmStar<Object, Object> algorithmStar = AlgorithmStar.getInstance();
+        System.out.println(algorithmStar.getTrueDistance(ManhattanDistance.getInstance("MAN"), parse1, parse2));
+        System.out.println(algorithmStar.getTrueDistance(ManhattanDistance.getInstance("MAN"), parse1, parse3));
+
+        // 将三个图像矩阵的所有数值转换成为double类型，获取到Double矩阵
+        DoubleMatrix parse11, parse22, parse33;
+        {
+            parse11 = DoubleMatrix.parse(parse1);
+            parse22 = DoubleMatrix.parse(parse2);
+            parse33 = DoubleMatrix.parse(parse3);
+        }
+        // 计算出三个图像的相似度系数
+        System.out.println(algorithmStar.getTrueDistance(ManhattanDistance.getInstance("MAN"), parse11, parse22));
+        System.out.println(algorithmStar.getTrueDistance(ManhattanDistance.getInstance("MAN"), parse11, parse33));
+
+        // TODO 值得注意的是 标准化欧几里得暂不支持这类操作的计算 这一块会报错
+        double se = algorithmStar.getTrueDistance(StandardizedEuclideanDistance.getInstance2("SE"), parse11, parse22);
+        System.out.println(se);
+    }
+}
+```
+
+* Support the rendering of regular graphics (rectangles) in the image matrix, and the rendering process will not
+  generate redundant computational data.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+
+import java.awt.*;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        ColorMatrix colorMatrix1;
+        // 将图像与样本读取进来
+        colorMatrix1 = ColorMatrix.parse("C:\\Users\\zhao\\Desktop\\fsdownload\\test3.bmp");
+        // 将图像矩阵绘制到原矩阵中，并查看结果
+        colorMatrix1.drawRectangle(
+                // 矩形的左上角坐标
+                new IntegerCoordinateTwo(40, 30),
+                // 矩形的右下角坐标
+                new IntegerCoordinateTwo(140, 130),
+                // 矩形边框的颜色对象
+                Color.MAGENTA
+        );
+        colorMatrix1.show("res");
+    }
+}
+```
+
+* Support template matching operations for image matrices, where the convolution core size is the template size. When
+  the width of the template and the image rectangle coincide, an optimization algorithm is used.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.algorithm.distanceAlgorithm.ManhattanDistance;
+import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+
+import java.util.Map;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        ColorMatrix colorMatrix1, colorMatrix2;
+        // 将图像与样本读取进来
+        colorMatrix1 = ColorMatrix.parse("C:\\Users\\zhao\\Desktop\\fsdownload\\test3.bmp");
+        colorMatrix2 = ColorMatrix.parse("C:\\Users\\zhao\\Desktop\\fsdownload\\test3YB.bmp");
+        // 使用模板匹配 获取到 colorMat1 中 与 colorMat2 最相近的子矩阵信息
+        // 其中 key 为最相似子矩阵匹配系数 value 为最相似子矩阵左上角坐标
+        Map.Entry<Double, IntegerCoordinateTwo> matching = colorMatrix1.templateMatching(
+                // 相似度计算组件
+                ManhattanDistance.getInstance("MAN"),
+                // 模板图像
+                colorMatrix2,
+                // 需要被计算的颜色通道
+                ColorMatrix._G_,
+                // 卷积时的步长数值
+                10,
+                // 相似度越小 匹配度越大
+                false
+        );
+        System.out.println(matching);
+    }
+}
+```
+
+* Support the normalization operation of matrices, making the normalization calculation applicable to a wider range of
+  objects.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.algorithm.normalization.LinearNormalization;
+import zhao.algorithmMagic.core.AlgorithmStar;
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
+import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        IntegerMatrix integerMatrix = IntegerMatrix.parse(
+                new int[]{1, 2, 3, 4, 5},
+                new int[]{5, 4, 3, 4, 5},
+                new int[]{5, 4, 3, 2, 1}
+        );
+        // 归一化计算组件
+        LinearNormalization line = LinearNormalization.getInstance("line").setMax(3).setMin(-3);
+        AlgorithmStar<Object, Object> algorithmStar = AlgorithmStar.getInstance();
+        // 开始进行归一化操作
+        IntegerMatrix pretreatment1 = algorithmStar.pretreatment(
+                line,
+                // 需要被归一化的矩阵对象
+                integerMatrix
+        );
+        System.out.print(pretreatment1);
+
+        DoubleMatrix doubleMatrix = DoubleMatrix.parse(integerMatrix);
+        DoubleMatrix pretreatment2 = algorithmStar.pretreatment(line, doubleMatrix);
+        System.out.print(pretreatment2);
+    }
+}
+```
+
+* Support the addition and merging calculation of matrices, which can merge two image matrices into the same new image
+  matrix.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+
+public class MAIN1 {
+    public static void main(String[] args) throws MalformedURLException {
+        // 获取到一个图像矩形对象
+        ColorMatrix parse1 = ColorMatrix.parse(
+                new URL("https://user-images.githubusercontent.com/113756063/229441864-ec1770d5-1154-4e9c-837e-a4acfc5fb259.jpg")
+        );
+        // 将图像矩阵对象拷贝出一份并进行颜色反转
+        ColorMatrix parse2 = ColorMatrix.parse(parse1.copyToNewArrays()).colorReversal(false);
+        // 将两个图像矩阵进行合并操作，并展示出上下左右合并的结果图像
+        // 这里是左右合并
+        ColorMatrix colorMatrixLR = parse1.append(parse2, true);
+        // 这里是上下合并
+        ColorMatrix colorMatrixTB = parse1.append(parse2, false);
+        // 查看结果图像
+        colorMatrixLR.show("LR");
+        colorMatrixTB.show("TB");
+    }
+}
+```
+
+* Support obtaining image matrix through camera.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.io.InputCamera;
+import zhao.algorithmMagic.io.InputCameraBuilder;
+import zhao.algorithmMagic.io.InputComponent;
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
+import zhao.algorithmMagic.operands.table.FinalCell;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 获取到摄像头输入设备
+        InputComponent inputComponent = InputCamera.builder()
+                // 要使用的摄像头的名字 索引 或def默认，我们这里使用的是 def 代表使用默认摄像头
+                .addInputArg(InputCameraBuilder.Camera_Index, new FinalCell<>("def"))
+                // 要使用的拍摄图像格式
+                .addInputArg(InputCameraBuilder.Image_Format, new FinalCell<>("JPG"))
+                // 图像尺寸 这里的数值是 WebcamResolution 枚举类的属性字段 VGA
+                .addInputArg(InputCameraBuilder.CUSTOM_VIEW_SIZES, new FinalCell<>("VGA"))
+                .create();
+        ColorMatrix parse1 = ColorMatrix.parse(inputComponent);
+        parse1.show("image1");
+        double[][] double2Array = inputComponent.getDouble2Array();
+        DoubleMatrix parse = DoubleMatrix.parse(double2Array);
+    }
+}
+```
+
+* Supports obtaining DataFrame operand objects and saving DataFrame data objects through HDFS.
+
+```java
+package zhao.algorithmMagic;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import zhao.algorithmMagic.io.*;
+import zhao.algorithmMagic.operands.table.DataFrame;
+import zhao.algorithmMagic.operands.table.FDataFrame;
+import zhao.algorithmMagic.operands.table.FinalCell;
+
+import java.io.IOException;
+
+
+public class MAIN1 {
+    public static void main(String[] args) throws IOException {
+        // 获取到 HDFS 数据输入输出设备对象 首先将两者需要的参数创建出来
+        FileSystem fileSystem;
+        String inPath;
+        String[] field;
+        {
+            Path path = new Path("hdfs://192.168.0.141:8020");
+            // 构建HDFS文件系统对象
+            fileSystem = path.getFileSystem(new Configuration());
+            // 设置需要被读取的文件对象
+            inPath = "hdfs://192.168.0.141:8020/data/test.txt";
+            // 设置字段头部
+            field = new String[]{"name", "sex", "age"};
+        }
+
+        /* *****************************************************
+         * TODO 从HDFS中加载数据
+         * *****************************************************/
+        // 开始将所有的参数配置到设备对象中，构建出数据输入设备
+        InputComponent inputComponent = InputHDFS.builder()
+                .addInputArg(InputHDFSBuilder.FILE_SYSTEM, new FinalCell<>(fileSystem))
+                .addInputArg(InputHDFSBuilder.IN_PATH, new FinalCell<>(inPath))
+                .addInputArg(InputHDFSBuilder.FIELD, new FinalCell<>(field))
+                // 设置分隔符
+                .addInputArg(InputHDFSBuilder.SEP, new FinalCell<>('\t'))
+                .create();
+
+        /* *****************************************************
+         * TODO 处理加载出来的 DataFrame 对象，这里是按照 age 正序排序
+         * *****************************************************/
+        // 开始将 HDFS 中的数据加载成为一个 DataFrame对象
+        DataFrame dataFrame = FDataFrame
+                .builder(inputComponent)
+                .sort("age");
+
+        /* *****************************************************
+         * TODO 将处理好的数据输出到 HDFS 的 /data/res.csv 中
+         * *****************************************************/
+        // 实例化出来目标路径
+        Path path = new Path("hdfs://192.168.0.141:8020/data/res.csv");
+        // 开始构建数据输出组件
+        OutputComponent outputComponent = OutputHDFS.builder()
+                .addOutputArg(OutputHDFSBuidler.FILE_SYSTEM, new FinalCell<>(fileSystem))
+                .addOutputArg(OutputHDFSBuidler.SEP, new FinalCell<>(','))
+                .addOutputArg(OutputHDFSBuidler.OUT_PATH, new FinalCell<>(path))
+                .addOutputArg(OutputHDFSBuidler.FORMAT, new FinalCell<>("csv"))
+                .create();
+        // 开始通过组件将数据输出 同时打印出结果
+        System.out.println(
+                dataFrame.into_outComponent(outputComponent)
+        );
+    }
+}
+```
+
+* Support the saving operation of obtaining ColorMatrix operand objects and ColorMatrix data objects through HDFS.
+
+```java
+package zhao.algorithmMagic;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import zhao.algorithmMagic.io.*;
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+import zhao.algorithmMagic.operands.table.FinalCell;
+
+import java.io.IOException;
+
+
+public class MAIN1 {
+    public static void main(String[] args) throws IOException {
+        // 获取到 HDFS 数据输入输出设备对象 首先将两者需要的参数创建出来
+        FileSystem fileSystem;
+        String inPath;
+        {
+            Path path = new Path("hdfs://192.168.0.141:8020");
+            // 构建HDFS文件系统对象
+            fileSystem = path.getFileSystem(new Configuration());
+            // 设置需要被读取的文件对象
+            inPath = "hdfs://192.168.0.141:8020/data/test.jpg";
+        }
+
+        /* *****************************************************
+         * TODO 从HDFS中加载数据
+         * *****************************************************/
+        // 开始将所有的参数配置到设备对象中，构建出数据输入设备
+        InputComponent inputComponent = InputHDFS.builder()
+                .addInputArg(InputHDFSBuilder.FILE_SYSTEM, new FinalCell<>(fileSystem))
+                .addInputArg(InputHDFSBuilder.IN_PATH, new FinalCell<>(inPath))
+                .create();
+
+        /* *****************************************************
+         * TODO 处理加载出来的 DataFrame 对象，这里是按照 age 正序排序
+         * *****************************************************/
+        // 开始将 HDFS 中的数据加载成为一个 图像矩阵 对象 并将其进行颜色反转操作
+        ColorMatrix colorMatrix = ColorMatrix.parse(inputComponent);
+        colorMatrix.colorReversal(false);
+
+        /* *****************************************************
+         * TODO 将处理好的数据输出到 HDFS 的 /data/res.jpg 中
+         * *****************************************************/
+        // 实例化出来目标路径
+        Path path = new Path("hdfs://192.168.0.141:8020/data/res.jpg");
+        // 开始构建数据输出组件
+        OutputComponent outputComponent = OutputHDFS.builder()
+                .addOutputArg(OutputHDFSBuidler.FILE_SYSTEM, new FinalCell<>(fileSystem))
+                .addOutputArg(OutputHDFSBuidler.OUT_PATH, new FinalCell<>(path))
+                .addOutputArg(OutputHDFSBuidler.FORMAT, new FinalCell<>("JPG"))
+                .create();
+        // 开始通过组件将数据输出 同时打印出结果
+        colorMatrix.show("res");
+        colorMatrix.save(outputComponent);
+    }
+}
+```
+
+* Supports obtaining DataFrame operand objects through HDFS, while also supporting data output for this object.
+
+```java
+package zhao.algorithmMagic;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import zhao.algorithmMagic.io.*;
+import zhao.algorithmMagic.operands.table.DataFrame;
+import zhao.algorithmMagic.operands.table.FDataFrame;
+import zhao.algorithmMagic.operands.table.FinalCell;
+
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+
+
+public class MAIN1 {
+    public static void main(String[] args) throws IOException {
+        // 获取到 HDFS 数据输入输出设备对象 首先将两者需要的参数创建出来
+        FileSystem fileSystem;
+        String inPath;
+        {
+            Path path = new Path("hdfs://192.168.0.141:8020");
+            // 构建HDFS文件系统对象
+            fileSystem = path.getFileSystem(new Configuration());
+            // 设置需要被读取的文件对象
+            inPath = "hdfs://192.168.0.141:8020/data/test.txt";
+        }
+
+        /* *****************************************************
+         * TODO 从HDFS中加载数据
+         * *****************************************************/
+        // 开始将所有的参数配置到设备对象中，构建出数据输入设备
+        InputComponent inputComponent = InputHDFS.builder()
+                .addInputArg(InputHDFSBuilder.FILE_SYSTEM, new FinalCell<>(fileSystem))
+                .addInputArg(InputHDFSBuilder.IN_PATH, new FinalCell<>(inPath))
+                // 设置文件中内容的字段名称
+                .addInputArg(InputHDFSBuilder.FIELD, new FinalCell<>(new String[]{"name", "sex", "age"}))
+                // 设置文件中每列分隔符
+                .addInputArg(InputHDFSBuilder.SEP, new FinalCell<>('\t'))
+                // 设置文件中读取的字符集
+                .addInputArg(InputHDFSBuilder.CHAR_SET, new FinalCell<>("utf-8"))
+                .create();
+
+        /* *****************************************************
+         * TODO 处理加载出来的 DataFrame 对象，这里是按照 age 正序排序
+         * *****************************************************/
+        // 开始将 HDFS 中的数据加载成为一个 DataFrame 对象 并将其进行age正序排序操作
+        DataFrame builder = FDataFrame
+                .builder(inputComponent)
+                .sort("age");
+
+        /* *****************************************************
+         * TODO 将处理好的数据输出到 HDFS 的 /data/res.csv 中
+         * *****************************************************/
+        // 实例化出来目标路径
+        Path path = new Path("hdfs://192.168.0.141:8020/data/res.csv");
+        // 开始构建数据输出组件
+        OutputComponent outputComponent = OutputHDFS.builder()
+                // 设置输出时的HDFS文件系统以及其路径
+                .addOutputArg(OutputHDFSBuidler.FILE_SYSTEM, new FinalCell<>(fileSystem))
+                .addOutputArg(OutputHDFSBuidler.OUT_PATH, new FinalCell<>(path))
+                // 设置输出格式，这里是输出一个CSV的文件
+                .addOutputArg(OutputHDFSBuidler.FORMAT, new FinalCell<>("csv"))
+                // 输出时的分隔符
+                .addOutputArg(OutputHDFSBuidler.SEP, new FinalCell<>(','))
+                .create();
+        // 开始通过组件将数据输出 同时使用 show 函数在控制台打印出结果 值得注意的是，show 函数不会关闭数据流对象
+        BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(System.out));
+        builder.show(bufferedWriter);
+        System.out.println("ok!!!!");
+        builder.into_outComponent(outputComponent);
+    }
+}
+```
+
+* Support obtaining data objects through data streams. Here, we obtain DataFrame objects from the system input stream
+  for demonstration.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.io.InputByStream;
+import zhao.algorithmMagic.io.InputByStreamBuilder;
+import zhao.algorithmMagic.io.InputComponent;
+import zhao.algorithmMagic.operands.table.DataFrame;
+import zhao.algorithmMagic.operands.table.FDataFrame;
+import zhao.algorithmMagic.operands.table.FinalCell;
+
+import java.io.IOException;
+
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        /* *****************************************************
+         * TODO 从数据流中读取到数据 并构建 DF 对象
+         * *****************************************************/
+        // 开始将所有的参数配置到设备对象中，构建出数据输入设备
+        InputComponent inputComponent = InputByStream.builder()
+                // 准备数据输入流，在这里准备的是终端数据输入流
+                .addInputArg(InputByStreamBuilder.INPUT_STREAM, new FinalCell<>(System.in))
+                // 设置数据输入的字符集
+                .addInputArg(InputByStreamBuilder.CHARSET, new FinalCell<>("utf-8"))
+                // 由于 DF 数据加载是结构化模式加载，因此需要设置数据输入的分隔符
+                .addInputArg(InputByStreamBuilder.SEP, new FinalCell<>(','))
+                // 由于 DF 数据对象有主键功能，因此需要指定主键索引编号 这里是从0开始的索引
+                .addInputArg(InputByStreamBuilder.PK, new FinalCell<>(1))
+                // 设置本次数据要输入的行数量 代表我们要输入 3 行数据
+                .addInputArg(InputByStreamBuilder.ROW_LEN, new FinalCell<>(3))
+                .create();
+        // 开始进行数据的加载 需要注意的是，由于我们使用的是终端数据流，因此不需要框架来关闭数据流，需要指定isOC为false
+        DataFrame builder = FDataFrame.builder(inputComponent, true);
+        builder.show();
+    }
+}
+```
+
+* Supports reading numerical matrices and structured DF data objects through AlgorithmStar, creating the same effect as
+  creating class static parse functions.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.core.AlgorithmStar;
+import zhao.algorithmMagic.io.InputByStream;
+import zhao.algorithmMagic.io.InputByStreamBuilder;
+import zhao.algorithmMagic.io.InputComponent;
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
 import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
 import zhao.algorithmMagic.operands.table.DataFrame;
-import zhao.algorithmMagic.operands.table.FDataFrame;
-import zhao.algorithmMagic.operands.table.FieldCell;
 import zhao.algorithmMagic.operands.table.FinalCell;
-import zhao.algorithmMagic.operands.vector.IntegerVector;
 
 import java.io.File;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 
 public class MAIN1 {
-    public static void main(String[] args) {
-        // 准备文件对象
-        File file = new File("C:\\Users\\zhao\\Desktop\\out\\res1.csv");
-        // 使用 FDF 加载文件
-        DataFrame execute1 = FDataFrame.builder(file)
-                // 文件对象的读取需要指定文本分隔符
-                .setSep(',')
-                // 文件对象需要指定好列名称，不能使用 * 这里代表的不是查询，而是创建一个DF的列字段
-                .create("id", "name", "sex")
-                // 文件对象的主键指定允许使用列名称
-                .primaryKey("name")
-                // 执行查询
-                .execute()
-                // 为列起别名
-                .select(
-                        FieldCell.$("id"),
-                        FieldCell.$("name").as("名称"),
-                        FieldCell.$("sex").as("性别")
-                )
-                // 将性别列进行转换，男生为1 女生为0
-                .updateCol(FieldCell.$("性别"), cell -> new FinalCell<>(cell.getStringValue().equals("男") ? 1 : 0))
-                // 将行主键数值为ZLY的数据行中的所有单元格替换成为数据 405
-                .updateRow("ZLY", cell -> new FinalCell<>(405));
+    public static void main(String[] args) throws SQLException {
+        /* *****************************************************
+         * TODO 从数据流中读取到数据
+         * *****************************************************/
+        // 开始将所有的参数配置到设备对象中，构建出数据输入设备
+        InputComponent inputComponent = InputByStream.builder()
+                .addInputArg(InputByStreamBuilder.INPUT_STREAM, new FinalCell<>(System.in))
+                .addInputArg(InputByStreamBuilder.CHARSET, new FinalCell<>("utf-8"))
+                .addInputArg(InputByStreamBuilder.SEP, new FinalCell<>(','))
+                .addInputArg(InputByStreamBuilder.PK, new FinalCell<>(1))
+                .addInputArg(InputByStreamBuilder.ROW_LEN, new FinalCell<>(3))
+                .create();
 
-        // 打印出表中的行主键名称为 405 的数据行
-        System.out.println(execute1.selectRow("405"));
-        long start = System.currentTimeMillis();
-        // 将表转换成为一个整形矩阵对象，该操作会将DF对象中的所有数值试图转换成为 col.count()*3 的矩阵对象
-        IntegerMatrix parse = IntegerMatrix.parse(execute1, execute1.count().getIntValue(), 3);
-        System.out.println(IntegerVector.parse(parse.getArrayByColIndex(2)));
-        System.out.print("处理耗时（MS）：");
-        System.out.println(System.currentTimeMillis() - start);
+        // TODO 开始通过 algorithmStar 构建出数值矩阵 这里是整数与浮点数两种类型
+        IntegerMatrix integerMatrix = AlgorithmStar.parseIntMat(
+                new int[]{1, 2, 3}, new int[]{5, 6, 7}, new int[]{8, 9, 0}
+        );
+        DoubleMatrix doubleMatrix = AlgorithmStar.parseDoubleMat(
+                new double[]{1, 2, 3}, new double[]{5, 6, 7}, new double[]{8, 9, 0}
+        );
+        System.out.println(integerMatrix);
+        System.out.println(doubleMatrix);
+
+        // TODO 开始通过 algorithmStar 构建出DataFrame对象 这里是通过文件 数据库 数据输入组件 来进行构建
+        File file = new File("C:\\Users\\zhao\\Downloads\\test.csv");
+        DataFrame dataFrame1 = AlgorithmStar.parseDF(file).setSep(',')
+                .create("year", "month", "day", "week", "temp_2", "temp_1", "average", "actual", "friend")
+                .execute();
+        dataFrame1.show();
+
+        DataFrame dataFrame2 = AlgorithmStar.parseDF(inputComponent, false);
+        dataFrame2.show();
+
+        Connection connection = DriverManager.getConnection("");
+        DataFrame dataFrame3 = AlgorithmStar.parseDF(connection)
+                .from("xxx")
+                .execute();
+        dataFrame3.show();
     }
 }
 ```
 
-* Support for obtaining image related data through a web URL object and converting it into an image matrix.
+* Support static reading of image matrices through AlgorithmStar, and the ability to obtain image objects from files,
+  URLs, and data input components. This method of creation has the same effect as creating class static parse functions.
 
 ```java
 package zhao.algorithmMagic;
 
+import zhao.algorithmMagic.core.AlgorithmStar;
+import zhao.algorithmMagic.io.InputCamera;
+import zhao.algorithmMagic.io.InputCameraBuilder;
+import zhao.algorithmMagic.io.InputComponent;
 import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+import zhao.algorithmMagic.operands.table.FinalCell;
 
-import java.net.MalformedURLException;
+import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
+
 
 public class MAIN1 {
-    public static void main(String[] args) throws MalformedURLException {
-        // 准备图像的URL对象
+    public static void main(String[] args) throws IOException {
+        InputComponent inputComponent = InputCamera.builder()
+                .addInputArg(InputCameraBuilder.Camera_Index, new FinalCell<>(0))
+                .addInputArg(InputCameraBuilder.Image_Format, new FinalCell<>("JPG"))
+                .create();
+        // 通过数据输入设备对象获取到图像矩阵
+        ColorMatrix colorMatrix = AlgorithmStar.parseImage(inputComponent, true);
+        colorMatrix.show("image");
+        // 通过 URL 获取到图像矩阵 （为了简洁书写在这里没有进行赋值动作）
         URL url = new URL("https://user-images.githubusercontent.com/113756063/194830221-abe24fcc-484b-4769-b3b7-ec6d8138f436.png");
-        // 解析URL获取到图像矩阵
-        ColorMatrix parse1 = ColorMatrix.parse(url);
-        // 解析URL获取到图像的灰度矩阵
-        ColorMatrix parse2 = ColorMatrix.parseGrayscale(url);
-        // 查看图像
-        parse1.show("image");
-        parse2.show("image");
+        AlgorithmStar.parseImage(url).show("image");
+        AlgorithmStar.parseGrayscaleImage(url).show("image");
+        // 通过 文件 获取到图像矩阵
+        AlgorithmStar.parseImage("C:\\Users\\zhao\\Desktop\\fsdownload\\test.bmp").show("image");
+        AlgorithmStar.parseGrayscaleImage("C:\\Users\\zhao\\Desktop\\fsdownload\\test.bmp").show("image");
     }
 }
 ```
 
-* It supports color binarization and regularization coverage, and can display more image features or remove more
-  redundant features by specifying the color values of the channel.
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.operands.matrix.ColorMatrix;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-
-public class MAIN1 {
-    public static void main(String[] args) throws MalformedURLException {
-        // 准备图像的URL对象
-        URL url = new URL("https://user-images.githubusercontent.com/113756063/194830221-abe24fcc-484b-4769-b3b7-ec6d8138f436.png");
-        // 解析URL获取到图像矩阵
-        ColorMatrix parse1 = ColorMatrix.parse(url);
-        // 将 URL 图像矩阵中所有 G 通道颜色数值大于 40 的颜色变更为黑色，反之变更为白色
-        // 在这里由于选择了 G 通道 因此 绿色越深 越有可能变为白色
-        parse1.globalBinary(ColorMatrix._G_, 40, 0, 0xffffff);
-        // 也可以使用其它颜色通道进行色彩的调整
-        parse1.globalBinary(ColorMatrix._R_, 40, 0, 0xffffff);
-        parse1.globalBinary(ColorMatrix._B_, 40, 0, 0xffffff);
-        // 查看结果图像
-        parse1.show("image");
-    }
-}
-```
-
-* Supports the construction of image ASCII images. You can quickly construct an image in ASCII, but please ensure that
-  the image size is small enough.
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.operands.matrix.ColorMatrix;
-
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-public class MAIN1 {
-    public static void main(String[] args) throws MalformedURLException {
-        // 准备图像的URL对象
-        URL url = new URL("https://user-images.githubusercontent.com/113756063/194830221-abe24fcc-484b-4769-b3b7-ec6d8138f436.png");
-        // 解析URL获取到图像矩阵
-        ColorMatrix parse1 = ColorMatrix.parse(url);
-        // 查看结果图像
-        parse1.show("image");
-        // 输出图像的 ASCII 数值，输出规则为  G 通道颜色数值 大于 40 的 输出符号 'A' 其它输出符号 ' '
-        parse1.save(
-                new File("C:\\Users\\zhao\\Desktop\\fsDownload\\res.txt"),
-                ColorMatrix._G_, 40, 'A', ' '
-        );
-    }
-}
-```
-
-* Ability to manually create an empty DataFrame object and independently manipulate the data therein.
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.operands.table.DataFrame;
-import zhao.algorithmMagic.operands.table.FDataFrame;
-import zhao.algorithmMagic.operands.table.FieldCell;
-import zhao.algorithmMagic.operands.table.FinalSeries;
-
-public class MAIN1 {
-    public static void main(String[] args) {
-        // 创建一个空 DF 对象 以 name 列作为行主键索引
-        FDataFrame create = FDataFrame.select(FieldCell.parse("name", "sex", "phoneNum"), 1);
-        // 插入一些数据
-        DataFrame insert = create.insert(
-                FinalSeries.parse("zhao", "M", "110xxxxxxxx"),
-                FinalSeries.parse("tang", "W", "110xxxxxxxx"),
-                FinalSeries.parse("yang", "M", "110xxxxxxxx")
-        );
-        // 查看数据集
-        System.out.println(insert);
-        // 将其中的 name 列 sex 列 查询
-        System.out.println(
-                insert.select(
-                        FieldCell.$("name").as("AllName"),
-                        FieldCell.$("sex").as("AllSex")
-                )
-        );
-    }
-}
-```
-
-* 支持在 group 的时候指定 where子句，使得计算效率大大增强
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.operands.table.DataFrame;
-import zhao.algorithmMagic.operands.table.FDataFrame;
-import zhao.algorithmMagic.operands.table.FieldCell;
-import zhao.algorithmMagic.operands.table.FinalSeries;
-
-import java.net.MalformedURLException;
-
-public class MAIN1 {
-    public static void main(String[] args) {
-        // 创建一个空 DF 对象 以 name 列作为行主键索引
-        FDataFrame create = FDataFrame.select(FieldCell.parse("name", "sex", "phoneNum"), 1);
-        // 插入一些数据
-        DataFrame insert = create.insert(
-                FinalSeries.parse("zhao1", "M", "110xxxxxxxx"),
-                FinalSeries.parse("tang2", "W", "120xxxxxxxx"),
-                FinalSeries.parse("yang3", "W", "110xxxxxxxx"),
-                FinalSeries.parse("zhao4", "M", "120xxxxxxxx"),
-                FinalSeries.parse("tang5", "W", "110xxxxxxxx"),
-                FinalSeries.parse("yang6", "W", "110xxxxxxxx"),
-                FinalSeries.parse("zhao7", "M", "120xxxxxxxx"),
-                FinalSeries.parse("tang8", "W", "110xxxxxxxx"),
-                FinalSeries.parse("yang9", "W", "110xxxxxxxx")
-        );
-        // 查看数据集
-        System.out.println(insert);
-        // 将其中手机号前三位不为 120 的数据行按照其中的 sex 分组 在这里直接使用分组时过滤即可
-        System.out.println(
-                insert.groupBy("sex", v -> {
-                    // 获取到手机号的字符串
-                    String s = v.getCell(2).toString();
-                    // 判断前 3 个字符是否为 120 （是否以 120 开头） 如果是就不添加
-                    return !s.startsWith("120");
-                }).count()
-        );
-    }
-}
-```
-
-* Support for local binarization operations, which can effectively achieve image binarization processing. Compared to
-  global binarization, functions are more flexible.
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.operands.matrix.ColorMatrix;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-
-public class MAIN1 {
-    public static void main(String[] args) throws MalformedURLException {
-        // 获取到图像矩阵
-        ColorMatrix parse = ColorMatrix.parse(new URL("https://img-blog.csdnimg.cn/img_convert/5765bdab08ef6e117d434e7e225b9013.png"));
-        parse.show("image");
-        System.out.println("ok!!!");
-        System.out.println("长 = " + parse.getRowCount());
-        System.out.println("宽 = " + parse.getColCount());
-        // 将图像进行局部二值化
-        parse.localBinary(
-                // 指定本次二值化选择的颜色通道
-                ColorMatrix._G_,
-                // 指定本次二值化选出的局部图像矩阵数量
-                100,
-                // 指定本次二值化中局部矩阵中大于局部阈值的颜色编码
-                0xffffff,
-                // 指定本次二值化中局部矩阵中小于局部阈值的颜色编码
-                0,
-                // 指定本次二值化中局部阈值生成后要进行的微调数值，这里是降低20个阈值数值
-                -30
-        );
-        // 查看结果数据
-        parse.show("image");
-    }
-}
-```
-
-* DF object data supports saving as HTML files, enabling effective automated page rendering operations.
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.operands.table.DataFrame;
-import zhao.algorithmMagic.operands.table.FDataFrame;
-import zhao.algorithmMagic.operands.table.FieldCell;
-import zhao.algorithmMagic.operands.table.FinalSeries;
-
-public class MAIN1 {
-    public static void main(String[] args) {
-        // 创建一个空 DF 对象 以 name 列作为行主键索引
-        FDataFrame create = FDataFrame.select(FieldCell.parse("name", "sex", "phoneNum", "salary"), 1);
-        // 插入一些数据
-        DataFrame insert = create.insert(
-                FinalSeries.parse("zhao1", "M", "110xxxxxxxx", "30000"),
-                FinalSeries.parse("tang2", "W", "120xxxxxxxx", "30000"),
-                FinalSeries.parse("yang3", "W", "110xxxxxxxx", "30000"),
-                FinalSeries.parse("zhao4", "M", "120xxxxxxxx", "30000"),
-                FinalSeries.parse("tang5", "W", "110xxxxxxxx", "30000"),
-                FinalSeries.parse("yang6", "W", "110xxxxxxxx", "30000"),
-                FinalSeries.parse("zhao7", "M", "120xxxxxxxx", "30000"),
-                FinalSeries.parse("tang8", "W", "110xxxxxxxx", "30000"),
-                FinalSeries.parse("yang9", "W", "110xxxxxxxx", "30000")
-        );
-        // 输出表的HTML 然后查看表中的数据
-        System.out.println(
-                insert.into_outHtml("C:\\Users\\Liming\\Desktop\\fsDownload\\res11234.html", "myTable")
-        );
-    }
-}
-```
-
-* Images begin to support the add function, which enables overlapping and merging of image functions under the operation
-  of the add function!
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.operands.matrix.ColorMatrix;
-
-import java.sql.SQLException;
-
-public class MAIN1 {
-    public static void main(String[] args) {
-        // 将一些图像文件转换成为一个图像矩阵对象
-        ColorMatrix colorMatrix1 = ColorMatrix.parse("C:\\Users\\Liming\\Desktop\\fsDownload\\test.bmp");
-        ColorMatrix colorMatrix2 = ColorMatrix.parse("C:\\Users\\Liming\\Desktop\\fsDownload\\test1.bmp");
-        // 将 colorMatrix2 + colorMatrix1 的结果图像展示出来
-        (colorMatrix1.add(colorMatrix2)).show("image");
-    }
-}
-```
-
-* Support aggregation operations for custom aggregation and built-in data schemes.
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.operands.matrix.ColorMatrix;
-
-import java.sql.SQLException;
-
-public class MAIN1 {
-    public static void main(String[] args) {
-        // 将一些图像文件转换成为一个图像矩阵对象
-        ColorMatrix colorMatrix1 = ColorMatrix.parse("C:\\Users\\Liming\\Desktop\\fsDownload\\test.bmp");
-        ColorMatrix colorMatrix2 = ColorMatrix.parse("C:\\Users\\Liming\\Desktop\\fsDownload\\test1.bmp");
-        // 使用 agg 函数以及内置的计算方案进行两个矩阵的合并
-        // 下面函数中的第二个形参代表的就是矩阵中元素的聚合逻辑，这里使用的是求和，并对越界颜色数值进行规整的逻辑实现
-        colorMatrix1.agg(colorMatrix2, ColorMatrix.COLOR_SUM_REGULATE).show("image");
-    }
-}
-```
-
-* The image matrix supports a corrosion operation function in which redundant feature data can be removed.
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.operands.matrix.ColorMatrix;
-
-import java.sql.SQLException;
-
-
-public class MAIN1 {
-    public static void main(String[] args) {
-        // 将一些图像文件转换成为一个图像矩阵对象
-        ColorMatrix colorMatrix1 = ColorMatrix.parseGrayscale("C:\\Users\\Liming\\Desktop\\fsDownload\\test2.bmp");
-        // 对图像进行二值化
-        colorMatrix1.globalBinary(ColorMatrix._G_, 100, 0xffffff, 0);
-        colorMatrix1.show("腐蚀之前的 image");
-        // 开始对图像矩阵进行腐蚀操作
-        colorMatrix1.erode(2, 2, false).show("腐蚀之后的 image");
-    }
-}
-```
-
-* The addition of columns is supported, but it should be noted that the addition of columns will return a new DataFrame
-  DF in which the data will be lightly copied.
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.operands.table.*;
-
-import java.sql.SQLException;
-
-public class MAIN1 {
-    public static void main(String[] args) {
-        // 创建一个空的 DataFrame 对象
-        FDataFrame select = FDataFrame.select(
-                FieldCell.parse("id", "name", "sex", "age"), 1
-        );
-        // 手动插入数据
-        select.insert(
-                FinalSeries.parse("1", "zhao", "M", "19"),
-                FinalSeries.parse("2", "tang", "W", "18"),
-                FinalSeries.parse("3", "yang", "W", "20"),
-                FinalSeries.parse("4", "shen", "W", "19")
-        );
-        // 打印出 DF 对象有关的信息
-        System.out.println(
-                select.desc()
-        );
-        // 添加一列数据，用于表示年龄是否为偶数
-        DataFrame ageIsE = select.insertColGetNew(
-                // 新列的列名称
-                FieldCell.$("AgeIsE"),
-                // 新列的数值生成逻辑 如果第 4 列（index == 3）的数值 % 2 == 0 就是true
-                cells -> cells.getCell(3).getIntValue() % 2 == 0 ? new FinalCell<>(true) : new FinalCell<>(false)
-        );
-        System.out.println(ageIsE);
-    }
-}
-```
-
-* Supports operations between table data, and can perform summation and subtraction calculations on all numeric types in
-  the table. After calculation, a new DF object will be returned.
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.operands.table.*;
-
-public class MAIN1 {
-    public static void main(String[] args) {
-        // 创建一个空的 DataFrame 对象
-        FDataFrame select1 = FDataFrame.select(
-                FieldCell.parse("id", "name", "sex", "age"), 1
-        );
-        // 手动插入数据
-        select1.insert(
-                FinalSeries.parse("1", "zhao", "M", "19"),
-                FinalSeries.parse("2", "tang", "W", "18"),
-                FinalSeries.parse("3", "yang", "W", "20"),
-                FinalSeries.parse("4", "shen", "W", "19")
-        );
-        // 创建一个空的 DataFrame 对象
-        FDataFrame select2 = FDataFrame.select(
-                FieldCell.parse("id", "name", "sex", "age"), 1
-        );
-        // 手动插入数据
-        select2.insert(
-                FinalSeries.parse("1", "zhao", "M", "19"),
-                FinalSeries.parse("2", "tang", "W", "18"),
-                FinalSeries.parse("3", "yang", "W", "20")
-        );
-        // 进行求和与做差的运算操作
-        System.out.println(select1.add(select2));
-        System.out.println(select1.diff(select2));
-    }
-}
-```
-
-* Note for the new version: All dependencies in this version are marked as provided, which can minimize redundancy and
-  enable related configuration based on your actual project. Therefore, when performing AS library injection, please
-  import the following required items in one click.
-
-```xml
-
-<dependencies>
-    <!-- 使用 log4j2 的适配器进行绑定 -->
-    <dependency>
-        <groupId>org.apache.logging.log4j</groupId>
-        <artifactId>log4j-slf4j-impl</artifactId>
-        <version>2.20.0</version>
-        <!--<scope>provided</scope>-->
-    </dependency>
-
-    <!-- log4j2 日志门面 -->
-    <dependency>
-        <groupId>org.apache.logging.log4j</groupId>
-        <artifactId>log4j-api</artifactId>
-        <version>2.20.0</version>
-        <!--<scope>provided</scope>-->
-    </dependency>
-    <!-- log4j2 日志实面 -->
-    <dependency>
-        <groupId>org.apache.logging.log4j</groupId>
-        <artifactId>log4j-core</artifactId>
-        <version>2.20.0</version>
-        <!--<scope>provided</scope>-->
-    </dependency>
-</dependencies>
-```
-
-### Version update date : xx xx-xx-xx
+### Version update date : 2023-04-09

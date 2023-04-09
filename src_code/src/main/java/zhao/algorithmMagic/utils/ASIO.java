@@ -66,6 +66,18 @@ public final class ASIO {
     }
 
     /**
+     * 写数据的工具函数，该函数将有效的管理数据流。
+     *
+     * @param outputStream 文本数据输出流
+     * @param voidTrans    文本数据输出使用输出流
+     */
+    public static void writer(OutputStream outputStream, Consumer<BufferedWriter> voidTrans) {
+        BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream));
+        voidTrans.accept(bufferedWriter);
+        ASIO.close(bufferedWriter);
+    }
+
+    /**
      * 将一个byte数组输出到指定的路径
      *
      * @param path                  数据输出路径
@@ -148,7 +160,10 @@ public final class ASIO {
      */
     public static Color[][] parseURLGetColorArray(URL imageUrl) {
         try {
-            return parseImageGetColorArray(ImageIO.read(imageUrl.openStream()));
+            InputStream inputStream = imageUrl.openStream();
+            Color[][] colors = parseImageGetColorArray(ImageIO.read(inputStream));
+            inputStream.close();
+            return colors;
         } catch (IOException e) {
             throw new OperatorOperationException(e);
         }
@@ -181,7 +196,7 @@ public final class ASIO {
      * @param image 需要被读取的图像缓冲对象
      * @return 读取成功之后返回的整形矩阵
      */
-    private static Color[][] parseImageGetColorArray(BufferedImage image) {
+    public static Color[][] parseImageGetColorArray(BufferedImage image) {
         final byte[] pixels = ((DataBufferByte) image.getRaster()
                 .getDataBuffer())
                 .getData();
@@ -235,6 +250,10 @@ public final class ASIO {
      */
     public static int[][] parseImageGetArray(File inputFile) throws IOException {
         BufferedImage image = ImageIO.read(inputFile);
+        return parseImageGetArray(image);
+    }
+
+    public static int[][] parseImageGetArray(BufferedImage image) {
         final byte[] pixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
         final int width = image.getWidth(), height = image.getHeight();
         final boolean hasAlphaChannel = image.getAlphaRaster() != null;
@@ -315,5 +334,18 @@ public final class ASIO {
         return new IntegerMatrix[]{
                 IntegerMatrix.parse(RMat), IntegerMatrix.parse(GMat), IntegerMatrix.parse(BMat)
         };
+    }
+
+    /**
+     * @param closeable 需要被关闭的对象。
+     */
+    public static void close(Closeable closeable) {
+        if (closeable != null) {
+            try {
+                closeable.close();
+            } catch (IOException ignored) {
+
+            }
+        }
     }
 }

@@ -18,16 +18,19 @@
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>algorithmStar</artifactId>
-        <version>1.17</version>
+        <version>1.18</version>
     </dependency>
 </dependencies>
 ```
+
 ### AS库的所需依赖
 
 在1.17版本之后，AS库的所有依赖被剥离，更好避免依赖的捆绑问题，减少项目发生冲突的可能性，同时也可以按照开发者的需求使用更加适合的依赖配置项，您可以在这里查看到AS库所依赖的第三方库依赖。
 
 #### 必选依赖项
+
 AS库在进行诸多计算函数的时候会产生一些日志数据，因此AS库的使用需要导入日志依赖项，这个依赖项是必不可少的，请按照如下的方式导入依赖。
+
 ```xml
 <dependencies>
     <!-- 使用 log4j2 的适配器进行绑定 -->
@@ -54,9 +57,11 @@ AS库在进行诸多计算函数的时候会产生一些日志数据，因此AS�
     </dependency>
 </dependencies>
 ```
+
 #### 可选依赖项
 
 AS库在针对数据库，Spark等各种平台对接的时候，需要使用到第三方依赖程序包，这些包是可选的，如果您不需要使用这些功能，您可以不去导入依赖，如果您需要，可以参考下面的配置。
+
 ```xml
 <dependencies>
   <!-- MySQL数据库连接驱动 如果您需要连接的关系型数据库是其它类型，这里也可以随之修改 -->
@@ -82,6 +87,21 @@ AS库在针对数据库，Spark等各种平台对接的时候，需要使用到�
         <artifactId>spark-mllib_2.12</artifactId>
         <version>3.1.3</version>
     </dependency>
+
+  <!-- 摄像头依赖库，如果您有需要通过摄像头获取数据对象的需求，可以引入本库 -->
+  <dependency>
+    <groupId>com.github.sarxos</groupId>
+    <artifactId>webcam-capture</artifactId>
+    <version>0.3.12</version>
+  </dependency>
+
+  <!-- HDFS 输入输出设备依赖库，如果您有需要通过HDFS分布式存储平台进行数据读写的需求，可以引入本库 -->
+  <dependency>
+    <groupId>org.apache.hadoop</groupId>
+    <artifactId>hadoop-client</artifactId>
+    <version>3.3.1</version>
+  </dependency>
+  
 </dependencies>
 ```
 

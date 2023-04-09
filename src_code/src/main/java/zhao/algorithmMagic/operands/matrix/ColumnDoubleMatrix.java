@@ -2,6 +2,7 @@ package zhao.algorithmMagic.operands.matrix;
 
 import zhao.algorithmMagic.core.ASDynamicLibrary;
 import zhao.algorithmMagic.exception.OperatorOperationException;
+import zhao.algorithmMagic.io.OutputComponent;
 import zhao.algorithmMagic.operands.RCNOperands;
 import zhao.algorithmMagic.operands.vector.DoubleVector;
 import zhao.algorithmMagic.utils.ASClass;
@@ -676,5 +677,24 @@ public class ColumnDoubleMatrix extends DoubleMatrix implements RCNOperands<Doub
                 throw new OperatorOperationException("Write data exception!", e);
             }
         });
+    }
+
+    /**
+     * 将对象交由第三方数据输出组件进行数据的输出。
+     * <p>
+     * Submit the object to a third-party data output component for data output.
+     *
+     * @param outputComponent 第三方数据输出设备对象实现。
+     *                        <p>
+     *                        Implementation of third-party data output device objects.
+     */
+    @Override
+    public void save(OutputComponent outputComponent) {
+        if (!outputComponent.isOpen()) {
+            if (!outputComponent.open())
+                throw new OperatorOperationException("您的数据输出组件打开失败。\nYour data output component failed to open.");
+        }
+        outputComponent.writeMat(this);
+        ASIO.close(outputComponent);
     }
 }
