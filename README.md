@@ -6,9 +6,17 @@
   <img src = "https://user-images.githubusercontent.com/113756063/194832492-f8c184c1-55e8-4f16-943a-34b99ac751d4.png"/>
   </a>
 
-Various algorithms, vector computing, coordinate computing, spatial coordinates and other functions are included. The
-API is simple to operate, and machine learning and mathematics, medicine, artificial intelligence and other fields are
-highly practical.
+The AS machine learning library provides a Java API for various machine learning algorithms. It has the encapsulation of
+complex computing logic such as machine vision and natural language processing. Through the library, various algorithms
+can be quickly used to achieve various effects. Many calculation operations in the AS library are implemented natively,
+enabling the operation of library functions without unexpected dependencies from the Java standard library.
+
+There are multiple versions of the AS library directory. If you want to query the update logs and differences of
+different versions, you can [view](https://github.com/BeardedManZhao/algorithmStar/tree/master/src_code/update) here.
+
+A [test dataset](https://github.com/BeardedManZhao/algorithmStar/blob/master/sourceMaterial.md) is provided in this
+warehouse, which contains various data files such as images. You can pull these test data into a local program through a
+URL for calculation.
 
 ### Maven dependency
 
@@ -56,8 +64,8 @@ requires importing log dependencies, which are essential. Please import the depe
         <version>2.20.0</version>
         <!--<scope>provided</scope>-->
     </dependency>
-    <!-- Log4j2 log real surface -->
     
+    <!-- Log4j2 log real surface -->
     <dependency>
         <groupId>org.apache.logging.log4j</groupId>
         <artifactId>log4j-core</artifactId>
@@ -82,14 +90,14 @@ need to, you can refer to the following configuration.
         <artifactId>mysql-connector-java</artifactId>
         <version>8.0.30</version>
     </dependency>
-    
+
     <!-- The dependency development package for the three major Spark modules can also be imported if you need to use it here, or not if you don't need it -->
     <dependency>
         <groupId>org.apache.spark</groupId>
         <artifactId>spark-core_2.12</artifactId>
         <version>3.1.3</version>
     </dependency>
-    
+
     <dependency>
         <groupId>org.apache.spark</groupId>
         <artifactId>spark-sql_2.12</artifactId>

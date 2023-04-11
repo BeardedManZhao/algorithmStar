@@ -6,7 +6,12 @@
   <img src = "https://user-images.githubusercontent.com/113756063/194838003-7ad14dac-b38c-4b57-a942-ba58f00baaf7.png"/>
   </a>
 
-各种算法、向量计算、坐标计算、空间坐标等功能皆含于内，API操作简单，机器学习与数学、医学、人工智能等领域具有很高的实用性。
+AS机器学习库提供了一个针对机器学习各种算法的Java
+API，其具有机器视觉与自然语言处理等复杂计算逻辑的封装，通过库可以快速使用各种算法，实现各种效果。AS库中的诸多计算操作是采用的原生实现，能够在没有Java标准库意外依赖就可以实现库函数的运行。
+
+AS库目录有多个版本，如果希望查询不同版本的更新日志以及差异，您可以在这里进行[查阅](https://github.com/BeardedManZhao/algorithmStar/tree/master/src_code/update)。
+
+在本仓库中提供了一个[测试数据集](https://github.com/BeardedManZhao/algorithmStar/blob/master/sourceMaterial.md)，在数据集中包含各种图像等数据文件，您可以通过URL将这些测试数据拉取到本地程序中进行计算。
 
 ## Maven 依赖
 
@@ -32,6 +37,7 @@
 AS库在进行诸多计算函数的时候会产生一些日志数据，因此AS库的使用需要导入日志依赖项，这个依赖项是必不可少的，请按照如下的方式导入依赖。
 
 ```xml
+
 <dependencies>
     <!-- 使用 log4j2 的适配器进行绑定 -->
     <dependency>
@@ -63,14 +69,15 @@ AS库在进行诸多计算函数的时候会产生一些日志数据，因此AS�
 AS库在针对数据库，Spark等各种平台对接的时候，需要使用到第三方依赖程序包，这些包是可选的，如果您不需要使用这些功能，您可以不去导入依赖，如果您需要，可以参考下面的配置。
 
 ```xml
+
 <dependencies>
-  <!-- MySQL数据库连接驱动 如果您需要连接的关系型数据库是其它类型，这里也可以随之修改 -->
+    <!-- MySQL数据库连接驱动 如果您需要连接的关系型数据库是其它类型，这里也可以随之修改 -->
     <dependency>
         <groupId>mysql</groupId>
         <artifactId>mysql-connector-java</artifactId>
         <version>8.0.30</version>
     </dependency>
-  <!-- spark 三大模块的依赖程序开发包，如果您需要使用这里也可以选择导入，如果不需要则不导入 -->
+    <!-- spark 三大模块的依赖程序开发包，如果您需要使用这里也可以选择导入，如果不需要则不导入 -->
     <dependency>
         <groupId>org.apache.spark</groupId>
         <artifactId>spark-core_2.12</artifactId>
@@ -81,27 +88,27 @@ AS库在针对数据库，Spark等各种平台对接的时候，需要使用到�
         <artifactId>spark-sql_2.12</artifactId>
         <version>3.1.3</version>
     </dependency>
-    
+
     <dependency>
         <groupId>org.apache.spark</groupId>
         <artifactId>spark-mllib_2.12</artifactId>
         <version>3.1.3</version>
     </dependency>
 
-  <!-- 摄像头依赖库，如果您有需要通过摄像头获取数据对象的需求，可以引入本库 -->
-  <dependency>
-    <groupId>com.github.sarxos</groupId>
-    <artifactId>webcam-capture</artifactId>
-    <version>0.3.12</version>
-  </dependency>
+    <!-- 摄像头依赖库，如果您有需要通过摄像头获取数据对象的需求，可以引入本库 -->
+    <dependency>
+        <groupId>com.github.sarxos</groupId>
+        <artifactId>webcam-capture</artifactId>
+        <version>0.3.12</version>
+    </dependency>
 
-  <!-- HDFS 输入输出设备依赖库，如果您有需要通过HDFS分布式存储平台进行数据读写的需求，可以引入本库 -->
-  <dependency>
-    <groupId>org.apache.hadoop</groupId>
-    <artifactId>hadoop-client</artifactId>
-    <version>3.3.1</version>
-  </dependency>
-  
+    <!-- HDFS 输入输出设备依赖库，如果您有需要通过HDFS分布式存储平台进行数据读写的需求，可以引入本库 -->
+    <dependency>
+        <groupId>org.apache.hadoop</groupId>
+        <artifactId>hadoop-client</artifactId>
+        <version>3.3.1</version>
+    </dependency>
+
 </dependencies>
 ```
 
