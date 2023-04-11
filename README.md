@@ -64,8 +64,8 @@ requires importing log dependencies, which are essential. Please import the depe
         <version>2.20.0</version>
         <!--<scope>provided</scope>-->
     </dependency>
+    
     <!-- Log4j2 log real surface -->
-
     <dependency>
         <groupId>org.apache.logging.log4j</groupId>
         <artifactId>log4j-core</artifactId>
