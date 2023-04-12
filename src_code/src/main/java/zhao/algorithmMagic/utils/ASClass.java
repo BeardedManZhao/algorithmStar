@@ -14,6 +14,7 @@ import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute;
 import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute2D;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -252,6 +253,22 @@ public final class ASClass {
             res[i] = (int) doubles[j];
         }
         return res;
+    }
+
+    /**
+     * 将一个容器中的数据浅拷贝到一个数组中。
+     *
+     * @param t          目标数组
+     * @param collection 源数据容器
+     * @param <T>        数据类型
+     * @return 拷贝之后的数组
+     */
+    public static <T> T[] CollToArray(T[] t, Collection<T> collection) {
+        int index = -1;
+        for (T t1 : collection) {
+            t[++index] = t1;
+        }
+        return t;
     }
 
     /**

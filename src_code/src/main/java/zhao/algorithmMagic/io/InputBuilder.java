@@ -1,6 +1,6 @@
 package zhao.algorithmMagic.io;
 
-import zhao.algorithmMagic.operands.table.FinalCell;
+import zhao.algorithmMagic.operands.table.Cell;
 
 /**
  * 数据输入组件生成器，其本身作为所有数据输入设备对象的建造者对象。
@@ -27,7 +27,7 @@ public interface InputBuilder {
      * <p>
      * Chain call, continue building.
      */
-    InputBuilder addInputArg(String key, FinalCell<?> value);
+    InputBuilder addInputArg(String key, Cell<?> value);
 
     /**
      * 将所需的对象构建出来并获取到对应的输入设备对象。

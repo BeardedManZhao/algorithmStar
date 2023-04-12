@@ -69,6 +69,17 @@ public interface InputComponent extends Closeable {
     DataFrame getDataFrame();
 
     /**
+     * 从数据输入组件获取到 DataFrame 对象，该函数有些数据输入组件可能不支持。
+     * <p>
+     * Retrieve the DataFrame object from the data input component, which may not be supported by some data input components.
+     *
+     * @return 从数据输入组件中获取到的DataFrame数据封装对象。
+     * <p>
+     * The DataFrame data encapsulation object obtained from the data input component.
+     */
+    DataFrame getSFDataFrame();
+
+    /**
      * 从数据输入组件中提取出 数据流 对象。
      * <p>
      * Extract the data flow object from the data input component.

@@ -10,6 +10,9 @@ import java.util.Date;
  * <p>
  * A cell object with an immutable value. This data type will store a cell and allow its types to be diverse.
  *
+ * @param <valueType> 本单元格中存储的数据对象。
+ *                    <p>
+ *                    The data object stored in this cell.
  * @author 赵凌宇
  * 2023/3/7 21:39
  */

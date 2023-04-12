@@ -64,7 +64,7 @@ public class InputHDFSBuilder extends HashMap<String, Cell<?>> implements InputB
      * Chain call, continue building.
      */
     @Override
-    public InputBuilder addInputArg(String key, FinalCell<?> value) {
+    public InputBuilder addInputArg(String key, Cell<?> value) {
         this.put(key, value);
         return this;
     }

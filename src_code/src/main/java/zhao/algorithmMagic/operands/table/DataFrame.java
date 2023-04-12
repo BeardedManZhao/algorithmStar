@@ -19,6 +19,8 @@ import java.util.List;
  */
 public interface DataFrame extends AggDataFrameData, Iterable<Series>, Serializable, Operands<DataFrame> {
 
+    FDataFrame refreshField(boolean rr, boolean rc);
+
     /**
      * 获取到当前表中的字段对象。
      * <p>
@@ -68,6 +70,34 @@ public interface DataFrame extends AggDataFrameData, Iterable<Series>, Serializa
      * Find the DF table of the specified column data.
      */
     DataFrame select(FieldCell... colNames);
+
+    /**
+     * 获取到当前表中的指定列字段数据。
+     * <p>
+     * Gets the specified column field data in the current table.
+     *
+     * @param colNames 所有需要被获取的列数据，可以使用 * 代替。
+     *                 <p>
+     *                 All column data to be obtained can be replaced by *.
+     * @return 查询出指定列数据的DF表。
+     * <p>
+     * Find the DF table of the specified column data.
+     */
+    Series select(String colNames);
+
+    /**
+     * 获取到当前表中的指定列字段数据。
+     * <p>
+     * Gets the specified column field data in the current table.
+     *
+     * @param colNames 所有需要被获取的列数据，需要注意的是，在这里不允许使用 * 哦！
+     *                 <p>
+     *                 For all column data to be obtained, please note that * is not allowed here!
+     * @return 查询出指定列数据的DF表。
+     * <p>
+     * Find the DF table of the specified column data.
+     */
+    Series select(FieldCell colNames);
 
     /**
      * 查询当前表中的指定行字段数据。

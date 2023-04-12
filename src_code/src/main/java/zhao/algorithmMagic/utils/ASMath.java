@@ -1,5 +1,6 @@
 package zhao.algorithmMagic.utils;
 
+import org.jetbrains.annotations.NotNull;
 import zhao.algorithmMagic.core.ASDynamicLibrary;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.operands.ComplexNumber;
@@ -7,6 +8,8 @@ import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
 import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
 import zhao.algorithmMagic.operands.matrix.block.DoubleMatrixSpace;
 import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixSpace;
+import zhao.algorithmMagic.operands.table.Cell;
+import zhao.algorithmMagic.operands.table.Series;
 import zhao.algorithmMagic.utils.filter.ArrayDoubleFiltering;
 import zhao.algorithmMagic.utils.filter.ArrayIntegerFiltering;
 import zhao.algorithmMagic.utils.filter.NumericalFiltering;
@@ -2200,6 +2203,72 @@ public final class ASMath {
     public static int regularTricolor(int RorGorB) {
         if (RorGorB < 0) return 0;
         return Math.min(RorGorB, 255);
+    }
+
+    /**
+     * 将一个 Series 中所有符合条件的数据转移到list中。
+     *
+     * @param series    需要被判断的Series数据对象。
+     * @param event     数据判断逻辑实现
+     * @param arrayList 转移目标
+     */
+    public static void filterNumber(Series series, Event<Cell<?>> event, ArrayList<Cell<?>> arrayList) {
+        for (Cell<?> cell : series.toArray()) {
+            if (cell.isNumber() && event.isComplianceEvents(cell)) {
+                arrayList.add(cell);
+            }
+        }
+    }
+
+    /**
+     * 将一个 Series 中所有符合条件的数据转移到list中。
+     *
+     * @param series    需要被判断的Series数据对象。
+     * @param event     数据判断逻辑实现
+     * @param arrayList 转移目标
+     */
+    public static void filterInteger(Series series, Event<Integer> event, ArrayList<Cell<?>> arrayList) {
+        for (Cell<?> cell : series.toArray()) {
+            if (cell.isNumber() && event.isComplianceEvents(((Number) cell.getValue()).intValue())) {
+                arrayList.add(cell);
+            }
+        }
+    }
+
+    /**
+     * 将一个 Series 中所有符合条件的数据转移到list中。
+     *
+     * @param series    需要被判断的Series数据对象。
+     * @param event     数据判断逻辑实现
+     * @param arrayList 转移目标
+     */
+    public static void filterDouble(Series series, Event<Double> event, ArrayList<Cell<?>> arrayList) {
+        for (Cell<?> cell : series.toArray()) {
+            if (cell.isNumber() && event.isComplianceEvents(((Number) cell.getValue()).doubleValue())) {
+                arrayList.add(cell);
+            }
+        }
+    }
+
+    @NotNull
+    public static Cell<?>[] add(Cell<?>[] cells1, Cell<?>[] cells2) {
+        int index = -1;
+        Cell<?>[] res = new Cell[cells1.length];
+        for (Cell<?> cell : cells1) {
+            res[++index] = cells2[index].add(cell);
+        }
+        return res;
+    }
+
+
+    @NotNull
+    public static Cell<?>[] diff(Cell<?>[] cells1, Cell<?>[] cells2) {
+        int index = -1;
+        Cell<?>[] res = new Cell[cells1.length];
+        for (Cell<?> cell : cells1) {
+            res[++index] = cells2[index].diff(cell);
+        }
+        return res;
     }
 
 }
