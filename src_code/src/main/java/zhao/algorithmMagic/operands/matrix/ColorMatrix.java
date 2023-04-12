@@ -249,7 +249,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      */
     public final static ProTransForm<ColorMatrix, ColorMatrix> SLIT_LR = (colorMatrix, value) -> {
         if (value == null || !value.containsKey("times")) {
-            throw new OperatorOperationException("矩阵拉伸操作需要您传递配置项 times 其代表每一个像素在原矩阵中的横向拉伸倍数。");
+            throw new OperatorOperationException("矩阵拉伸操作需要您传递配置项 times 其代表每一个像素在原矩阵中的横向拉伸倍数。\nThe matrix stretching operation requires you to pass the configuration item times, which represents the horizontal stretching multiple of each pixel in the original matrix.");
         }
         // 获取到横向拉伸倍数
         int times = value.get("times").getIntValue();
@@ -276,12 +276,12 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      */
     public final static ProTransForm<ColorMatrix, ColorMatrix> SLIT_BT = (colorMatrix, value) -> {
         if (value == null || !value.containsKey("times")) {
-            throw new OperatorOperationException("矩阵拉伸操作需要您传递配置项 times 其代表每一个像素在原矩阵中的横向拉伸倍数。");
+            throw new OperatorOperationException("矩阵拉伸操作需要您传递配置项 times 其代表每一个像素在原矩阵中的纵向拉伸倍数。\nThe matrix stretching operation requires you to pass the configuration item times, which represents the vertical stretching multiple of each pixel in the original matrix.");
         }
         // 获取到横向拉伸倍数
         int times = value.get("times").getIntValue();
         // 开始拉伸
-        Color[][] res = new Color[colorMatrix.getRowCount() * times][colorMatrix.getColCount()];
+        Color[][] res = new Color[colorMatrix.getRowCount() * times][];
         int x1 = 0, x2 = times;
         for (Color[] colors : colorMatrix.toArrays()) {
             // 在这里将行拉伸 times 倍
@@ -290,6 +290,47 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             }
             x1 += times;
             x2 += times;
+        }
+        return ColorMatrix.parse(res);
+    };
+
+    /**
+     * 矩阵缩放计算实现，会将矩阵按照左右的方向进行缩小操作，使得图像变窄，需要传递参数 times。
+     */
+    public final static ProTransForm<ColorMatrix, ColorMatrix> SCALE_LR = (colorMatrix, value) -> {
+        if (value == null || !value.containsKey("times")) {
+            throw new OperatorOperationException("矩阵缩放操作需要您传递配置项 times 其代表每一个像素在原矩阵中的横向缩放倍数。\nThe matrix scaling operation requires you to pass the configuration item times, which represents the vertical scaling factor of each pixel in the original matrix.");
+        }
+        // 获取到横向缩放倍数
+        int times = value.get("times").getIntValue();
+        // 开始缩放
+        int resColCount = colorMatrix.getColCount() / times;
+        Color[][] res = new Color[colorMatrix.getRowCount()][resColCount];
+        int y = -1;
+        for (Color[] color : colorMatrix.toArrays()) {
+            Color[] re = res[++y];
+            for (int x = 0, x1 = 0; x1 < resColCount; x += times, x1++) {
+                re[x1] = color[x];
+            }
+        }
+        return ColorMatrix.parse(res);
+    };
+
+    /**
+     * 矩阵缩放计算实现，会将矩阵按照上下的方向进行缩小操作，使得图像变扁，需要传递参数 times。
+     */
+    public final static ProTransForm<ColorMatrix, ColorMatrix> SCALE_BT = (colorMatrix, value) -> {
+        if (value == null || !value.containsKey("times")) {
+            throw new OperatorOperationException("矩阵缩放操作需要您传递配置项 times 其代表每一个像素在原矩阵中的纵向缩放倍数。\nThe matrix scaling operation requires you to pass the configuration item times, which represents the vertical scaling factor of each pixel in the original matrix.");
+        }
+        // 获取到纵向缩放倍数
+        int times = value.get("times").getIntValue();
+        // 开始缩放
+        int resRowCount = colorMatrix.getRowCount() / times;
+        Color[][] colors = colorMatrix.toArrays();
+        Color[][] res = new Color[resRowCount][colorMatrix.getColCount()];
+        for (int y = 0, y1 = 0; y1 < resRowCount; y += times, y1++) {
+            res[y1] = colors[y].clone();
         }
         return ColorMatrix.parse(res);
     };

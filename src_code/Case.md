@@ -177,7 +177,7 @@ import java.util.Map;
 public class MAIN1 {
     public static void main(String[] args) {
         ColorMatrix colorMatrix1, colorMatrix2;
-        {        
+        {
             // 将图像与样本读取进来
             colorMatrix1 = ColorMatrix.parse("C:\\Users\\zhao\\Desktop\\fsdownload\\YB.bmp");
             colorMatrix2 = ColorMatrix.parse("C:\\Users\\zhao\\Desktop\\fsdownload\\test22.jpg");
