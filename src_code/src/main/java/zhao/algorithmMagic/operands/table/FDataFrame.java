@@ -392,6 +392,22 @@ public class FDataFrame implements DataFrame {
     }
 
     /**
+     * 查询当前表中的指定行字段数据。
+     *
+     * @param rowName 需要被获取到的数据行的行名称。
+     * @return 查询出指定行数据的DF表
+     * <p>
+     * Find the DF table of the specified row data.
+     */
+    @Override
+    public Series selectRow(String rowName) {
+        Integer integer = this.rowHashMap.get(rowName);
+        if (integer != null) {
+            return this.list.get(integer);
+        } else throw new OperatorOperationException("Unknown line [" + rowName + "]!!!");
+    }
+
+    /**
      * 将指定的符合条件的数据获取到，使用全表扫描。
      *
      * @param whereClause 条件判断逻辑实现。
@@ -403,7 +419,7 @@ public class FDataFrame implements DataFrame {
         for (Series cells : this.list) {
             if (whereClause.isComplianceEvents(cells)) arrayList.add(cells);
         }
-        return new FDataFrame(this.colNameRow, this.primaryIndex, arrayList)
+        return new FDataFrame(this.colNameRow, this.primaryIndex, arrayList, new HashMap<>(), this.colHashMap)
                 .refreshField(true, false);
     }
 
@@ -525,6 +541,23 @@ public class FDataFrame implements DataFrame {
         this.list.add(rowSeries);
         this.rowHashMap.put(rowSeries.getCell(this.primaryIndex).toString(), this.list.size() - 1);
         return this;
+    }
+
+    /**
+     * 将一个数据行插入表中。
+     * <p>
+     * Insert a data row into the table.
+     *
+     * @param value 需要被插入的数据行，可以接收多个字符串，如果字符串符合数值规则，则将会被转换成为数值单元格。
+     *              <p>
+     *              The data row that needs to be inserted can receive multiple strings. If the string conforms to numerical rules, it will be converted into numerical cells.
+     * @return 插入数据之后的 DF 数据对象。
+     * <p>
+     * DF data object after inserting data.
+     */
+    @Override
+    public DataFrame insert(String... value) {
+        return insert(FinalSeries.parse(value));
     }
 
     /**

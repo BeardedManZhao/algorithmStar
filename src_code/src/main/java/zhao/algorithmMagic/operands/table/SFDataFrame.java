@@ -24,6 +24,23 @@ public class SFDataFrame extends FDataFrame {
         super(colNameRow, primaryIndex, arrayList, rowHashMap, colHashMap);
     }
 
+    public SFDataFrame(Series colNameRow, int primaryIndex, ArrayList<Series> arrayList) {
+        super(colNameRow, primaryIndex, arrayList);
+    }
+
+    /**
+     * 创建出一个空的DF对象
+     *
+     * @param colNameRow DF中的字段序列。
+     * @param pk         主键列的索引数值
+     * @return 空的DF对象。
+     */
+    public static FDataFrame select(Series colNameRow, int pk) {
+        return new SFDataFrame(
+                colNameRow, pk, new ArrayList<>()
+        ).refreshField(false, true);
+    }
+
     /**
      * 从本地文件系统中读取一个数据对象，并返回对应数据对象的建造者类。
      *
@@ -108,4 +125,61 @@ public class SFDataFrame extends FDataFrame {
         ).refreshField(false, true);
     }
 
+    /**
+     * 将一个数据行插入表中。
+     * <p>
+     * Insert a data row into the table.
+     *
+     * @param series 需要被插入的数据行，可以接收多个字符串，如果字符串符合数值规则，则将会被转换成为数值单元格。
+     *               <p>
+     *               The data row that needs to be inserted can receive multiple strings. If the string conforms to numerical rules, it will be converted into numerical cells.
+     * @return 插入数据之后的 DF 数据对象。
+     * <p>
+     * DF data object after inserting data.
+     */
+    public DataFrame insert(SingletonSeries series) {
+        return super.insert(series);
+    }
+
+    /**
+     * 将一个数据行插入表中。
+     * <p>
+     * Insert a data row into the table.
+     *
+     * @param value 需要被插入的数据行，可以接收多个字符串，如果字符串符合数值规则，则将会被转换成为数值单元格。
+     *              <p>
+     *              The data row that needs to be inserted can receive multiple strings. If the string conforms to numerical rules, it will be converted into numerical cells.
+     * @return 插入数据之后的 DF 数据对象。
+     * <p>
+     * DF data object after inserting data.
+     */
+    @Override
+    public DataFrame insert(String... value) {
+        return super.insert(SingletonSeries.parse(value));
+    }
+
+    /**
+     * 将多个数据行插入到表中。
+     *
+     * @param rowSeries 需要被插入的数据行
+     * @return 插入之后的数据
+     */
+    public DataFrame insert(SingletonSeries... rowSeries) {
+        return super.insert(rowSeries);
+    }
+
+    /**
+     * 将两个操作数进行求和的方法，具体用法请参阅API说明。
+     * <p>
+     * The method for summing two operands, please refer to the API description for specific usage.
+     *
+     * @param value 被求和的参数  Parameters to be summed
+     * @return 求和之后的数值  the value after the sum
+     * <p>
+     * There is no description for the super interface, please refer to the subclass documentation
+     */
+    @Override
+    public DataFrame add(DataFrame value) {
+        return super.add(value);
+    }
 }

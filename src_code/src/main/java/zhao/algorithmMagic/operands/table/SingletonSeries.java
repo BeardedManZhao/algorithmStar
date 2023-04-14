@@ -10,7 +10,6 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.function.IntFunction;
 import java.util.stream.Stream;
 
 /**
@@ -51,15 +50,13 @@ public class SingletonSeries implements Series {
 
     public static SingletonSeries parse(String... arr) {
         return new SingletonSeries(
-                Arrays.stream(arr).map(SingletonCell::$)
-                        .toArray((IntFunction<Cell<?>[]>) value -> new Cell[arr.length])
+                ASClass.ATA(arr, new Cell[arr.length], SingletonCell::$)
         );
     }
 
     public static <T> SingletonSeries parse(T[] arr) {
         return new SingletonSeries(
-                Arrays.stream(arr).map(SingletonCell::$)
-                        .toArray((IntFunction<Cell<?>[]>) value -> new Cell[arr.length])
+                ASClass.ATA(arr, new Cell[arr.length], SingletonCell::$)
         );
     }
 

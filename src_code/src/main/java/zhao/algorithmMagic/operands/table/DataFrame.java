@@ -110,6 +110,16 @@ public interface DataFrame extends AggDataFrameData, Iterable<Series>, Serializa
     DataFrame selectRow(String... rowNames);
 
     /**
+     * 查询当前表中的指定行字段数据。
+     *
+     * @param rowName 需要被获取到的数据行的行名称。
+     * @return 查询出指定行数据的DF表
+     * <p>
+     * Find the DF table of the specified row data.
+     */
+    Series selectRow(String rowName);
+
+    /**
      * 将指定的符合条件的数据获取到。
      *
      * @param whereClause 条件判断逻辑实现。
@@ -194,6 +204,20 @@ public interface DataFrame extends AggDataFrameData, Iterable<Series>, Serializa
      * @return 插入之后的数据
      */
     DataFrame insert(Series rowSeries);
+
+    /**
+     * 将一个数据行插入表中。
+     * <p>
+     * Insert a data row into the table.
+     *
+     * @param value 需要被插入的数据行，可以接收多个字符串，如果字符串符合数值规则，则将会被转换成为数值单元格。
+     *              <p>
+     *              The data row that needs to be inserted can receive multiple strings. If the string conforms to numerical rules, it will be converted into numerical cells.
+     * @return 插入数据之后的 DF 数据对象。
+     * <p>
+     * DF data object after inserting data.
+     */
+    DataFrame insert(String... value);
 
     /**
      * 将多个数据行插入到表中。
