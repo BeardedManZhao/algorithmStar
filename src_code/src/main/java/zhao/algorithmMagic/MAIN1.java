@@ -1,46 +1,32 @@
 package zhao.algorithmMagic;
 
-import zhao.algorithmMagic.core.AlgorithmStar;
-import zhao.algorithmMagic.io.InputByStream;
-import zhao.algorithmMagic.io.InputByStreamBuilder;
-import zhao.algorithmMagic.io.InputComponent;
-import zhao.algorithmMagic.operands.table.DataFrame;
+import zhao.algorithmMagic.io.OutputComponent;
+import zhao.algorithmMagic.io.PrintServiceOutput;
+import zhao.algorithmMagic.io.PrintServiceOutputBuilder;
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
 import zhao.algorithmMagic.operands.table.FinalCell;
 
-import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import javax.print.DocFlavor;
+import javax.print.attribute.HashPrintRequestAttributeSet;
 
 
 public class MAIN1 {
-    public static void main(String[] args) throws SQLException {
-        /* *****************************************************
-         * TODO 从数据流中读取到数据
-         * *****************************************************/
-        // 开始将所有的参数配置到设备对象中，构建出数据输入设备
-        InputComponent inputComponent = InputByStream.builder()
-                .addInputArg(InputByStreamBuilder.INPUT_STREAM, new FinalCell<>(System.in))
-                .addInputArg(InputByStreamBuilder.CHARSET, new FinalCell<>("utf-8"))
-                .addInputArg(InputByStreamBuilder.SEP, new FinalCell<>(','))
-                .addInputArg(InputByStreamBuilder.PK, new FinalCell<>(1))
-                .addInputArg(InputByStreamBuilder.ROW_LEN, new FinalCell<>(3))
+    public static void main(String[] args) {
+        // 获取到需要被输出的图像矩阵
+        ColorMatrix colorMatrix = ColorMatrix.parse("C:\\Users\\zhao\\Pictures\\Screenshots\\屏幕截图_20230116_163341.png");
+        // 获取到打印机设备数据输出对象
+        HashPrintRequestAttributeSet hashPrintRequestAttributeSet = new HashPrintRequestAttributeSet();
+        OutputComponent outputComponent = PrintServiceOutput.builder()
+                // 设置打印的数据的格式 这里是数组的JPG图像
+                .addOutputArg(PrintServiceOutputBuilder.DOC_FLAVOR, new FinalCell<>(DocFlavor.BYTE_ARRAY.JPEG))
+                // 设置打印的属性配置集合
+                .addOutputArg(PrintServiceOutputBuilder.ATTR, new FinalCell<>(hashPrintRequestAttributeSet))
+                // 设置打印机的名称
+                .addOutputArg(PrintServiceOutputBuilder.PRINT_SERVER_NAME, new FinalCell<>("HPFF15E0 (HP DeskJet 2700 series)"))
+                // 创建出打印机设备数据输入对象
                 .create();
-
-        // TODO 开始通过 algorithmStar 构建出DataFrame对象 这里是通过文件 数据库 数据输入组件 来进行构建
-        File file = new File("C:\\Users\\zhao\\Downloads\\test.csv");
-        DataFrame dataFrame1 = AlgorithmStar.parseSDF(file).setSep(',')
-                .create("year", "month", "day", "week", "temp_2", "temp_1", "average", "actual", "friend")
-                .execute();
-        dataFrame1.show();
-
-        DataFrame dataFrame2 = AlgorithmStar.parseSDF(inputComponent, false);
-        dataFrame2.show();
-
-        Connection connection = DriverManager.getConnection("");
-        DataFrame dataFrame3 = AlgorithmStar.parseSDF(connection)
-                .from("xxx")
-                .execute();
-        dataFrame3.show();
+        // 开始查看图像并将图像输出
+        colorMatrix.show("image", 1024, 512);
+        colorMatrix.save(outputComponent);
     }
 }

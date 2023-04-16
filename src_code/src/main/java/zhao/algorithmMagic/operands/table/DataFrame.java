@@ -303,6 +303,8 @@ public interface DataFrame extends AggDataFrameData, Iterable<Series>, Serializa
      */
     DataFrame into_outfile(String outPath, String sep);
 
+    DataFrame into_outHTMLStream(BufferedWriter bufferedWriter, String tableName);
+
     /**
      * 将计算结果以 HTML 表格的格式输出到指定目录的文本文件中。
      *

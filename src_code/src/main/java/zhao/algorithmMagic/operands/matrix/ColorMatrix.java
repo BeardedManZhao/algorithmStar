@@ -563,6 +563,31 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
     }
 
     /**
+     * 生成一个随机图像矩阵，其中的三个通道颜色均为随机数值，无任何规律。
+     *
+     * @param width    要生成的图像矩阵的宽度。
+     * @param height   要生成的图像矩阵的高度。
+     * @param randSeed 生成图像时需要使用的随机种子。
+     * @return 按照设置的随机种子生成的随机图像矩阵对象。
+     */
+    public static ColorMatrix random(int width, int height, int randSeed) {
+        Random random = new Random(randSeed);
+        Color[][] res = new Color[height][];
+        for (int y = 0; y < height; y++) {
+            Color[] row = new Color[width];
+            for (int x = 0; x < width; x++) {
+                row[x] = new Color(
+                        random.nextInt(255),
+                        random.nextInt(255),
+                        random.nextInt(255)
+                );
+            }
+            res[y] = row;
+        }
+        return parse(res);
+    }
+
+    /**
      * 将一个图像矩阵中的所有像素转换成为三原色均值，获取到灰度矩阵。
      *
      * @param colors 需要被转换的颜色矩阵（注意，该矩阵将会被修改）
@@ -1991,19 +2016,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         jFrame.setResizable(true);
         ImageIcon imageIcon = new ImageIcon(jFrame.createVolatileImage(colCount, rowCount));
         Image image = imageIcon.getImage();
-        {
-            Graphics graphics = image.getGraphics();
-            // 开始绘制图形
-            int yc = -1;
-            for (Color[] colors : this.toArrays()) {
-                ++yc;
-                int xc = -1;
-                for (Color color : colors) {
-                    graphics.setColor(color);
-                    graphics.fillRect(++xc, yc, 1, 1);
-                }
-            }
-        }
+        drawToImage(image);
         JLabel label = new JLabel(imageIcon);//往一个标签中加入图片
         label.setVisible(true);
         label.setBounds(0, 0, jFrame.getWidth(), jFrame.getHeight());//设置标签位置大小，记得大小要和窗口一样大
@@ -2012,6 +2025,25 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         }
         jFrame.getLayeredPane().add(label, Integer.valueOf(Integer.MIN_VALUE));//标签添加到层面板
         jFrame.add(label);
+    }
+
+    /**
+     * 将当前图像矩阵中的图像绘制到 image 对象中。
+     *
+     * @param image 需要被绘制的图像对象。
+     */
+    public final void drawToImage(Image image) {
+        Graphics graphics = image.getGraphics();
+        // 开始绘制图形
+        int yc = -1;
+        for (Color[] colors : this.toArrays()) {
+            ++yc;
+            int xc = -1;
+            for (Color color : colors) {
+                graphics.setColor(color);
+                graphics.fillRect(++xc, yc, 1, 1);
+            }
+        }
     }
 
     /**

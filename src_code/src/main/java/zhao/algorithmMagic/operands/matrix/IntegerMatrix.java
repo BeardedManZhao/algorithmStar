@@ -151,6 +151,37 @@ public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], i
         }
     }
 
+    /**
+     * 随机生成一个整形矩阵对象，在矩阵中存储的就是根据随机种子，随机产生的数值元素。
+     * <p>
+     * An integer matrix object is randomly generated, and the numerical elements stored in the matrix are randomly generated according to the random seed.
+     *
+     * @param width    要生成的矩阵对象的宽度。
+     *                 <p>
+     *                 The width of the matrix object to be generated.
+     * @param height   要生成的矩阵对象的高度。
+     *                 <p>
+     *                 The height of the matrix object to be generated.
+     * @param randSeed 生成矩阵元素的时候需要使用的随机种子数值。
+     *                 <p>
+     *                 The random seed value to be used when generating matrix elements.
+     * @return 随机生成的指定行列数量的矩阵对象。
+     * <p>
+     * A randomly generated matrix object with a specified number of rows and columns.
+     */
+    public static IntegerMatrix random(int width, int height, int randSeed) {
+        Random random = new Random(randSeed);
+        int[][] res = new int[height][];
+        for (int y = 0; y < height; y++) {
+            int[] row = new int[width];
+            for (int x = 0; x < width; x++) {
+                row[x] = random.nextInt();
+            }
+            res[y] = row;
+        }
+        return parse(res);
+    }
+
     protected static void ex(double thresholdLeft, double thresholdRight, int[][] ints, int[] mid, ArrayList<int[]> res) {
         if (ASDynamicLibrary.isUseC()) {
             for (int[] anInt : ints) {
