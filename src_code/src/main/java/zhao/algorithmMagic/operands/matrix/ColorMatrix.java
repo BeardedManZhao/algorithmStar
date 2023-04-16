@@ -6,6 +6,7 @@ import zhao.algorithmMagic.integrator.ImageRenderingIntegrator;
 import zhao.algorithmMagic.io.InputComponent;
 import zhao.algorithmMagic.io.OutputComponent;
 import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
+import zhao.algorithmMagic.operands.matrix.block.ColorMatrixSpace;
 import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixSpace;
 import zhao.algorithmMagic.operands.table.Cell;
 import zhao.algorithmMagic.utils.ASClass;
@@ -1729,6 +1730,26 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
     }
 
     /**
+     * 将图像矩阵中的指定通道的颜色整数数值矩阵获取到。
+     *
+     * @param colorMode 需要被获取到颜色通道编码。
+     * @return 对应颜色通道的颜色数值组成的颜色矩阵对象。
+     */
+    public final ColorMatrix getColorChannel(int colorMode) {
+        Color[][] res = new Color[this.getRowCount()][this.getColCount()];
+        int y = -1;
+        int diff = colorMode == ColorMatrix._G_ ? 8 : ColorMatrix._B_ - colorMode;
+        for (Color[] colors : this.toArrays()) {
+            Color[] re = res[++y];
+            int x = -1;
+            for (Color color : colors) {
+                re[++x] = new Color(((color.getRGB() >> colorMode) & 0xFF) << diff);
+            }
+        }
+        return ColorMatrix.parse(res);
+    }
+
+    /**
      * 向矩阵中绘制一个矩阵。
      *
      * @param start 矩阵的左上角坐标对象。
@@ -1885,6 +1906,42 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             }
         }
         return res;
+    }
+
+    /**
+     * 将其中的指定的 RGB 通道提取出来并进行叠加成为一个图像矩阵对象。
+     * <p>
+     * Extract the specified RGB channels from them and overlay them to form a new image matrix object.
+     *
+     * @param mode 要提取的通道编号列表。
+     * @return
+     */
+    public final ColorMatrixSpace toRGBSpace(int mode) {
+        // 0 8 16
+        ColorMatrix colorChannel1 = this.getColorChannel(_B_);
+        if (mode == (_G_ + _R_)) {
+            Color[][] res1 = new Color[this.getRowCount()][this.getColCount()];
+            Color[][] res2 = new Color[this.getRowCount()][this.getColCount()];
+            int y = -1;
+            for (Color[] colors : this.toArrays()) {
+                Color[] re1 = res1[++y];
+                Color[] re2 = res2[y];
+                int x = -1;
+                for (Color color : colors) {
+                    re1[++x] = new Color(color.getRed(), 0, 0);
+                    re2[x] = new Color(0, color.getGreen(), 0);
+                }
+            }
+            return ColorMatrixSpace.parse(
+                    parse(res1),
+                    parse(res2),
+                    colorChannel1
+            );
+        } else if (mode == _R_ || mode == _G_) {
+            return ColorMatrixSpace.parse(this.getColorChannel(mode), colorChannel1);
+        } else {
+            return ColorMatrixSpace.parse(colorChannel1);
+        }
     }
 
     /**
