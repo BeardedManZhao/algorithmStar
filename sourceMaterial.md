@@ -1,7 +1,7 @@
 ## 人脸类
 
 ![face1](https://user-images.githubusercontent.com/113756063/231062649-34268530-801a-4520-81ae-176936a3a981.jpg)
-![YB1](https://user-images.githubusercontent.com/113756063/230775389-4477aad4-795c-47c2-a946-0afeadafad44.jpg)
+![face_YB1](https://user-images.githubusercontent.com/113756063/230775389-4477aad4-795c-47c2-a946-0afeadafad44.jpg)
 
 ## 人物类
 
@@ -10,8 +10,8 @@
 
 ## 动物类
 
-![catHead1_YB](https://user-images.githubusercontent.com/113756063/232627018-1ab647ff-38f7-408c-a3df-365028463152.jpg)
-![cat1_YB](https://user-images.githubusercontent.com/113756063/232627028-dd638291-f808-4920-a268-71c76e630bf0.jpg)
+![catHead_YB1](https://user-images.githubusercontent.com/113756063/232627018-1ab647ff-38f7-408c-a3df-365028463152.jpg)
+![cat_YB1](https://user-images.githubusercontent.com/113756063/232627526-efb34160-8948-48c9-9b4f-094069b00e38.jpg)
 ![cat1](https://user-images.githubusercontent.com/113756063/232627057-a49d6958-d608-4d44-b309-f63454998aaa.jpg)
 ![catHead1](https://user-images.githubusercontent.com/113756063/232627111-d319abbb-7cd3-44f8-92d6-b22c05c2f80b.jpg)
 ![hamster1](https://user-images.githubusercontent.com/113756063/231063245-7177e066-1a9f-44bd-a996-d9fb4a94ed23.jpg)
