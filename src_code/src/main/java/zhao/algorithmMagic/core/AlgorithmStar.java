@@ -13,7 +13,9 @@ import zhao.algorithmMagic.algorithm.normalization.DataStandardization;
 import zhao.algorithmMagic.algorithm.normalization.RangeDataStandardization;
 import zhao.algorithmMagic.algorithm.probabilisticAlgorithm.ProbabilisticAlgorithm;
 import zhao.algorithmMagic.algorithm.schemeAlgorithm.SchemeAlgorithm;
+import zhao.algorithmMagic.core.model.ASModel;
 import zhao.algorithmMagic.io.InputComponent;
+import zhao.algorithmMagic.operands.Operands;
 import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateMany;
 import zhao.algorithmMagic.operands.coordinate.FloatingPointCoordinates;
 import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateMany;
@@ -254,6 +256,14 @@ public final class AlgorithmStar<diffValue, featureReturn> {
         return ColorMatrix.parseGrayscale(imagePath);
     }
 
+    public static <K, I extends Operands<I>, O> O model(ASModel<K, I, O> model, I[] input) {
+        return model.function(input);
+    }
+
+    public static <K, I extends Operands<I>, O> O modelConcurrency(ASModel<K, I, O> model, I[] input) {
+        return model.functionConcurrency(input);
+    }
+
     /**
      * 计算一个路线的起始点与终止点的真实距离。具体的距离实现，需要您查阅算法实现的文档。
      * <p>
@@ -287,6 +297,13 @@ public final class AlgorithmStar<diffValue, featureReturn> {
         return distanceAlgorithm.getTrueDistance(doubles1, doubles2);
     }
 
+    /*
+     ********************************************************************
+     * 聚合算法组件计算函数开始分界线
+     * Aggregation algorithm component calculation function start boundary
+     ********************************************************************
+     */
+
     /**
      * 获取两个序列之间的距离
      * <p>
@@ -302,13 +319,6 @@ public final class AlgorithmStar<diffValue, featureReturn> {
     public double getTrueDistance(DistanceAlgorithm distanceAlgorithm, int[] ints1, int[] ints2) {
         return distanceAlgorithm.getTrueDistance(ints1, ints2);
     }
-
-    /*
-     ********************************************************************
-     * 聚合算法组件计算函数开始分界线
-     * Aggregation algorithm component calculation function start boundary
-     ********************************************************************
-     */
 
     /**
      * 计算一个路线的起始点与终止点的真实距离。具体的距离实现，需要您查阅算法实现的文档。
@@ -383,6 +393,14 @@ public final class AlgorithmStar<diffValue, featureReturn> {
         return distanceAlgorithm.getTrueDistance(matrix1, matrix2);
     }
 
+
+    /*
+     ********************************************************************
+     * 分类算法组件计算函数开始分界线
+     * Classification algorithm component calculation function start boundary
+     ********************************************************************
+     */
+
     /**
      * 计算两个矩阵对象之间的距离度量函数，通过该函数可以实现两个矩阵对象度量系数的计算。
      * <p>
@@ -404,14 +422,6 @@ public final class AlgorithmStar<diffValue, featureReturn> {
     public double getTrueDistance(DistanceAlgorithm distanceAlgorithm, DoubleMatrix matrix1, DoubleMatrix matrix2) {
         return distanceAlgorithm.getTrueDistance(matrix1, matrix2);
     }
-
-
-    /*
-     ********************************************************************
-     * 分类算法组件计算函数开始分界线
-     * Classification algorithm component calculation function start boundary
-     ********************************************************************
-     */
 
     /**
      * 计算向量距离原点的距离。
@@ -585,6 +595,13 @@ public final class AlgorithmStar<diffValue, featureReturn> {
         return noSampleClassification.classification(keys, ints);
     }
 
+    /*
+     ********************************************************************
+     * 差异算法组件计算函数开始分界线                                         *
+     * diff algorithm component calculation function start boundary *
+     ********************************************************************
+     */
+
     /**
      * 无样本的距离计算，您在此进行分类，不需要传递很多的数据样本，只需要由实现类按照自己的算法进行类别推断即可。
      * <p>
@@ -609,8 +626,8 @@ public final class AlgorithmStar<diffValue, featureReturn> {
 
     /*
      ********************************************************************
-     * 差异算法组件计算函数开始分界线                                         *
-     * diff algorithm component calculation function start boundary *
+     * 特征提取算法组件计算函数开始分界线                                         *
+     * FeatureExtraction algorithm component calculation function start boundary *
      ********************************************************************
      */
 
@@ -638,8 +655,8 @@ public final class AlgorithmStar<diffValue, featureReturn> {
 
     /*
      ********************************************************************
-     * 特征提取算法组件计算函数开始分界线                                         *
-     * FeatureExtraction algorithm component calculation function start boundary *
+     * 数据预处理算法组件计算函数开始分界线                                         *
+     * Data preprocessing algorithm component calculation function start boundary *
      ********************************************************************
      */
 
@@ -664,13 +681,6 @@ public final class AlgorithmStar<diffValue, featureReturn> {
     public HashMap<String, ArrayList<ColumnDoubleVector>> classification(NoSampleClassification noSampleClassification, String[] keys, ColumnDoubleMatrix columnDoubleMatrix) {
         return noSampleClassification.classification(keys, columnDoubleMatrix);
     }
-
-    /*
-     ********************************************************************
-     * 数据预处理算法组件计算函数开始分界线                                         *
-     * Data preprocessing algorithm component calculation function start boundary *
-     ********************************************************************
-     */
 
     /**
      * 计算一个矩阵中所有行或列的数据类别，并将计算之后的数据类别样本返回出去。
@@ -818,6 +828,13 @@ public final class AlgorithmStar<diffValue, featureReturn> {
         return dataStandardization.pretreatment(v);
     }
 
+    /*
+     ********************************************************************
+     * 概率算法组件计算函数开始分界线
+     * Probability algorithm component calculation function start boundary
+     ********************************************************************
+     */
+
     /**
      * 将一个序列进行标准化，具体的标准化有不同的实现
      *
@@ -832,13 +849,6 @@ public final class AlgorithmStar<diffValue, featureReturn> {
     public IntegerCoordinates<IntegerCoordinateMany> pretreatment(DataStandardization dataStandardization, IntegerCoordinateMany v) {
         return dataStandardization.pretreatment(v);
     }
-
-    /*
-     ********************************************************************
-     * 概率算法组件计算函数开始分界线
-     * Probability algorithm component calculation function start boundary
-     ********************************************************************
-     */
 
     /**
      * 将一个序列进行标准化，具体的标准化有不同的实现

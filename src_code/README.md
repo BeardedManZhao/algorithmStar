@@ -239,7 +239,8 @@ public class MAIN1 {
 }
 ```
 
-* The image matrix object supports a single channel color extraction operation, which will return an image matrix object with better performance.
+* The image matrix object supports a single channel color extraction operation, which will return an image matrix object
+  with better performance.
 
 ```java
 package zhao.algorithmMagic;
@@ -264,7 +265,8 @@ public class MAIN1 {
 }
 ```
 
-* The image matrix object supports multi-layer extraction operations for multiple color channels, which will overlay all color channels into the image space.
+* The image matrix object supports multi-layer extraction operations for multiple color channels, which will overlay all
+  color channels into the image space.
 
 ```java
 package zhao.algorithmMagic;
@@ -290,4 +292,275 @@ public class MAIN1 {
     }
 }
 ```
+
+* Support the conversion of image matrix objects to integer matrix space objects, and support the calculation operation
+  of specifying the number of channels.
+* The convolution kernel in the convolution calculation operation function of the reshaping matrix space supports matrix
+  objects composed of double matrix data types.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.core.AlgorithmStar;
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
+import zhao.algorithmMagic.operands.matrix.block.DoubleMatrixSpace;
+import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixSpace;
+
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 获取到需要被输出的图像矩阵
+        ColorMatrix colorMatrix = ColorMatrix.parse("C:\\Users\\Liming\\Desktop\\fsdownload\\person1.jpg");
+        // 提取出 红色 绿色 蓝色 通道叠加成为的新整形矩阵空间对象
+        IntegerMatrixSpace integerMatrices = colorMatrix.toIntRGBSpace(ColorMatrix._R_, ColorMatrix._G_, ColorMatrix._B_);
+        // 准备一个 double 卷积核 该卷积核的左右为求均值计算。
+        double r = 1 / 9.0;
+        System.out.println(r);
+        DoubleMatrix doubleMatrix = AlgorithmStar.parseDoubleMat(
+                new double[]{r, r, r},
+                new double[]{r, r, r},
+                new double[]{r, r, r}
+        );
+        // 将卷积核矩阵空间对象计算出来
+        DoubleMatrixSpace core = DoubleMatrixSpace.parse(doubleMatrix, doubleMatrix, doubleMatrix);
+        // 开始进行图像的卷积操作
+        ColorMatrix colorMatrix1 = integerMatrices.foldingAndSumRGB(3, 3, core);
+        // 查看结果图像
+        colorMatrix1.show("image");
+    }
+}
+```
+
+* Add the AS model package, which provides many built-in and well implemented models that can reduce code development
+  under certain circumstances. The model objects can be directly passed to AlgorithmStar for calculation, including
+  single threaded and multi threaded calculation implementations.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.core.AlgorithmStar;
+import zhao.algorithmMagic.core.model.ASModel;
+import zhao.algorithmMagic.core.model.SingleTargetContour;
+import zhao.algorithmMagic.io.InputCamera;
+import zhao.algorithmMagic.io.InputCameraBuilder;
+import zhao.algorithmMagic.io.InputComponent;
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+import zhao.algorithmMagic.operands.table.FinalCell;
+import zhao.algorithmMagic.operands.table.SingletonCell;
+
+import java.awt.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+
+public class MAIN1 {
+    public static void main(String[] args) throws MalformedURLException {
+        // 获取到摄像头设备
+        InputComponent inputComponent = InputCamera.builder()
+                .addInputArg(InputCameraBuilder.Camera_Index, SingletonCell.$(0))
+                .addInputArg(InputCameraBuilder.Image_Format, SingletonCell.$("JPG"))
+                .create();
+        // 开始将三个图像矩形拍摄出来
+        ColorMatrix[] colorMatrices = new ColorMatrix[3];
+        for (int i = 0; i < 3; i++) {
+            colorMatrices[i] = AlgorithmStar.parseImage(inputComponent, true);
+        }
+        // 获取到目标数据样本 这里是人脸轮廓
+        ColorMatrix yb = AlgorithmStar.parseImage(
+                new URL("https://user-images.githubusercontent.com/113756063/230775389-4477aad4-795c-47c2-a946-0afeadafad44.jpg")
+        );
+        // 获取到单目标矩形模型
+        SingleTargetContour singleTargetContour = ASModel.SINGLE_TARGET_CONTOUR;
+        // 设置需要被用于做为目标的图像矩阵 由于样本不常用，因此在这里没有使用单例单元格，因为单例单元格会保存数据对象
+        singleTargetContour.setArg(SingleTargetContour.TARGET, new FinalCell<>(yb));
+        // 设置本次绘制识别使用二值化操作，贴近样本
+        singleTargetContour.setArg(SingleTargetContour.isBinary, SingletonCell.$(true));
+        // 设置矩形轮廓的颜色对象
+        singleTargetContour.setArg(SingleTargetContour.OUTLINE_COLOR, SingletonCell.$(new Color(255, 0, 245)));
+        long startTime = System.currentTimeMillis();
+        // 开始单线程绘制并查看
+        for (ColorMatrix colorMatrix : AlgorithmStar.model(singleTargetContour, colorMatrices)) {
+            colorMatrix.show("image");
+        }
+        System.out.println("耗时：" + (System.currentTimeMillis() - startTime));
+    }
+}
+```
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.core.AlgorithmStar;
+import zhao.algorithmMagic.core.model.ASModel;
+import zhao.algorithmMagic.core.model.SingleTargetContour;
+import zhao.algorithmMagic.io.InputCamera;
+import zhao.algorithmMagic.io.InputCameraBuilder;
+import zhao.algorithmMagic.io.InputComponent;
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+import zhao.algorithmMagic.operands.table.FinalCell;
+import zhao.algorithmMagic.operands.table.SingletonCell;
+
+import java.awt.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+
+public class MAIN1 {
+    public static void main(String[] args) throws MalformedURLException {
+        // 获取到摄像头设备
+        InputComponent inputComponent = InputCamera.builder()
+                .addInputArg(InputCameraBuilder.Camera_Index, SingletonCell.$(0))
+                .addInputArg(InputCameraBuilder.Image_Format, SingletonCell.$("JPG"))
+                .create();
+        // 开始将三个图像矩形拍摄出来
+        ColorMatrix[] colorMatrices = new ColorMatrix[3];
+        for (int i = 0; i < 3; i++) {
+            colorMatrices[i] = AlgorithmStar.parseImage(inputComponent, true);
+        }
+        // 获取到目标数据样本 这里是人脸轮廓
+        ColorMatrix yb = AlgorithmStar.parseImage(
+                new URL("https://user-images.githubusercontent.com/113756063/230775389-4477aad4-795c-47c2-a946-0afeadafad44.jpg")
+        );
+        // 获取到单目标矩形模型
+        SingleTargetContour singleTargetContour = ASModel.SINGLE_TARGET_CONTOUR;
+        // 设置需要被用于做为目标的图像矩阵 由于样本不常用，因此在这里没有使用单例单元格，因为单例单元格会保存数据对象
+        singleTargetContour.setArg(SingleTargetContour.TARGET, new FinalCell<>(yb));
+        // 设置本次绘制识别使用二值化操作，贴近样本
+        singleTargetContour.setArg(SingleTargetContour.isBinary, SingletonCell.$(true));
+        // 设置矩形轮廓的颜色对象
+        singleTargetContour.setArg(SingleTargetContour.OUTLINE_COLOR, SingletonCell.$(new Color(255, 0, 245)));
+        long startTime = System.currentTimeMillis();
+        // 开始多线程绘制并查看
+        for (ColorMatrix colorMatrix : AlgorithmStar.modelConcurrency(singleTargetContour, colorMatrices)) {
+            colorMatrix.show("image");
+        }
+        System.out.println("耗时：" + (System.currentTimeMillis() - startTime));
+    }
+}
+```
+
+* In the AS model library, an image classification model is added, which supports the supervised learning classification model of multiple images. The model also supports both single thread and multithreaded computing operations.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.core.AlgorithmStar;
+import zhao.algorithmMagic.core.model.ASModel;
+import zhao.algorithmMagic.core.model.SingleTargetContour;
+import zhao.algorithmMagic.core.model.TarImageClassification;
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+import zhao.algorithmMagic.operands.table.FinalCell;
+import zhao.algorithmMagic.operands.table.SingletonCell;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Map;
+
+
+public class MAIN1 {
+    public static void main(String[] args) throws MalformedURLException {
+        // 获取到 人脸样本
+        ColorMatrix person = ColorMatrix.parse(
+                new URL("https://user-images.githubusercontent.com/113756063/230775389-4477aad4-795c-47c2-a946-0afeadafad44.jpg")
+        );
+        // 获取到 小猫样本
+        ColorMatrix cat = ColorMatrix.parse(
+                "C:\\Users\\Liming\\Desktop\\fsdownload\\catHead1.jpg"
+        );
+
+
+        // 获取到需要被识别的图像
+        ColorMatrix parse1 = ColorMatrix.parse(
+                new URL("https://user-images.githubusercontent.com/113756063/231062649-34268530-801a-4520-81ae-176936a3a981.jpg")
+        );
+        ColorMatrix parse2 = ColorMatrix.parse(
+                "C:\\Users\\Liming\\Desktop\\fsdownload\\cat.jpg"
+        );
+
+        // 获取到图像分类模型
+        TarImageClassification tarImageClassification = ASModel.TAR_IMAGE_CLASSIFICATION;
+        // 设置人脸类型标签样本
+        tarImageClassification.setArg("person", new FinalCell<>(person));
+        // 设置小猫类型标签样本
+        tarImageClassification.setArg("cat", new FinalCell<>(cat));
+        // 设置启用二值化操作
+        TarImageClassification.SINGLE_TARGET_CONTOUR.setArg(SingleTargetContour.isBinary, SingletonCell.$(true));
+        
+        ColorMatrix[] colorMatrices = {parse1, parse2};
+        // 需要注意的是，当指定了二值化操作之后，传递进去的图像矩阵将会被更改 因此在这里使用模型的时候使用克隆出来的矩阵数组
+        ColorMatrix[] clone = {ColorMatrix.parse(parse1.copyToNewArrays()), ColorMatrix.parse(parse2.copyToNewArrays())};
+        // 开始计算并迭代计算出来的类别集合，进行结果查看
+        for (Map.Entry<String, ArrayList<Integer>> entry : AlgorithmStar.model(tarImageClassification, clone).entrySet()) {
+            String k = entry.getKey() + "类别";
+            for (int index : entry.getValue()) {
+                colorMatrices[index].show(k);
+            }
+        }
+    }
+}
+```
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.core.AlgorithmStar;
+import zhao.algorithmMagic.core.model.ASModel;
+import zhao.algorithmMagic.core.model.SingleTargetContour;
+import zhao.algorithmMagic.core.model.TarImageClassification;
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+import zhao.algorithmMagic.operands.table.FinalCell;
+import zhao.algorithmMagic.operands.table.SingletonCell;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Map;
+
+
+public class MAIN1 {
+  public static void main(String[] args) throws MalformedURLException {
+    // 获取到 人脸样本
+    ColorMatrix person = ColorMatrix.parse(
+            new URL("https://user-images.githubusercontent.com/113756063/230775389-4477aad4-795c-47c2-a946-0afeadafad44.jpg")
+    );
+    // 获取到 小猫样本
+    ColorMatrix cat = ColorMatrix.parse(
+            "C:\\Users\\Liming\\Desktop\\fsdownload\\catHead1.jpg"
+    );
+
+
+    // 获取到需要被识别的图像
+    ColorMatrix parse1 = ColorMatrix.parse(
+            new URL("https://user-images.githubusercontent.com/113756063/231062649-34268530-801a-4520-81ae-176936a3a981.jpg")
+    );
+    ColorMatrix parse2 = ColorMatrix.parse(
+            "C:\\Users\\Liming\\Desktop\\fsdownload\\cat.jpg"
+    );
+
+    // 获取到图像分类模型
+    TarImageClassification tarImageClassification = ASModel.TAR_IMAGE_CLASSIFICATION;
+    // 设置人脸类型标签样本
+    tarImageClassification.setArg("person", new FinalCell<>(person));
+    // 设置小猫类型标签样本
+    tarImageClassification.setArg("cat", new FinalCell<>(cat));
+    // 设置启用二值化操作
+    TarImageClassification.SINGLE_TARGET_CONTOUR.setArg(SingleTargetContour.isBinary, SingletonCell.$(true));
+
+    ColorMatrix[] colorMatrices = {parse1, parse2};
+    // 需要注意的是，当指定了二值化操作之后，传递进去的图像矩阵将会被更改 因此在这里使用模型的时候使用克隆出来的矩阵数组
+    ColorMatrix[] clone = {ColorMatrix.parse(parse1.copyToNewArrays()), ColorMatrix.parse(parse2.copyToNewArrays())};
+    long start = System.currentTimeMillis();
+    // 开始计算并迭代计算出来的类别集合，进行结果查看
+    for (Map.Entry<String, ArrayList<Integer>> entry : AlgorithmStar.modelConcurrency(tarImageClassification, clone).entrySet()) {
+      String k = entry.getKey() + "类别";
+      for (int index : entry.getValue()) {
+        colorMatrices[index].show(k);
+      }
+    }
+    System.out.println(System.currentTimeMillis() - start);
+  }
+}
+```
+
 ### Version update date : 2023-04-09

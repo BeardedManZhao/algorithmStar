@@ -87,7 +87,7 @@
             <groupId>com.github.sarxos</groupId>
             <artifactId>webcam-capture</artifactId>
             <version>0.3.12</version>
-            <scope>provided</scope>
+            <!--            <scope>provided</scope>-->
         </dependency>
 
         <!-- HDFS 输入输出设备依赖库如果需要使用 HDFS 进行数据的IO，可以引用该依赖。 -->

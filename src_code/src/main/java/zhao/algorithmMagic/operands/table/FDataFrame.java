@@ -392,6 +392,17 @@ public class FDataFrame implements DataFrame {
     }
 
     /**
+     * 将当前表中指定行索引的序列获取到。
+     *
+     * @param rowIndex 需要获取的行的索引数值，从0开始。
+     * @return 指定索引的行序列对象。
+     */
+    @Override
+    public Series selectRow(int rowIndex) {
+        return this.list.get(rowIndex);
+    }
+
+    /**
      * 查询当前表中的指定行字段数据。
      *
      * @param rowName 需要被获取到的数据行的行名称。

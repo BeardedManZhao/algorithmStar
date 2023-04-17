@@ -450,6 +450,43 @@ public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], i
     }
 
     /**
+     * 计算两个向量的内积，也称之为数量积，具体实现请参阅api说明
+     * <p>
+     * Calculate the inner product of two vectors, also known as the quantity product, please refer to the api node for the specific implementation
+     *
+     * @param matrix 第二个被计算的向量对象
+     *               <p>
+     *               the second computed matrix object
+     * @return 两个向量的内积
+     * waiting to be realized
+     */
+    public Integer innerProduct(DoubleMatrix matrix) {
+        int rowCount1 = this.getRowCount();
+        int rowCount2 = matrix.getRowCount();
+        int colCount1 = this.getColCount();
+        int colCount2 = matrix.getColCount();
+        if (rowCount1 == rowCount2) {
+            int res = 0;
+            int rowPointer1 = this.RowPointer;
+            int rowPointer2 = matrix.RowPointer;
+            while (this.MovePointerDown() && matrix.MovePointerDown()) {
+                int[] ints = this.toArray();
+                double[] ints1 = matrix.toArray();
+                for (int i = 0; i < ints.length; i++) {
+                    res += ints[i] * ints1[i];
+                }
+            }
+            this.RowPointer = rowPointer1;
+            matrix.RowPointer = rowPointer2;
+            return res;
+        } else {
+            throw new OperatorOperationException("您在'IntegerMatrix1 innerProduct IntegerMatrix2'的时候发生了错误，原因是两个矩阵的行列数不一致！\n" +
+                    "You have an error in 'IntegerMatrix1 innerProduct IntegerMatrix2' because the number of rows and columns of the two matrices is inconsistent!\n" +
+                    "IntegerMatrix1 =>  rowCount = [" + rowCount1 + "]   colCount = [" + colCount1 + "]\nIntegerMatrix2 =>  rowCount = [" + rowCount2 + "]   colCount = [" + colCount2 + "]");
+        }
+    }
+
+    /**
      * @return 该类的实现类对象，用于拓展该接口的子类
      */
     @Override

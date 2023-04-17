@@ -1913,8 +1913,10 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      * <p>
      * Extract the specified RGB channels from them and overlay them to form a new image matrix object.
      *
-     * @param mode 要提取的通道编号列表。
-     * @return
+     * @param mode 要提取的通道编号之和。
+     * @return 所有被加在一起的颜色通道图像矩阵层叠加成为的新的矩阵空间对象。
+     * <p>
+     * All the added color channel image matrix layers are superimposed to create a new matrix space object.
      */
     public final ColorMatrixSpace toRGBSpace(int mode) {
         // 0 8 16
@@ -1942,6 +1944,25 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         } else {
             return ColorMatrixSpace.parse(colorChannel1);
         }
+    }
+
+    /**
+     * 将当前图像矩阵对象按照一定的规则生成成为一个整形的矩形空间对象。
+     * <p>
+     * Generate the current image matrix object into a shaped rectangular space object according to certain rules.
+     *
+     * @param mode 要提取的颜色通道编号列表，例如其中第一个为红色通道，那么生成的结果真行数值矩阵空间对象中的第一层矩阵就是红色个数值对应的矩阵空间对象。
+     *             <p>
+     *             The list of color channel numbers to be extracted, for example, if the first one is a red channel, the first layer of the matrix in the generated result true row value matrix space object is the matrix space object corresponding to the red values.
+     * @return 指定颜色通道的颜色数值矩阵提取出来的
+     */
+    public final IntegerMatrixSpace toIntRGBSpace(int... mode) {
+        IntegerMatrix[] res = new IntegerMatrix[mode.length];
+        int index = -1;
+        for (int rgb : mode) {
+            res[++index] = this.getChannel(rgb);
+        }
+        return IntegerMatrixSpace.parse(res);
     }
 
     /**

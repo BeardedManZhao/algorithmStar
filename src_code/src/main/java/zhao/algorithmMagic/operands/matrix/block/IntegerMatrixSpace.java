@@ -2,6 +2,7 @@ package zhao.algorithmMagic.operands.matrix.block;
 
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
 import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
 import zhao.algorithmMagic.utils.ASIO;
 import zhao.algorithmMagic.utils.ASMath;
@@ -192,26 +193,7 @@ public class IntegerMatrixSpace extends MatrixSpace<IntegerMatrixSpace, Integer,
      */
     public IntegerMatrixSpace folding(int width, int height, IntegerMatrixSpace weightMat) {
         int layouts = this.getNumberOfDimensions();
-        {
-            if (width != weightMat.getColCount() || height != weightMat.getRowCount()) {
-                // 代表权重的宽高与截取小区域的宽高不一致
-                throw new OperatorOperationException("请您确保权重权重的宽高与截取小区域的宽高保持一致\nPlease ensure that the width and height of the weight weight are consistent with the width and height of the intercepted small area");
-            }
-            if (weightMat.getNumberOfDimensions() != layouts) {
-                // 代表通道数量不相同
-                throw new OperatorOperationException("在进行矩阵空间卷积时发生了错误，提供的特征矩阵空间的通道数量与本通道的矩阵通道数量不一致，因此无法进行计算。\nAn error occurred during the convolution of matrix space. The number of channels in the provided characteristic matrix space is inconsistent with the number of matrix channels in this channel, so it cannot be calculated.");
-            }
-            if (width < 0 || width > this.getColCount()) {
-                // 代表宽度不合法
-                throw new OperatorOperationException("在进行空间卷积的死后发生了错误，提供二点特征矩阵图宽度不合法!!!\nAn error occurred after the death of spatial convolution. It is illegal to provide the width of two-point characteristic matrix!!!\nERROR => " +
-                        width);
-            }
-            if (height < 0 || height > this.getRowCount()) {
-                // 代表宽度不合法
-                throw new OperatorOperationException("在进行空间卷积的死后发生了错误，提供二点特征矩阵图高度不合法!!!\nAn error occurred after the death of spatial convolution. It is illegal to provide the height of two-point characteristic matrix!!!\nERROR => " +
-                        height);
-            }
-        }
+        checkAllDimensions(width, height, layouts, weightMat.getColCount(), weightMat.getRowCount(), weightMat.getNumberOfDimensions());
         // 一切都合法，开始进行卷积 获取到所有通道的图像与其权重的内积。
         // 准备结果数据容器
         IntegerMatrix[] result = new IntegerMatrix[layouts];
@@ -257,6 +239,87 @@ public class IntegerMatrixSpace extends MatrixSpace<IntegerMatrixSpace, Integer,
      * @param weightMat 在进行卷积计算时需要的卷积核矩阵对象，该对象的宽高应与卷积函数的形参一致。
      *                  <p>
      *                  The convolution kernel matrix object required for convolution computation, whose width and height should be consistent with the formal parameters of the convolution function.
+     * @return 矩阵空间卷积结果特征图，保持三通道的格式返回。
+     */
+    public IntegerMatrixSpace folding(int width, int height, DoubleMatrixSpace weightMat) {
+        int layouts = this.getNumberOfDimensions();
+        checkAllDimensions(width, height, layouts, weightMat.getColCount(), weightMat.getRowCount(), weightMat.getNumberOfDimensions());
+        // 一切都合法，开始进行卷积 获取到所有通道的图像与其权重的内积。
+        // 准备结果数据容器
+        IntegerMatrix[] result = new IntegerMatrix[layouts];
+        int i = -1;
+        while (++i < layouts) {
+            IntegerMatrix now = this.get(i);
+            DoubleMatrix nowWeight = weightMat.get(i);
+            // 这张图像中需要被提取的坐标 以及最大坐标
+            int colCount = now.getColCount(), rowCount = now.getRowCount(), row = 0, col = 0, maxRow = rowCount - row, maxCol = colCount - col;
+            // 图像中的下一层坐标点 以及结果数据容器的坐标标记
+            int nextRow = height - 1, nextCol = width - 1;
+            int[][] temp = new int[Math.min(maxRow, rowCount - nextRow)][Math.min(maxCol, colCount - nextCol)];
+            int resRow = 0, resCol = 0;
+            while (!(resRow >= maxRow || nextRow >= rowCount)) {
+                while (!(resCol >= maxCol || nextCol >= colCount)) {
+                    // 提取小区域图像 并与 权重进行卷积计算 并存储结果数据
+                    temp[resRow][resCol++] = now.extractMat(col, row, nextCol, nextRow).innerProduct(nowWeight);
+                    // 移动一列
+                    col++;
+                    nextCol++;
+                }
+                // 移动一行
+                resRow++;
+                row++;
+                nextRow++;
+                // 复位 x 轴
+                resCol = 0;
+                col = 0;
+                nextCol = width - 1;
+            }
+            // 将这一层矩阵赋予结果矩阵
+            result[i] = IntegerMatrix.parse(temp);
+        }
+        // 返回结果三维矩阵
+        return IntegerMatrixSpace.parse(result);
+    }
+
+    /**
+     * 检查当亲对象中的所有维度
+     *
+     * @param width              被检查的宽度
+     * @param height             被检查的高度
+     * @param layouts            被检查的层数
+     * @param colCount2          标准宽度
+     * @param rowCount2          标准高度
+     * @param numberOfDimensions 标准层数
+     */
+    public void checkAllDimensions(int width, int height, int layouts, int colCount2, int rowCount2, int numberOfDimensions) {
+        if (width != colCount2 || height != rowCount2) {
+            // 代表权重的宽高与截取小区域的宽高不一致
+            throw new OperatorOperationException("请您确保权重权重的宽高与截取小区域的宽高保持一致\nPlease ensure that the width and height of the weight weight are consistent with the width and height of the intercepted small area");
+        }
+        if (numberOfDimensions != layouts) {
+            // 代表通道数量不相同
+            throw new OperatorOperationException("在进行矩阵空间卷积时发生了错误，提供的特征矩阵空间的通道数量与本通道的矩阵通道数量不一致，因此无法进行计算。\nAn error occurred during the convolution of matrix space. The number of channels in the provided characteristic matrix space is inconsistent with the number of matrix channels in this channel, so it cannot be calculated.");
+        }
+        if (width < 0 || width > this.getColCount()) {
+            // 代表宽度不合法
+            throw new OperatorOperationException("在进行空间卷积的死后发生了错误，提供二点特征矩阵图宽度不合法!!!\nAn error occurred after the death of spatial convolution. It is illegal to provide the width of two-point characteristic matrix!!!\nERROR => " +
+                    width);
+        }
+        if (height < 0 || height > this.getRowCount()) {
+            // 代表宽度不合法
+            throw new OperatorOperationException("在进行空间卷积的死后发生了错误，提供二点特征矩阵图高度不合法!!!\nAn error occurred after the death of spatial convolution. It is illegal to provide the height of two-point characteristic matrix!!!\nERROR => " +
+                    height);
+        }
+    }
+
+    /**
+     * 对矩阵空间进行卷积计算，在卷积计算的时候会产生出一个更小的特征矩阵。
+     *
+     * @param width     矩阵进行卷积运算的时的子图像宽度，最好选择能够被矩阵的列数整除的数值。
+     * @param height    矩阵进行卷积运算时的子图像高度，最好选中能够被矩阵的行数整除的数值。
+     * @param weightMat 在进行卷积计算时需要的卷积核矩阵对象，该对象的宽高应与卷积函数的形参一致。
+     *                  <p>
+     *                  The convolution kernel matrix object required for convolution computation, whose width and height should be consistent with the formal parameters of the convolution function.
      * @return 矩阵空间卷积结果特征图，以三原色通道之和的方式返回一个矩阵。
      */
     public final IntegerMatrix foldingAndSum(int width, int height, IntegerMatrixSpace weightMat) {
@@ -271,7 +334,25 @@ public class IntegerMatrixSpace extends MatrixSpace<IntegerMatrixSpace, Integer,
         return res;
     }
 
-    public final ColorMatrix foldingAndSumRGB(int width, int height, IntegerMatrixSpace weightMat) {
+    /**
+     * 将三个颜色通道分别进行与之对应的卷积计算操作，并将卷积结果进行颜色通道的求和。
+     * <p>
+     * Perform corresponding convolution calculations on the three color channels, and sum the convolution results for the color channels.
+     *
+     * @param width     卷积子矩阵的宽度。
+     *                  <p>
+     *                  The width of the convolutional sub-matrix.
+     * @param height    卷积子矩阵的高度。
+     *                  <p>
+     *                  The height of the convolutional sub-matrix.
+     * @param weightMat 卷积核对象。
+     *                  <p>
+     *                  Convolutional kernel object.
+     * @return 卷积计算结果，其是三个颜色通道卷积结果矩阵的合并图像矩阵对象。
+     * <p>
+     * The convolution calculation result is a merged image matrix object of three color channel convolution result matrices.
+     */
+    public final ColorMatrix foldingAndSumRGB(int width, int height, DoubleMatrixSpace weightMat) {
         if (this.getNumberOfDimensions() != 3) {
             throw new OperatorOperationException("合并RGB图像矩阵失败，您的矩阵空间没有3层通道。");
         }

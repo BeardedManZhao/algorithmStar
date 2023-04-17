@@ -3,6 +3,7 @@ package zhao.algorithmMagic.operands.matrix.block;
 import org.jetbrains.annotations.NotNull;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
 
 import javax.swing.*;
 import java.awt.*;
@@ -325,5 +326,26 @@ public class ColorMatrixSpace extends MatrixSpace<ColorMatrixSpace, Color, Color
     @Override
     public Iterator<ColorMatrix> iterator() {
         return Arrays.stream(this.toArrays()).iterator();
+    }
+
+    /**
+     * 将当前的图像空间对象转换成为整形矩阵对象，整形矩阵对象支持更多的数值类计算操作，同时也支持卷积计算。
+     * <p>
+     * Convert the current image space object into an integer matrix object, which supports more numerical computation operations as well as convolutional computation.
+     *
+     * @param rgbNum 转换规则，其中应保存着每一层矩阵对象中的颜色通道数值，当第0个索引为红色个闫妮色通道的时候，获取到的空间中第一层矩阵就是红色通道的颜色矩阵对象。
+     *               <p>
+     *               Conversion rules, which should store the color channel values in each layer of matrix objects. When the 0th index is a red channel, the first layer of matrix in the obtained space is the color matrix object of the red channel.
+     * @return 由当前图像空间中所有层矩阵对象的对应颜色数值提取到的整形矩阵空间对象。
+     * <p>
+     * An integer matrix space object extracted from the corresponding color values of all layer matrix objects in the current image space.
+     */
+    public IntegerMatrixSpace toIntMatrixSpace(int... rgbNum) {
+        IntegerMatrix[] colorMatrices = new IntegerMatrix[rgbNum.length];
+        int index = -1;
+        for (int rgb : rgbNum) {
+            colorMatrices[++index] = this.get(index).getChannel(rgb);
+        }
+        return IntegerMatrixSpace.parse(colorMatrices);
     }
 }
