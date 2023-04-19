@@ -345,6 +345,48 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
     }
 
     /**
+     * 在两个向量对象之间进行计算的函数，自从1.13版本开始支持该函数的调用，该函数中的计算并不会产生一个新的向量，而是将计算操作作用于原操作数中
+     * <p>
+     * The function that calculates between two vector objects supports the call of this function since version 1.13. The calculation in this function will not generate a new vector, but will apply the calculation operation to the original operand
+     *
+     * @param value        与当前向量一起进行计算的另一个向量对象。
+     *                     <p>
+     *                     Another vector object that is evaluated with the current vector.
+     * @param ModifyCaller 计算操作作用对象的设置，该参数如果为true，那么计算时针对向量序列的修改操作将会直接作用到调用函数的向量中，反之将会作用到被操作数中。
+     *                     <p>
+     *                     The setting of the calculation operation action object. If this parameter is true, the modification of the vector sequence during calculation will directly affect the vector of the calling function, and vice versa.
+     * @return 两个向量经过了按维度的减法计算之后，被修改的向量对象
+     */
+    @Override
+    public DoubleMatrix diffAbs(DoubleMatrix value, boolean ModifyCaller) {
+        int rowCount1 = this.getRowCount();
+        int rowCount2 = value.getRowCount();
+        int colCount1 = this.getColCount();
+        int colCount2 = value.getColCount();
+        if (rowCount1 == rowCount2 && colCount1 == colCount2) {
+            double[][] doubles = new double[rowCount1][colCount1];
+            int rowPointer1 = this.RowPointer;
+            int rowPointer2 = value.RowPointer;
+            while (this.MovePointerDown() && value.MovePointerDown()) {
+                double[] line = new double[colCount1];
+                double[] doubles1 = this.toArray();
+                double[] doubles2 = value.toArray();
+                for (int i = 0; i < colCount1; i++) {
+                    line[i] = ASMath.absoluteValue(doubles1[i] - doubles2[i]);
+                }
+                doubles[this.RowPointer] = line;
+            }
+            this.RowPointer = rowPointer1;
+            value.RowPointer = rowPointer2;
+            return parse(doubles);
+        } else {
+            throw new OperatorOperationException("您在'DoubleMatrix1 diff DoubleMatrix2'的时候发生了错误，原因是两个矩阵的行列数不一致！\n" +
+                    "You have an error in 'DoubleMatrix1 diff DoubleMatrix2' because the number of rows and columns of the two matrices is inconsistent!\n" +
+                    "DoubleMatrix1 =>  rowCount = [" + rowCount1 + "]   colCount = [" + colCount1 + "]\nDoubleMatrix2 =>  rowCount = [" + rowCount2 + "]   colCount = [" + colCount2 + "]");
+        }
+    }
+
+    /**
      * 计算该矩阵的模长，具体实现请参阅api说明
      * <p>
      * Calculate the modulo length of the vector, please refer to the api node for the specific implementation

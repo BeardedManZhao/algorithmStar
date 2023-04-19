@@ -256,10 +256,58 @@ public final class AlgorithmStar<diffValue, featureReturn> {
         return ColorMatrix.parseGrayscale(imagePath);
     }
 
+    /**
+     * 单线程的方式运行一个模型对象，并获取到该模型计算之后的结果，需要确保模型实现了单线程计算函数。
+     * <p>
+     * To run a model object in a single threaded manner and obtain the calculated results of the model, it is necessary to ensure that the model implements a single threaded calculation function.
+     *
+     * @param model 需要运行的模型对象。
+     *              <p>
+     *              The model object that needs to be run.
+     * @param input 模型运行时接收的操作数对象，操作数对象时被运算的矩阵或其它模型。
+     *              <p>
+     *              The operand object received by the model during runtime, and the matrix or other model that is operated on when the operand object is used.
+     * @param <K>   模型对象接收的参数名的数据类型。
+     *              <p>
+     *              The data type of the parameter name received by the model object.
+     * @param <I>   模型对象接收的操作数数据类型，需要确保此类型实现了操作数对象。
+     *              <p>
+     *              The operand data type received by the model object needs to ensure that this type implements the operand object.
+     * @param <O>   模型对象计算之后返回的数据类型。
+     *              <p>
+     *              The data type returned after model object calculation.
+     * @return 经过计算之后，会返回一个数据对象，该对象的类型由不同的模型实现。
+     * <p>
+     * After calculation, a data object will be returned with a type implemented by different models.
+     */
     public static <K, I extends Operands<I>, O> O model(ASModel<K, I, O> model, I[] input) {
         return model.function(input);
     }
 
+    /**
+     * 多线程的方式运行一个模型对象，并获取到该模型计算之后的结果，需要确保模型实现了单线程计算函数。
+     * <p>
+     * To run a model object in a multithreaded manner and obtain the calculated results of the model, it is necessary to ensure that the model implements a single threaded calculation function.
+     *
+     * @param model 需要运行的模型对象。
+     *              <p>
+     *              The model object that needs to be run.
+     * @param input 模型运行时接收的操作数对象，操作数对象时被运算的矩阵或其它模型。
+     *              <p>
+     *              The operand object received by the model during runtime, and the matrix or other model that is operated on when the operand object is used.
+     * @param <K>   模型对象接收的参数名的数据类型。
+     *              <p>
+     *              The data type of the parameter name received by the model object.
+     * @param <I>   模型对象接收的操作数数据类型，需要确保此类型实现了操作数对象。
+     *              <p>
+     *              The operand data type received by the model object needs to ensure that this type implements the operand object.
+     * @param <O>   模型对象计算之后返回的数据类型。
+     *              <p>
+     *              The data type returned after model object calculation.
+     * @return 经过计算之后，会返回一个数据对象，该对象的类型由不同的模型实现。
+     * <p>
+     * After calculation, a data object will be returned with a type implemented by different models.
+     */
     public static <K, I extends Operands<I>, O> O modelConcurrency(ASModel<K, I, O> model, I[] input) {
         return model.functionConcurrency(input);
     }

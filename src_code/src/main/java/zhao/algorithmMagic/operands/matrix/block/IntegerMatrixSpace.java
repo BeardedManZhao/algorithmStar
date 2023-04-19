@@ -143,6 +143,32 @@ public class IntegerMatrixSpace extends MatrixSpace<IntegerMatrixSpace, Integer,
         return new IntegerMatrixSpace(this.getRowCount(), this.getColCount(), integerMatrices);
     }
 
+    /**
+     * 在两个向量对象之间进行计算的函数，自从1.13版本开始支持该函数的调用，该函数中的计算并不会产生一个新的向量，而是将计算操作作用于原操作数中
+     * <p>
+     * The function that calculates between two vector objects supports the call of this function since version 1.13. The calculation in this function will not generate a new vector, but will apply the calculation operation to the original operand
+     *
+     * @param value        与当前向量一起进行计算的另一个向量对象。
+     *                     <p>
+     *                     Another vector object that is evaluated with the current vector.
+     * @param ModifyCaller 计算操作作用对象的设置，该参数如果为true，那么计算时针对向量序列的修改操作将会直接作用到调用函数的向量中，反之将会作用到被操作数中。
+     *                     <p>
+     *                     The setting of the calculation operation action object. If this parameter is true, the modification of the vector sequence during calculation will directly affect the vector of the calling function, and vice versa.
+     * @return 两个向量经过了按维度的减法计算之后，被修改的向量对象
+     */
+    @Override
+    public IntegerMatrixSpace diffAbs(IntegerMatrixSpace value, boolean ModifyCaller) {
+        int length = this.getNumberOfDimensions();
+        IntegerMatrix[] integerMatrices = new IntegerMatrix[length];
+        int count = -1;
+        // 开始进行计算合并
+        for (int i = 0; i < length; i++) {
+            integerMatrices[++count] = this.get(i).diffAbs(value.get(i), ModifyCaller);
+        }
+        // 返回结果
+        return new IntegerMatrixSpace(this.getRowCount(), this.getColCount(), integerMatrices);
+    }
+
     @Override
     public IntegerMatrixSpace multiply(IntegerMatrixSpace value) {
         int length = this.getNumberOfDimensions();
@@ -332,6 +358,48 @@ public class IntegerMatrixSpace extends MatrixSpace<IntegerMatrixSpace, Integer,
             res = res.add(ints);
         }
         return res;
+    }
+
+    /**
+     * 将三个颜色通道分别进行与之对应的卷积计算操作，并将卷积结果进行颜色通道的求和。
+     * <p>
+     * Perform corresponding convolution calculations on the three color channels, and sum the convolution results for the color channels.
+     *
+     * @param width     卷积子矩阵的宽度。
+     *                  <p>
+     *                  The width of the convolutional sub-matrix.
+     * @param height    卷积子矩阵的高度。
+     *                  <p>
+     *                  The height of the convolutional sub-matrix.
+     * @param weightMat 卷积核对象。
+     *                  <p>
+     *                  Convolutional kernel object.
+     * @return 卷积计算结果，其是三个颜色通道卷积结果矩阵的合并图像矩阵对象。
+     * <p>
+     * The convolution calculation result is a merged image matrix object of three color channel convolution result matrices.
+     */
+    public final ColorMatrix foldingAndSumRGB(int width, int height, IntegerMatrixSpace weightMat) {
+        if (this.getNumberOfDimensions() != 3) {
+            throw new OperatorOperationException("合并RGB图像矩阵失败，您的矩阵空间没有3层通道。");
+        }
+        IntegerMatrixSpace folding = folding(width, height, weightMat);
+        // 合并三层通道的色彩数值
+        int[][] redMat = folding.get(0).toArrays(), greenMat = folding.get(1).toArrays(), blueMat = folding.get(2).toArrays();
+        Color[][] colors = new Color[folding.getRowCount()][folding.getColCount()];
+        int y = -1;
+        for (Color[] color : colors) {
+            int[] r = redMat[++y];
+            int[] g = greenMat[y];
+            int[] b = blueMat[y];
+            int i = 0;
+            while (i < color.length) {
+                color[i] = new Color(
+                        ASMath.regularTricolor(r[i]), ASMath.regularTricolor(g[i]), ASMath.regularTricolor(b[i])
+                );
+                i++;
+            }
+        }
+        return ColorMatrix.parse(colors);
     }
 
     /**

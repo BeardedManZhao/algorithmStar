@@ -409,6 +409,46 @@ public class IntegerVector extends ASVector<IntegerVector, Integer, int[]> {
      * @param ModifyCaller 计算操作作用对象的设置，该参数如果为true，那么计算时针对向量序列的修改操作将会直接作用到调用函数的向量中，反之将会作用到被操作数中。
      *                     <p>
      *                     The setting of the calculation operation action object. If this parameter is true, the modification of the vector sequence during calculation will directly affect the vector of the calling function, and vice versa.
+     * @return 两个向量经过了按维度的减法计算之后，被修改的向量对象
+     */
+    @Override
+    public IntegerVector diffAbs(IntegerVector value, boolean ModifyCaller) {
+        int[] doubles2 = value.VectorArrayPrimitive;
+        if (this.VectorArrayPrimitive.length == doubles2.length) {
+            if (ModifyCaller) {
+                for (int i = 0; i < this.VectorArrayPrimitive.length; i++) {
+                    this.VectorArrayPrimitive[i] = ASMath.absoluteValue(this.VectorArrayPrimitive[i] - doubles2[i]);
+                }
+                this.reFresh();
+                return this;
+            } else {
+                for (int i = 0; i < doubles2.length; i++) {
+                    doubles2[i] = ASMath.absoluteValue(this.VectorArrayPrimitive[i] - doubles2[i]);
+                }
+                value.reFresh();
+                return value;
+            }
+        } else {
+            int numberOfDimensions1 = this.VectorArrayPrimitive.length;
+            int numberOfDimensions2 = doubles2.length;
+            throw new OperatorOperationException(
+                    "'IntegerVector1 diff IntegerVector2' 时，两个'IntegerVector'的向量所包含的数量不同，IntegerVector1=[" + numberOfDimensions1 + "]，IntegerVector2=[" + numberOfDimensions2 + "]\n" +
+                            "When 'IntegerVector1 diff IntegerVector2', the two vectors of 'IntegerVector' contain different quantities, IntegerVector1=[" + numberOfDimensions1 + "], IntegerVector2=[" + numberOfDimensions2 + "]"
+            );
+        }
+    }
+
+    /**
+     * 在两个向量对象之间进行计算的函数，自从1.13版本开始支持该函数的调用，该函数中的计算并不会产生一个新的向量，而是将计算操作作用于原操作数中
+     * <p>
+     * The function that calculates between two vector objects supports the call of this function since version 1.13. The calculation in this function will not generate a new vector, but will apply the calculation operation to the original operand
+     *
+     * @param value        与当前向量一起进行计算的另一个向量对象。
+     *                     <p>
+     *                     Another vector object that is evaluated with the current vector.
+     * @param ModifyCaller 计算操作作用对象的设置，该参数如果为true，那么计算时针对向量序列的修改操作将会直接作用到调用函数的向量中，反之将会作用到被操作数中。
+     *                     <p>
+     *                     The setting of the calculation operation action object. If this parameter is true, the modification of the vector sequence during calculation will directly affect the vector of the calling function, and vice versa.
      * @return 两个向量经过了外积计算之后，被修改的向量对象
      */
     @Override

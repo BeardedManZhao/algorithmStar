@@ -29,6 +29,16 @@ public class TarImageClassification extends ArrayList<KeyValue<String, ColorMatr
 
     }
 
+    private static void run3(FDataFrame select, KeyValue<String, ColorMatrix> stringColorMatrixKeyValue, ArrayList<Map.Entry<Double, IntegerCoordinateTwo>> entries) {
+        String[] row = new String[entries.size() + 1];
+        row[0] = stringColorMatrixKeyValue.getKey();
+        int index = 0;
+        for (Map.Entry<Double, IntegerCoordinateTwo> entry : entries) {
+            row[++index] = String.valueOf(entry.getKey());
+        }
+        select.insert(SingletonSeries.parse(row));
+    }
+
     /**
      * 针对模型进行设置。
      * <p>
@@ -44,7 +54,7 @@ public class TarImageClassification extends ArrayList<KeyValue<String, ColorMatr
     public void setArg(String key, @NotNull Cell<?> value) {
         Object value1 = value.getValue();
         if (value1 instanceof ColorMatrix) {
-            this.add(new KeyValue<>(key, (ColorMatrix) value.getValue()));
+            this.add(new KeyValue<>(key, (ColorMatrix) value1));
         } else {
             throw new OperatorOperationException("The parameter value represents the matrix of [" + key + "] and should be of type zhao.algorithmMagic.operands.matrix.ColorMatrix.");
         }
@@ -107,16 +117,6 @@ public class TarImageClassification extends ArrayList<KeyValue<String, ColorMatr
         run3(select, stringColorMatrixKeyValue, entries);
     }
 
-    private  static void run3(FDataFrame select, KeyValue<String, ColorMatrix> stringColorMatrixKeyValue, ArrayList<Map.Entry<Double, IntegerCoordinateTwo>> entries) {
-        String[] row = new String[entries.size() + 1];
-        row[0] = stringColorMatrixKeyValue.getKey();
-        int index = 0;
-        for (Map.Entry<Double, IntegerCoordinateTwo> entry : entries) {
-            row[++index] = String.valueOf(entry.getKey());
-        }
-        select.insert(SingletonSeries.parse(row));
-    }
-
     @NotNull
     private String[] getStrings(ColorMatrix[] input) {
         String[] field = new String[input.length + 1];
@@ -168,7 +168,7 @@ public class TarImageClassification extends ArrayList<KeyValue<String, ColorMatr
             ++indexCol;
             // 将当前列中的最小数值对应的行名称提取出来
             int index = -1, minIndex = 0, minValue = Integer.MAX_VALUE;
-            for (Cell<?> cell :  select.select(field[i]).toArray()) {
+            for (Cell<?> cell : select.select(field[i]).toArray()) {
                 if (cell.isNumber()) {
                     ++index;
                     int intValue = cell.getIntValue();

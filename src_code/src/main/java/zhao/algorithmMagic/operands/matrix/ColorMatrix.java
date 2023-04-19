@@ -15,6 +15,7 @@ import zhao.algorithmMagic.utils.ASMath;
 import zhao.algorithmMagic.utils.filter.DoubleFiltering;
 import zhao.algorithmMagic.utils.transformation.ManyTrans;
 import zhao.algorithmMagic.utils.transformation.ProTransForm;
+import zhao.algorithmMagic.utils.transformation.Transformation;
 
 import javax.swing.*;
 import java.awt.*;
@@ -334,6 +335,46 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             res[y1] = colors[y].clone();
         }
         return ColorMatrix.parse(res);
+    };
+
+    /**
+     * 池化逻辑实现，将当前矩阵内的所有像素中 R G B 颜色数值的最大值逐个单独提取出来，并获取新颜色。
+     * <p>
+     * The pooling logic implementation extracts the maximum values of R, G, and B color values from all pixels in the current matrix individually, and obtains new colors.
+     */
+    public final static Transformation<ColorMatrix, Color> POOL_RGB_OBO_MAX = colorMatrix -> {
+        int maxR = 0, maxG = maxR, maxB = maxG;
+        for (Color[] matrix : colorMatrix) {
+            for (Color color : matrix) {
+                int red = color.getRed();
+                int green = color.getGreen();
+                int blue = color.getBlue();
+                if (red > maxR) maxR = red;
+                if (green < maxG) maxG = green;
+                if (blue < maxB) maxB = blue;
+            }
+        }
+        return new Color(maxR, maxG, maxB);
+    };
+
+    /**
+     * 池化逻辑实现，将当前矩阵内的所有像素中 RGB 颜色数值的最大值直接提取出来，成为新颜色。
+     * <p>
+     * The pooling logic implementation directly extracts the maximum value of RGB color values from all pixels in the current matrix, becoming a new color.
+     */
+    public final static Transformation<ColorMatrix, Color> POOL_RGB_MAX = colorMatrix -> {
+        int maxNum = 0;
+        Color maxColor = Color.BLACK;
+        for (Color[] matrix : colorMatrix) {
+            for (Color color : matrix) {
+                int rgb = color.getRGB();
+                if (maxNum < rgb) {
+                    maxColor = color;
+                    maxNum = rgb;
+                }
+            }
+        }
+        return maxColor;
     };
 
     private boolean isGrayscale;
@@ -684,6 +725,24 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
     @Override
     public ColorMatrix diff(ColorMatrix value) {
         return agg(value, COLOR_DIFF_REMAINDER);
+    }
+
+    /**
+     * 在两个向量对象之间进行计算的函数，自从1.13版本开始支持该函数的调用，该函数中的计算并不会产生一个新的向量，而是将计算操作作用于原操作数中
+     * <p>
+     * The function that calculates between two vector objects supports the call of this function since version 1.13. The calculation in this function will not generate a new vector, but will apply the calculation operation to the original operand
+     *
+     * @param value        与当前向量一起进行计算的另一个向量对象。
+     *                     <p>
+     *                     Another vector object that is evaluated with the current vector.
+     * @param ModifyCaller 计算操作作用对象的设置，该参数如果为true，那么计算时针对向量序列的修改操作将会直接作用到调用函数的向量中，反之将会作用到被操作数中。
+     *                     <p>
+     *                     The setting of the calculation operation action object. If this parameter is true, the modification of the vector sequence during calculation will directly affect the vector of the calling function, and vice versa.
+     * @return 两个向量经过了按维度的减法计算之后，被修改的向量对象
+     */
+    @Override
+    public ColorMatrix diffAbs(ColorMatrix value, boolean ModifyCaller) {
+        return agg(value, COLOR_DIFF_ABS);
     }
 
     /**
@@ -1963,6 +2022,37 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             res[++index] = this.getChannel(rgb);
         }
         return IntegerMatrixSpace.parse(res);
+    }
+
+    /**
+     * 针对图像矩阵进行池化操作，在池化操作中支持手动指定池化逻辑实现，能够使得池化函数的灵活度大大升高。
+     * <p>
+     * Pooling operations for image matrices support manual specification of pooling logic implementation, which greatly increases the flexibility of pooling functions.
+     *
+     * @param transformation 图像矩阵的池化逻辑实现.
+     *                       <p>
+     *                       Implementation of pooling logic for image matrices
+     * @return 池化之后的图像矩阵对象。
+     * <p>
+     * The image matrix object after pooling.
+     */
+    public final ColorMatrix pooling(int width, int height, Transformation<ColorMatrix, Color> transformation) {
+        int rowCount = this.getRowCount();
+        int colCount = this.getColCount();
+        Color[][] colors = new Color[rowCount / height][colCount / width];
+        int y = 0, y1 = height, index1 = -1;
+        do {
+            int x = 0, x1 = width, index2 = -1;
+            Color[] colors1 = colors[++index1];
+            do {
+                colors1[++index2] = transformation.function(this.extractImage(x, y, x1, y1));
+                x = x1;
+                x1 += width;
+            } while (x1 < colCount);
+            y = y1;
+            y1 += height;
+        } while (y1 < rowCount);
+        return parse(colors);
     }
 
     /**

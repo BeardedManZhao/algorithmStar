@@ -76,8 +76,8 @@ public class SingleTargetContour extends HashMap<Integer, Cell<?>> implements AS
 
     @Override
     public ColorMatrix[] function(ColorMatrix... input) {
-        ColorMatrix target = null;
-        int tarRC = 0, tarCC = 0;
+        ColorMatrix target;
+        int tarRC, tarCC;
         int Binary_bias_value, Binary_local_number, trueColor, falseColor;
         {
             Cell<?> cell1 = this.get(TARGET);
@@ -89,7 +89,7 @@ public class SingleTargetContour extends HashMap<Integer, Cell<?>> implements AS
                 tarRC = target.getRowCount();
                 tarCC = target.getColCount();
             } else
-                Utils.throwArgTypeERR(String.valueOf(TARGET), "Cell<zhao.algorithmMagic.operands.matrix.ColorMatrix>");
+                throw Utils.throwArgTypeERR(String.valueOf(TARGET), "Cell<zhao.algorithmMagic.operands.matrix.ColorMatrix>");
         }
         byte mode = (byte) this.getOrDefault(COLOR_CHANNEL, SingletonCell.$(ColorMatrix._G_)).getIntValue();
         // 开始进行轮廓绘制
@@ -101,8 +101,12 @@ public class SingleTargetContour extends HashMap<Integer, Cell<?>> implements AS
             // 需要进行二值化
             Binary_bias_value = this.getOrDefault(BINARY_BIAS_VALUE, SingletonCell.$(0)).getIntValue();
             Binary_local_number = this.getOrDefault(BINARY_LOCAL_NUMBER, SingletonCell.$(10)).getIntValue();
-            trueColor = this.getOrDefault(TRUE_COLOR, SingletonCell.$(0xffffff)).getIntValue();
-            falseColor = this.getOrDefault(FALSE_COLOR, SingletonCell.$(0)).getIntValue();
+            if (this.getOrDefault(TRUE_COLOR, SingletonCell.$(0xffffff)).getValue() instanceof Integer) {
+                trueColor = this.getOrDefault(TRUE_COLOR, SingletonCell.$(0xffffff)).getIntValue();
+                falseColor = this.getOrDefault(FALSE_COLOR, SingletonCell.$(0)).getIntValue();
+            } else {
+                throw ASModel.Utils.throwArgTypeERR("trueColor", "Cell<java.lang.Integer>");
+            }
             for (ColorMatrix colorMatrix : input) {
                 res[++index] = run1(Binary_bias_value, Binary_local_number, trueColor, falseColor, target, tarRC, tarCC, mode, colorMatrix);
             }
@@ -129,8 +133,8 @@ public class SingleTargetContour extends HashMap<Integer, Cell<?>> implements AS
      */
     @Override
     public ColorMatrix[] functionConcurrency(ColorMatrix[] input) {
-        ColorMatrix target = null;
-        int tarRC = 0, tarCC = 0;
+        ColorMatrix target;
+        int tarRC, tarCC;
         int Binary_bias_value, Binary_local_number, trueColor, falseColor;
         {
             Cell<?> cell1 = this.get(TARGET);
@@ -143,7 +147,7 @@ public class SingleTargetContour extends HashMap<Integer, Cell<?>> implements AS
                 tarRC = target.getRowCount();
                 tarCC = target.getColCount();
             } else
-                Utils.throwArgTypeERR(String.valueOf(TARGET), "Cell<zhao.algorithmMagic.operands.matrix.ColorMatrix>");
+                throw Utils.throwArgTypeERR(String.valueOf(TARGET), "Cell<zhao.algorithmMagic.operands.matrix.ColorMatrix>");
         }
         ColorMatrix target1 = target;
         int tarRC1 = tarRC, tarCC1 = tarCC;
@@ -187,7 +191,7 @@ public class SingleTargetContour extends HashMap<Integer, Cell<?>> implements AS
     }
 
     public final ArrayList<Entry<Double, IntegerCoordinateTwo>> functionGetC(ColorMatrix... input) {
-        ColorMatrix target = null;
+        ColorMatrix target;
         int Binary_bias_value, Binary_local_number, trueColor, falseColor;
         {
             Cell<?> cell1 = this.get(TARGET);
@@ -197,7 +201,7 @@ public class SingleTargetContour extends HashMap<Integer, Cell<?>> implements AS
             if (cell1.getValue() instanceof ColorMatrix) {
                 target = ASClass.transform(cell1.getValue());
             } else
-                Utils.throwArgTypeERR(String.valueOf(TARGET), "Cell<zhao.algorithmMagic.operands.matrix.ColorMatrix>");
+                throw Utils.throwArgTypeERR(String.valueOf(TARGET), "Cell<zhao.algorithmMagic.operands.matrix.ColorMatrix>");
         }
         byte mode = (byte) this.getOrDefault(COLOR_CHANNEL, SingletonCell.$(ColorMatrix._G_)).getIntValue();
         // 开始进行轮廓绘制
@@ -235,6 +239,7 @@ public class SingleTargetContour extends HashMap<Integer, Cell<?>> implements AS
         }
         return res;
     }
+/*
 
     /**
      * 启动模型，将其中的操作数进行计算操作。
@@ -247,9 +252,9 @@ public class SingleTargetContour extends HashMap<Integer, Cell<?>> implements AS
      * @return 计算之后的结果数据，数据可以是任何类型。
      * <p>
      * The calculated result data can be of any type.
-     */
+     * /
     public final ArrayList<Entry<Double, IntegerCoordinateTwo>> functionConcurrencyGetC(ColorMatrix[] input) {
-        ColorMatrix target = null;
+        ColorMatrix target;
         int Binary_bias_value, Binary_local_number, trueColor, falseColor;
         {
             Cell<?> cell1 = this.get(TARGET);
@@ -260,7 +265,7 @@ public class SingleTargetContour extends HashMap<Integer, Cell<?>> implements AS
             if (value instanceof ColorMatrix) {
                 target = ASClass.transform(value);
             } else
-                Utils.throwArgTypeERR(String.valueOf(TARGET), "Cell<zhao.algorithmMagic.operands.matrix.ColorMatrix>");
+                throw Utils.throwArgTypeERR(String.valueOf(TARGET), "Cell<zhao.algorithmMagic.operands.matrix.ColorMatrix>");
         }
         byte mode = (byte) this.getOrDefault(COLOR_CHANNEL, SingletonCell.$(ColorMatrix._G_)).getIntValue();
         // 开始进行轮廓绘制
@@ -274,7 +279,6 @@ public class SingleTargetContour extends HashMap<Integer, Cell<?>> implements AS
             trueColor = this.getOrDefault(TRUE_COLOR, SingletonCell.$(0xffffff)).getIntValue();
             falseColor = this.getOrDefault(FALSE_COLOR, SingletonCell.$(0)).getIntValue();
             for (ColorMatrix colorMatrix : input) {
-                ColorMatrix finalTarget1 = target;
                 new Thread(() -> {
                     colorMatrix.localBinary(
                             mode,
@@ -284,7 +288,7 @@ public class SingleTargetContour extends HashMap<Integer, Cell<?>> implements AS
                     );
                     res.add(colorMatrix.templateMatching(
                             DependentAlgorithmNameLibrary.MANHATTAN_DISTANCE,
-                            finalTarget1, mode, this.getOrDefault(step, SingletonCell.$(10)).getIntValue(),
+                            target, mode, this.getOrDefault(step, SingletonCell.$(10)).getIntValue(),
                             false
                     ));
                 }).start();
@@ -292,16 +296,16 @@ public class SingleTargetContour extends HashMap<Integer, Cell<?>> implements AS
         } else {
             // 如果不需要进行二值化
             for (ColorMatrix colorMatrix : input) {
-                ColorMatrix finalTarget = target;
                 new Thread(() -> res.add(colorMatrix.templateMatching(
                         DependentAlgorithmNameLibrary.MANHATTAN_DISTANCE,
-                        finalTarget, mode, this.getOrDefault(step, SingletonCell.$(10)).getIntValue(),
+                        target, mode, this.getOrDefault(step, SingletonCell.$(10)).getIntValue(),
                         false
                 ))).start();
             }
         }
         return res;
     }
+*/
 
     private ColorMatrix run2(ColorMatrix target1, int tarRC1, int tarCC1, byte mode, ColorMatrix colorMatrix) {
         IntegerCoordinateTwo value = colorMatrix.templateMatching(

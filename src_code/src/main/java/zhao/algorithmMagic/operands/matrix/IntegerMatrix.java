@@ -319,6 +319,49 @@ public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], i
         }
     }
 
+
+    /**
+     * 在两个向量对象之间进行计算的函数，自从1.13版本开始支持该函数的调用，该函数中的计算并不会产生一个新的向量，而是将计算操作作用于原操作数中
+     * <p>
+     * The function that calculates between two vector objects supports the call of this function since version 1.13. The calculation in this function will not generate a new vector, but will apply the calculation operation to the original operand
+     *
+     * @param value        与当前向量一起进行计算的另一个向量对象。
+     *                     <p>
+     *                     Another vector object that is evaluated with the current vector.
+     * @param ModifyCaller 计算操作作用对象的设置，该参数如果为true，那么计算时针对向量序列的修改操作将会直接作用到调用函数的向量中，反之将会作用到被操作数中。
+     *                     <p>
+     *                     The setting of the calculation operation action object. If this parameter is true, the modification of the vector sequence during calculation will directly affect the vector of the calling function, and vice versa.
+     * @return 两个向量经过了按维度的减法计算之后，被修改的向量对象
+     */
+    @Override
+    public IntegerMatrix diffAbs(IntegerMatrix value, boolean ModifyCaller) {
+        int rowCount1 = this.getRowCount();
+        int rowCount2 = value.getRowCount();
+        int colCount1 = this.getColCount();
+        int colCount2 = value.getColCount();
+        if (rowCount1 == rowCount2 && colCount1 == colCount2) {
+            int[][] ints = new int[rowCount1][colCount1];
+            int rowPointer = this.RowPointer;
+            int rowPointer1 = value.RowPointer;
+            while (this.MovePointerDown() && value.MovePointerDown()) {
+                int[] line = new int[colCount1];
+                int[] ints1 = this.toArray();
+                int[] ints2 = value.toArray();
+                for (int i = 0; i < colCount1; i++) {
+                    line[i] = ASMath.absoluteValue(ints1[i] - ints2[i]);
+                }
+                ints[this.RowPointer] = line;
+            }
+            this.RowPointer = rowPointer;
+            value.RowPointer = rowPointer1;
+            return parse(ints);
+        } else {
+            throw new OperatorOperationException("您在'intMatrix1 diff intMatrix2'的时候发生了错误，原因是两个矩阵的行列数不一致！\n" +
+                    "You have an error in 'intMatrix1 diff intMatrix2' because the number of rows and columns of the two matrices is inconsistent!\n" +
+                    "intMatrix1 =>  rowCount = [" + rowCount1 + "]   colCount = [" + colCount1 + "]\nintMatrix2 =>  rowCount = [" + rowCount2 + "]   colCount = [" + colCount2 + "]");
+        }
+    }
+
     @Override
     public Integer get(int row, int col) {
         return toArrays()[row][col];

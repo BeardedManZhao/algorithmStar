@@ -35,7 +35,7 @@ public final class OperationAlgorithmManager implements OperationAlgorithm {
     private final static OperationAlgorithmManager OPERATION_ALGORITHM_MANAGER = new OperationAlgorithmManager();
 
     static {
-        LOGGER.info("+============================== Welcome to [mathematical expression] ==============================+");
+        LOGGER.info("+============================== Welcome to [AlgorithmStar-Java] ==============================+");
         LOGGER.info("+ \tStart time " + new Date());
         LOGGER.info("+ \tversion: " + VERSION);
         LOGGER.info("+ \tCalculation component manager initialized successfully");

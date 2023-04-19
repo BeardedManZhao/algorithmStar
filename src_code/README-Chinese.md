@@ -9,6 +9,7 @@
 ### 更新日志
 
 * 框架版本：1.18 - 1.19
+* 修复库启动日志标题数据，其标题修正为 AlgorithmStar-Java
 * 图像矩阵的变换计算函数实现新增缩放逻辑，能够按照指定的倍数进行单方向的缩放操作，下面是一个将原图像缩小为原来的 1/2 的代码示例。
 
 ```java
@@ -484,7 +485,7 @@ public class MAIN1 {
         );
         // 获取到 小猫样本
         ColorMatrix cat = ColorMatrix.parse(
-                "C:\\Users\\Liming\\Desktop\\fsdownload\\catHead1.jpg"
+                new URL("https://user-images.githubusercontent.com/113756063/232627018-1ab647ff-38f7-408c-a3df-365028463152.jpg")
         );
 
 
@@ -493,7 +494,7 @@ public class MAIN1 {
                 new URL("https://user-images.githubusercontent.com/113756063/231062649-34268530-801a-4520-81ae-176936a3a981.jpg")
         );
         ColorMatrix parse2 = ColorMatrix.parse(
-                "C:\\Users\\Liming\\Desktop\\fsdownload\\cat.jpg"
+                new URL("https://user-images.githubusercontent.com/113756063/232627057-a49d6958-d608-4d44-b309-f63454998aaa.jpg")
         );
 
         // 获取到图像分类模型
@@ -504,10 +505,11 @@ public class MAIN1 {
         tarImageClassification.setArg("cat", new FinalCell<>(cat));
         // 设置启用二值化操作
         TarImageClassification.SINGLE_TARGET_CONTOUR.setArg(SingleTargetContour.isBinary, SingletonCell.$(true));
-        
+
         ColorMatrix[] colorMatrices = {parse1, parse2};
         // 需要注意的是，当指定了二值化操作之后，传递进去的图像矩阵将会被更改 因此在这里使用模型的时候使用克隆出来的矩阵数组
         ColorMatrix[] clone = {ColorMatrix.parse(parse1.copyToNewArrays()), ColorMatrix.parse(parse2.copyToNewArrays())};
+        long start = System.currentTimeMillis();
         // 开始计算并迭代计算出来的类别集合，进行结果查看
         for (Map.Entry<String, ArrayList<Integer>> entry : AlgorithmStar.model(tarImageClassification, clone).entrySet()) {
             String k = entry.getKey() + "类别";
@@ -515,9 +517,11 @@ public class MAIN1 {
                 colorMatrices[index].show(k);
             }
         }
+        System.out.println("耗时：" + (System.currentTimeMillis() - start));
     }
 }
 ```
+
 ```java
 package zhao.algorithmMagic;
 
@@ -543,7 +547,7 @@ public class MAIN1 {
         );
         // 获取到 小猫样本
         ColorMatrix cat = ColorMatrix.parse(
-                "C:\\Users\\Liming\\Desktop\\fsdownload\\catHead1.jpg"
+                new URL("https://user-images.githubusercontent.com/113756063/232627018-1ab647ff-38f7-408c-a3df-365028463152.jpg")
         );
 
 
@@ -552,7 +556,7 @@ public class MAIN1 {
                 new URL("https://user-images.githubusercontent.com/113756063/231062649-34268530-801a-4520-81ae-176936a3a981.jpg")
         );
         ColorMatrix parse2 = ColorMatrix.parse(
-                "C:\\Users\\Liming\\Desktop\\fsdownload\\cat.jpg"
+                new URL("https://user-images.githubusercontent.com/113756063/232627057-a49d6958-d608-4d44-b309-f63454998aaa.jpg")
         );
 
         // 获取到图像分类模型
@@ -575,8 +579,123 @@ public class MAIN1 {
                 colorMatrices[index].show(k);
             }
         }
-        System.out.println(System.currentTimeMillis() - start);
+        System.out.println("耗时：" + (System.currentTimeMillis() - start));
     }
 }
 ```
+
+* 支持 AS模型 对象的保存与重新加载操作，能够有效保存好处理的模型。
+
+```java
+package zhao.algorithmMagic;
+
+import org.jetbrains.annotations.NotNull;
+import zhao.algorithmMagic.core.AlgorithmStar;
+import zhao.algorithmMagic.core.model.ASModel;
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
+import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixSpace;
+import zhao.algorithmMagic.operands.table.Cell;
+import zhao.algorithmMagic.utils.ASClass;
+
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+
+public class MAIN1 {
+
+    // 在 main 函数中进行模型的保存和读取以及使用
+    public static void main(String[] args) throws MalformedURLException {
+        // 获取到 人脸样本
+        ColorMatrix person = ColorMatrix.parse(
+                new URL("https://user-images.githubusercontent.com/113756063/230775389-4477aad4-795c-47c2-a946-0afeadafad44.jpg")
+        );
+        // 将自定义实现模型类加载进来
+        MyModel myModel1 = new MyModel();
+        // 将模型对象保存到磁盘
+        File file = new File("C:\\Users\\Liming\\Desktop\\fsdownload\\MytModel.as");
+        ASModel.Utils.write(file, myModel1);
+        // 将模型对象重新加载进磁盘
+        MyModel myModel2 = ASClass.transform(ASModel.Utils.read(file));
+        // 使用模型处理图像
+        ColorMatrix model = AlgorithmStar.model(myModel2, new ColorMatrix[]{person});
+        // 查看结果图像
+        model.show("res");
+    }
+
+    /**
+     * 这里是实现出来的自定义 图像卷积池化 模型对象
+     */
+    public static class MyModel implements ASModel<String, ColorMatrix, ColorMatrix> {
+
+        private int width = 3, height = 3;
+
+        @Override
+        public void setArg(String key, @NotNull Cell<?> value) {
+            switch (key) {
+                case "w" -> width = value.getIntValue();
+                case "h" -> height = value.getIntValue();
+                default -> System.out.println("不认识的参数：" + key);
+            }
+        }
+
+        @Override
+        public ColorMatrix function(ColorMatrix[] input) {
+            // 转换成为像素矩阵空间
+            IntegerMatrixSpace integerMatrices = input[0].toIntRGBSpace(ColorMatrix._R_, ColorMatrix._G_, ColorMatrix._B_);
+            // 构造一个卷积核 这里是将从右到左的边界提取出来的卷积核
+            IntegerMatrix parse = IntegerMatrix.parse(
+                    new int[]{-1, 0, 1},
+                    new int[]{-1, 0, 1},
+                    new int[]{-1, 0, 1}
+            );
+            IntegerMatrixSpace core = IntegerMatrixSpace.parse(parse, parse, parse);
+            // 将人脸样本进行卷积
+            ColorMatrix colorMatrix = integerMatrices.foldingAndSumRGB(width, height, core);
+            // 将人脸样本进行 R G B 三种通道的最大值取值 池化
+            return colorMatrix.pooling(width, height, ColorMatrix.POOL_RGB_OBO_MAX);
+        }
+
+        @Override
+        public ColorMatrix functionConcurrency(ColorMatrix[] input) {
+            System.out.println("暂不支持多线程计算。");
+            return null;
+        }
+    }
+}
+```
+
+* 支持图像矩阵的池化计算操作，该操作的函数形参接收池化卷积核以及池化操作实现对象。
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+
+
+public class MAIN1 {
+
+    // 在 main 函数中进行模型的保存和读取以及使用
+    public static void main(String[] args) throws MalformedURLException {
+        // 获取到 人脸样本
+        ColorMatrix person = ColorMatrix.parse(
+                new URL("https://user-images.githubusercontent.com/113756063/230775389-4477aad4-795c-47c2-a946-0afeadafad44.jpg")
+        );
+        // 查看原图
+        person.show("person");
+        // 将人脸图像进行池化操作 指定 3x3 的卷积核 以及 R G B 三种颜色的最大池化操作
+        ColorMatrix res1 = person.pooling(3, 3, ColorMatrix.POOL_RGB_MAX);
+        // 将人脸图像进行池化操作 指定 3x3 的卷积核 以及 RGB数值的最大池化操作
+        ColorMatrix res2 = person.pooling(3, 3, ColorMatrix.POOL_RGB_OBO_MAX);
+        // 查看结果图像
+        res1.show("res1");
+        res2.show("res2");
+    }
+}
+```
+
 ### Version update date : xx xx-xx-xx
