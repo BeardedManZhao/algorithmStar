@@ -27,7 +27,6 @@ import java.util.*;
  * @author 赵凌宇
  */
 public final class ASMath {
-
     public static final String MATHEMATICAL_SYMBOLS_PLUS = "+";
     public static final String MATHEMATICAL_SYMBOLS_SUBTRACT = "-";
     public static final double THE_INDEX_OF_LOG_IS_2 = Math.log(2);

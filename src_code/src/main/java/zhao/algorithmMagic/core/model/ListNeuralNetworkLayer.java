@@ -78,13 +78,12 @@ public class ListNeuralNetworkLayer implements NeuralNetworkLayer {
      */
     @Override
     public DoubleVector backForward(DoubleVector doubleVector) {
-        // 首先计算出来内积数值。
-        double inner = doubleVector.innerProduct(weight);
+        double[] loss = doubleVector.toArray();
         // 构建结果向量容器 容器中的元素数量与神经元个数一致
         double[] res = new double[this.arrayList.size()];
         int index = -1;
         for (Perceptron perceptron : this.arrayList) {
-            res[++index] = perceptron.FUNCTION.derivativeFunction(inner);
+            res[++index] = perceptron.FUNCTION.derivativeFunction(loss[index]);
         }
         return DoubleVector.parse(res);
     }

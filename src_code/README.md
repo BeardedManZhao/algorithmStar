@@ -683,4 +683,87 @@ public class MAIN1 {
 }
 ```
 
+* Add a linear neural network regression model in ASModel, which has stronger accuracy and simpler API calls, returning
+  a model object that can be saved.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.core.model.*;
+import zhao.algorithmMagic.operands.table.SingletonCell;
+import zhao.algorithmMagic.operands.vector.DoubleVector;
+
+import java.io.File;
+import java.net.MalformedURLException;
+
+public class MAIN1 {
+
+    // 在 main 函数中进行模型的保存和读取以及使用
+    public static void main(String[] args) {
+        // 获取到线性神经网络模型
+        LinearNeuralNetwork linearNeuralNetwork = ASModel.LINEAR_NEURAL_NETWORK;
+        // 设置学习率 为 0.01
+        linearNeuralNetwork.setArg(LinearNeuralNetwork.LEARNING_RATE, SingletonCell.$(0.01));
+        // 设置激活函数为 LEAKY_RE_LU
+        linearNeuralNetwork.setArg(LinearNeuralNetwork.PERCEPTRON, SingletonCell.$(Perceptron.parse(ActivationFunction.LEAKY_RE_LU)));
+        // 设置学习次数 为 570 * 目标数
+        linearNeuralNetwork.setArg(LinearNeuralNetwork.LEARN_COUNT, SingletonCell.$(570));
+        // 设置目标数值
+        linearNeuralNetwork.setArg(
+                LinearNeuralNetwork.TARGET,
+                // 假设这里是5组数据对应的结果
+                SingletonCell.$(new double[]{300, 210, 340, 400, 500})
+        );
+        // 构建被学习的数据 由此数据推导结果 找到每一组数据中 3 个参数之间的数学模型
+        DoubleVector X1 = DoubleVector.parse(100, 50, 50);
+        DoubleVector X2 = DoubleVector.parse(80, 50, 50);
+        DoubleVector X3 = DoubleVector.parse(120, 50, 50);
+        DoubleVector x4 = DoubleVector.parse(100, 100, 100);
+        DoubleVector x5 = DoubleVector.parse(150, 100, 100);
+        // 构建初始权重向量
+        DoubleVector W = DoubleVector.parse(20, 18, 18);
+        // 训练出模型
+        NumberModel model = linearNeuralNetwork.function(X1, X2, X3, x4, x5, W);
+
+        // TODO 接下来开始使用模型进行一些测试
+        // 向模型中传递一些数值
+        Double function1 = model.function(new Double[]{100.0, 50.0, 50.0});
+        // 打印计算出来的结果
+        System.out.println(function1);
+        // 再一次传递一些数值
+        Double function2 = model.function(new Double[]{150.0, 100.0, 100.0});
+        // 打印计算出来的结果
+        System.out.println(function2);
+
+        // TODO 确定模型可用，将模型保存
+        ASModel.Utils.write(new File("C:\\Users\\Liming\\Desktop\\fsdownload\\MytModel.as"), model);
+    }
+}
+```
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.core.model.*;
+
+import java.io.File;
+
+public class MAIN1 {
+
+    // 在 main 函数中进行模型的保存和读取以及使用
+    public static void main(String[] args) {
+        // 从磁盘中加载刚刚保存的模型
+        ASModel<Integer, Double, Double> asModel = ASModel.Utils.read(new File("C:\\Users\\Liming\\Desktop\\fsdownload\\MytModel.as"));
+        // 构造一组 自变量数据
+        Double[] doubles = {150.0, 100.0, 100.0};
+        // 计算这组数据在模型中计算后如果，查看是否达到预测效果  预期结果是 500
+        // 因为刚刚的训练数据中 数据的公共公式为 f(x) = x1 * 2 + x2 * 1 + x2 * 1
+        Double function = asModel.function(doubles);
+        System.out.println(function);
+        // 打印模型公式
+        System.out.println(asModel);
+    }
+}
+```
+
 ### Version update date : 2023-04-09

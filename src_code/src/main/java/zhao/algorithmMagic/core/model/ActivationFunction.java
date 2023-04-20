@@ -17,6 +17,16 @@ public enum ActivationFunction {
         private final OperatorOperationException OPERATOR_OPERATION_EXCEPTION = new OperatorOperationException("Please select a activation function.");
 
         /**
+         * 设置学习率
+         *
+         * @param value 学习率具体的数值。
+         */
+        @Override
+        public void setLearnR(double value) {
+
+        }
+
+        /**
          * 激活函数正向传播计算函数
          *
          * @param x 函数形参
@@ -40,6 +50,16 @@ public enum ActivationFunction {
     },
     RELU {
         /**
+         * 设置学习率
+         *
+         * @param value 学习率具体的数值。
+         */
+        @Override
+        public void setLearnR(double value) {
+
+        }
+
+        /**
          * 激活函数正向传播计算函数
          *
          * @param x 函数形参
@@ -61,7 +81,53 @@ public enum ActivationFunction {
             return x < 0 ? 0 : 1;
         }
     },
-    Soft_sign {
+    LEAKY_RE_LU {
+
+        private double learningRate = 0.01;
+
+        /**
+         * 设置学习率
+         *
+         * @param value 学习率具体的数值。
+         */
+        @Override
+        public void setLearnR(double value) {
+            this.learningRate = value;
+        }
+
+        /**
+         * 激活函数正向传播计算函数
+         *
+         * @param x 函数形参
+         * @return 激活函数正向传播计算的结果。
+         */
+        @Override
+        public double function(double x) {
+            return x < 0 ? 0 : x;
+        }
+
+        /**
+         * 激活函数反向求导数的计算函数
+         *
+         * @param x 函数形参
+         * @return 激活函数反向传播的导数的数值。
+         */
+        @Override
+        public double derivativeFunction(double x) {
+            return x < 0 ? learningRate * x : 1;
+        }
+    },
+    SOFT_SIGN {
+        /**
+         * 设置学习率
+         *
+         * @param value 学习率具体的数值。
+         */
+        @Override
+        public void setLearnR(double value) {
+
+        }
+
         /**
          * 激活函数正向传播计算函数
          *
@@ -83,7 +149,48 @@ public enum ActivationFunction {
         public double derivativeFunction(double x) {
             return x / ASMath.Power2(1 + ASMath.absoluteValue(x));
         }
+    },
+    SIG_MOD {
+        /**
+         * 设置学习率
+         *
+         * @param value 学习率具体的数值。
+         */
+        @Override
+        public void setLearnR(double value) {
+
+        }
+
+        /**
+         * 激活函数正向传播计算函数
+         *
+         * @param x 函数形参
+         * @return 激活函数正向传播计算的结果。
+         */
+        @Override
+        public double function(double x) {
+            return 1 + 1 / (1 + Math.pow(Math.E, -x));
+        }
+
+        /**
+         * 激活函数反向求导数的计算函数
+         *
+         * @param x 函数形参
+         * @return 激活函数反向传播的导数的数值。
+         */
+        @Override
+        public double derivativeFunction(double x) {
+            double fun = function(x);
+            return fun * (1 - fun);
+        }
     };
+
+    /**
+     * 设置学习率
+     *
+     * @param value 学习率具体的数值。
+     */
+    public abstract void setLearnR(double value);
 
     /**
      * 激活函数正向传播计算函数

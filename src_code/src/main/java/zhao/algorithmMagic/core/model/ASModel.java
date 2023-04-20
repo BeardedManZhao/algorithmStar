@@ -1,7 +1,6 @@
 package zhao.algorithmMagic.core.model;
 
 import zhao.algorithmMagic.exception.OperatorOperationException;
-import zhao.algorithmMagic.operands.Operands;
 import zhao.algorithmMagic.operands.table.Cell;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASIO;
@@ -23,7 +22,7 @@ import java.net.URL;
  *            <p>
  *            The type of operand output that the current model can receive.
  */
-public interface ASModel<K, I extends Operands<I>, O> extends Serializable {
+public interface ASModel<K, I, O> extends Serializable {
 
     /**
      * 单目标矩形轮廓识别绘制模型，该模型接收一个识别目标的数据样本，并将其在图像中的位置识别出来，具有单线程与多线程两种使用方式。
@@ -34,6 +33,11 @@ public interface ASModel<K, I extends Operands<I>, O> extends Serializable {
      * 基于目标数据样本的有监督的图像分类模型，支持单线程与所现场两种计算方式。
      */
     TarImageClassification TAR_IMAGE_CLASSIFICATION = new TarImageClassification();
+
+    /**
+     * 单神经元的神经网络线性回归训练
+     */
+    LinearNeuralNetwork LINEAR_NEURAL_NETWORK = new LinearNeuralNetwork();
 
     /**
      * 针对模型进行设置。
@@ -142,7 +146,7 @@ public interface ASModel<K, I extends Operands<I>, O> extends Serializable {
          * <p>
          * The model object read from the disk.
          */
-        public static <k, i extends Operands<i>, o> ASModel<k, i, o> read(File file) {
+        public static <k, i, o> ASModel<k, i, o> read(File file) {
             ObjectInputStream objectInputStream = null;
             ASModel<k, i, o> asModel1;
             try {
@@ -175,7 +179,7 @@ public interface ASModel<K, I extends Operands<I>, O> extends Serializable {
          * <p>
          * The model object read from the disk.
          */
-        public static <k, i extends Operands<i>, o> ASModel<k, i, o> read(URL file) {
+        public static <k, i, o> ASModel<k, i, o> read(URL file) {
             ObjectInputStream objectInputStream = null;
             ASModel<k, i, o> asModel1;
             try {
