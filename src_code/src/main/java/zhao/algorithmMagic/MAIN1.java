@@ -1,6 +1,6 @@
 package zhao.algorithmMagic;
 
-import zhao.algorithmMagic.core.model.ASModel;
+import zhao.algorithmMagic.core.model.*;
 
 import java.io.File;
 
@@ -11,7 +11,7 @@ public class MAIN1 {
         // 从磁盘中加载刚刚保存的模型
         ASModel<Integer, Double, Double> asModel = ASModel.Utils.read(new File("C:\\Users\\Liming\\Desktop\\fsdownload\\MytModel.as"));
         // 构造一组 自变量数据
-        Double[] doubles = {150.0, 100.0, 100.0};
+        Double[] doubles = {150.0, 100.0, 100.0, 100.0};
         // 计算这组数据在模型中计算后如果，查看是否达到预测效果  预期结果是 500
         // 因为刚刚的训练数据中 数据的公共公式为 f(x) = x1 * 2 + x2 * 1 + x2 * 1
         Double function = asModel.function(doubles);

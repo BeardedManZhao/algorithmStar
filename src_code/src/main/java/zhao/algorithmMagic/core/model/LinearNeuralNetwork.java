@@ -116,6 +116,58 @@ public final class LinearNeuralNetwork implements ASModel<Integer, DoubleVector,
     }
 
     /**
+     * 启动模型，将其中的操作数进行计算操作。
+     * <p>
+     * Start the model and calculate the operands in it.
+     *
+     * @param consumer 运行时附加任务处理器，其中的key是损失函数，value是训练出来的权重。
+     * @param input    需要被计算的所有操作数对象。
+     *                 <p>
+     *                 All operand objects that need to be calculated.
+     * @return 计算之后的结果数据，数据可以是任何类型。
+     * <p>
+     * The calculated result data can be of any type.
+     */
+    public NumberModel function(TaskConsumer consumer, DoubleVector... input) {
+        // 构建 X
+        DoubleVector X = input[0];
+        // 构建权重
+        DoubleVector doubleVector = input[input.length - 1];
+        double[] W = doubleVector.toArray();
+        // 获取到神经网络层
+        ListNeuralNetworkLayer listNeuralNetworkLayer = new ListNeuralNetworkLayer(doubleVector);
+        // 添加神经元
+        this.perceptron.FUNCTION.setLearnR(this.learningRate);
+        listNeuralNetworkLayer.addPerceptron(this.perceptron);
+        // 构建偏置项
+        double bias = 0;
+        // 获取到每一组数据进行训练
+        for (int i1 = 0, max = input.length - 1; i1 < max; i1++) {
+            DoubleVector XX = input[i1];
+            double YY = Y[i1];
+            // 开始进行神经网络训练
+            for (int i = 0; i < this.learnCount; i++) {
+                // 将 X 进行前向传播，获取到临时 Y 向量
+                DoubleVector tempY = listNeuralNetworkLayer.forward(XX);
+                // 将 临时结果与真实结果之间的损失函数计算出来
+                double tempYNum = tempY.toArray()[0];
+                double loss = tempYNum - YY;
+                // 根据 损失函数 反向求偏导，获取梯度数值
+                DoubleVector g = listNeuralNetworkLayer.backForward(DoubleVector.parse(loss));
+                double gs = g.toArray()[0];
+                consumer.accept(loss, gs, W);
+                // 更新参数
+                int wi = -1;
+                for (double w : W) {
+                    W[++wi] = w - this.learningRate * gs;
+                }
+            }
+        }
+        // 生成训练好的模型
+        return getNumberModel(X, W, bias);
+    }
+
+    /**
      * 生成数学模型
      *
      * @param X    自变量向量组
@@ -181,5 +233,19 @@ public final class LinearNeuralNetwork implements ASModel<Integer, DoubleVector,
     @Override
     public NumberModel functionConcurrency(DoubleVector[] input) {
         return function(input);
+    }
+
+    /**
+     * 训练过程附加任务。
+     */
+    public interface TaskConsumer {
+        /**
+         * 任务处理逻辑
+         *
+         * @param loss   本次调整之后的损失函数
+         * @param g      本次调整之后的梯度
+         * @param weight 本次调整之后的权重数值
+         */
+        void accept(double loss, double g, double[] weight);
     }
 }
