@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * @author 赵凌宇
  * 2023/4/19 18:55
  */
-public class ListNeuralNetworkLayer implements NeuralNetworkLayer {
+public final class ListNeuralNetworkLayer implements NeuralNetworkLayer {
 
     private final ArrayList<Perceptron> arrayList = new ArrayList<>();
     private final DoubleVector weight;

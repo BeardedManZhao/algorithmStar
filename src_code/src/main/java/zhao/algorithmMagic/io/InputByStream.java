@@ -22,7 +22,7 @@ import java.util.Scanner;
  *
  * @author zhao
  */
-public class InputByStream implements InputComponent {
+public final class InputByStream implements InputComponent {
 
     private final static Logger LOGGER = LoggerFactory.getLogger("InputByStream");
     private final InputStream inputStream;

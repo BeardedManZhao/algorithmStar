@@ -19,7 +19,7 @@ import java.io.InputStream;
  * @author 赵凌宇
  * 2023/4/5 13:51
  */
-public class InputCamera implements InputComponent {
+public final class InputCamera implements InputComponent {
 
     private final Webcam webcam;
     private final String format;
@@ -28,7 +28,7 @@ public class InputCamera implements InputComponent {
      * @param webcam 拍照对象
      * @param format 拍照之后的图像格式
      */
-    protected InputCamera(Webcam webcam, String format) {
+    InputCamera(Webcam webcam, String format) {
         this.webcam = webcam;
         this.format = format;
     }

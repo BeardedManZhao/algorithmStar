@@ -22,7 +22,7 @@ import java.io.*;
  * @author 赵凌宇
  * 2023/4/6 8:40
  */
-public class InputHDFS implements InputComponent {
+public final class InputHDFS implements InputComponent {
 
     private final static Logger LOGGER = LoggerFactory.getLogger("InputHDFS");
     private final FileSystem fileSystem;

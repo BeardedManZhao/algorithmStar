@@ -7,6 +7,7 @@ import zhao.algorithmMagic.operands.vector.DoubleVector;
 /**
  * 线性神经网络学习模型，该模型针对大量数据样本能够自动的生成神经网络进行批量学习操作。最终会返回一个学习之后的数学模型。
  *
+ * A linear neural network learning model that can automatically generate neural networks for batch learning operations on a large number of data samples. Ultimately, a learned mathematical model will be returned.
  * @author 赵凌宇
  * 2023/4/20 12:40
  */
@@ -242,9 +243,15 @@ public final class LinearNeuralNetwork implements ASModel<Integer, DoubleVector,
         /**
          * 任务处理逻辑
          *
-         * @param loss   本次调整之后的损失函数
-         * @param g      本次调整之后的梯度
-         * @param weight 本次调整之后的权重数值
+         * @param loss   本次调整之后的损失函数。
+         *
+         *               The loss function after this adjustment.
+         * @param g      本次调整之后的梯度。
+         *
+         *               The gradient after this adjustment.
+         * @param weight 本次调整之后的权重数值。
+         *
+         *               The weight value after this adjustment.
          */
         void accept(double loss, double g, double[] weight);
     }

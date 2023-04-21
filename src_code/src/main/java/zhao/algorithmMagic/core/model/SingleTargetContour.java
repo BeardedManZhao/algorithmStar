@@ -19,7 +19,7 @@ import java.util.concurrent.CountDownLatch;
  * @author 赵凌宇
  * 2023/4/17 17:45
  */
-public class SingleTargetContour extends HashMap<Integer, Cell<?>> implements ASModel<Integer, ColorMatrix, ColorMatrix[]> {
+public final class SingleTargetContour extends HashMap<Integer, Cell<?>> implements ASModel<Integer, ColorMatrix, ColorMatrix[]> {
 
     /**
      * 目标样本特性图
@@ -190,7 +190,7 @@ public class SingleTargetContour extends HashMap<Integer, Cell<?>> implements AS
         return res;
     }
 
-    public final ArrayList<Entry<Double, IntegerCoordinateTwo>> functionGetC(ColorMatrix... input) {
+    public ArrayList<Entry<Double, IntegerCoordinateTwo>> functionGetC(ColorMatrix... input) {
         ColorMatrix target;
         int Binary_bias_value, Binary_local_number, trueColor, falseColor;
         {

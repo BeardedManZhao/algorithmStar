@@ -12,7 +12,7 @@ import java.util.HashMap;
  * @author 赵凌宇
  * 2023/4/12 17:50
  */
-public class SingletonCell<valueType> extends FinalCell<valueType> {
+public final class SingletonCell<valueType> extends FinalCell<valueType> {
 
     /**
      * 单例哈希维护
@@ -24,19 +24,19 @@ public class SingletonCell<valueType> extends FinalCell<valueType> {
      */
     private final String key;
 
-    protected SingletonCell(String string) {
+    private SingletonCell(String string) {
         super(string);
         key = string;
         SING_HASH_MAP.put(key, this);
     }
 
-    protected SingletonCell(valueType valueType) {
+    private SingletonCell(valueType valueType) {
         super(valueType);
         key = valueType.toString();
         SING_HASH_MAP.put(key, this);
     }
 
-    protected SingletonCell(String string, boolean isNumber) {
+    private SingletonCell(String string, boolean isNumber) {
         super(string, isNumber);
         key = string;
         SING_HASH_MAP.put(key, this);

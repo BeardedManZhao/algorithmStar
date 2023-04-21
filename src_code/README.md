@@ -252,7 +252,7 @@ import zhao.algorithmMagic.operands.matrix.ColorMatrix;
 public class MAIN1 {
     public static void main(String[] args) {
         // 获取到需要被输出的图像矩阵
-        ColorMatrix colorMatrix = ColorMatrix.parse("C:\\Users\\Liming\\Desktop\\fsdownload\\person1.jpg");
+        ColorMatrix colorMatrix = ColorMatrix.parse("C:\\Users\\Liming\\Desktop\\fsDownload\\person1.jpg");
         // 获取到图像中的红色层
         ColorMatrix colorChannel = colorMatrix.getColorChannel(ColorMatrix._R_);
         colorChannel.show("red");
@@ -279,7 +279,7 @@ import zhao.algorithmMagic.operands.matrix.block.ColorMatrixSpace;
 public class MAIN1 {
     public static void main(String[] args) {
         // 获取到需要被输出的图像矩阵
-        ColorMatrix colorMatrix = ColorMatrix.parse("C:\\Users\\Liming\\Desktop\\fsdownload\\person1.jpg");
+        ColorMatrix colorMatrix = ColorMatrix.parse("C:\\Users\\Liming\\Desktop\\fsDownload\\person1.jpg");
         // 接下来的函数中 TODO Blue色通道将会自动加上 因此不需要进行 + 符号的追加
         // 获取到蓝色颜色通道组成的图像空间 如果只提取蓝色可以进行下面操作
         ColorMatrixSpace colorMatrices = colorMatrix.toRGBSpace(ColorMatrix._B_);
@@ -296,7 +296,7 @@ public class MAIN1 {
 
 * Support the conversion of image matrix objects to integer matrix space objects, and support the calculation operation
   of specifying the number of channels.
-* The convolution kernel in the convolution calculation operation function of the reshaping matrix space supports matrix
+* The convolution kernel in the convolution calculation operation function of the reshaping matrix space supports' matrix
   objects composed of double matrix data types.
 
 ```java
@@ -312,7 +312,7 @@ import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixSpace;
 public class MAIN1 {
     public static void main(String[] args) {
         // 获取到需要被输出的图像矩阵
-        ColorMatrix colorMatrix = ColorMatrix.parse("C:\\Users\\Liming\\Desktop\\fsdownload\\person1.jpg");
+        ColorMatrix colorMatrix = ColorMatrix.parse("C:\\Users\\Liming\\Desktop\\fsDownload\\person1.jpg");
         // 提取出 红色 绿色 蓝色 通道叠加成为的新整形矩阵空间对象
         IntegerMatrixSpace integerMatrices = colorMatrix.toIntRGBSpace(ColorMatrix._R_, ColorMatrix._G_, ColorMatrix._B_);
         // 准备一个 double 卷积核 该卷积核的左右为求均值计算。
@@ -335,7 +335,7 @@ public class MAIN1 {
 
 * Add the AS model package, which provides many built-in and well implemented models that can reduce code development
   under certain circumstances. The model objects can be directly passed to AlgorithmStar for calculation, including
-  single threaded and multi threaded calculation implementations.
+  single threaded and multithreaded calculation implementations.
 
 ```java
 package zhao.algorithmMagic;
@@ -598,7 +598,7 @@ public class MAIN1 {
         // 将自定义实现模型类加载进来
         MyModel myModel1 = new MyModel();
         // 将模型对象保存到磁盘
-        File file = new File("C:\\Users\\Liming\\Desktop\\fsdownload\\MytModel.as");
+        File file = new File("C:\\Users\\Liming\\Desktop\\fsDownload\\MytModel.as");
         ASModel.Utils.write(file, myModel1);
         // 将模型对象重新加载进磁盘
         MyModel myModel2 = ASClass.transform(ASModel.Utils.read(file));
@@ -736,7 +736,7 @@ public class MAIN1 {
         System.out.println(function2);
 
         // TODO 确定模型可用，将模型保存
-        ASModel.Utils.write(new File("C:\\Users\\Liming\\Desktop\\fsdownload\\MytModel.as"), model);
+        ASModel.Utils.write(new File("C:\\Users\\Liming\\Desktop\\fsDownload\\MytModel.as"), model);
     }
 }
 ```
@@ -753,7 +753,7 @@ public class MAIN1 {
     // 在 main 函数中进行模型的保存和读取以及使用
     public static void main(String[] args) {
         // 从磁盘中加载刚刚保存的模型
-        ASModel<Integer, Double, Double> asModel = ASModel.Utils.read(new File("C:\\Users\\Liming\\Desktop\\fsdownload\\MytModel.as"));
+        ASModel<Integer, Double, Double> asModel = ASModel.Utils.read(new File("C:\\Users\\Liming\\Desktop\\fsDownload\\MytModel.as"));
         // 构造一组 自变量数据
         Double[] doubles = {150.0, 100.0, 100.0};
         // 计算这组数据在模型中计算后如果，查看是否达到预测效果  预期结果是 500
@@ -824,7 +824,7 @@ public class MAIN1 {
         System.out.println(function2);
 
         // TODO 确定模型可用，将模型保存
-        ASModel.Utils.write(new File("C:\\Users\\Liming\\Desktop\\fsdownload\\MytModel.as"), model);
+        ASModel.Utils.write(new File("C:\\Users\\Liming\\Desktop\\fsDownload\\MytModel.as"), model);
     }
 }
 ```

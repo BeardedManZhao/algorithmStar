@@ -14,7 +14,7 @@ import zhao.algorithmMagic.operands.vector.DoubleVector;
  * @author 赵凌宇
  * 2023/4/19 13:59
  */
-public class Perceptron implements ASModel<Integer, DoubleMatrix, Cell<Double>> {
+public final class Perceptron implements ASModel<Integer, DoubleMatrix, Cell<Double>> {
 
     public static final int BIAS = 1;
     final ActivationFunction FUNCTION;
