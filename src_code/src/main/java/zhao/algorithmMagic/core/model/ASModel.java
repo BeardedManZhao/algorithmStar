@@ -26,18 +26,31 @@ public interface ASModel<K, I, O> extends Serializable {
 
     /**
      * 单目标矩形轮廓识别绘制模型，该模型接收一个识别目标的数据样本，并将其在图像中的位置识别出来，具有单线程与多线程两种使用方式。
+     * <p>
+     * A single target rectangular contour recognition and drawing model, which receives a data sample for identifying the target and identifies its position in the image, has two usage modes: single threaded and multi threaded.
      */
     SingleTargetContour SINGLE_TARGET_CONTOUR = new SingleTargetContour();
 
     /**
      * 基于目标数据样本的有监督的图像分类模型，支持单线程与所现场两种计算方式。
+     * <p>
+     * A supervised image classification model based on target data samples, supporting both single threaded and on-site computing methods.
      */
     TarImageClassification TAR_IMAGE_CLASSIFICATION = new TarImageClassification();
 
     /**
-     * 单神经元的神经网络线性回归训练
+     * 单神经元的线性神经网络线性回归训练，该训练集在针对单个数据样本的时候表现非常强大，针对多个具有突出的相似特征的数据集效果很明显，但是当有n个样本的时候，训练次数为原来的 x × n 倍。
+     * <p>
+     * Single neuron linear neural network linear regression training, this training set performs very strongly for a single data sample, and the effect is obvious for multiple datasets with prominent similar features. However, when there are n samples, the training frequency is the original x ×  N times.
      */
-    LinearNeuralNetwork LINEAR_NEURAL_NETWORK = new LinearNeuralNetwork();
+    LNeuralNetwork L_NEURAL_NETWORK = new LNeuralNetwork();
+
+    /**
+     * 单神经元的线性随机神经网络回归训练模型，在该模型中，针对特征不突出的数据集也可以有效实现训练的目的，同时还可以降低训练次数。
+     * <p>
+     * Linear stochastic neural network regression training model of single neuron, in this model, the training purpose can also be effectively realized for data sets with less prominent features, and the training times can also be reduced.
+     */
+    LSNeuralNetwork LS_NEURAL_NETWORK = new LSNeuralNetwork();
 
     /**
      * 针对模型进行设置。

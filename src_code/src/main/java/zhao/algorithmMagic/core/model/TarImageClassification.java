@@ -17,7 +17,7 @@ import java.util.function.Function;
  * @author 赵凌宇
  * 2023/4/17 20:01
  */
-public  final class TarImageClassification extends ArrayList<KeyValue<String, ColorMatrix>> implements ASModel<String, ColorMatrix, HashMap<String, ArrayList<Integer>>> {
+public final class TarImageClassification extends ArrayList<KeyValue<String, ColorMatrix>> implements ASModel<String, ColorMatrix, HashMap<String, ArrayList<Integer>>> {
 
     /**
      * 本模型所依赖的第三方模型

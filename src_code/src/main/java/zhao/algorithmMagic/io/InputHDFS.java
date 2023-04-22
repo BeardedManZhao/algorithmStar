@@ -45,7 +45,7 @@ public final class InputHDFS implements InputComponent {
      * @param pk         读取时的表主键对象
      * @param rowCount   读取矩阵的时候的目标行数
      */
-    protected InputHDFS(FileSystem fileSystem, Path inputPath, char sep, String charset, Cell<String[]> field, int pk, int rowCount) {
+    InputHDFS(FileSystem fileSystem, Path inputPath, char sep, String charset, Cell<String[]> field, int pk, int rowCount) {
         this.rowCount = rowCount;
         if (fileSystem == null || inputPath == null || field == null) {
             throw new OperatorOperationException("The parameter in [FileSystem fileSystem, Path inputPath, String[] field] cannot be null!!!!");
@@ -128,7 +128,7 @@ public final class InputHDFS implements InputComponent {
     @Override
     public int[][] getInt2Array() {
         LOGGER.info("getInt2Array()");
-        if (this.rowCount >= -1) {
+        if (this.rowCount > 0) {
             return ASStr.strToIntMat(this.bufferedReader, this.rowCount, this.sep);
         } else {
             return ASStr.strToIntMat(this.bufferedReader, this.sep);
@@ -145,7 +145,7 @@ public final class InputHDFS implements InputComponent {
     @Override
     public double[][] getDouble2Array() {
         LOGGER.info("getDouble2Array()");
-        if (this.rowCount >= -1) {
+        if (this.rowCount > 0) {
             return ASStr.strToDoubleMat(this.bufferedReader, this.rowCount, this.sep);
         } else {
             return ASStr.strToDoubleMat(this.bufferedReader, this.sep);

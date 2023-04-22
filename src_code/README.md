@@ -296,8 +296,8 @@ public class MAIN1 {
 
 * Support the conversion of image matrix objects to integer matrix space objects, and support the calculation operation
   of specifying the number of channels.
-* The convolution kernel in the convolution calculation operation function of the reshaping matrix space supports' matrix
-  objects composed of double matrix data types.
+* The convolution kernel in the convolution calculation operation function of the reshaping matrix space supports'
+  matrix objects composed of double matrix data types.
 
 ```java
 package zhao.algorithmMagic;
@@ -694,23 +694,22 @@ import zhao.algorithmMagic.operands.table.SingletonCell;
 import zhao.algorithmMagic.operands.vector.DoubleVector;
 
 import java.io.File;
-import java.net.MalformedURLException;
 
 public class MAIN1 {
 
     // 在 main 函数中进行模型的保存和读取以及使用
     public static void main(String[] args) {
         // 获取到线性神经网络模型
-        LinearNeuralNetwork linearNeuralNetwork = ASModel.LINEAR_NEURAL_NETWORK;
+        LNeuralNetwork lNeuralNetwork = ASModel.L_NEURAL_NETWORK;
         // 设置学习率 为 0.01
-        linearNeuralNetwork.setArg(LinearNeuralNetwork.LEARNING_RATE, SingletonCell.$(0.01));
+        lNeuralNetwork.setArg(LNeuralNetwork.LEARNING_RATE, SingletonCell.$(0.01));
         // 设置激活函数为 LEAKY_RE_LU
-        linearNeuralNetwork.setArg(LinearNeuralNetwork.PERCEPTRON, SingletonCell.$(Perceptron.parse(ActivationFunction.LEAKY_RE_LU)));
+        lNeuralNetwork.setArg(LNeuralNetwork.PERCEPTRON, SingletonCell.$(Perceptron.parse(ActivationFunction.LEAKY_RE_LU)));
         // 设置学习次数 为 570 * 目标数
-        linearNeuralNetwork.setArg(LinearNeuralNetwork.LEARN_COUNT, SingletonCell.$(570));
+        lNeuralNetwork.setArg(LNeuralNetwork.LEARN_COUNT, SingletonCell.$(570));
         // 设置目标数值
-        linearNeuralNetwork.setArg(
-                LinearNeuralNetwork.TARGET,
+        lNeuralNetwork.setArg(
+                LNeuralNetwork.TARGET,
                 // 假设这里是5组数据对应的结果
                 SingletonCell.$(new double[]{300, 210, 340, 400, 500})
         );
@@ -723,7 +722,7 @@ public class MAIN1 {
         // 构建初始权重向量
         DoubleVector W = DoubleVector.parse(20, 18, 18);
         // 训练出模型
-        NumberModel model = linearNeuralNetwork.function(X1, X2, X3, x4, x5, W);
+        NumberModel model = lNeuralNetwork.function(X1, X2, X3, x4, x5, W);
 
         // TODO 接下来开始使用模型进行一些测试
         // 向模型中传递一些数值
@@ -766,7 +765,8 @@ public class MAIN1 {
 }
 ```
 
-* Support the implementation of additional tasks during linear neural network training, which are task implementation objects used for information viewing or processing during the training process.
+* Support the implementation of additional tasks during linear neural network training, which are task implementation
+  objects used for information viewing or processing during the training process.
 
 ```java
 package zhao.algorithmMagic;
@@ -783,16 +783,16 @@ public class MAIN1 {
     // 在 main 函数中进行模型的保存和读取以及使用
     public static void main(String[] args) {
         // 获取到线性神经网络模型
-        LinearNeuralNetwork linearNeuralNetwork = ASModel.LINEAR_NEURAL_NETWORK;
+        LNeuralNetwork lNeuralNetwork = ASModel.L_NEURAL_NETWORK;
         // 设置学习率 为 0.01
-        linearNeuralNetwork.setArg(LinearNeuralNetwork.LEARNING_RATE, SingletonCell.$(0.01));
+        lNeuralNetwork.setArg(LNeuralNetwork.LEARNING_RATE, SingletonCell.$(0.01));
         // 设置激活函数为 LEAKY_RE_LU
-        linearNeuralNetwork.setArg(LinearNeuralNetwork.PERCEPTRON, SingletonCell.$(Perceptron.parse(ActivationFunction.LEAKY_RE_LU)));
+        lNeuralNetwork.setArg(LNeuralNetwork.PERCEPTRON, SingletonCell.$(Perceptron.parse(ActivationFunction.LEAKY_RE_LU)));
         // 设置学习次数 为 570 * 目标数
-        linearNeuralNetwork.setArg(LinearNeuralNetwork.LEARN_COUNT, SingletonCell.$(570));
+        lNeuralNetwork.setArg(LNeuralNetwork.LEARN_COUNT, SingletonCell.$(570));
         // 设置目标数值
-        linearNeuralNetwork.setArg(
-                LinearNeuralNetwork.TARGET,
+        lNeuralNetwork.setArg(
+                LNeuralNetwork.TARGET,
                 // 假设这里是5组数据对应的结果
                 SingletonCell.$(new double[]{300, 210, 340, 400, 500})
         );
@@ -805,14 +805,14 @@ public class MAIN1 {
         // 构建初始权重向量
         DoubleVector W = DoubleVector.parse(20, 18, 18);
         // 实例化出附加 Task 任务对象
-        LinearNeuralNetwork.TaskConsumer taskConsumer = (loss, g, weight) -> {
+        LNeuralNetwork.TaskConsumer taskConsumer = (loss, g, weight) -> {
             // 在这里打印出每一次训练的信息
             System.out.println("损失函数 = " + loss);
             System.out.println("计算梯度 = " + g);
             System.out.println("权重参数 = " + Arrays.toString(weight) + '\n');
         };
         // 训练出模型 TODO 在这里指定出每一次训练时的附加任务
-        NumberModel model = linearNeuralNetwork.function(taskConsumer, X1, X2, X3, x4, x5, W);
+        NumberModel model = lNeuralNetwork.function(taskConsumer, X1, X2, X3, x4, x5, W);
         // TODO 接下来开始使用模型进行一些测试
         // 向模型中传递一些数值
         Double function1 = model.function(new Double[]{100.0, 50.0, 50.0});
@@ -828,4 +828,98 @@ public class MAIN1 {
     }
 }
 ```
+
+* It supports the linear stochastic neural network training model, in which the training performance will be better, and
+  it can also show good fitting for randomly distributed samples.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.core.model.*;
+import zhao.algorithmMagic.operands.table.SingletonCell;
+import zhao.algorithmMagic.operands.vector.DoubleVector;
+
+public class MAIN1 {
+
+    // 在 main 函数中进行模型的保存和读取以及使用
+    public static void main(String[] args) {
+
+        // 构建 X 数据
+        DoubleVector[] X = {
+                DoubleVector.parse(100, 50, 50),
+                DoubleVector.parse(50, 50, 50),
+                DoubleVector.parse(50, 100, 50),
+                // 最后一行是初始权重数据
+                DoubleVector.parse(20, 18, 18)
+        };
+        // 构建 Y 数据
+        double[] Y = {300, 200, 250, 350};
+
+        // 将 线性随机神经网络模型获取到
+        LNeuralNetwork lNeuralNetwork = ASModel.LS_NEURAL_NETWORK;
+        // 设置学习率
+        lNeuralNetwork.setArg(LNeuralNetwork.LEARNING_RATE, SingletonCell.$(0.02));
+        // 设置所有数据样本的训练次数 为 1024
+        lNeuralNetwork.setArg(LNeuralNetwork.LEARN_COUNT, SingletonCell.$(1024));
+        // 设置当前神经网络中神经元的激活函数
+        lNeuralNetwork.setArg(LNeuralNetwork.PERCEPTRON, SingletonCell.$(Perceptron.parse(ActivationFunction.RELU)));
+        // 设置当前神经网络中的目标数值
+        lNeuralNetwork.setArg(LNeuralNetwork.TARGET, SingletonCell.$(Y));
+
+        // 开始训练 在这里传递进需要被学习的数据 并获取到模型
+        NumberModel numberModel = lNeuralNetwork.function(X);
+        System.out.println(numberModel);
+        // 这里直接调用模型 预测 x1 = 200   x2 = 100  x3 = 50 时候的结果  期望数值是 550
+        Double function = numberModel.function(new Double[]{200.0, 100.0, 50.0});
+        System.out.println(function);
+    }
+}
+```
+
+* Numeric matrix objects support data loading operations through data input components, which have a more flexible
+  loading method.
+
+```java
+package zhao.algorithmMagic;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import zhao.algorithmMagic.io.InputComponent;
+import zhao.algorithmMagic.io.InputHDFS;
+import zhao.algorithmMagic.io.InputHDFSBuilder;
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
+import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
+import zhao.algorithmMagic.operands.table.FinalCell;
+import zhao.algorithmMagic.operands.table.SingletonCell;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+
+public class MAIN1 {
+
+  // 在 main 函数中进行模型的保存和读取以及使用
+  public static void main(String[] args) throws IOException {
+    // 构建 HDFS 数据输入对象
+    Path path = new Path("hdfs://192.168.0.141:8020");
+    FileSystem fileSystem = path.getFileSystem(new Configuration());
+    InputComponent inputComponent = InputHDFS.builder()
+            .addInputArg(InputHDFSBuilder.CHAR_SET, SingletonCell.$(','))
+            .addInputArg(InputHDFSBuilder.FILE_SYSTEM, new FinalCell<>(fileSystem))
+            .addInputArg(InputHDFSBuilder.IN_PATH, SingletonCell.$_String("hdfs://192.168.0.141:8020/myFile/test.csv"))
+            .addInputArg(InputHDFSBuilder.FIELD, new FinalCell<>(new String[]{"null"}))
+            .create();
+    // 从 HDFS 中获取到 Double 矩阵对象
+    DoubleMatrix doubleMatrix = DoubleMatrix.parse(inputComponent);
+    // 从 HDFS 中获取到 Integer 矩阵对象
+    IntegerMatrix integerMatrix = IntegerMatrix.parse(inputComponent);
+    // 打印矩阵
+    System.out.println(doubleMatrix);
+    System.out.println(integerMatrix);
+    // 关闭 fileSystem
+    fileSystem.close();
+  }
+}
+```
+
 ### Version update date : 2023-04-09

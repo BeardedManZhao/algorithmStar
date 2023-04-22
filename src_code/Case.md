@@ -441,7 +441,7 @@ public class MAIN1 {
 
 ### 线性神经网络模型训练案例
 
-线性神经网络训练结果是一个数学模型，其能够在庞大是数据集中查找相关规律。
+线性神经网络训练结果是一个数学模型，其能够在庞大是数据集中查找相关规律，返回的数学模型能够被保存下来。
 
 ```java
 package zhao.algorithmMagic;
@@ -457,9 +457,9 @@ public class MAIN1 {
 
         // 构建 X 数据
         DoubleVector[] X = {
-                DoubleVector.parse(100,50,50),
-                DoubleVector.parse(50,50,50),
-                DoubleVector.parse(50,100,50),
+                DoubleVector.parse(100, 50, 50),
+                DoubleVector.parse(50, 50, 50),
+                DoubleVector.parse(50, 100, 50),
                 // 最后一行是初始权重数据
                 DoubleVector.parse(20, 18, 18)
         };
@@ -467,22 +467,87 @@ public class MAIN1 {
         double[] Y = {300, 200, 250, 350};
 
         // 将 线性神经网络模型获取到
-        LinearNeuralNetwork linearNeuralNetwork = ASModel.LINEAR_NEURAL_NETWORK;
+        LNeuralNetwork lNeuralNetwork = ASModel.L_NEURAL_NETWORK;
         // 设置学习率
-        linearNeuralNetwork.setArg(LinearNeuralNetwork.LEARNING_RATE, SingletonCell.$(0.02));
+        lNeuralNetwork.setArg(LNeuralNetwork.LEARNING_RATE, SingletonCell.$(0.02));
         // 设置每一个数据样本的训练次数 为 1024
-        linearNeuralNetwork.setArg(LinearNeuralNetwork.LEARN_COUNT, SingletonCell.$(1024));
+        lNeuralNetwork.setArg(LNeuralNetwork.LEARN_COUNT, SingletonCell.$(1024));
         // 设置当前神经网络中神经元的激活函数
-        linearNeuralNetwork.setArg(LinearNeuralNetwork.PERCEPTRON, SingletonCell.$(Perceptron.parse(ActivationFunction.RELU)));
+        lNeuralNetwork.setArg(LNeuralNetwork.PERCEPTRON, SingletonCell.$(Perceptron.parse(ActivationFunction.RELU)));
         // 设置当前神经网络中的目标数值
-        linearNeuralNetwork.setArg(LinearNeuralNetwork.TARGET, SingletonCell.$(Y));
+        lNeuralNetwork.setArg(LNeuralNetwork.TARGET, SingletonCell.$(Y));
 
         // 开始训练 在这里传递进需要被学习的数据 并获取到模型
-        NumberModel numberModel = linearNeuralNetwork.function(X);
+        NumberModel numberModel = lNeuralNetwork.function(X);
         System.out.println(numberModel);
         // 这里直接调用模型 预测 x1 = 200   x2 = 100  x3 = 50 时候的结果  期望数值是 550
         Double function = numberModel.function(new Double[]{200.0, 100.0, 50.0});
         System.out.println(function);
+    }
+}
+```
+
+### 线性随机神经网络模型训练案例
+
+线性随机神经网络相较于 线性神经网络训练模型 来说具有强大的兼容性和较好的性能，但是其牺牲了些精确度，线性随机神经网络模型的使用以及训练出来的模型从保存如下所示。
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.core.model.*;
+import zhao.algorithmMagic.operands.table.SingletonCell;
+import zhao.algorithmMagic.operands.vector.DoubleVector;
+
+import java.io.File;
+import java.util.Arrays;
+
+public class MAIN1 {
+
+    // 在 main 函数中进行模型的保存和读取以及使用
+    public static void main(String[] args) {
+        // 获取到线性神经网络模型
+        LNeuralNetwork lNeuralNetwork = ASModel.LS_NEURAL_NETWORK;
+        // 设置学习率 为 0.01
+        lNeuralNetwork.setArg(LNeuralNetwork.LEARNING_RATE, SingletonCell.$(0.03));
+        // 设置激活函数为 LEAKY_RE_LU
+        lNeuralNetwork.setArg(LNeuralNetwork.PERCEPTRON, SingletonCell.$(Perceptron.parse(ActivationFunction.LEAKY_RE_LU)));
+        // 设置学习次数 为 600
+        lNeuralNetwork.setArg(LNeuralNetwork.LEARN_COUNT, SingletonCell.$(1000));
+        // 设置目标数值
+        lNeuralNetwork.setArg(
+                LNeuralNetwork.TARGET,
+                // 假设这里是5组数据对应的结果
+                SingletonCell.$(new double[]{300, 210, 340, 400, 500})
+        );
+        // 构建被学习的数据 由此数据推导结果 找到每一组数据中 3 个参数之间的数学模型
+        DoubleVector X1 = DoubleVector.parse(100, 50, 50);
+        DoubleVector X2 = DoubleVector.parse(80, 50, 50);
+        DoubleVector X3 = DoubleVector.parse(120, 50, 50);
+        DoubleVector x4 = DoubleVector.parse(100, 100, 100);
+        DoubleVector x5 = DoubleVector.parse(150, 100, 100);
+        // 构建初始权重向量
+        DoubleVector W = DoubleVector.parse(20, 18, 18);
+        // 实例化出附加 Task 任务对象
+        LNeuralNetwork.TaskConsumer taskConsumer = (loss, g, weight) -> {
+            // 在这里打印出每一次训练的信息
+            System.out.println("损失函数 = " + loss);
+            System.out.println("计算梯度 = " + g);
+            System.out.println("权重参数 = " + Arrays.toString(weight) + '\n');
+        };
+        // 训练出模型 TODO 在这里指定出每一次训练时的附加任务
+        NumberModel model = lNeuralNetwork.function(taskConsumer, X1, X2, X3, x4, x5, W);
+        // TODO 接下来开始使用模型进行一些测试
+        // 向模型中传递一些数值
+        Double function1 = model.function(new Double[]{100.0, 50.0, 50.0});
+        // 打印计算出来的结果
+        System.out.println(function1);
+        // 再一次传递一些数值
+        Double function2 = model.function(new Double[]{150.0, 100.0, 100.0});
+        // 打印计算出来的结果
+        System.out.println(function2);
+
+        // TODO 确定模型可用，将模型保存
+        ASModel.Utils.write(new File("C:\\Users\\zhao\\Desktop\\fsdownload\\MytModel.as"), model);
     }
 }
 ```

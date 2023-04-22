@@ -2,6 +2,7 @@ package zhao.algorithmMagic.operands.matrix;
 
 import zhao.algorithmMagic.core.ASDynamicLibrary;
 import zhao.algorithmMagic.exception.OperatorOperationException;
+import zhao.algorithmMagic.io.InputComponent;
 import zhao.algorithmMagic.operands.table.Cell;
 import zhao.algorithmMagic.operands.table.DataFrame;
 import zhao.algorithmMagic.operands.table.Series;
@@ -150,6 +151,22 @@ public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], i
             throw new OperatorOperationException("The array of construction matrix cannot be empty");
         }
     }
+
+    public static IntegerMatrix parse(InputComponent inputComponent) {
+        return IntegerMatrix.parse(inputComponent, true);
+    }
+
+    public static IntegerMatrix parse(InputComponent inputComponent, boolean isOC) {
+        if (isOC) {
+            if (inputComponent.open()) {
+                int[][] dataFrame = inputComponent.getInt2Array();
+                ASIO.close(inputComponent);
+                return IntegerMatrix.parse(dataFrame);
+            }
+            throw new OperatorOperationException("inputComponent open error!!!");
+        } else return IntegerMatrix.parse(inputComponent.getInt2Array());
+    }
+
 
     /**
      * 随机生成一个整形矩阵对象，在矩阵中存储的就是根据随机种子，随机产生的数值元素。

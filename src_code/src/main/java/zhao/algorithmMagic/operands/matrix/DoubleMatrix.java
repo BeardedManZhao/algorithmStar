@@ -2,11 +2,13 @@ package zhao.algorithmMagic.operands.matrix;
 
 import zhao.algorithmMagic.core.ASDynamicLibrary;
 import zhao.algorithmMagic.exception.OperatorOperationException;
+import zhao.algorithmMagic.io.InputComponent;
 import zhao.algorithmMagic.operands.table.Cell;
 import zhao.algorithmMagic.operands.table.DataFrame;
 import zhao.algorithmMagic.operands.table.Series;
 import zhao.algorithmMagic.operands.vector.DoubleVector;
 import zhao.algorithmMagic.utils.ASClass;
+import zhao.algorithmMagic.utils.ASIO;
 import zhao.algorithmMagic.utils.ASMath;
 
 import java.util.*;
@@ -223,6 +225,21 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
             doubles[++index] = ASClass.IntArray_To_DoubleArray(ints);
         }
         return new DoubleMatrix(doubles.length, parse1.getColCount(), doubles);
+    }
+
+    public static DoubleMatrix parse(InputComponent inputComponent) {
+        return DoubleMatrix.parse(inputComponent, true);
+    }
+
+    public static DoubleMatrix parse(InputComponent inputComponent, boolean isOC) {
+        if (isOC) {
+            if (inputComponent.open()) {
+                double[][] dataFrame = inputComponent.getDouble2Array();
+                ASIO.close(inputComponent);
+                return DoubleMatrix.parse(dataFrame);
+            }
+            throw new OperatorOperationException("inputComponent open error!!!");
+        } else return DoubleMatrix.parse(inputComponent.getDouble2Array());
     }
 
     /**
