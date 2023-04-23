@@ -18,7 +18,7 @@ import java.util.HashMap;
  * @author LingYuZhao
  */
 public final class OperationAlgorithmManager implements OperationAlgorithm {
-    public final static float VERSION = 1.18f;
+    public final static float VERSION = 1.19f;
     /**
      * 计算组件的日志打印开关，当此处值为false的时候，计算组件中的日志将不会被打印，logger也不会被调用，一般来说，这里为了减少冗余的字符串实例化操作，会设置为false，当需要调试的时候才需要打开此处的数值。
      * <p>
@@ -35,7 +35,7 @@ public final class OperationAlgorithmManager implements OperationAlgorithm {
     private final static OperationAlgorithmManager OPERATION_ALGORITHM_MANAGER = new OperationAlgorithmManager();
 
     static {
-        LOGGER.info("+============================== Welcome to [mathematical expression] ==============================+");
+        LOGGER.info("+============================== Welcome to [AlgorithmStar-Java] ==============================+");
         LOGGER.info("+ \tStart time " + new Date());
         LOGGER.info("+ \tversion: " + VERSION);
         LOGGER.info("+ \tCalculation component manager initialized successfully");

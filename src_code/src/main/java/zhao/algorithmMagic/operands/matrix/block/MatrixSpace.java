@@ -1,6 +1,8 @@
 package zhao.algorithmMagic.operands.matrix.block;
 
+import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.operands.matrix.Matrix;
+import zhao.algorithmMagic.operands.vector.Vector;
 
 /**
  * 矩阵块抽象类，其中维护了一个矩阵数组，数组中每一个元素都属于一个矩阵对象。
@@ -156,4 +158,34 @@ public abstract class MatrixSpace<ImplementationType extends Matrix<?, ?, ?, ?, 
                 "Please do not call the 'getArrayByColIndex' method in the matrix space. You need to get the matrix from the space first.");
     }
 
+    /**
+     * 将当前矩阵中的所有行拷贝到目标数组当中，需要确保目标数组的长度大于当前矩阵中的行数量。
+     * <p>
+     * To copy all rows from the current matrix into the target array, it is necessary to ensure that the length of the target array is greater than the number of rows in the current matrix.
+     *
+     * @param array 需要存储当前矩阵对象中所有行元素向量的数组。
+     *              <p>
+     *              An array that needs to store all row element vectors in the current matrix object.
+     * @return 拷贝之后的数组对象。
+     * <p>
+     * The array object after copying.
+     */
+    @Override
+    public final Vector<?, ?, ArrayType>[] toVectors(Vector<?, ?, ArrayType>[] array) {
+        throw new UnsupportedOperationException("Matrix space does not support conversion to vector arrays.");
+    }
+
+    /**
+     * 将当前矩阵中的所有元素进行扁平化操作，获取到扁平化之后的数组对象。
+     * <p>
+     * Flatten all elements in the current matrix to obtain the flattened array object.
+     *
+     * @return 将当前矩阵中每行元素进行扁平化之后的结果。
+     * <p>
+     * The result of flattening each row of elements in the current matrix.
+     */
+    @Override
+    public final ArrayType flatten() {
+        throw new OperatorOperationException("Matrix space does not support flattening operations.");
+    }
 }

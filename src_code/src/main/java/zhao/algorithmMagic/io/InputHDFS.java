@@ -22,7 +22,7 @@ import java.io.*;
  * @author 赵凌宇
  * 2023/4/6 8:40
  */
-public class InputHDFS implements InputComponent {
+public final class InputHDFS implements InputComponent {
 
     private final static Logger LOGGER = LoggerFactory.getLogger("InputHDFS");
     private final FileSystem fileSystem;
@@ -31,6 +31,7 @@ public class InputHDFS implements InputComponent {
     private final String charset;
     private final Series field;
     private final int pk;
+    private final int rowCount;
     private FSDataInputStream fsDataInputStream;
     private BufferedReader bufferedReader;
     private boolean isOpen;
@@ -42,8 +43,10 @@ public class InputHDFS implements InputComponent {
      * @param charset    读取时需要使用字符集
      * @param field      读取时的表字段名称行
      * @param pk         读取时的表主键对象
+     * @param rowCount   读取矩阵的时候的目标行数
      */
-    protected InputHDFS(FileSystem fileSystem, Path inputPath, char sep, String charset, Cell<String[]> field, int pk) {
+    InputHDFS(FileSystem fileSystem, Path inputPath, char sep, String charset, Cell<String[]> field, int pk, int rowCount) {
+        this.rowCount = rowCount;
         if (fileSystem == null || inputPath == null || field == null) {
             throw new OperatorOperationException("The parameter in [FileSystem fileSystem, Path inputPath, String[] field] cannot be null!!!!");
         }
@@ -125,8 +128,11 @@ public class InputHDFS implements InputComponent {
     @Override
     public int[][] getInt2Array() {
         LOGGER.info("getInt2Array()");
-        LOGGER.warn("Not currently supported getInt2Array()!!!");
-        return new int[0][];
+        if (this.rowCount > 0) {
+            return ASStr.strToIntMat(this.bufferedReader, this.rowCount, this.sep);
+        } else {
+            return ASStr.strToIntMat(this.bufferedReader, this.sep);
+        }
     }
 
     /**
@@ -139,8 +145,11 @@ public class InputHDFS implements InputComponent {
     @Override
     public double[][] getDouble2Array() {
         LOGGER.info("getDouble2Array()");
-        LOGGER.warn("Not currently supported getDouble2Array()!!!");
-        return new double[0][];
+        if (this.rowCount > 0) {
+            return ASStr.strToDoubleMat(this.bufferedReader, this.rowCount, this.sep);
+        } else {
+            return ASStr.strToDoubleMat(this.bufferedReader, this.sep);
+        }
     }
 
     /**
@@ -159,6 +168,29 @@ public class InputHDFS implements InputComponent {
         try {
             while (bufferedReader.ready()) {
                 select.insert(FinalSeries.parse(ASStr.splitByChar(bufferedReader.readLine(), sep)));
+            }
+            return select;
+        } catch (IOException e) {
+            throw new OperatorOperationException(e);
+        }
+    }
+
+    /**
+     * 从数据输入组件获取到 DataFrame 对象，该函数有些数据输入组件可能不支持。
+     * <p>
+     * Retrieve the DataFrame object from the data input component, which may not be supported by some data input components.
+     *
+     * @return 从数据输入组件中获取到的DataFrame数据封装对象。
+     * <p>
+     * The DataFrame data encapsulation object obtained from the data input component.
+     */
+    @Override
+    public DataFrame getSFDataFrame() {
+        LOGGER.info("getSFDataFrame()");
+        DataFrame select = FDataFrame.select(this.field, pk);
+        try {
+            while (bufferedReader.ready()) {
+                select.insert(SingletonSeries.parse(ASStr.splitByChar(bufferedReader.readLine(), sep)));
             }
             return select;
         } catch (IOException e) {

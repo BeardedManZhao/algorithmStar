@@ -13,7 +13,9 @@ import zhao.algorithmMagic.algorithm.normalization.DataStandardization;
 import zhao.algorithmMagic.algorithm.normalization.RangeDataStandardization;
 import zhao.algorithmMagic.algorithm.probabilisticAlgorithm.ProbabilisticAlgorithm;
 import zhao.algorithmMagic.algorithm.schemeAlgorithm.SchemeAlgorithm;
+import zhao.algorithmMagic.core.model.ASModel;
 import zhao.algorithmMagic.io.InputComponent;
+import zhao.algorithmMagic.operands.Operands;
 import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateMany;
 import zhao.algorithmMagic.operands.coordinate.FloatingPointCoordinates;
 import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateMany;
@@ -26,6 +28,7 @@ import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute2D;
 import zhao.algorithmMagic.operands.table.DataFrame;
 import zhao.algorithmMagic.operands.table.DataFrameBuilder;
 import zhao.algorithmMagic.operands.table.FDataFrame;
+import zhao.algorithmMagic.operands.table.SFDataFrame;
 import zhao.algorithmMagic.operands.vector.*;
 import zhao.algorithmMagic.utils.filter.ArrayDoubleFiltering;
 import zhao.algorithmMagic.utils.filter.ArrayIntegerFiltering;
@@ -156,6 +159,39 @@ public final class AlgorithmStar<diffValue, featureReturn> {
     }
 
     /**
+     * 从本地文件系统中读取一个数据对象，并返回对应数据对象的建造者类。
+     *
+     * @param file 需要被读取的文件对象。
+     * @return 读取之后会返回该数据集对应的一个建造者对象，在该对象中可以对读取操作进行更加详细的设置，
+     */
+    public static DataFrameBuilder parseSDF(File file) {
+        return SFDataFrame.builder(file);
+    }
+
+    /**
+     * 从远程数据库中读取一个数据对象，并返回数据对象对应的建造者类。
+     *
+     * @param DBC 在连接数据库时需要使用的数据库连接对象。
+     * @return 数据库连接设置完毕将会返回一个建造者对象，在该对象中可以对读取数据库操作进行更加详细的设置。
+     */
+    public static DataFrameBuilder parseSDF(Connection DBC) {
+        return SFDataFrame.builder(DBC);
+    }
+
+    /**
+     * 使用第三方数据源输入组件进行数据的加载，并获取到对应的DataFrame对象。
+     *
+     * @param inputComponent 需要使用的第三方数据输入组件对象
+     * @param isOC           如果设置为 true 代表数据输入设备对象的打开与关闭交由框架管理，在外界将不需要对组件进行打开或关闭操作，反之则代表框架只使用组件，但不会打开与关闭组件对象。
+     *                       <p>
+     *                       If set to true, it means that the opening and closing of data input device objects are managed by the framework, and there will be no need to open or close components externally. Conversely, it means that the framework only uses components, but will not open or close component objects.
+     * @return 获取到的DataFrame对象。
+     */
+    public static DataFrame parseSDF(InputComponent inputComponent, boolean isOC) {
+        return SFDataFrame.builder(inputComponent, isOC);
+    }
+
+    /**
      * 使用组件将一个图像数据提取，并获取对应的图像矩阵。
      *
      * @param inputComponent 能够被提取出图像矩阵的数据组件。
@@ -221,6 +257,62 @@ public final class AlgorithmStar<diffValue, featureReturn> {
     }
 
     /**
+     * 单线程的方式运行一个模型对象，并获取到该模型计算之后的结果，需要确保模型实现了单线程计算函数。
+     * <p>
+     * To run a model object in a single threaded manner and obtain the calculated results of the model, it is necessary to ensure that the model implements a single threaded calculation function.
+     *
+     * @param model 需要运行的模型对象。
+     *              <p>
+     *              The model object that needs to be run.
+     * @param input 模型运行时接收的操作数对象，操作数对象时被运算的矩阵或其它模型。
+     *              <p>
+     *              The operand object received by the model during runtime, and the matrix or other model that is operated on when the operand object is used.
+     * @param <K>   模型对象接收的参数名的数据类型。
+     *              <p>
+     *              The data type of the parameter name received by the model object.
+     * @param <I>   模型对象接收的操作数数据类型，需要确保此类型实现了操作数对象。
+     *              <p>
+     *              The operand data type received by the model object needs to ensure that this type implements the operand object.
+     * @param <O>   模型对象计算之后返回的数据类型。
+     *              <p>
+     *              The data type returned after model object calculation.
+     * @return 经过计算之后，会返回一个数据对象，该对象的类型由不同的模型实现。
+     * <p>
+     * After calculation, a data object will be returned with a type implemented by different models.
+     */
+    public static <K, I extends Operands<I>, O> O model(ASModel<K, I, O> model, I[] input) {
+        return model.function(input);
+    }
+
+    /**
+     * 多线程的方式运行一个模型对象，并获取到该模型计算之后的结果，需要确保模型实现了单线程计算函数。
+     * <p>
+     * To run a model object in a multithreaded manner and obtain the calculated results of the model, it is necessary to ensure that the model implements a single threaded calculation function.
+     *
+     * @param model 需要运行的模型对象。
+     *              <p>
+     *              The model object that needs to be run.
+     * @param input 模型运行时接收的操作数对象，操作数对象时被运算的矩阵或其它模型。
+     *              <p>
+     *              The operand object received by the model during runtime, and the matrix or other model that is operated on when the operand object is used.
+     * @param <K>   模型对象接收的参数名的数据类型。
+     *              <p>
+     *              The data type of the parameter name received by the model object.
+     * @param <I>   模型对象接收的操作数数据类型，需要确保此类型实现了操作数对象。
+     *              <p>
+     *              The operand data type received by the model object needs to ensure that this type implements the operand object.
+     * @param <O>   模型对象计算之后返回的数据类型。
+     *              <p>
+     *              The data type returned after model object calculation.
+     * @return 经过计算之后，会返回一个数据对象，该对象的类型由不同的模型实现。
+     * <p>
+     * After calculation, a data object will be returned with a type implemented by different models.
+     */
+    public static <K, I extends Operands<I>, O> O modelConcurrency(ASModel<K, I, O> model, I[] input) {
+        return model.functionConcurrency(input);
+    }
+
+    /**
      * 计算一个路线的起始点与终止点的真实距离。具体的距离实现，需要您查阅算法实现的文档。
      * <p>
      * Calculates the true distance between the start and end points of a route.
@@ -253,6 +345,13 @@ public final class AlgorithmStar<diffValue, featureReturn> {
         return distanceAlgorithm.getTrueDistance(doubles1, doubles2);
     }
 
+    /*
+     ********************************************************************
+     * 聚合算法组件计算函数开始分界线
+     * Aggregation algorithm component calculation function start boundary
+     ********************************************************************
+     */
+
     /**
      * 获取两个序列之间的距离
      * <p>
@@ -268,13 +367,6 @@ public final class AlgorithmStar<diffValue, featureReturn> {
     public double getTrueDistance(DistanceAlgorithm distanceAlgorithm, int[] ints1, int[] ints2) {
         return distanceAlgorithm.getTrueDistance(ints1, ints2);
     }
-
-    /*
-     ********************************************************************
-     * 聚合算法组件计算函数开始分界线
-     * Aggregation algorithm component calculation function start boundary
-     ********************************************************************
-     */
 
     /**
      * 计算一个路线的起始点与终止点的真实距离。具体的距离实现，需要您查阅算法实现的文档。
@@ -349,6 +441,14 @@ public final class AlgorithmStar<diffValue, featureReturn> {
         return distanceAlgorithm.getTrueDistance(matrix1, matrix2);
     }
 
+
+    /*
+     ********************************************************************
+     * 分类算法组件计算函数开始分界线
+     * Classification algorithm component calculation function start boundary
+     ********************************************************************
+     */
+
     /**
      * 计算两个矩阵对象之间的距离度量函数，通过该函数可以实现两个矩阵对象度量系数的计算。
      * <p>
@@ -370,14 +470,6 @@ public final class AlgorithmStar<diffValue, featureReturn> {
     public double getTrueDistance(DistanceAlgorithm distanceAlgorithm, DoubleMatrix matrix1, DoubleMatrix matrix2) {
         return distanceAlgorithm.getTrueDistance(matrix1, matrix2);
     }
-
-
-    /*
-     ********************************************************************
-     * 分类算法组件计算函数开始分界线
-     * Classification algorithm component calculation function start boundary
-     ********************************************************************
-     */
 
     /**
      * 计算向量距离原点的距离。
@@ -551,6 +643,13 @@ public final class AlgorithmStar<diffValue, featureReturn> {
         return noSampleClassification.classification(keys, ints);
     }
 
+    /*
+     ********************************************************************
+     * 差异算法组件计算函数开始分界线                                         *
+     * diff algorithm component calculation function start boundary *
+     ********************************************************************
+     */
+
     /**
      * 无样本的距离计算，您在此进行分类，不需要传递很多的数据样本，只需要由实现类按照自己的算法进行类别推断即可。
      * <p>
@@ -575,8 +674,8 @@ public final class AlgorithmStar<diffValue, featureReturn> {
 
     /*
      ********************************************************************
-     * 差异算法组件计算函数开始分界线                                         *
-     * diff algorithm component calculation function start boundary *
+     * 特征提取算法组件计算函数开始分界线                                         *
+     * FeatureExtraction algorithm component calculation function start boundary *
      ********************************************************************
      */
 
@@ -604,8 +703,8 @@ public final class AlgorithmStar<diffValue, featureReturn> {
 
     /*
      ********************************************************************
-     * 特征提取算法组件计算函数开始分界线                                         *
-     * FeatureExtraction algorithm component calculation function start boundary *
+     * 数据预处理算法组件计算函数开始分界线                                         *
+     * Data preprocessing algorithm component calculation function start boundary *
      ********************************************************************
      */
 
@@ -630,13 +729,6 @@ public final class AlgorithmStar<diffValue, featureReturn> {
     public HashMap<String, ArrayList<ColumnDoubleVector>> classification(NoSampleClassification noSampleClassification, String[] keys, ColumnDoubleMatrix columnDoubleMatrix) {
         return noSampleClassification.classification(keys, columnDoubleMatrix);
     }
-
-    /*
-     ********************************************************************
-     * 数据预处理算法组件计算函数开始分界线                                         *
-     * Data preprocessing algorithm component calculation function start boundary *
-     ********************************************************************
-     */
 
     /**
      * 计算一个矩阵中所有行或列的数据类别，并将计算之后的数据类别样本返回出去。
@@ -784,6 +876,13 @@ public final class AlgorithmStar<diffValue, featureReturn> {
         return dataStandardization.pretreatment(v);
     }
 
+    /*
+     ********************************************************************
+     * 概率算法组件计算函数开始分界线
+     * Probability algorithm component calculation function start boundary
+     ********************************************************************
+     */
+
     /**
      * 将一个序列进行标准化，具体的标准化有不同的实现
      *
@@ -798,13 +897,6 @@ public final class AlgorithmStar<diffValue, featureReturn> {
     public IntegerCoordinates<IntegerCoordinateMany> pretreatment(DataStandardization dataStandardization, IntegerCoordinateMany v) {
         return dataStandardization.pretreatment(v);
     }
-
-    /*
-     ********************************************************************
-     * 概率算法组件计算函数开始分界线
-     * Probability algorithm component calculation function start boundary
-     ********************************************************************
-     */
 
     /**
      * 将一个序列进行标准化，具体的标准化有不同的实现

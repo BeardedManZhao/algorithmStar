@@ -2,10 +2,12 @@ package zhao.algorithmMagic.operands.matrix;
 
 import zhao.algorithmMagic.core.ASDynamicLibrary;
 import zhao.algorithmMagic.exception.OperatorOperationException;
+import zhao.algorithmMagic.io.InputComponent;
 import zhao.algorithmMagic.operands.table.Cell;
 import zhao.algorithmMagic.operands.table.DataFrame;
 import zhao.algorithmMagic.operands.table.Series;
 import zhao.algorithmMagic.operands.vector.IntegerVector;
+import zhao.algorithmMagic.operands.vector.Vector;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASIO;
 import zhao.algorithmMagic.utils.ASMath;
@@ -151,6 +153,53 @@ public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], i
         }
     }
 
+    public static IntegerMatrix parse(InputComponent inputComponent) {
+        return IntegerMatrix.parse(inputComponent, true);
+    }
+
+    public static IntegerMatrix parse(InputComponent inputComponent, boolean isOC) {
+        if (isOC) {
+            if (inputComponent.open()) {
+                int[][] dataFrame = inputComponent.getInt2Array();
+                ASIO.close(inputComponent);
+                return IntegerMatrix.parse(dataFrame);
+            }
+            throw new OperatorOperationException("inputComponent open error!!!");
+        } else return IntegerMatrix.parse(inputComponent.getInt2Array());
+    }
+
+
+    /**
+     * 随机生成一个整形矩阵对象，在矩阵中存储的就是根据随机种子，随机产生的数值元素。
+     * <p>
+     * An integer matrix object is randomly generated, and the numerical elements stored in the matrix are randomly generated according to the random seed.
+     *
+     * @param width    要生成的矩阵对象的宽度。
+     *                 <p>
+     *                 The width of the matrix object to be generated.
+     * @param height   要生成的矩阵对象的高度。
+     *                 <p>
+     *                 The height of the matrix object to be generated.
+     * @param randSeed 生成矩阵元素的时候需要使用的随机种子数值。
+     *                 <p>
+     *                 The random seed value to be used when generating matrix elements.
+     * @return 随机生成的指定行列数量的矩阵对象。
+     * <p>
+     * A randomly generated matrix object with a specified number of rows and columns.
+     */
+    public static IntegerMatrix random(int width, int height, int randSeed) {
+        Random random = new Random(randSeed);
+        int[][] res = new int[height][];
+        for (int y = 0; y < height; y++) {
+            int[] row = new int[width];
+            for (int x = 0; x < width; x++) {
+                row[x] = random.nextInt();
+            }
+            res[y] = row;
+        }
+        return parse(res);
+    }
+
     protected static void ex(double thresholdLeft, double thresholdRight, int[][] ints, int[] mid, ArrayList<int[]> res) {
         if (ASDynamicLibrary.isUseC()) {
             for (int[] anInt : ints) {
@@ -275,6 +324,49 @@ public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], i
                 int[] ints2 = value.toArray();
                 for (int i = 0; i < colCount1; i++) {
                     line[i] = ints1[i] - ints2[i];
+                }
+                ints[this.RowPointer] = line;
+            }
+            this.RowPointer = rowPointer;
+            value.RowPointer = rowPointer1;
+            return parse(ints);
+        } else {
+            throw new OperatorOperationException("您在'intMatrix1 diff intMatrix2'的时候发生了错误，原因是两个矩阵的行列数不一致！\n" +
+                    "You have an error in 'intMatrix1 diff intMatrix2' because the number of rows and columns of the two matrices is inconsistent!\n" +
+                    "intMatrix1 =>  rowCount = [" + rowCount1 + "]   colCount = [" + colCount1 + "]\nintMatrix2 =>  rowCount = [" + rowCount2 + "]   colCount = [" + colCount2 + "]");
+        }
+    }
+
+
+    /**
+     * 在两个向量对象之间进行计算的函数，自从1.13版本开始支持该函数的调用，该函数中的计算并不会产生一个新的向量，而是将计算操作作用于原操作数中
+     * <p>
+     * The function that calculates between two vector objects supports the call of this function since version 1.13. The calculation in this function will not generate a new vector, but will apply the calculation operation to the original operand
+     *
+     * @param value        与当前向量一起进行计算的另一个向量对象。
+     *                     <p>
+     *                     Another vector object that is evaluated with the current vector.
+     * @param ModifyCaller 计算操作作用对象的设置，该参数如果为true，那么计算时针对向量序列的修改操作将会直接作用到调用函数的向量中，反之将会作用到被操作数中。
+     *                     <p>
+     *                     The setting of the calculation operation action object. If this parameter is true, the modification of the vector sequence during calculation will directly affect the vector of the calling function, and vice versa.
+     * @return 两个向量经过了按维度的减法计算之后，被修改的向量对象
+     */
+    @Override
+    public IntegerMatrix diffAbs(IntegerMatrix value, boolean ModifyCaller) {
+        int rowCount1 = this.getRowCount();
+        int rowCount2 = value.getRowCount();
+        int colCount1 = this.getColCount();
+        int colCount2 = value.getColCount();
+        if (rowCount1 == rowCount2 && colCount1 == colCount2) {
+            int[][] ints = new int[rowCount1][colCount1];
+            int rowPointer = this.RowPointer;
+            int rowPointer1 = value.RowPointer;
+            while (this.MovePointerDown() && value.MovePointerDown()) {
+                int[] line = new int[colCount1];
+                int[] ints1 = this.toArray();
+                int[] ints2 = value.toArray();
+                for (int i = 0; i < colCount1; i++) {
+                    line[i] = ASMath.absoluteValue(ints1[i] - ints2[i]);
                 }
                 ints[this.RowPointer] = line;
             }
@@ -419,21 +511,48 @@ public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], i
     }
 
     /**
+     * 计算两个向量的内积，也称之为数量积，具体实现请参阅api说明
+     * <p>
+     * Calculate the inner product of two vectors, also known as the quantity product, please refer to the api node for the specific implementation
+     *
+     * @param matrix 第二个被计算的向量对象
+     *               <p>
+     *               the second computed matrix object
+     * @return 两个向量的内积
+     * waiting to be realized
+     */
+    public Integer innerProduct(DoubleMatrix matrix) {
+        int rowCount1 = this.getRowCount();
+        int rowCount2 = matrix.getRowCount();
+        int colCount1 = this.getColCount();
+        int colCount2 = matrix.getColCount();
+        if (rowCount1 == rowCount2) {
+            int res = 0;
+            int rowPointer1 = this.RowPointer;
+            int rowPointer2 = matrix.RowPointer;
+            while (this.MovePointerDown() && matrix.MovePointerDown()) {
+                int[] ints = this.toArray();
+                double[] ints1 = matrix.toArray();
+                for (int i = 0; i < ints.length; i++) {
+                    res += ints[i] * ints1[i];
+                }
+            }
+            this.RowPointer = rowPointer1;
+            matrix.RowPointer = rowPointer2;
+            return res;
+        } else {
+            throw new OperatorOperationException("您在'IntegerMatrix1 innerProduct IntegerMatrix2'的时候发生了错误，原因是两个矩阵的行列数不一致！\n" +
+                    "You have an error in 'IntegerMatrix1 innerProduct IntegerMatrix2' because the number of rows and columns of the two matrices is inconsistent!\n" +
+                    "IntegerMatrix1 =>  rowCount = [" + rowCount1 + "]   colCount = [" + colCount1 + "]\nIntegerMatrix2 =>  rowCount = [" + rowCount2 + "]   colCount = [" + colCount2 + "]");
+        }
+    }
+
+    /**
      * @return 该类的实现类对象，用于拓展该接口的子类
      */
     @Override
     public IntegerMatrix expand() {
         return this;
-    }
-
-    /**
-     * @return 向量中包含的维度数量
-     * <p>
-     * the number of dimensions contained in the vector
-     */
-    @Override
-    public int getNumberOfDimensions() {
-        return getRowCount() * getColCount();
     }
 
     /**
@@ -503,6 +622,29 @@ public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], i
         int[][] res = new int[getRowCount()][getColCount()];
         ASClass.array2DCopy(src, res);
         return res;
+    }
+
+    /**
+     * 将当前矩阵中的所有行拷贝到目标数组当中，需要确保目标数组的长度大于当前矩阵中的行数量。
+     * <p>
+     * To copy all rows from the current matrix into the target array, it is necessary to ensure that the length of the target array is greater than the number of rows in the current matrix.
+     *
+     * @param array 需要存储当前矩阵对象中所有行元素向量的数组。
+     *              <p>
+     *              An array that needs to store all row element vectors in the current matrix object.
+     * @return 拷贝之后的数组对象。
+     * <p>
+     * The array object after copying.
+     */
+    @Override
+    public Vector<?, ?, int[]>[] toVectors(Vector<?, ?, int[]>[] array) {
+        if (array.length < this.getRowCount())
+            throw new OperatorOperationException("The length of the target array you provided is insufficient.");
+        int index = -1;
+        for (int[] doubles : this) {
+            array[++index] = IntegerVector.parse(doubles);
+        }
+        return array;
     }
 
     /**
@@ -778,6 +920,27 @@ public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], i
             ASMath.arrayReverse(this.toArrays());
             return this;
         }
+    }
+
+    /**
+     * 将当前矩阵中的所有元素进行扁平化操作，获取到扁平化之后的数组对象。
+     * <p>
+     * Flatten all elements in the current matrix to obtain the flattened array object.
+     *
+     * @return 将当前矩阵中每行元素进行扁平化之后的结果。
+     * <p>
+     * The result of flattening each row of elements in the current matrix.
+     */
+    @Override
+    public int[] flatten() {
+        int[] res = new int[this.getNumberOfDimensions()];
+        int index = 0;
+        // 开始进行元素拷贝
+        for (int[] ints : this) {
+            System.arraycopy(ints, 0, res, index, ints.length);
+            index += ints.length;
+        }
+        return res;
     }
 
     /**

@@ -6,14 +6,17 @@ import zhao.algorithmMagic.integrator.ImageRenderingIntegrator;
 import zhao.algorithmMagic.io.InputComponent;
 import zhao.algorithmMagic.io.OutputComponent;
 import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
+import zhao.algorithmMagic.operands.matrix.block.ColorMatrixSpace;
 import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixSpace;
 import zhao.algorithmMagic.operands.table.Cell;
+import zhao.algorithmMagic.operands.vector.Vector;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASIO;
 import zhao.algorithmMagic.utils.ASMath;
 import zhao.algorithmMagic.utils.filter.DoubleFiltering;
 import zhao.algorithmMagic.utils.transformation.ManyTrans;
 import zhao.algorithmMagic.utils.transformation.ProTransForm;
+import zhao.algorithmMagic.utils.transformation.Transformation;
 
 import javax.swing.*;
 import java.awt.*;
@@ -249,7 +252,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      */
     public final static ProTransForm<ColorMatrix, ColorMatrix> SLIT_LR = (colorMatrix, value) -> {
         if (value == null || !value.containsKey("times")) {
-            throw new OperatorOperationException("矩阵拉伸操作需要您传递配置项 times 其代表每一个像素在原矩阵中的横向拉伸倍数。");
+            throw new OperatorOperationException("矩阵拉伸操作需要您传递配置项 times 其代表每一个像素在原矩阵中的横向拉伸倍数。\nThe matrix stretching operation requires you to pass the configuration item times, which represents the horizontal stretching multiple of each pixel in the original matrix.");
         }
         // 获取到横向拉伸倍数
         int times = value.get("times").getIntValue();
@@ -276,12 +279,12 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      */
     public final static ProTransForm<ColorMatrix, ColorMatrix> SLIT_BT = (colorMatrix, value) -> {
         if (value == null || !value.containsKey("times")) {
-            throw new OperatorOperationException("矩阵拉伸操作需要您传递配置项 times 其代表每一个像素在原矩阵中的横向拉伸倍数。");
+            throw new OperatorOperationException("矩阵拉伸操作需要您传递配置项 times 其代表每一个像素在原矩阵中的纵向拉伸倍数。\nThe matrix stretching operation requires you to pass the configuration item times, which represents the vertical stretching multiple of each pixel in the original matrix.");
         }
         // 获取到横向拉伸倍数
         int times = value.get("times").getIntValue();
         // 开始拉伸
-        Color[][] res = new Color[colorMatrix.getRowCount() * times][colorMatrix.getColCount()];
+        Color[][] res = new Color[colorMatrix.getRowCount() * times][];
         int x1 = 0, x2 = times;
         for (Color[] colors : colorMatrix.toArrays()) {
             // 在这里将行拉伸 times 倍
@@ -292,6 +295,87 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             x2 += times;
         }
         return ColorMatrix.parse(res);
+    };
+
+    /**
+     * 矩阵缩放计算实现，会将矩阵按照左右的方向进行缩小操作，使得图像变窄，需要传递参数 times。
+     */
+    public final static ProTransForm<ColorMatrix, ColorMatrix> SCALE_LR = (colorMatrix, value) -> {
+        if (value == null || !value.containsKey("times")) {
+            throw new OperatorOperationException("矩阵缩放操作需要您传递配置项 times 其代表每一个像素在原矩阵中的横向缩放倍数。\nThe matrix scaling operation requires you to pass the configuration item times, which represents the vertical scaling factor of each pixel in the original matrix.");
+        }
+        // 获取到横向缩放倍数
+        int times = value.get("times").getIntValue();
+        // 开始缩放
+        int resColCount = colorMatrix.getColCount() / times;
+        Color[][] res = new Color[colorMatrix.getRowCount()][resColCount];
+        int y = -1;
+        for (Color[] color : colorMatrix.toArrays()) {
+            Color[] re = res[++y];
+            for (int x = 0, x1 = 0; x1 < resColCount; x += times, x1++) {
+                re[x1] = color[x];
+            }
+        }
+        return ColorMatrix.parse(res);
+    };
+
+    /**
+     * 矩阵缩放计算实现，会将矩阵按照上下的方向进行缩小操作，使得图像变扁，需要传递参数 times。
+     */
+    public final static ProTransForm<ColorMatrix, ColorMatrix> SCALE_BT = (colorMatrix, value) -> {
+        if (value == null || !value.containsKey("times")) {
+            throw new OperatorOperationException("矩阵缩放操作需要您传递配置项 times 其代表每一个像素在原矩阵中的纵向缩放倍数。\nThe matrix scaling operation requires you to pass the configuration item times, which represents the vertical scaling factor of each pixel in the original matrix.");
+        }
+        // 获取到纵向缩放倍数
+        int times = value.get("times").getIntValue();
+        // 开始缩放
+        int resRowCount = colorMatrix.getRowCount() / times;
+        Color[][] colors = colorMatrix.toArrays();
+        Color[][] res = new Color[resRowCount][colorMatrix.getColCount()];
+        for (int y = 0, y1 = 0; y1 < resRowCount; y += times, y1++) {
+            res[y1] = colors[y].clone();
+        }
+        return ColorMatrix.parse(res);
+    };
+
+    /**
+     * 池化逻辑实现，将当前矩阵内的所有像素中 R G B 颜色数值的最大值逐个单独提取出来，并获取新颜色。
+     * <p>
+     * The pooling logic implementation extracts the maximum values of R, G, and B color values from all pixels in the current matrix individually, and obtains new colors.
+     */
+    public final static Transformation<ColorMatrix, Color> POOL_RGB_OBO_MAX = colorMatrix -> {
+        int maxR = 0, maxG = maxR, maxB = maxG;
+        for (Color[] matrix : colorMatrix) {
+            for (Color color : matrix) {
+                int red = color.getRed();
+                int green = color.getGreen();
+                int blue = color.getBlue();
+                if (red > maxR) maxR = red;
+                if (green < maxG) maxG = green;
+                if (blue < maxB) maxB = blue;
+            }
+        }
+        return new Color(maxR, maxG, maxB);
+    };
+
+    /**
+     * 池化逻辑实现，将当前矩阵内的所有像素中 RGB 颜色数值的最大值直接提取出来，成为新颜色。
+     * <p>
+     * The pooling logic implementation directly extracts the maximum value of RGB color values from all pixels in the current matrix, becoming a new color.
+     */
+    public final static Transformation<ColorMatrix, Color> POOL_RGB_MAX = colorMatrix -> {
+        int maxNum = 0;
+        Color maxColor = Color.BLACK;
+        for (Color[] matrix : colorMatrix) {
+            for (Color color : matrix) {
+                int rgb = color.getRGB();
+                if (maxNum < rgb) {
+                    maxColor = color;
+                    maxNum = rgb;
+                }
+            }
+        }
+        return maxColor;
     };
 
     private boolean isGrayscale;
@@ -522,6 +606,31 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
     }
 
     /**
+     * 生成一个随机图像矩阵，其中的三个通道颜色均为随机数值，无任何规律。
+     *
+     * @param width    要生成的图像矩阵的宽度。
+     * @param height   要生成的图像矩阵的高度。
+     * @param randSeed 生成图像时需要使用的随机种子。
+     * @return 按照设置的随机种子生成的随机图像矩阵对象。
+     */
+    public static ColorMatrix random(int width, int height, int randSeed) {
+        Random random = new Random(randSeed);
+        Color[][] res = new Color[height][];
+        for (int y = 0; y < height; y++) {
+            Color[] row = new Color[width];
+            for (int x = 0; x < width; x++) {
+                row[x] = new Color(
+                        random.nextInt(255),
+                        random.nextInt(255),
+                        random.nextInt(255)
+                );
+            }
+            res[y] = row;
+        }
+        return parse(res);
+    }
+
+    /**
      * 将一个图像矩阵中的所有像素转换成为三原色均值，获取到灰度矩阵。
      *
      * @param colors 需要被转换的颜色矩阵（注意，该矩阵将会被修改）
@@ -617,6 +726,24 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
     @Override
     public ColorMatrix diff(ColorMatrix value) {
         return agg(value, COLOR_DIFF_REMAINDER);
+    }
+
+    /**
+     * 在两个向量对象之间进行计算的函数，自从1.13版本开始支持该函数的调用，该函数中的计算并不会产生一个新的向量，而是将计算操作作用于原操作数中
+     * <p>
+     * The function that calculates between two vector objects supports the call of this function since version 1.13. The calculation in this function will not generate a new vector, but will apply the calculation operation to the original operand
+     *
+     * @param value        与当前向量一起进行计算的另一个向量对象。
+     *                     <p>
+     *                     Another vector object that is evaluated with the current vector.
+     * @param ModifyCaller 计算操作作用对象的设置，该参数如果为true，那么计算时针对向量序列的修改操作将会直接作用到调用函数的向量中，反之将会作用到被操作数中。
+     *                     <p>
+     *                     The setting of the calculation operation action object. If this parameter is true, the modification of the vector sequence during calculation will directly affect the vector of the calling function, and vice versa.
+     * @return 两个向量经过了按维度的减法计算之后，被修改的向量对象
+     */
+    @Override
+    public ColorMatrix diffAbs(ColorMatrix value, boolean ModifyCaller) {
+        return agg(value, COLOR_DIFF_ABS);
     }
 
     /**
@@ -865,6 +992,23 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
     }
 
     /**
+     * 将当前矩阵中的所有行拷贝到目标数组当中，需要确保目标数组的长度大于当前矩阵中的行数量。
+     * <p>
+     * To copy all rows from the current matrix into the target array, it is necessary to ensure that the length of the target array is greater than the number of rows in the current matrix.
+     *
+     * @param array 需要存储当前矩阵对象中所有行元素向量的数组。
+     *              <p>
+     *              An array that needs to store all row element vectors in the current matrix object.
+     * @return 拷贝之后的数组对象。
+     * <p>
+     * The array object after copying.
+     */
+    @Override
+    public Vector<?, ?, Color[]>[] toVectors(Vector<?, ?, Color[]>[] array) {
+        throw new UnsupportedOperationException("The image matrix currently does not support vector flattening.");
+    }
+
+    /**
      * 获取到指定索引编号的行数组
      * <p>
      * Get the row array with the specified index
@@ -982,6 +1126,27 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             ASMath.arrayReverse(this.toArrays());
             return this;
         }
+    }
+
+    /**
+     * 将当前矩阵中的所有元素进行扁平化操作，获取到扁平化之后的数组对象。
+     * <p>
+     * Flatten all elements in the current matrix to obtain the flattened array object.
+     *
+     * @return 将当前矩阵中每行元素进行扁平化之后的结果。
+     * <p>
+     * The result of flattening each row of elements in the current matrix.
+     */
+    @Override
+    public Color[] flatten() {
+        Color[] res = new Color[this.getNumberOfDimensions()];
+        int index = 0;
+        // 开始进行元素拷贝
+        for (Color[] colors : this) {
+            System.arraycopy(colors, 0, res, index, colors.length);
+            index += colors.length;
+        }
+        return res;
     }
 
     /**
@@ -1663,6 +1828,26 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
     }
 
     /**
+     * 将图像矩阵中的指定通道的颜色整数数值矩阵获取到。
+     *
+     * @param colorMode 需要被获取到颜色通道编码。
+     * @return 对应颜色通道的颜色数值组成的颜色矩阵对象。
+     */
+    public final ColorMatrix getColorChannel(int colorMode) {
+        Color[][] res = new Color[this.getRowCount()][this.getColCount()];
+        int y = -1;
+        int diff = colorMode == ColorMatrix._G_ ? 8 : ColorMatrix._B_ - colorMode;
+        for (Color[] colors : this.toArrays()) {
+            Color[] re = res[++y];
+            int x = -1;
+            for (Color color : colors) {
+                re[++x] = new Color(((color.getRGB() >> colorMode) & 0xFF) << diff);
+            }
+        }
+        return ColorMatrix.parse(res);
+    }
+
+    /**
      * 向矩阵中绘制一个矩阵。
      *
      * @param start 矩阵的左上角坐标对象。
@@ -1822,6 +2007,100 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
     }
 
     /**
+     * 将其中的指定的 RGB 通道提取出来并进行叠加成为一个图像矩阵对象。
+     * <p>
+     * Extract the specified RGB channels from them and overlay them to form a new image matrix object.
+     *
+     * @param mode 要提取的通道编号之和。
+     * @return 所有被加在一起的颜色通道图像矩阵层叠加成为的新的矩阵空间对象。
+     * <p>
+     * All the added color channel image matrix layers are superimposed to create a new matrix space object.
+     */
+    public final ColorMatrixSpace toRGBSpace(int mode) {
+        // 0 8 16
+        ColorMatrix colorChannel1 = this.getColorChannel(_B_);
+        if (mode == (_G_ + _R_)) {
+            Color[][] res1 = new Color[this.getRowCount()][this.getColCount()];
+            Color[][] res2 = new Color[this.getRowCount()][this.getColCount()];
+            int y = -1;
+            for (Color[] colors : this.toArrays()) {
+                Color[] re1 = res1[++y];
+                Color[] re2 = res2[y];
+                int x = -1;
+                for (Color color : colors) {
+                    re1[++x] = new Color(color.getRed(), 0, 0);
+                    re2[x] = new Color(0, color.getGreen(), 0);
+                }
+            }
+            return ColorMatrixSpace.parse(
+                    parse(res1),
+                    parse(res2),
+                    colorChannel1
+            );
+        } else if (mode == _R_ || mode == _G_) {
+            return ColorMatrixSpace.parse(this.getColorChannel(mode), colorChannel1);
+        } else {
+            return ColorMatrixSpace.parse(colorChannel1);
+        }
+    }
+
+    /**
+     * 将当前图像矩阵对象按照一定的规则生成成为一个整形的矩形空间对象。
+     * <p>
+     * Generate the current image matrix object into a shaped rectangular space object according to certain rules.
+     *
+     * @param mode 要提取的颜色通道编号列表，例如其中第一个为红色通道，那么生成的结果真行数值矩阵空间对象中的第一层矩阵就是红色个数值对应的矩阵空间对象。
+     *             <p>
+     *             The list of color channel numbers to be extracted, for example, if the first one is a red channel, the first layer of the matrix in the generated result true row value matrix space object is the matrix space object corresponding to the red values.
+     * @return 指定颜色通道的颜色数值矩阵提取出来的
+     */
+    public final IntegerMatrixSpace toIntRGBSpace(int... mode) {
+        IntegerMatrix[] res = new IntegerMatrix[mode.length];
+        int index = -1;
+        for (int rgb : mode) {
+            res[++index] = this.getChannel(rgb);
+        }
+        return IntegerMatrixSpace.parse(res);
+    }
+
+    /**
+     * 针对图像矩阵进行池化操作，在池化操作中支持手动指定池化逻辑实现，能够使得池化函数的灵活度大大升高。
+     * <p>
+     * Pooling operations for image matrices support manual specification of pooling logic implementation, which greatly increases the flexibility of pooling functions.
+     *
+     * @param width          池化时的子矩阵宽度。
+     *                       <p>
+     *                       The width of the sub-matrix during pooling.
+     * @param height         池化时的子矩阵高度。
+     *                       <p>
+     *                       The height of the sub-matrix during pooling.
+     * @param transformation 图像矩阵的池化逻辑实现.
+     *                       <p>
+     *                       Implementation of pooling logic for image matrices
+     * @return 池化之后的图像矩阵对象。
+     * <p>
+     * The image matrix object after pooling.
+     */
+    public final ColorMatrix pooling(int width, int height, Transformation<ColorMatrix, Color> transformation) {
+        int rowCount = this.getRowCount();
+        int colCount = this.getColCount();
+        Color[][] colors = new Color[rowCount / height][colCount / width];
+        int y = 0, y1 = height, index1 = -1;
+        do {
+            int x = 0, x1 = width, index2 = -1;
+            Color[] colors1 = colors[++index1];
+            do {
+                colors1[++index2] = transformation.function(this.extractImage(x, y, x1, y1));
+                x = x1;
+                x1 += width;
+            } while (x1 < colCount);
+            y = y1;
+            y1 += height;
+        } while (y1 < rowCount);
+        return parse(colors);
+    }
+
+    /**
      * 将图像矩阵展示出来，使得在矩阵的图像数据能够被展示出来。
      * <p>
      * Display the image matrix so that the image data in the matrix can be displayed.
@@ -1950,19 +2229,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         jFrame.setResizable(true);
         ImageIcon imageIcon = new ImageIcon(jFrame.createVolatileImage(colCount, rowCount));
         Image image = imageIcon.getImage();
-        {
-            Graphics graphics = image.getGraphics();
-            // 开始绘制图形
-            int yc = -1;
-            for (Color[] colors : this.toArrays()) {
-                ++yc;
-                int xc = -1;
-                for (Color color : colors) {
-                    graphics.setColor(color);
-                    graphics.fillRect(++xc, yc, 1, 1);
-                }
-            }
-        }
+        drawToImage(image);
         JLabel label = new JLabel(imageIcon);//往一个标签中加入图片
         label.setVisible(true);
         label.setBounds(0, 0, jFrame.getWidth(), jFrame.getHeight());//设置标签位置大小，记得大小要和窗口一样大
@@ -1971,6 +2238,25 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         }
         jFrame.getLayeredPane().add(label, Integer.valueOf(Integer.MIN_VALUE));//标签添加到层面板
         jFrame.add(label);
+    }
+
+    /**
+     * 将当前图像矩阵中的图像绘制到 image 对象中。
+     *
+     * @param image 需要被绘制的图像对象。
+     */
+    public final void drawToImage(Image image) {
+        Graphics graphics = image.getGraphics();
+        // 开始绘制图形
+        int yc = -1;
+        for (Color[] colors : this.toArrays()) {
+            ++yc;
+            int xc = -1;
+            for (Color color : colors) {
+                graphics.setColor(color);
+                graphics.fillRect(++xc, yc, 1, 1);
+            }
+        }
     }
 
     /**

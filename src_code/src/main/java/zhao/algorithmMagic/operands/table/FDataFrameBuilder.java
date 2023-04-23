@@ -16,17 +16,17 @@ import java.util.Objects;
  */
 public class FDataFrameBuilder implements DataFrameBuilder {
 
-    private final Connection connection;
-    private final StringBuilder colNamesSQL;
-    private final StringBuilder whereClauseSQL;
-    private final Mode inMode;
-    private final BufferedReader bufferedReader;
-    private Condition whereFS;
-    private String Table;
-    private Series colNames;
-    private char sep = ',';
+    protected final Connection connection;
+    protected final StringBuilder colNamesSQL;
+    protected final StringBuilder whereClauseSQL;
+    protected final Mode inMode;
+    protected final BufferedReader bufferedReader;
+    protected Condition whereFS;
+    protected String Table;
+    protected Series colNames;
+    protected char sep = ',';
 
-    private int primaryIndex = 0;
+    protected int primaryIndex = 0;
 
     public FDataFrameBuilder(File file) {
         this.inMode = Mode.FILESYSTEM;

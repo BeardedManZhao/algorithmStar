@@ -19,7 +19,7 @@ import java.io.InputStream;
  * @author 赵凌宇
  * 2023/4/5 13:51
  */
-public class InputCamera implements InputComponent {
+public final class InputCamera implements InputComponent {
 
     private final Webcam webcam;
     private final String format;
@@ -28,7 +28,7 @@ public class InputCamera implements InputComponent {
      * @param webcam 拍照对象
      * @param format 拍照之后的图像格式
      */
-    protected InputCamera(Webcam webcam, String format) {
+    InputCamera(Webcam webcam, String format) {
         this.webcam = webcam;
         this.format = format;
     }
@@ -122,6 +122,20 @@ public class InputCamera implements InputComponent {
     @Override
     public DataFrame getDataFrame() {
         throw new UnsupportedOperationException("相机设备不支持获取到DataFrame对象。\nThe camera device does not support obtaining DataFrame objects.");
+    }
+
+    /**
+     * 从数据输入组件获取到 DataFrame 对象，该函数有些数据输入组件可能不支持。
+     * <p>
+     * Retrieve the DataFrame object from the data input component, which may not be supported by some data input components.
+     *
+     * @return 从数据输入组件中获取到的DataFrame数据封装对象。
+     * <p>
+     * The DataFrame data encapsulation object obtained from the data input component.
+     */
+    @Override
+    public DataFrame getSFDataFrame() {
+        return getDataFrame();
     }
 
     /**

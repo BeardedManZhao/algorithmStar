@@ -3,6 +3,9 @@ package zhao.algorithmMagic.operands.table;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.io.InputComponent;
 import zhao.algorithmMagic.io.OutputComponent;
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
+import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
+import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASIO;
 import zhao.algorithmMagic.utils.ASMath;
 import zhao.algorithmMagic.utils.transformation.Transformation;
@@ -24,11 +27,11 @@ import java.util.*;
  */
 public class FDataFrame implements DataFrame {
 
-    private final List<Series> list;
-    private final Series colNameRow;
-    private final int primaryIndex;
-    private final HashMap<String, Integer> colHashMap;
-    private final HashMap<String, Integer> rowHashMap;
+    protected final List<Series> list;
+    protected final Series colNameRow;
+    protected final int primaryIndex;
+    protected final HashMap<String, Integer> colHashMap;
+    protected final HashMap<String, Integer> rowHashMap;
 
     public FDataFrame(Series colNameRow, int primaryIndex, HashMap<String, Integer> colHashMap, HashMap<String, Integer> rowHashMap, Series... series) {
         this.primaryIndex = primaryIndex;
@@ -135,7 +138,8 @@ public class FDataFrame implements DataFrame {
      * <p>
      * Refresh field data. The data set contains an index hash table built for row and column field names. The fields in the hash table can be refreshed. After refreshing, the original fields will not disappear, but point to the same data row with the new fields. Generally speaking, this function will not be called without changing the row fields.
      */
-    FDataFrame refreshField(boolean rr, boolean rc) {
+    @Override
+    public FDataFrame refreshField(boolean rr, boolean rc) {
         int index = -1;
         if (rc) {
             for (Cell<?> cell : this.colNameRow) {
@@ -257,7 +261,7 @@ public class FDataFrame implements DataFrame {
             for (int i : index) {
                 arrayList1.add(cells.getCell(i));
             }
-            arrayList.add(new FinalSeries(arrayList1.toArray(new Cell[0])));
+            arrayList.add(new FinalSeries(ASClass.CollToArray(new Cell[arrayList1.size()], arrayList1)));
         }
         // 计算出新的主键索引列
         int pk = 0;
@@ -319,6 +323,54 @@ public class FDataFrame implements DataFrame {
     }
 
     /**
+     * 获取到当前表中的指定列字段数据。
+     * <p>
+     * Gets the specified column field data in the current table.
+     *
+     * @param colName 所有需要被获取的列数据，可以使用 * 代替。
+     *                <p>
+     *                All column data to be obtained can be replaced by *.
+     * @return 查询出指定列数据的DF表。
+     * <p>
+     * Find the DF table of the specified column data.
+     */
+    @Override
+    public Series select(String colName) {
+        Integer integer = this.colHashMap.get(colName);
+        if (integer != null) {
+            ArrayList<Cell<?>> arrayList1 = new ArrayList<>(this.list.size() + 4);
+            for (Series cells : this.list) {
+                arrayList1.add(cells.getCell(integer));
+            }
+            return new SingletonSeries(ASClass.CollToArray(new Cell[arrayList1.size()], arrayList1));
+        } else throw new OperatorOperationException("Unknown fields:" + colName);
+    }
+
+    /**
+     * 获取到当前表中的指定列字段数据。
+     * <p>
+     * Gets the specified column field data in the current table.
+     *
+     * @param colName 所有需要被获取的列数据，需要注意的是，在这里不允许使用 * 哦！
+     *                <p>
+     *                For all column data to be obtained, please note that * is not allowed here!
+     * @return 查询出指定列数据的DF表。
+     * <p>
+     * Find the DF table of the specified column data.
+     */
+    @Override
+    public Series select(FieldCell colName) {
+        FieldCell byAs = FieldCell.getByAs(
+                colName.getStringValue()
+        );
+        if (byAs == null) {
+            return select(FieldCell.$(colName.getStringValue()).getStringValue());
+        } else {
+            return select(byAs.getStringValue());
+        }
+    }
+
+    /**
      * 查询当前表中的指定行字段数据。
      *
      * @param rowNames 需要被获取到的数据行的行名称。
@@ -336,9 +388,36 @@ public class FDataFrame implements DataFrame {
         return new FDataFrame(
                 this.colNameRow, primaryIndex,
                 new HashMap<>(arrayList.size() + 4), this.colHashMap,
-                arrayList.toArray(new Series[0])
+                ASClass.CollToArray(new Series[arrayList.size()], arrayList)
         )
                 .refreshField(true, false);
+    }
+
+    /**
+     * 将当前表中指定行索引的序列获取到。
+     *
+     * @param rowIndex 需要获取的行的索引数值，从0开始。
+     * @return 指定索引的行序列对象。
+     */
+    @Override
+    public Series selectRow(int rowIndex) {
+        return this.list.get(rowIndex);
+    }
+
+    /**
+     * 查询当前表中的指定行字段数据。
+     *
+     * @param rowName 需要被获取到的数据行的行名称。
+     * @return 查询出指定行数据的DF表
+     * <p>
+     * Find the DF table of the specified row data.
+     */
+    @Override
+    public Series selectRow(String rowName) {
+        Integer integer = this.rowHashMap.get(rowName);
+        if (integer != null) {
+            return this.list.get(integer);
+        } else throw new OperatorOperationException("Unknown line [" + rowName + "]!!!");
     }
 
     /**
@@ -353,7 +432,7 @@ public class FDataFrame implements DataFrame {
         for (Series cells : this.list) {
             if (whereClause.isComplianceEvents(cells)) arrayList.add(cells);
         }
-        return new FDataFrame(this.colNameRow, this.primaryIndex, arrayList)
+        return new FDataFrame(this.colNameRow, this.primaryIndex, arrayList, new HashMap<>(), this.colHashMap)
                 .refreshField(true, false);
     }
 
@@ -401,7 +480,7 @@ public class FDataFrame implements DataFrame {
         treeSet.addAll(this.list);
         return new FDataFrame(
                 this.colNameRow, this.primaryIndex,
-                this.colHashMap, this.rowHashMap, treeSet.toArray(new Series[0])
+                this.colHashMap, this.rowHashMap, ASClass.CollToArray(new Series[treeSet.size()], treeSet)
         )
                 .refreshField(false, false);
     }
@@ -449,7 +528,7 @@ public class FDataFrame implements DataFrame {
         for (int i = start, seriesListSize = seriesList.size(); ++index < len && i < seriesListSize; i++) {
             series[index] = seriesList.get(i);
         }
-        return new FDataFrame(this.colNameRow, this.primaryIndex, series)
+        return new FDataFrame(this.colNameRow, this.primaryIndex, this.colHashMap, new HashMap<>(), series)
                 .refreshField(true, false);
     }
 
@@ -478,6 +557,23 @@ public class FDataFrame implements DataFrame {
     }
 
     /**
+     * 将一个数据行插入表中。
+     * <p>
+     * Insert a data row into the table.
+     *
+     * @param value 需要被插入的数据行，可以接收多个字符串，如果字符串符合数值规则，则将会被转换成为数值单元格。
+     *              <p>
+     *              The data row that needs to be inserted can receive multiple strings. If the string conforms to numerical rules, it will be converted into numerical cells.
+     * @return 插入数据之后的 DF 数据对象。
+     * <p>
+     * DF data object after inserting data.
+     */
+    @Override
+    public DataFrame insert(String... value) {
+        return insert(FinalSeries.parse(value));
+    }
+
+    /**
      * 将多个数据行插入到表中。
      *
      * @param rowSeries 需要被插入的数据行
@@ -500,7 +596,7 @@ public class FDataFrame implements DataFrame {
     /**
      * 以当前数据集为基准，添加一列新数据，并将添加列数据之后的 Data Frame 对象返回出来。
      * <p>
-     * Based on the current dataset, add a new column of data, and return the Data Frame object after adding the column data.
+     * Based on the current dataset, add a new column of data, and return the Data Frame objects after adding the column data.
      *
      * @param fieldName      需要被添加的列数据所对应的列名称，要求不得与已有的DataFrame字段名称重名！
      *                       <p>
@@ -521,7 +617,7 @@ public class FDataFrame implements DataFrame {
             ));
         }
         return new FDataFrame(
-                FinalSeries.merge(this.colNameRow, fieldName),
+                SingletonSeries.merge(this.colNameRow, fieldName),
                 this.primaryIndex,
                 arrayList,
                 this.rowHashMap,
@@ -614,6 +710,70 @@ public class FDataFrame implements DataFrame {
     }
 
     /**
+     * 以HTML文本数据输入到目标数据流中。
+     *
+     * @param bufferedWriter 目标数据流对象
+     * @param tableName      HTML中表名称
+     */
+    @Override
+    public void into_outHTMLStream(BufferedWriter bufferedWriter, String tableName) {
+        try {
+            bufferedWriter.write("<!DOCTYPE html>");
+            bufferedWriter.newLine();
+            bufferedWriter.write("<html lang=\"zh\">");
+            bufferedWriter.newLine();
+            bufferedWriter.write("<style>\n\n    #" + tableName + "  {\n        /*表的背景颜色*/\n        background: black;\n        /* 表中的单元格文字居中*/\ntext-align: center;    }\n\n" +
+                    "    .r0 {\n        /* 表格中的第一种数据行背景颜色 */\n        background: beige;\n    }\n" +
+                    "\n    .r1 {\n        /* 表格中的第二种数据行背景颜色 */\n        background: bisque;\n    }\n" +
+                    "    #colHead{\n        /* 表格中的字段头字体大小设置 */\nfont-size: 18px;\n}</style>");
+            bufferedWriter.newLine();
+            bufferedWriter.write("<head>");
+            bufferedWriter.newLine();
+            bufferedWriter.write("<meta charset=\"UTF-8\"><title>");
+            bufferedWriter.write(tableName);
+            bufferedWriter.write("</title>");
+            bufferedWriter.newLine();
+            bufferedWriter.write("</head>");
+            bufferedWriter.newLine();
+            bufferedWriter.write("<body>");
+            bufferedWriter.newLine();
+            bufferedWriter.write("<table id=\"" + tableName + "\">\n<thead>");
+            bufferedWriter.newLine();
+            int rowClass = 0;
+            bufferedWriter.write("<tr id=\"colHead\" class=\"r0\">");
+            for (Cell<?> cell : colNameRow) {
+                bufferedWriter.write("<td>");
+                bufferedWriter.newLine();
+                bufferedWriter.write(cell.toString());
+                bufferedWriter.newLine();
+                bufferedWriter.write("</td>");
+            }
+            bufferedWriter.write("</tr></thead>");
+            bufferedWriter.newLine();
+            bufferedWriter.write("<tbody id=\"tableData\">");
+
+            for (Series cells : list) {
+                bufferedWriter.write("<tr class=\"r" + ((++rowClass) - (rowClass >> 1 << 1)) + "\" id=\"" + cells.getCell(primaryIndex) + "\">");
+                for (Cell<?> cell : cells) {
+                    bufferedWriter.write("<td>");
+                    bufferedWriter.newLine();
+                    bufferedWriter.write(cell.toString());
+                    bufferedWriter.newLine();
+                    bufferedWriter.write("</td>");
+                    bufferedWriter.newLine();
+                }
+                bufferedWriter.write("</tr>");
+                bufferedWriter.newLine();
+            }
+            bufferedWriter.write("</tbody></table>");
+            bufferedWriter.newLine();
+            bufferedWriter.write("</html>");
+        } catch (IOException e) {
+            throw new OperatorOperationException(e);
+        }
+    }
+
+    /**
      * 将计算结果以 HTML 表格的格式输出到指定目录的文本文件中。
      *
      * @param outPath   输出的目标文件所在的路径
@@ -622,65 +782,8 @@ public class FDataFrame implements DataFrame {
      */
     @Override
     public DataFrame into_outHtml(String outPath, String tableName) {
-        final Series colNameRow = this.colNameRow;
-        List<Series> list = this.list;
         ASIO.writer(
-                new File(outPath), bufferedWriter -> {
-                    try {
-                        bufferedWriter.write("<!DOCTYPE html>");
-                        bufferedWriter.newLine();
-                        bufferedWriter.write("<html lang=\"zh\">");
-                        bufferedWriter.newLine();
-                        bufferedWriter.write("<style>\n\n    #" + tableName + "  {\n        /*表的背景颜色*/\n        background: black;\n        /* 表中的单元格文字居中*/\ntext-align: center;    }\n\n" +
-                                "    .r0 {\n        /* 表格中的第一种数据行背景颜色 */\n        background: beige;\n    }\n" +
-                                "\n    .r1 {\n        /* 表格中的第二种数据行背景颜色 */\n        background: bisque;\n    }\n" +
-                                "    #colHead{\n        /* 表格中的字段头字体大小设置 */\nfont-size: 18px;\n}</style>");
-                        bufferedWriter.newLine();
-                        bufferedWriter.write("<head>");
-                        bufferedWriter.newLine();
-                        bufferedWriter.write("<meta charset=\"UTF-8\"><title>");
-                        bufferedWriter.write(tableName);
-                        bufferedWriter.write("</title>");
-                        bufferedWriter.newLine();
-                        bufferedWriter.write("</head>");
-                        bufferedWriter.newLine();
-                        bufferedWriter.write("<body>");
-                        bufferedWriter.newLine();
-                        bufferedWriter.write("<table id=\"" + tableName + "\">\n<thead>");
-                        bufferedWriter.newLine();
-                        int rowClass = 0;
-                        bufferedWriter.write("<tr id=\"colHead\" class=\"r0\">");
-                        for (Cell<?> cell : colNameRow) {
-                            bufferedWriter.write("<td>");
-                            bufferedWriter.newLine();
-                            bufferedWriter.write(cell.toString());
-                            bufferedWriter.newLine();
-                            bufferedWriter.write("</td>");
-                        }
-                        bufferedWriter.write("</tr></thead>");
-                        bufferedWriter.newLine();
-                        bufferedWriter.write("<tbody id=\"tableData\">");
-
-                        for (Series cells : list) {
-                            bufferedWriter.write("<tr class=\"r" + ((++rowClass) - (rowClass >> 1 << 1)) + "\" id=\"" + cells.getCell(primaryIndex) + "\">");
-                            for (Cell<?> cell : cells) {
-                                bufferedWriter.write("<td>");
-                                bufferedWriter.newLine();
-                                bufferedWriter.write(cell.toString());
-                                bufferedWriter.newLine();
-                                bufferedWriter.write("</td>");
-                                bufferedWriter.newLine();
-                            }
-                            bufferedWriter.write("</tr>");
-                            bufferedWriter.newLine();
-                        }
-                        bufferedWriter.write("</tbody></table>");
-                        bufferedWriter.newLine();
-                        bufferedWriter.write("</html>");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
+                new File(outPath), bufferedWriter -> this.into_outHTMLStream(bufferedWriter, outPath)
         );
         return this;
     }
@@ -786,6 +889,72 @@ public class FDataFrame implements DataFrame {
             printStream.append('\n');
         }
         printStream.append(s);
+    }
+
+    /**
+     * 将当前对象中的所有数值单元格数据直接转换成为矩阵对象，并将其生成的矩阵对象返回。
+     * <p>
+     * Directly convert all numerical cell data in the current object into a matrix object, and return the generated matrix object.
+     *
+     * @return 根据当前 DF 对象生成的数据转换成功的矩阵对象。
+     * <p>
+     * A matrix object that has been successfully converted based on the data generated by the current DF object.
+     */
+    @Override
+    public DoubleMatrix toDoubleMatrix() {
+        double[][] res = new double[this.list.size()][];
+        if (res.length > 0) {
+            int index = -1, maxIndex = -1;
+            // 计算最大数值存储区
+            for (Cell<?> cell : this.list.get(0).toArray()) {
+                if (cell.isNumber()) ++maxIndex;
+            }
+            // 开始进行转换
+            double[] row = new double[maxIndex + 1];
+            for (Series series : this) {
+                int index1 = -1;
+                for (Cell<?> cell : series) {
+                    if (cell.isNumber() && (index1 < maxIndex)) {
+                        row[++index1] = cell.getDoubleValue();
+                    }
+                }
+                res[++index] = row;
+            }
+        }
+        return DoubleMatrix.parse(res);
+    }
+
+    /**
+     * 将当前对象中的所有数值单元格数据直接转换成为矩阵对象，并将其生成的矩阵对象返回。
+     * <p>
+     * Directly convert all numerical cell data in the current object into a matrix object, and return the generated matrix object.
+     *
+     * @return 根据当前 DF 对象生成的数据转换成功的矩阵对象。
+     * <p>
+     * A matrix object that has been successfully converted based on the data generated by the current DF object.
+     */
+    @Override
+    public IntegerMatrix toIntegerMatrix() {
+        int[][] res = new int[this.list.size()][];
+        if (res.length > 0) {
+            int index = -1, maxIndex = -1;
+            // 计算最大数值存储区
+            for (Cell<?> cell : this.list.get(0).toArray()) {
+                if (cell.isNumber()) ++maxIndex;
+            }
+            // 开始进行转换
+            int[] row = new int[maxIndex + 1];
+            for (Series series : this) {
+                int index1 = -1;
+                for (Cell<?> cell : series) {
+                    if (cell.isNumber() && (index1 < maxIndex)) {
+                        row[++index1] = cell.getIntValue();
+                    }
+                }
+                res[++index] = row;
+            }
+        }
+        return IntegerMatrix.parse(res);
     }
 
     /**

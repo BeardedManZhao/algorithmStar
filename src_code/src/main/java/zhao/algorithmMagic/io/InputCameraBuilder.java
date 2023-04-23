@@ -49,7 +49,7 @@ public class InputCameraBuilder extends HashMap<String, Cell<?>> implements Inpu
      * Chain call, continue building.
      */
     @Override
-    public InputBuilder addInputArg(String key, FinalCell<?> value) {
+    public InputBuilder addInputArg(String key, Cell<?> value) {
         if (CUSTOM_VIEW_SIZES.equals(key)) {
             return this.setViewSize(WebcamResolution.valueOf(value.toString()));
         }

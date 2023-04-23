@@ -1,5 +1,9 @@
 package zhao.algorithmMagic.utils;
 
+import zhao.algorithmMagic.exception.OperatorOperationException;
+
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -264,6 +268,110 @@ public final class ASStr {
             stringBuilder.append(anInt).append('\t');
         }
         return stringBuilder.toString();
+    }
+
+    /**
+     * 将数据流中的数据转换成为整形数值矩阵对象。
+     *
+     * @param bufferedReader 包含数据的字符输入流
+     * @param length         需要解析的行数量
+     * @param sep            解析时需要使用的分隔符。
+     * @return 经过解析之后返回的结果二维数组对象。
+     */
+    public static int[][] strToIntMat(BufferedReader bufferedReader, int length, char sep) {
+        try {
+            int[][] lines = new int[length][];
+            int index = -1;
+            while (bufferedReader.ready()) {
+                String[] strings = ASStr.splitByChar(bufferedReader.readLine(), sep);
+                int[] row = new int[strings.length];
+                int index1 = -1;
+                for (String s : strings) {
+                    row[++index1] = Integer.parseInt(s);
+                }
+                lines[++index] = row;
+            }
+            return lines;
+        } catch (IOException e) {
+            throw new OperatorOperationException(e);
+        }
+    }
+
+    /**
+     * 将数据流中的数据转换成为整形数值矩阵对象。
+     *
+     * @param bufferedReader 包含数据的字符输入流
+     * @param length         需要解析的行数量
+     * @param sep            解析时需要使用的分隔符。
+     * @return 经过解析之后返回的结果二维数组对象。
+     */
+    public static double[][] strToDoubleMat(BufferedReader bufferedReader, int length, char sep) {
+        try {
+            double[][] lines = new double[length][];
+            int index = -1;
+            while (bufferedReader.ready()) {
+                String[] strings = ASStr.splitByChar(bufferedReader.readLine(), sep);
+                double[] row = new double[strings.length];
+                int index1 = -1;
+                for (String s : strings) {
+                    row[++index1] = Integer.parseInt(s);
+                }
+                lines[++index] = row;
+            }
+            return lines;
+        } catch (IOException e) {
+            throw new OperatorOperationException(e);
+        }
+    }
+
+    /**
+     * 将数据流中的数据转换成为整形数值矩阵对象。
+     *
+     * @param bufferedReader 包含数据的字符输入流
+     * @param sep            解析时需要使用的分隔符。
+     * @return 经过解析之后返回的结果二维数组对象。
+     */
+    public static int[][] strToIntMat(BufferedReader bufferedReader, char sep) {
+        try {
+            ArrayList<int[]> lines = new ArrayList<>();
+            while (bufferedReader.ready()) {
+                String[] strings = ASStr.splitByChar(bufferedReader.readLine(), sep);
+                int[] row = new int[strings.length];
+                int index1 = -1;
+                for (String s : strings) {
+                    row[++index1] = Integer.parseInt(s);
+                }
+                lines.add(row);
+            }
+            return lines.toArray(new int[0][]);
+        } catch (IOException e) {
+            throw new OperatorOperationException(e);
+        }
+    }
+
+    /**
+     * 将数据流中的数据转换成为整形数值矩阵对象。
+     *
+     * @param bufferedReader 包含数据的字符输入流
+     * @param sep            解析时需要使用的分隔符。
+     * @return 经过解析之后返回的结果二维数组对象。
+     */
+    public static double[][] strToDoubleMat(BufferedReader bufferedReader, char sep) {
+        ArrayList<double[]> lines = new ArrayList<>();
+        try {
+            while (bufferedReader.ready()) {
+                String[] strings = ASStr.splitByChar(bufferedReader.readLine(), sep);
+                double[] row = new double[strings.length];
+                int index1 = -1;
+                for (String s : strings) {
+                    row[++index1] = Integer.parseInt(s);
+                }
+                lines.add(row);
+            }
+            return lines.toArray(new double[0][]);
+        } catch (IOException e) {
+            throw new OperatorOperationException(e);
+        }
     }
 /*
 

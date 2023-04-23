@@ -4,6 +4,7 @@ import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import zhao.algorithmMagic.operands.table.Cell;
 import zhao.algorithmMagic.operands.table.FinalCell;
+import zhao.algorithmMagic.operands.table.SingletonCell;
 import zhao.algorithmMagic.utils.ASClass;
 
 import java.util.HashMap;
@@ -49,6 +50,11 @@ public class InputHDFSBuilder extends HashMap<String, Cell<?>> implements InputB
     public final static String FIELD = "field";
 
     /**
+     * 读取的矩阵行数量，在读取矩阵的时候会使用该参数，默认读取全部行。
+     */
+    public final static String ROW_COUNT = "RC";
+
+    /**
      * 添加数据输入描述，不同的组件有不同的配置属性，具体可以参阅实现类。
      * <p>
      * Add data input descriptions, and different components have different configuration properties. Please refer to the implementation class for details.
@@ -64,7 +70,7 @@ public class InputHDFSBuilder extends HashMap<String, Cell<?>> implements InputB
      * Chain call, continue building.
      */
     @Override
-    public InputBuilder addInputArg(String key, FinalCell<?> value) {
+    public InputBuilder addInputArg(String key, Cell<?> value) {
         this.put(key, value);
         return this;
     }
@@ -82,7 +88,8 @@ public class InputHDFSBuilder extends HashMap<String, Cell<?>> implements InputB
                 ASClass.<Cell<?>, Cell<Character>>transform(this.getOrDefault(SEP, new FinalCell<>(','))).getValue(),
                 this.getOrDefault(CHAR_SET, new FinalCell<>("utf-8")).toString(),
                 ASClass.<Cell<?>, Cell<String[]>>transform(this.get(FIELD)),
-                this.getOrDefault(PK, new FinalCell<>(0)).getIntValue()
+                this.getOrDefault(PK, new FinalCell<>(0)).getIntValue(),
+                this.getOrDefault(ROW_COUNT, SingletonCell.$(-1)).getIntValue()
         );
     }
 }

@@ -27,6 +27,16 @@ public abstract class NumberMatrix<ImplementationType extends Matrix<?, ?, ?, ?,
     }
 
     /**
+     * @return 矩阵中包含的维度数量，这里是矩阵的行列之积
+     * <p>
+     * the number of dimensions contained in the vector
+     */
+    @Override
+    public final int getNumberOfDimensions() {
+        return getRowCount() * getColCount();
+    }
+
+    /**
      * 去除冗余特征维度，将当前矩阵中的每一个维度都进行方差或无向差计算，并将过于稳定的冗余特征去除。
      * <p>
      * Remove redundant feature dimensions, calculate variance or undirected difference of each dimension in the current matrix, and remove redundant features that are too stable.
@@ -91,4 +101,5 @@ public abstract class NumberMatrix<ImplementationType extends Matrix<?, ?, ?, ?,
      * @return 整形矩阵对象中的子矩阵对象。
      */
     public abstract ImplementationType extractSrcMat(int y1, int y2);
+
 }

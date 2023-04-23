@@ -12,6 +12,7 @@ import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute;
 import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute2D;
 import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute;
 import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute2D;
+import zhao.algorithmMagic.utils.transformation.Transformation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -252,6 +253,40 @@ public final class ASClass {
             res[i] = (int) doubles[j];
         }
         return res;
+    }
+
+    /**
+     * 将一个容器中的数据浅拷贝到一个数组中。
+     *
+     * @param t          目标数组
+     * @param collection 源数据容器
+     * @param <T>        数据类型
+     * @return 拷贝之后的数组
+     */
+    public static <T> T[] CollToArray(T[] t, Iterable<T> collection) {
+        int index = -1;
+        for (T t1 : collection) {
+            t[++index] = t1;
+        }
+        return t;
+    }
+
+    /**
+     * 将数组中的数据类型建转换操作。
+     *
+     * @param input          需要被转换的数据数组对象
+     * @param output         转换之后的数据输出目标数组
+     * @param transformation 数据类型转换逻辑实现
+     * @param <I>            输入数组的元素数据类型
+     * @param <O>            输出数组的元素数据类型
+     * @return 输出数组对象，与传递进来的数组是一致的
+     */
+    public static <I, O> O[] ATA(I[] input, O[] output, Transformation<I, O> transformation) {
+        int index = -1;
+        for (I i : input) {
+            output[++index] = transformation.function(i);
+        }
+        return output;
     }
 
     /**

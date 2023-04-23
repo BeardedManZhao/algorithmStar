@@ -2,11 +2,14 @@ package zhao.algorithmMagic.operands.matrix;
 
 import zhao.algorithmMagic.core.ASDynamicLibrary;
 import zhao.algorithmMagic.exception.OperatorOperationException;
+import zhao.algorithmMagic.io.InputComponent;
 import zhao.algorithmMagic.operands.table.Cell;
 import zhao.algorithmMagic.operands.table.DataFrame;
 import zhao.algorithmMagic.operands.table.Series;
 import zhao.algorithmMagic.operands.vector.DoubleVector;
+import zhao.algorithmMagic.operands.vector.Vector;
 import zhao.algorithmMagic.utils.ASClass;
+import zhao.algorithmMagic.utils.ASIO;
 import zhao.algorithmMagic.utils.ASMath;
 
 import java.util.*;
@@ -125,6 +128,37 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
         }
     }
 
+    /**
+     * 随机生成一个 double 矩阵对象，在矩阵中存储的就是根据随机种子，随机产生的数值元素。
+     * <p>
+     * An double matrix object is randomly generated, and the numerical elements stored in the matrix are randomly generated according to the random seed.
+     *
+     * @param width    要生成的矩阵对象的宽度。
+     *                 <p>
+     *                 The width of the matrix object to be generated.
+     * @param height   要生成的矩阵对象的高度。
+     *                 <p>
+     *                 The height of the matrix object to be generated.
+     * @param randSeed 生成矩阵元素的时候需要使用的随机种子数值。
+     *                 <p>
+     *                 The random seed value to be used when generating matrix elements.
+     * @return 随机生成的指定行列数量的矩阵对象。
+     * <p>
+     * A randomly generated matrix object with a specified number of rows and columns.
+     */
+    public static DoubleMatrix random(int width, int height, int randSeed) {
+        Random random = new Random(randSeed);
+        double[][] res = new double[height][];
+        for (int y = 0; y < height; y++) {
+            double[] row = new double[width];
+            for (int x = 0; x < width; x++) {
+                row[x] = random.nextDouble();
+            }
+            res[y] = row;
+        }
+        return parse(res);
+    }
+
     protected static void ex(double thresholdLeft, double thresholdRight, double[][] ints, double[] mid, ArrayList<double[]> res) {
         if (ASDynamicLibrary.isUseC()) {
             for (double[] anInt : ints) {
@@ -192,6 +226,21 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
             doubles[++index] = ASClass.IntArray_To_DoubleArray(ints);
         }
         return new DoubleMatrix(doubles.length, parse1.getColCount(), doubles);
+    }
+
+    public static DoubleMatrix parse(InputComponent inputComponent) {
+        return DoubleMatrix.parse(inputComponent, true);
+    }
+
+    public static DoubleMatrix parse(InputComponent inputComponent, boolean isOC) {
+        if (isOC) {
+            if (inputComponent.open()) {
+                double[][] dataFrame = inputComponent.getDouble2Array();
+                ASIO.close(inputComponent);
+                return DoubleMatrix.parse(dataFrame);
+            }
+            throw new OperatorOperationException("inputComponent open error!!!");
+        } else return DoubleMatrix.parse(inputComponent.getDouble2Array());
     }
 
     /**
@@ -314,6 +363,48 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
     }
 
     /**
+     * 在两个向量对象之间进行计算的函数，自从1.13版本开始支持该函数的调用，该函数中的计算并不会产生一个新的向量，而是将计算操作作用于原操作数中
+     * <p>
+     * The function that calculates between two vector objects supports the call of this function since version 1.13. The calculation in this function will not generate a new vector, but will apply the calculation operation to the original operand
+     *
+     * @param value        与当前向量一起进行计算的另一个向量对象。
+     *                     <p>
+     *                     Another vector object that is evaluated with the current vector.
+     * @param ModifyCaller 计算操作作用对象的设置，该参数如果为true，那么计算时针对向量序列的修改操作将会直接作用到调用函数的向量中，反之将会作用到被操作数中。
+     *                     <p>
+     *                     The setting of the calculation operation action object. If this parameter is true, the modification of the vector sequence during calculation will directly affect the vector of the calling function, and vice versa.
+     * @return 两个向量经过了按维度的减法计算之后，被修改的向量对象
+     */
+    @Override
+    public DoubleMatrix diffAbs(DoubleMatrix value, boolean ModifyCaller) {
+        int rowCount1 = this.getRowCount();
+        int rowCount2 = value.getRowCount();
+        int colCount1 = this.getColCount();
+        int colCount2 = value.getColCount();
+        if (rowCount1 == rowCount2 && colCount1 == colCount2) {
+            double[][] doubles = new double[rowCount1][colCount1];
+            int rowPointer1 = this.RowPointer;
+            int rowPointer2 = value.RowPointer;
+            while (this.MovePointerDown() && value.MovePointerDown()) {
+                double[] line = new double[colCount1];
+                double[] doubles1 = this.toArray();
+                double[] doubles2 = value.toArray();
+                for (int i = 0; i < colCount1; i++) {
+                    line[i] = ASMath.absoluteValue(doubles1[i] - doubles2[i]);
+                }
+                doubles[this.RowPointer] = line;
+            }
+            this.RowPointer = rowPointer1;
+            value.RowPointer = rowPointer2;
+            return parse(doubles);
+        } else {
+            throw new OperatorOperationException("您在'DoubleMatrix1 diff DoubleMatrix2'的时候发生了错误，原因是两个矩阵的行列数不一致！\n" +
+                    "You have an error in 'DoubleMatrix1 diff DoubleMatrix2' because the number of rows and columns of the two matrices is inconsistent!\n" +
+                    "DoubleMatrix1 =>  rowCount = [" + rowCount1 + "]   colCount = [" + colCount1 + "]\nDoubleMatrix2 =>  rowCount = [" + rowCount2 + "]   colCount = [" + colCount2 + "]");
+        }
+    }
+
+    /**
      * 计算该矩阵的模长，具体实现请参阅api说明
      * <p>
      * Calculate the modulo length of the vector, please refer to the api node for the specific implementation
@@ -413,29 +504,6 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
     }
 
     /**
-     * @return 获取到本矩阵中的某一行数据，按照行指针获取，通过调整外界行指针的变化，来获取到对应行数据，需要注意的是，该函数获取到的数据矩阵对象中正在使用的，如果返回值被更改，那么会导致一些不可意料的情况发生。
-     * <p>
-     * Get the data of a certain row in this matrix according to the row pointer, and get the data of the corresponding row by adjusting the changes of the external row pointer. Note that if the return value of the data matrix object obtained by this function is being used, it will lead to some unexpected situations.
-     * @deprecated 使用toArray函数可达到替代效果
-     * <p>
-     * Use the toArray function to achieve the substitution effect
-     */
-    @Deprecated
-    public double[] toDoubleArray() {
-        return toArray();
-    }
-
-    /**
-     * @return 矩阵中包含的维度数量，这里是矩阵的行列之积
-     * <p>
-     * the number of dimensions contained in the vector
-     */
-    @Override
-    public int getNumberOfDimensions() {
-        return getRowCount() * getColCount();
-    }
-
-    /**
      * 将本对象中的所有数据进行洗牌打乱，随机分布数据行的排列。
      * <p>
      * Shuffle all the data in this object and randomly distribute the arrangement of data rows.
@@ -500,6 +568,29 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
         double[][] res = new double[this.getRowCount()][this.getColCount()];
         ASClass.array2DCopy(toArrays(), res);
         return res;
+    }
+
+    /**
+     * 将当前矩阵中的所有行拷贝到目标数组当中，需要确保目标数组的长度大于当前矩阵中的行数量。
+     * <p>
+     * To copy all rows from the current matrix into the target array, it is necessary to ensure that the length of the target array is greater than the number of rows in the current matrix.
+     *
+     * @param array 需要存储当前矩阵对象中所有行元素向量的数组。
+     *              <p>
+     *              An array that needs to store all row element vectors in the current matrix object.
+     * @return 拷贝之后的数组对象。
+     * <p>
+     * The array object after copying.
+     */
+    @Override
+    public Vector<?, ?, double[]>[] toVectors(Vector<?, ?, double[]>[] array) {
+        if (array.length < this.getRowCount())
+            throw new OperatorOperationException("The length of the target array you provided is insufficient.");
+        int index = -1;
+        for (double[] doubles : this) {
+            array[++index] = DoubleVector.parse(doubles);
+        }
+        return array;
     }
 
     /**
@@ -776,6 +867,27 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
             ASMath.arrayReverse(this.toArrays());
             return this;
         }
+    }
+
+    /**
+     * 将当前矩阵中的所有元素进行扁平化操作，获取到扁平化之后的数组对象。
+     * <p>
+     * Flatten all elements in the current matrix to obtain the flattened array object.
+     *
+     * @return 将当前矩阵中每行元素进行扁平化之后的结果。
+     * <p>
+     * The result of flattening each row of elements in the current matrix.
+     */
+    @Override
+    public double[] flatten() {
+        double[] res = new double[this.getNumberOfDimensions()];
+        int index = 0;
+        // 开始进行元素拷贝
+        for (double[] doubles : this) {
+            System.arraycopy(doubles, 0, res, index, doubles.length);
+            index += doubles.length;
+        }
+        return res;
     }
 
     /**

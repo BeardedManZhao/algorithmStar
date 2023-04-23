@@ -29,7 +29,7 @@ import java.io.OutputStreamWriter;
  * @author 赵凌宇
  * 2023/4/6 20:01
  */
-public class OutputHDFS implements OutputComponent {
+public final class OutputHDFS implements OutputComponent {
 
     private final static Logger LOGGER = LoggerFactory.getLogger("OutputHDFS");
 

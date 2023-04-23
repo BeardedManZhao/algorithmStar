@@ -269,6 +269,58 @@ public class DoubleMatrixSpace extends MatrixSpace<DoubleMatrixSpace, Double, do
         }
     }
 
+    /**
+     * 在两个向量对象之间进行计算的函数，自从1.13版本开始支持该函数的调用，该函数中的计算并不会产生一个新的向量，而是将计算操作作用于原操作数中
+     * <p>
+     * The function that calculates between two vector objects supports the call of this function since version 1.13. The calculation in this function will not generate a new vector, but will apply the calculation operation to the original operand
+     *
+     * @param value        与当前向量一起进行计算的另一个向量对象。
+     *                     <p>
+     *                     Another vector object that is evaluated with the current vector.
+     * @param ModifyCaller 计算操作作用对象的设置，该参数如果为true，那么计算时针对向量序列的修改操作将会直接作用到调用函数的向量中，反之将会作用到被操作数中。
+     *                     <p>
+     *                     The setting of the calculation operation action object. If this parameter is true, the modification of the vector sequence during calculation will directly affect the vector of the calling function, and vice versa.
+     * @return 两个向量经过了按维度的减法计算之后，被修改的向量对象
+     */
+    @Override
+    public DoubleMatrixSpace diffAbs(DoubleMatrixSpace value, boolean ModifyCaller) {
+        if (this.getNumberOfDimensions() < value.getNumberOfDimensions()) {
+            // 获取到最小层与最大层
+            int length1 = this.getNumberOfDimensions();
+            int length2 = value.getNumberOfDimensions();
+            DoubleMatrix[] doubleMatrixBlock = new DoubleMatrix[length2];
+            int count = -1;
+            // 开始进行计算合并
+            for (int i = 0; i < length1; i++) {
+                doubleMatrixBlock[++count] = this.get(i).diffAbs(value.get(i), ModifyCaller);
+            }
+            // 将剩余数据合并
+            int length3 = value.getNumberOfDimensions() - count;
+            for (int i = 0; i < length3; i++) {
+                doubleMatrixBlock[++count] = value.get(i);
+            }
+            // 返回结果
+            return new DoubleMatrixSpace(this.getRowCount(), this.getColCount(), doubleMatrixBlock);
+        } else {
+            // 获取到最小层与最大层
+            int length1 = value.getNumberOfDimensions();
+            int length2 = this.getNumberOfDimensions();
+            DoubleMatrix[] doubleMatrixBlock = new DoubleMatrix[length2];
+            int count = -1;
+            // 开始进行计算合并
+            for (int i = 0; i < length1; i++) {
+                doubleMatrixBlock[++count] = this.get(i).diffAbs(value.get(i), ModifyCaller);
+            }
+            // 将剩余数据合并
+            int length3 = this.getNumberOfDimensions() - count - 1;
+            for (int i = 0; i < length3; i++) {
+                doubleMatrixBlock[++count] = this.get(i);
+            }
+            // 返回结果
+            return new DoubleMatrixSpace(this.getRowCount(), this.getColCount(), doubleMatrixBlock);
+        }
+    }
+
 
     /**
      * 两个向量相乘，同时也是两个向量的外积，具体实现请参阅api说明

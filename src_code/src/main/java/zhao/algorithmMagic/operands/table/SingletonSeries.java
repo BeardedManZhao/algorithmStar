@@ -10,56 +10,53 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.function.IntFunction;
 import java.util.stream.Stream;
 
 /**
- * 数据系列对象，在该对象中能够进行多个单元格参数的获取。
+ * 单例序列对象，该对象中的所有单元格元素在内存中只存储一个，能够在更大程度中节省内存占用。
  * <p>
- * Data series object, in which multiple cell parameters can be obtained.
+ * A single instance sequence object, in which only one cell element is stored in memory, can save memory usage to a greater extent.
  *
  * @author 赵凌宇
- * 2023/3/7 22:01
+ * 2023/4/12 18:15
  */
-public class FinalSeries implements Series {
+public class SingletonSeries implements Series {
     private final Cell<?>[] cells;
     private final Cell<Integer> length;
 
-    public FinalSeries(Cell<?>... cells) {
+    public SingletonSeries(Cell<?>... cells) {
         if (cells != null) {
             this.cells = cells;
-            this.length = new FinalCell<>(cells.length);
+            this.length = SingletonCell.$(cells.length);
         } else {
-            throw new OperatorOperationException("FinalSeries cannot be null!!!");
+            throw new OperatorOperationException("SingletonSeries cannot be null!!!");
         }
     }
 
     /**
      * 将一个Series 和很多个单元格进行数据合并
      *
-     * @param finalSeries 需要被合并的Series对象
-     * @param cells       合需要被合并的所有单元格
+     * @param SingletonSeries 需要被合并的Series对象
+     * @param cells           合需要被合并的所有单元格
      * @return 合并之后的数据对象
      */
-    public static FinalSeries merge(Series finalSeries, Cell<?>... cells) {
-        Cell<?>[] cells1 = finalSeries.toArray();
+    public static SingletonSeries merge(Series SingletonSeries, Cell<?>... cells) {
+        Cell<?>[] cells1 = SingletonSeries.toArray();
         int length1 = cells1.length;
         Cell<?>[] res = new Cell[length1 + cells.length];
         ASClass.mergeArray(res, cells1, cells);
-        return new FinalSeries(res);
+        return new SingletonSeries(res);
     }
 
-    public static FinalSeries parse(String... arr) {
-        return new FinalSeries(
-                Arrays.stream(arr).map(FinalCell::new)
-                        .toArray((IntFunction<Cell<?>[]>) value -> new Cell[arr.length])
+    public static SingletonSeries parse(String... arr) {
+        return new SingletonSeries(
+                ASClass.ATA(arr, new Cell[arr.length], SingletonCell::$)
         );
     }
 
-    public static <T> FinalSeries parse(T[] arr) {
-        return new FinalSeries(
-                Arrays.stream(arr).map(FinalCell::new)
-                        .toArray((IntFunction<Cell<?>[]>) value -> new Cell[arr.length])
+    public static <T> SingletonSeries parse(T[] arr) {
+        return new SingletonSeries(
+                ASClass.ATA(arr, new Cell[arr.length], SingletonCell::$)
         );
     }
 
@@ -137,7 +134,7 @@ public class FinalSeries implements Series {
         for (Cell<?> cell : this.cells) {
             if (cell.isNumber()) res += ((Number) cell.getValue()).doubleValue();
         }
-        return new FinalCell<>(res);
+        return SingletonCell.$(res);
     }
 
     /**
@@ -156,7 +153,7 @@ public class FinalSeries implements Series {
         for (Cell<?> cell : filter) {
             res += cell.getDoubleValue();
         }
-        return new FinalCell<>(res / filter.count().getValue());
+        return SingletonCell.$(res / filter.count().getValue());
     }
 
     /**
@@ -197,7 +194,7 @@ public class FinalSeries implements Series {
     public Series filterDouble(Event<Double> event) {
         ArrayList<Cell<?>> arrayList = new ArrayList<>();
         ASMath.filterDouble(this, event, arrayList);
-        return new FinalSeries(arrayList.toArray(new Cell<?>[0]));
+        return new SingletonSeries(arrayList.toArray(new Cell<?>[0]));
     }
 
     /**
@@ -216,8 +213,9 @@ public class FinalSeries implements Series {
     public Series filterInteger(Event<Integer> event) {
         ArrayList<Cell<?>> arrayList = new ArrayList<>();
         ASMath.filterInteger(this, event, arrayList);
-        return new FinalSeries(arrayList.toArray(new Cell<?>[0]));
+        return new SingletonSeries(arrayList.toArray(new Cell<?>[0]));
     }
+
 
     /**
      * 过滤函数，其接受一个过滤函数实现逻辑，并将符合条件的数值进行数据的过滤计算。
@@ -235,7 +233,7 @@ public class FinalSeries implements Series {
     public Series filter(Event<Cell<?>> event) {
         ArrayList<Cell<?>> arrayList = new ArrayList<>();
         ASMath.filterNumber(this, event, arrayList);
-        return new FinalSeries(arrayList.toArray(new Cell<?>[0]));
+        return new SingletonSeries(arrayList.toArray(new Cell<?>[0]));
     }
 
     @Override
@@ -260,7 +258,7 @@ public class FinalSeries implements Series {
             throw new OperatorOperationException("Add Error:请确保两个Series的维度相同\n" +
                     "Please ensure that the dimensions of both Series are the same");
         }
-        return new FinalSeries(ASMath.add(cells1, cells2));
+        return new SingletonSeries(ASMath.add(cells1, cells2));
     }
 
     /**
@@ -279,6 +277,6 @@ public class FinalSeries implements Series {
             throw new OperatorOperationException("Diff Error:请确保两个Series的维度相同\n" +
                     "Please ensure that the dimensions of both Series are the same");
         }
-        return new FinalSeries(ASMath.diff(cells1, cells2));
+        return new SingletonSeries(ASMath.diff(cells1, cells2));
     }
 }

@@ -14,7 +14,7 @@ import java.awt.*;
 public class MAIN1 {
     public static void main(String[] args) {
         // 获取一张图像的像素矩阵
-        ColorMatrix parse1 = ColorMatrix.parseGrayscale("C:\\Users\\Liming\\Desktop\\fsdownload\\test1.bmp");
+        ColorMatrix parse1 = ColorMatrix.parseGrayscale("C:\\Users\\Liming\\Desktop\\fsDownload\\test1.bmp");
         // 将 parse1 进行二值化
         parse1.localBinary(ColorMatrix._G_, 30, 0, 0xffffff, 1);
         // 将 parse1 矩阵腐蚀，然后将腐蚀的结果获取到
@@ -42,7 +42,7 @@ import java.awt.*;
 public class MAIN1 {
     public static void main(String[] args) {
         // 获取一张图像的像素矩阵
-        ColorMatrix colors = ColorMatrix.parse("C:\\Users\\Liming\\Desktop\\fsdownload\\test1.bmp");
+        ColorMatrix colors = ColorMatrix.parse("C:\\Users\\Liming\\Desktop\\fsDownload\\test1.bmp");
         // 将图像拷贝一份出来
         ColorMatrix parse1 = ColorMatrix.parse(colors.copyToNewArrays());
         // 将 parse1 进行二值化 // 请注意阈值
@@ -80,7 +80,7 @@ public class MAIN1 {
         ColorMatrix resImage1, parse1;
         {
             // 获取一张图像的像素矩阵
-            ColorMatrix colors = ColorMatrix.parse("C:\\Users\\Liming\\Desktop\\fsdownload\\test3.bmp");
+            ColorMatrix colors = ColorMatrix.parse("C:\\Users\\Liming\\Desktop\\fsDownload\\test3.bmp");
             // 将图像拷贝一份出来
             parse1 = ColorMatrix.parse(colors.copyToNewArrays());
             // 将结果二值化
@@ -133,8 +133,8 @@ public class MAIN1 {
     public static void main(String[] args) {
         ColorMatrix colorMatrix1, colorMatrix2;
         {        // 将图像与样本读取进来
-            colorMatrix1 = ColorMatrix.parse("C:\\Users\\zhao\\Desktop\\fsdownload\\YB.bmp");
-            colorMatrix2 = ColorMatrix.parse("C:\\Users\\zhao\\Desktop\\fsdownload\\test22.jpg");
+            colorMatrix1 = ColorMatrix.parse("C:\\Users\\zhao\\Desktop\\fsDownload\\YB.bmp");
+            colorMatrix2 = ColorMatrix.parse("C:\\Users\\zhao\\Desktop\\fsDownload\\test22.jpg");
             ColorMatrix temp = ColorMatrix.parse(colorMatrix2.copyToNewArrays());
             // 开始二值化
             colorMatrix1.localBinary(ColorMatrix._G_, 10, 0xffffff, 0, 1);
@@ -177,10 +177,10 @@ import java.util.Map;
 public class MAIN1 {
     public static void main(String[] args) {
         ColorMatrix colorMatrix1, colorMatrix2;
-        {        
+        {
             // 将图像与样本读取进来
-            colorMatrix1 = ColorMatrix.parse("C:\\Users\\zhao\\Desktop\\fsdownload\\YB.bmp");
-            colorMatrix2 = ColorMatrix.parse("C:\\Users\\zhao\\Desktop\\fsdownload\\test22.jpg");
+            colorMatrix1 = ColorMatrix.parse("C:\\Users\\zhao\\Desktop\\fsDownload\\YB.bmp");
+            colorMatrix2 = ColorMatrix.parse("C:\\Users\\zhao\\Desktop\\fsDownload\\test22.jpg");
             ColorMatrix temp = ColorMatrix.parse(colorMatrix2.copyToNewArrays());
             // 开始二值化
             colorMatrix1.localBinary(ColorMatrix._G_, 10, 0xffffff, 0, 1);
@@ -388,7 +388,7 @@ import java.util.HashMap;
 public class MAIN1 {
     public static void main(String[] args) {
         // 被处理图像路径
-        String dataPath = "C:\\Users\\Liming\\Desktop\\fsdownload\\微信图片_33.jpg";
+        String dataPath = "C:\\Users\\Liming\\Desktop\\fsDownload\\微信图片_33.jpg";
         ColorMatrix colorMatrix1 = ColorMatrix.parse(dataPath);
         colorMatrix1.show("src");
         // 将矩阵变换 首先需要创建出不同模式中需要的配置信息 这里是反转和拉伸矩阵的配置
@@ -438,3 +438,116 @@ public class MAIN1 {
 ```
 
 ## 机器学习类案例
+
+### 线性神经网络模型训练案例
+
+线性神经网络训练结果是一个数学模型，其能够在庞大是数据集中查找相关规律，返回的数学模型能够被保存下来。
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.core.model.*;
+import zhao.algorithmMagic.operands.table.SingletonCell;
+import zhao.algorithmMagic.operands.vector.DoubleVector;
+
+public class MAIN1 {
+
+    // 在 main 函数中进行模型的保存和读取以及使用
+    public static void main(String[] args) {
+
+        // 构建 X 数据
+        DoubleVector[] X = {
+                DoubleVector.parse(100, 50, 50),
+                DoubleVector.parse(50, 50, 50),
+                DoubleVector.parse(50, 100, 50),
+                // 最后一行是初始权重数据
+                DoubleVector.parse(20, 18, 18)
+        };
+        // 构建 Y 数据
+        double[] Y = {300, 200, 250, 350};
+
+        // 将 线性神经网络模型获取到
+        LNeuralNetwork lNeuralNetwork = ASModel.L_NEURAL_NETWORK;
+        // 设置学习率
+        lNeuralNetwork.setArg(LNeuralNetwork.LEARNING_RATE, SingletonCell.$(0.02));
+        // 设置每一个数据样本的训练次数 为 1024
+        lNeuralNetwork.setArg(LNeuralNetwork.LEARN_COUNT, SingletonCell.$(1024));
+        // 设置当前神经网络中神经元的激活函数
+        lNeuralNetwork.setArg(LNeuralNetwork.PERCEPTRON, SingletonCell.$(Perceptron.parse(ActivationFunction.RELU)));
+        // 设置当前神经网络中的目标数值
+        lNeuralNetwork.setArg(LNeuralNetwork.TARGET, SingletonCell.$(Y));
+
+        // 开始训练 在这里传递进需要被学习的数据 并获取到模型
+        NumberModel numberModel = lNeuralNetwork.function(X);
+        System.out.println(numberModel);
+        // 这里直接调用模型 预测 x1 = 200   x2 = 100  x3 = 50 时候的结果  期望数值是 550
+        Double function = numberModel.function(new Double[]{200.0, 100.0, 50.0});
+        System.out.println(function);
+    }
+}
+```
+
+### 线性随机神经网络模型训练案例
+
+线性随机神经网络相较于 线性神经网络训练模型 来说具有强大的兼容性和较好的性能，但是其牺牲了些精确度，线性随机神经网络模型的使用以及训练出来的模型从保存如下所示。
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.core.model.*;
+import zhao.algorithmMagic.operands.table.SingletonCell;
+import zhao.algorithmMagic.operands.vector.DoubleVector;
+
+import java.io.File;
+import java.util.Arrays;
+
+public class MAIN1 {
+
+    // 在 main 函数中进行模型的保存和读取以及使用
+    public static void main(String[] args) {
+        // 获取到线性神经网络模型
+        LNeuralNetwork lNeuralNetwork = ASModel.LS_NEURAL_NETWORK;
+        // 设置学习率 为 0.01
+        lNeuralNetwork.setArg(LNeuralNetwork.LEARNING_RATE, SingletonCell.$(0.03));
+        // 设置激活函数为 LEAKY_RE_LU
+        lNeuralNetwork.setArg(LNeuralNetwork.PERCEPTRON, SingletonCell.$(Perceptron.parse(ActivationFunction.LEAKY_RE_LU)));
+        // 设置学习次数 为 600
+        lNeuralNetwork.setArg(LNeuralNetwork.LEARN_COUNT, SingletonCell.$(1000));
+        // 设置目标数值
+        lNeuralNetwork.setArg(
+                LNeuralNetwork.TARGET,
+                // 假设这里是5组数据对应的结果
+                SingletonCell.$(new double[]{300, 210, 340, 400, 500})
+        );
+        // 构建被学习的数据 由此数据推导结果 找到每一组数据中 3 个参数之间的数学模型
+        DoubleVector X1 = DoubleVector.parse(100, 50, 50);
+        DoubleVector X2 = DoubleVector.parse(80, 50, 50);
+        DoubleVector X3 = DoubleVector.parse(120, 50, 50);
+        DoubleVector x4 = DoubleVector.parse(100, 100, 100);
+        DoubleVector x5 = DoubleVector.parse(150, 100, 100);
+        // 构建初始权重向量
+        DoubleVector W = DoubleVector.parse(20, 18, 18);
+        // 实例化出附加 Task 任务对象
+        LNeuralNetwork.TaskConsumer taskConsumer = (loss, g, weight) -> {
+            // 在这里打印出每一次训练的信息
+            System.out.println("损失函数 = " + loss);
+            System.out.println("计算梯度 = " + g);
+            System.out.println("权重参数 = " + Arrays.toString(weight) + '\n');
+        };
+        // 训练出模型 TODO 在这里指定出每一次训练时的附加任务
+        NumberModel model = lNeuralNetwork.function(taskConsumer, X1, X2, X3, x4, x5, W);
+        // TODO 接下来开始使用模型进行一些测试
+        // 向模型中传递一些数值
+        Double function1 = model.function(new Double[]{100.0, 50.0, 50.0});
+        // 打印计算出来的结果
+        System.out.println(function1);
+        // 再一次传递一些数值
+        Double function2 = model.function(new Double[]{150.0, 100.0, 100.0});
+        // 打印计算出来的结果
+        System.out.println(function2);
+
+        // TODO 确定模型可用，将模型保存
+        ASModel.Utils.write(new File("C:\\Users\\zhao\\Desktop\\fsDownload\\MytModel.as"), model);
+    }
+}
+```
