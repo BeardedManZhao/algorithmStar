@@ -9,6 +9,7 @@ import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
 import zhao.algorithmMagic.operands.matrix.block.ColorMatrixSpace;
 import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixSpace;
 import zhao.algorithmMagic.operands.table.Cell;
+import zhao.algorithmMagic.operands.vector.Vector;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASIO;
 import zhao.algorithmMagic.utils.ASMath;
@@ -991,6 +992,23 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
     }
 
     /**
+     * 将当前矩阵中的所有行拷贝到目标数组当中，需要确保目标数组的长度大于当前矩阵中的行数量。
+     * <p>
+     * To copy all rows from the current matrix into the target array, it is necessary to ensure that the length of the target array is greater than the number of rows in the current matrix.
+     *
+     * @param array 需要存储当前矩阵对象中所有行元素向量的数组。
+     *              <p>
+     *              An array that needs to store all row element vectors in the current matrix object.
+     * @return 拷贝之后的数组对象。
+     * <p>
+     * The array object after copying.
+     */
+    @Override
+    public Vector<?, ?, Color[]>[] toVectors(Vector<?, ?, Color[]>[] array) {
+        throw new UnsupportedOperationException("The image matrix currently does not support vector flattening.");
+    }
+
+    /**
      * 获取到指定索引编号的行数组
      * <p>
      * Get the row array with the specified index
@@ -1108,6 +1126,27 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             ASMath.arrayReverse(this.toArrays());
             return this;
         }
+    }
+
+    /**
+     * 将当前矩阵中的所有元素进行扁平化操作，获取到扁平化之后的数组对象。
+     * <p>
+     * Flatten all elements in the current matrix to obtain the flattened array object.
+     *
+     * @return 将当前矩阵中每行元素进行扁平化之后的结果。
+     * <p>
+     * The result of flattening each row of elements in the current matrix.
+     */
+    @Override
+    public Color[] flatten() {
+        Color[] res = new Color[this.getNumberOfDimensions()];
+        int index = 0;
+        // 开始进行元素拷贝
+        for (Color[] colors : this) {
+            System.arraycopy(colors, 0, res, index, colors.length);
+            index += colors.length;
+        }
+        return res;
     }
 
     /**
@@ -2029,6 +2068,12 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      * <p>
      * Pooling operations for image matrices support manual specification of pooling logic implementation, which greatly increases the flexibility of pooling functions.
      *
+     * @param width          池化时的子矩阵宽度。
+     *                       <p>
+     *                       The width of the sub-matrix during pooling.
+     * @param height         池化时的子矩阵高度。
+     *                       <p>
+     *                       The height of the sub-matrix during pooling.
      * @param transformation 图像矩阵的池化逻辑实现.
      *                       <p>
      *                       Implementation of pooling logic for image matrices

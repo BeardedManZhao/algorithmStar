@@ -35,7 +35,6 @@ public class LNeuralNetwork implements ASModel<Integer, DoubleVector, NumberMode
      *              <p>
      *              The project number configured in the model is usually provided with a static parameter number in the implementation class.
      * @param value 模型中配置项的具体数据，其可以是任何类型的单元格对象。
-     *              <p>
      */
     @Override
     public void setArg(Integer key, @NotNull Cell<?> value) {

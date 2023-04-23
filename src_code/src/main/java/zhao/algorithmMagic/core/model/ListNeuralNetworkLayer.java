@@ -12,9 +12,8 @@ import java.util.ArrayList;
  * @author 赵凌宇
  * 2023/4/19 18:55
  */
-public final class ListNeuralNetworkLayer implements NeuralNetworkLayer {
+public final class ListNeuralNetworkLayer extends ArrayList<Perceptron> implements NeuralNetworkLayer {
 
-    private final ArrayList<Perceptron> arrayList = new ArrayList<>();
     private final DoubleVector weight;
 
     /**
@@ -38,7 +37,7 @@ public final class ListNeuralNetworkLayer implements NeuralNetworkLayer {
     @Override
     public void addPerceptron(Perceptron perceptron) {
         if (perceptron != null) {
-            this.arrayList.add(perceptron);
+            this.add(perceptron);
         }
     }
 
@@ -47,18 +46,21 @@ public final class ListNeuralNetworkLayer implements NeuralNetworkLayer {
      * <p>
      * Perform forward propagation calculation on the current neural network layer to obtain the output vector of the current neural network.
      *
-     * @param doubleVector@return 计算出来的当前神经网络层前向传播的结果向量。
-     *                            <p>
-     *                            The calculated result vector of the forward propagation of the current neural network layer.
+     * @param doubleVector 需要被计算的向量对象，其将会与当前层的权重向量进行内积计算，并传递给激活函数进行计算。
+     *                     <p>
+     *                     The vector object to be calculated will be inner product calculated with the weight vector of the current layer and transferred to the activation function for calculation.
+     * @return 计算出来的当前神经网络层前向传播的结果向量。
+     * <p>
+     * The calculated result vector of the forward propagation of the current neural network layer.
      */
     @Override
     public DoubleVector forward(DoubleVector doubleVector) {
         // 首先计算出来内积数值。
         double inner = doubleVector.innerProduct(weight);
         // 构建结果向量容器 容器中的元素数量与神经元个数一致
-        double[] res = new double[this.arrayList.size()];
+        double[] res = new double[this.size()];
         int index = -1;
-        for (Perceptron perceptron : this.arrayList) {
+        for (Perceptron perceptron : this) {
             res[++index] = perceptron.function(inner).getValue();
         }
         return DoubleVector.parse(res);
@@ -80,9 +82,9 @@ public final class ListNeuralNetworkLayer implements NeuralNetworkLayer {
     public DoubleVector backForward(DoubleVector doubleVector) {
         double[] loss = doubleVector.toArray();
         // 构建结果向量容器 容器中的元素数量与神经元个数一致
-        double[] res = new double[this.arrayList.size()];
+        double[] res = new double[this.size()];
         int index = -1;
-        for (Perceptron perceptron : this.arrayList) {
+        for (Perceptron perceptron : this) {
             res[++index] = perceptron.FUNCTION.derivativeFunction(loss[index]);
         }
         return DoubleVector.parse(res);

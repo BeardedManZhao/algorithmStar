@@ -7,6 +7,7 @@ import zhao.algorithmMagic.operands.table.Cell;
 import zhao.algorithmMagic.operands.table.DataFrame;
 import zhao.algorithmMagic.operands.table.Series;
 import zhao.algorithmMagic.operands.vector.DoubleVector;
+import zhao.algorithmMagic.operands.vector.Vector;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASIO;
 import zhao.algorithmMagic.utils.ASMath;
@@ -503,29 +504,6 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
     }
 
     /**
-     * @return 获取到本矩阵中的某一行数据，按照行指针获取，通过调整外界行指针的变化，来获取到对应行数据，需要注意的是，该函数获取到的数据矩阵对象中正在使用的，如果返回值被更改，那么会导致一些不可意料的情况发生。
-     * <p>
-     * Get the data of a certain row in this matrix according to the row pointer, and get the data of the corresponding row by adjusting the changes of the external row pointer. Note that if the return value of the data matrix object obtained by this function is being used, it will lead to some unexpected situations.
-     * @deprecated 使用toArray函数可达到替代效果
-     * <p>
-     * Use the toArray function to achieve the substitution effect
-     */
-    @Deprecated
-    public double[] toDoubleArray() {
-        return toArray();
-    }
-
-    /**
-     * @return 矩阵中包含的维度数量，这里是矩阵的行列之积
-     * <p>
-     * the number of dimensions contained in the vector
-     */
-    @Override
-    public int getNumberOfDimensions() {
-        return getRowCount() * getColCount();
-    }
-
-    /**
      * 将本对象中的所有数据进行洗牌打乱，随机分布数据行的排列。
      * <p>
      * Shuffle all the data in this object and randomly distribute the arrangement of data rows.
@@ -590,6 +568,29 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
         double[][] res = new double[this.getRowCount()][this.getColCount()];
         ASClass.array2DCopy(toArrays(), res);
         return res;
+    }
+
+    /**
+     * 将当前矩阵中的所有行拷贝到目标数组当中，需要确保目标数组的长度大于当前矩阵中的行数量。
+     * <p>
+     * To copy all rows from the current matrix into the target array, it is necessary to ensure that the length of the target array is greater than the number of rows in the current matrix.
+     *
+     * @param array 需要存储当前矩阵对象中所有行元素向量的数组。
+     *              <p>
+     *              An array that needs to store all row element vectors in the current matrix object.
+     * @return 拷贝之后的数组对象。
+     * <p>
+     * The array object after copying.
+     */
+    @Override
+    public Vector<?, ?, double[]>[] toVectors(Vector<?, ?, double[]>[] array) {
+        if (array.length < this.getRowCount())
+            throw new OperatorOperationException("The length of the target array you provided is insufficient.");
+        int index = -1;
+        for (double[] doubles : this) {
+            array[++index] = DoubleVector.parse(doubles);
+        }
+        return array;
     }
 
     /**
@@ -866,6 +867,27 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
             ASMath.arrayReverse(this.toArrays());
             return this;
         }
+    }
+
+    /**
+     * 将当前矩阵中的所有元素进行扁平化操作，获取到扁平化之后的数组对象。
+     * <p>
+     * Flatten all elements in the current matrix to obtain the flattened array object.
+     *
+     * @return 将当前矩阵中每行元素进行扁平化之后的结果。
+     * <p>
+     * The result of flattening each row of elements in the current matrix.
+     */
+    @Override
+    public double[] flatten() {
+        double[] res = new double[this.getNumberOfDimensions()];
+        int index = 0;
+        // 开始进行元素拷贝
+        for (double[] doubles : this) {
+            System.arraycopy(doubles, 0, res, index, doubles.length);
+            index += doubles.length;
+        }
+        return res;
     }
 
     /**

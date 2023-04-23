@@ -2,6 +2,7 @@ package zhao.algorithmMagic.operands.matrix;
 
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.operands.ComplexNumber;
+import zhao.algorithmMagic.operands.vector.Vector;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASMath;
 
@@ -355,6 +356,23 @@ public class ComplexNumberMatrix extends Matrix<ComplexNumberMatrix, ComplexNumb
     }
 
     /**
+     * 将当前矩阵中的所有行拷贝到目标数组当中，需要确保目标数组的长度大于当前矩阵中的行数量。
+     * <p>
+     * To copy all rows from the current matrix into the target array, it is necessary to ensure that the length of the target array is greater than the number of rows in the current matrix.
+     *
+     * @param array 需要存储当前矩阵对象中所有行元素向量的数组。
+     *              <p>
+     *              An array that needs to store all row element vectors in the current matrix object.
+     * @return 拷贝之后的数组对象。
+     * <p>
+     * The array object after copying.
+     */
+    @Override
+    public Vector<?, ?, ComplexNumber[]>[] toVectors(Vector<?, ?, ComplexNumber[]>[] array) {
+        throw new UnsupportedOperationException("Complex matrices currently do not support conversion to vector arrays.");
+    }
+
+    /**
      * 获取到指定索引编号的行数组
      * <p>
      * Get the row array with the specified index
@@ -392,6 +410,27 @@ public class ComplexNumberMatrix extends Matrix<ComplexNumberMatrix, ComplexNumb
             complexNumbers[++count] = numbers[index];
         }
         return complexNumbers;
+    }
+
+    /**
+     * 将当前矩阵中的所有元素进行扁平化操作，获取到扁平化之后的数组对象。
+     * <p>
+     * Flatten all elements in the current matrix to obtain the flattened array object.
+     *
+     * @return 将当前矩阵中每行元素进行扁平化之后的结果。
+     * <p>
+     * The result of flattening each row of elements in the current matrix.
+     */
+    @Override
+    public ComplexNumber[] flatten() {
+        ComplexNumber[] res = new ComplexNumber[this.getNumberOfDimensions()];
+        int index = 0;
+        // 开始进行元素拷贝
+        for (ComplexNumber[] complexNumbers : this) {
+            System.arraycopy(complexNumbers, 0, res, index, complexNumbers.length);
+            index += complexNumbers.length;
+        }
+        return res;
     }
 
     /**

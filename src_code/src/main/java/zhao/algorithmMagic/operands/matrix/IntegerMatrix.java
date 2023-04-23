@@ -7,6 +7,7 @@ import zhao.algorithmMagic.operands.table.Cell;
 import zhao.algorithmMagic.operands.table.DataFrame;
 import zhao.algorithmMagic.operands.table.Series;
 import zhao.algorithmMagic.operands.vector.IntegerVector;
+import zhao.algorithmMagic.operands.vector.Vector;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASIO;
 import zhao.algorithmMagic.utils.ASMath;
@@ -555,16 +556,6 @@ public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], i
     }
 
     /**
-     * @return 向量中包含的维度数量
-     * <p>
-     * the number of dimensions contained in the vector
-     */
-    @Override
-    public int getNumberOfDimensions() {
-        return getRowCount() * getColCount();
-    }
-
-    /**
      * 将本对象中的所有数据进行洗牌打乱，随机分布数据行的排列。
      * <p>
      * Shuffle all the data in this object and randomly distribute the arrangement of data rows.
@@ -631,6 +622,29 @@ public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], i
         int[][] res = new int[getRowCount()][getColCount()];
         ASClass.array2DCopy(src, res);
         return res;
+    }
+
+    /**
+     * 将当前矩阵中的所有行拷贝到目标数组当中，需要确保目标数组的长度大于当前矩阵中的行数量。
+     * <p>
+     * To copy all rows from the current matrix into the target array, it is necessary to ensure that the length of the target array is greater than the number of rows in the current matrix.
+     *
+     * @param array 需要存储当前矩阵对象中所有行元素向量的数组。
+     *              <p>
+     *              An array that needs to store all row element vectors in the current matrix object.
+     * @return 拷贝之后的数组对象。
+     * <p>
+     * The array object after copying.
+     */
+    @Override
+    public Vector<?, ?, int[]>[] toVectors(Vector<?, ?, int[]>[] array) {
+        if (array.length < this.getRowCount())
+            throw new OperatorOperationException("The length of the target array you provided is insufficient.");
+        int index = -1;
+        for (int[] doubles : this) {
+            array[++index] = IntegerVector.parse(doubles);
+        }
+        return array;
     }
 
     /**
@@ -906,6 +920,27 @@ public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], i
             ASMath.arrayReverse(this.toArrays());
             return this;
         }
+    }
+
+    /**
+     * 将当前矩阵中的所有元素进行扁平化操作，获取到扁平化之后的数组对象。
+     * <p>
+     * Flatten all elements in the current matrix to obtain the flattened array object.
+     *
+     * @return 将当前矩阵中每行元素进行扁平化之后的结果。
+     * <p>
+     * The result of flattening each row of elements in the current matrix.
+     */
+    @Override
+    public int[] flatten() {
+        int[] res = new int[this.getNumberOfDimensions()];
+        int index = 0;
+        // 开始进行元素拷贝
+        for (int[] ints : this) {
+            System.arraycopy(ints, 0, res, index, ints.length);
+            index += ints.length;
+        }
+        return res;
     }
 
     /**

@@ -23,7 +23,7 @@ AS库目录有多个版本，如果希望查询不同版本的更新日志以及
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>algorithmStar</artifactId>
-        <version>1.18</version>
+        <version>1.19</version>
     </dependency>
 </dependencies>
 ```
@@ -81,18 +81,18 @@ AS库在针对数据库，Spark等各种平台对接的时候，需要使用到�
     <dependency>
         <groupId>org.apache.spark</groupId>
         <artifactId>spark-core_2.12</artifactId>
-        <version>3.1.3</version>
+        <version>3.4.0</version>
     </dependency>
     <dependency>
         <groupId>org.apache.spark</groupId>
         <artifactId>spark-sql_2.12</artifactId>
-        <version>3.1.3</version>
+        <version>3.4.0</version>
     </dependency>
 
     <dependency>
         <groupId>org.apache.spark</groupId>
         <artifactId>spark-mllib_2.12</artifactId>
-        <version>3.1.3</version>
+        <version>3.4.0</version>
     </dependency>
 
     <!-- 摄像头依赖库，如果您有需要通过摄像头获取数据对象的需求，可以引入本库 -->

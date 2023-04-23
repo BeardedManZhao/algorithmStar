@@ -705,52 +705,46 @@ public class MAIN1 {
 package zhao.algorithmMagic;
 
 import zhao.algorithmMagic.core.model.*;
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
 import zhao.algorithmMagic.operands.table.SingletonCell;
 import zhao.algorithmMagic.operands.vector.DoubleVector;
-
-import java.io.File;
 
 public class MAIN1 {
 
     // 在 main 函数中进行模型的保存和读取以及使用
     public static void main(String[] args) {
-        // 获取到线性神经网络模型
-        LNeuralNetwork lNeuralNetwork = ASModel.L_NEURAL_NETWORK;
-        // 设置学习率 为 0.01
-        lNeuralNetwork.setArg(LNeuralNetwork.LEARNING_RATE, SingletonCell.$(0.01));
-        // 设置激活函数为 LEAKY_RE_LU
-        lNeuralNetwork.setArg(LNeuralNetwork.PERCEPTRON, SingletonCell.$(Perceptron.parse(ActivationFunction.LEAKY_RE_LU)));
-        // 设置学习次数 为 570 * 目标数
-        lNeuralNetwork.setArg(LNeuralNetwork.LEARN_COUNT, SingletonCell.$(570));
-        // 设置目标数值
-        lNeuralNetwork.setArg(
-                LNeuralNetwork.TARGET,
-                // 假设这里是5组数据对应的结果
-                SingletonCell.$(new double[]{300, 210, 340, 400, 500})
-        );
-        // 构建被学习的数据 由此数据推导结果 找到每一组数据中 3 个参数之间的数学模型
-        DoubleVector X1 = DoubleVector.parse(100, 50, 50);
-        DoubleVector X2 = DoubleVector.parse(80, 50, 50);
-        DoubleVector X3 = DoubleVector.parse(120, 50, 50);
-        DoubleVector x4 = DoubleVector.parse(100, 100, 100);
-        DoubleVector x5 = DoubleVector.parse(150, 100, 100);
-        // 构建初始权重向量
-        DoubleVector W = DoubleVector.parse(20, 18, 18);
-        // 训练出模型
-        NumberModel model = lNeuralNetwork.function(X1, X2, X3, x4, x5, W);
 
-        // TODO 接下来开始使用模型进行一些测试
-        // 向模型中传递一些数值
-        Double function1 = model.function(new Double[]{100.0, 50.0, 50.0});
-        // 打印计算出来的结果
-        System.out.println(function1);
-        // 再一次传递一些数值
-        Double function2 = model.function(new Double[]{150.0, 100.0, 100.0});
-        // 打印计算出来的结果
-        System.out.println(function2);
+        // 构建 X 数据的容器 将矩阵中的数据拷贝到向量数组中
+        DoubleVector[] X = (DoubleVector[]) DoubleMatrix.parse(
+                new double[]{100, 50, 50},
+                new double[]{50, 50, 50},
+                new double[]{50, 100, 50}
+                // 在这里将矩阵按行拷贝到一个 长度为 4 的数组中
+        ).toVectors(new DoubleVector[4]);
+        // 数组中之所以要多一个元素的位置是因为数组的尾部要添加权重，才能够被训练
+        X[3] = DoubleVector.parse(20, 18, 18);
 
-        // TODO 确定模型可用，将模型保存
-        ASModel.Utils.write(new File("C:\\Users\\Liming\\Desktop\\fsDownload\\MytModel.as"), model);
+
+        // 构建 Y 数据
+        double[] Y = {300, 200, 250, 350};
+
+        // 将 线性随机神经网络模型获取到
+        LNeuralNetwork lNeuralNetwork = ASModel.LS_NEURAL_NETWORK;
+        // 设置学习率
+        lNeuralNetwork.setArg(LNeuralNetwork.LEARNING_RATE, SingletonCell.$(0.02));
+        // 设置所有数据样本的训练次数 为 1024
+        lNeuralNetwork.setArg(LNeuralNetwork.LEARN_COUNT, SingletonCell.$(1024));
+        // 设置当前神经网络中神经元的激活函数
+        lNeuralNetwork.setArg(LNeuralNetwork.PERCEPTRON, SingletonCell.$(Perceptron.parse(ActivationFunction.RELU)));
+        // 设置当前神经网络中的目标数值
+        lNeuralNetwork.setArg(LNeuralNetwork.TARGET, SingletonCell.$(Y));
+
+        // 开始训练 在这里传递进需要被学习的数据 并获取到模型 需要注意这里参数的最后一个元素是初始权重向量
+        NumberModel numberModel = lNeuralNetwork.function(X);
+        System.out.println(numberModel);
+        // 这里直接调用模型 预测 x1 = 200   x2 = 100  x3 = 50 时候的结果  期望数值是 550
+        Double function = numberModel.function(new Double[]{200.0, 100.0, 50.0});
+        System.out.println(function);
     }
 }
 ```
@@ -910,27 +904,93 @@ import java.net.URISyntaxException;
 
 public class MAIN1 {
 
-  // 在 main 函数中进行模型的保存和读取以及使用
-  public static void main(String[] args) throws IOException {
-    // 构建 HDFS 数据输入对象
-    Path path = new Path("hdfs://192.168.0.141:8020");
-    FileSystem fileSystem = path.getFileSystem(new Configuration());
-    InputComponent inputComponent = InputHDFS.builder()
-            .addInputArg(InputHDFSBuilder.CHAR_SET, SingletonCell.$(','))
-            .addInputArg(InputHDFSBuilder.FILE_SYSTEM, new FinalCell<>(fileSystem))
-            .addInputArg(InputHDFSBuilder.IN_PATH, SingletonCell.$_String("hdfs://192.168.0.141:8020/myFile/test.csv"))
-            .addInputArg(InputHDFSBuilder.FIELD, new FinalCell<>(new String[]{"null"}))
-            .create();
-    // 从 HDFS 中获取到 Double 矩阵对象
-    DoubleMatrix doubleMatrix = DoubleMatrix.parse(inputComponent);
-    // 从 HDFS 中获取到 Integer 矩阵对象
-    IntegerMatrix integerMatrix = IntegerMatrix.parse(inputComponent);
-    // 打印矩阵
-    System.out.println(doubleMatrix);
-    System.out.println(integerMatrix);
-    // 关闭 fileSystem
-    fileSystem.close();
-  }
+    // 在 main 函数中进行模型的保存和读取以及使用
+    public static void main(String[] args) throws IOException {
+        // 构建 HDFS 数据输入对象
+        Path path = new Path("hdfs://192.168.0.141:8020");
+        FileSystem fileSystem = path.getFileSystem(new Configuration());
+        InputComponent inputComponent = InputHDFS.builder()
+                .addInputArg(InputHDFSBuilder.CHAR_SET, SingletonCell.$(','))
+                .addInputArg(InputHDFSBuilder.FILE_SYSTEM, new FinalCell<>(fileSystem))
+                .addInputArg(InputHDFSBuilder.IN_PATH, SingletonCell.$_String("hdfs://192.168.0.141:8020/myFile/test.csv"))
+                .addInputArg(InputHDFSBuilder.FIELD, new FinalCell<>(new String[]{"null"}))
+                .create();
+        // 从 HDFS 中获取到 Double 矩阵对象
+        DoubleMatrix doubleMatrix = DoubleMatrix.parse(inputComponent);
+        // 从 HDFS 中获取到 Integer 矩阵对象
+        IntegerMatrix integerMatrix = IntegerMatrix.parse(inputComponent);
+        // 打印矩阵
+        System.out.println(doubleMatrix);
+        System.out.println(integerMatrix);
+        // 关闭 fileSystem
+        fileSystem.close();
+    }
+}
+```
+
+* 矩阵对象支持扁平化操作，能够方便的将一个矩阵对象扁平化成为一个数组。
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
+
+import java.util.Arrays;
+
+public class MAIN1 {
+
+    // 在 main 函数中进行模型的保存和读取以及使用
+    public static void main(String[] args) {
+        // 构建一个矩阵对象
+        DoubleMatrix doubleMatrix = DoubleMatrix.parse(
+                new double[]{100, 50, 50},
+                new double[]{50, 50, 50},
+                new double[]{50, 100, 50}
+        );
+        // 将矩阵进行扁平化操作，获取到数组对象
+        double[] flatten = doubleMatrix.flatten();
+        System.out.println(Arrays.toString(flatten));
+    }
+}
+```
+
+* DF 对象支持通过行主键名称获取刀 DF 中对应的行，同时也支持 DF 对象到矩阵对象之间的转换操作。
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
+import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
+import zhao.algorithmMagic.operands.table.DataFrame;
+import zhao.algorithmMagic.operands.table.SFDataFrame;
+import zhao.algorithmMagic.operands.table.SingletonSeries;
+
+import java.io.File;
+
+public class MAIN1 {
+
+    // 在 main 函数中进行模型的保存和读取以及使用
+    public static void main(String[] args) {
+        // 构建一个 DF 对象
+        DataFrame dataFrame = SFDataFrame.builder(new File("C:\\Users\\zhao\\Desktop\\out\\dataFrame.csv"))
+                .create("id", "name", "sex", "age")
+                .primaryKey("name")
+                .setSep(',')
+                .execute();
+        // 查看 DF 对象
+        dataFrame.show();
+        // 查询其中 主键为 zhao 的行
+        System.out.println(dataFrame.selectRow("zhao"));
+
+        // 将 DF 转换成 矩阵 TODO 这类操作将会使得其中的数值类型成为新矩阵中的元素，新矩阵中的行列数以 DF 中的第一行为准
+        dataFrame.insert(SingletonSeries.parse("4", "zhao123", "MAN", "20", "1"));
+        // 将 DF 对象转换成为 Double矩阵 
+        DoubleMatrix doubleMatrix = dataFrame.toDoubleMatrix();
+        System.out.println(doubleMatrix);
+        // 将 DF 对象转换成为 Integer矩阵
+        IntegerMatrix integerMatrix = dataFrame.toIntegerMatrix();
+        System.out.println(integerMatrix);
+    }
 }
 ```
 

@@ -24,6 +24,12 @@ public final class Perceptron implements ASModel<Integer, DoubleMatrix, Cell<Dou
         FUNCTION = function;
     }
 
+    /**
+     * 提供一个激活函数，生成对应的感知机神经元对象。
+     *
+     * @param FUNCTION 激活函数实现对象
+     * @return 感知机
+     */
     public static Perceptron parse(ActivationFunction FUNCTION) {
         return new Perceptron(FUNCTION);
     }
@@ -37,7 +43,6 @@ public final class Perceptron implements ASModel<Integer, DoubleMatrix, Cell<Dou
      *              <p>
      *              The project number configured in the model is usually provided with a static parameter number in the implementation class.
      * @param value 模型中配置项的具体数据，其可以是任何类型的单元格对象。
-     *              <p>
      */
     @Override
     public void setArg(Integer key, @NotNull Cell<?> value) {

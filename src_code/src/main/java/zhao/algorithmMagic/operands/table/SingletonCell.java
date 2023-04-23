@@ -69,9 +69,12 @@ public final class SingletonCell<valueType> extends FinalCell<valueType> {
      * <p>
      * Retrieve a cell, which receives a string and matches different data types based on the string.
      *
-     * @param string 需要被匹配的字符串对象。
-     *               <p>
-     *               The string object that needs to be matched.
+     * @param string      需要被匹配的字符串对象。
+     *                    <p>
+     *                    The string object that needs to be matched.
+     * @param <valueType> 当前单元格中要接收的数据类型。
+     *                    <p>
+     *                    The type of data to receive in the current cell.
      * @return 获取到的单例单元格对象，该对象在内存中是唯一的。
      * <p>
      * The obtained singleton cell object is unique in memory.

@@ -14,7 +14,7 @@ import java.awt.*;
 public class MAIN1 {
     public static void main(String[] args) {
         // 获取一张图像的像素矩阵
-        ColorMatrix parse1 = ColorMatrix.parseGrayscale("C:\\Users\\Liming\\Desktop\\fsdownload\\test1.bmp");
+        ColorMatrix parse1 = ColorMatrix.parseGrayscale("C:\\Users\\Liming\\Desktop\\fsDownload\\test1.bmp");
         // 将 parse1 进行二值化
         parse1.localBinary(ColorMatrix._G_, 30, 0, 0xffffff, 1);
         // 将 parse1 矩阵腐蚀，然后将腐蚀的结果获取到
@@ -42,7 +42,7 @@ import java.awt.*;
 public class MAIN1 {
     public static void main(String[] args) {
         // 获取一张图像的像素矩阵
-        ColorMatrix colors = ColorMatrix.parse("C:\\Users\\Liming\\Desktop\\fsdownload\\test1.bmp");
+        ColorMatrix colors = ColorMatrix.parse("C:\\Users\\Liming\\Desktop\\fsDownload\\test1.bmp");
         // 将图像拷贝一份出来
         ColorMatrix parse1 = ColorMatrix.parse(colors.copyToNewArrays());
         // 将 parse1 进行二值化 // 请注意阈值
@@ -80,7 +80,7 @@ public class MAIN1 {
         ColorMatrix resImage1, parse1;
         {
             // 获取一张图像的像素矩阵
-            ColorMatrix colors = ColorMatrix.parse("C:\\Users\\Liming\\Desktop\\fsdownload\\test3.bmp");
+            ColorMatrix colors = ColorMatrix.parse("C:\\Users\\Liming\\Desktop\\fsDownload\\test3.bmp");
             // 将图像拷贝一份出来
             parse1 = ColorMatrix.parse(colors.copyToNewArrays());
             // 将结果二值化
@@ -133,8 +133,8 @@ public class MAIN1 {
     public static void main(String[] args) {
         ColorMatrix colorMatrix1, colorMatrix2;
         {        // 将图像与样本读取进来
-            colorMatrix1 = ColorMatrix.parse("C:\\Users\\zhao\\Desktop\\fsdownload\\YB.bmp");
-            colorMatrix2 = ColorMatrix.parse("C:\\Users\\zhao\\Desktop\\fsdownload\\test22.jpg");
+            colorMatrix1 = ColorMatrix.parse("C:\\Users\\zhao\\Desktop\\fsDownload\\YB.bmp");
+            colorMatrix2 = ColorMatrix.parse("C:\\Users\\zhao\\Desktop\\fsDownload\\test22.jpg");
             ColorMatrix temp = ColorMatrix.parse(colorMatrix2.copyToNewArrays());
             // 开始二值化
             colorMatrix1.localBinary(ColorMatrix._G_, 10, 0xffffff, 0, 1);
@@ -179,8 +179,8 @@ public class MAIN1 {
         ColorMatrix colorMatrix1, colorMatrix2;
         {
             // 将图像与样本读取进来
-            colorMatrix1 = ColorMatrix.parse("C:\\Users\\zhao\\Desktop\\fsdownload\\YB.bmp");
-            colorMatrix2 = ColorMatrix.parse("C:\\Users\\zhao\\Desktop\\fsdownload\\test22.jpg");
+            colorMatrix1 = ColorMatrix.parse("C:\\Users\\zhao\\Desktop\\fsDownload\\YB.bmp");
+            colorMatrix2 = ColorMatrix.parse("C:\\Users\\zhao\\Desktop\\fsDownload\\test22.jpg");
             ColorMatrix temp = ColorMatrix.parse(colorMatrix2.copyToNewArrays());
             // 开始二值化
             colorMatrix1.localBinary(ColorMatrix._G_, 10, 0xffffff, 0, 1);
@@ -388,7 +388,7 @@ import java.util.HashMap;
 public class MAIN1 {
     public static void main(String[] args) {
         // 被处理图像路径
-        String dataPath = "C:\\Users\\Liming\\Desktop\\fsdownload\\微信图片_33.jpg";
+        String dataPath = "C:\\Users\\Liming\\Desktop\\fsDownload\\微信图片_33.jpg";
         ColorMatrix colorMatrix1 = ColorMatrix.parse(dataPath);
         colorMatrix1.show("src");
         // 将矩阵变换 首先需要创建出不同模式中需要的配置信息 这里是反转和拉伸矩阵的配置
@@ -547,7 +547,7 @@ public class MAIN1 {
         System.out.println(function2);
 
         // TODO 确定模型可用，将模型保存
-        ASModel.Utils.write(new File("C:\\Users\\zhao\\Desktop\\fsdownload\\MytModel.as"), model);
+        ASModel.Utils.write(new File("C:\\Users\\zhao\\Desktop\\fsDownload\\MytModel.as"), model);
     }
 }
 ```

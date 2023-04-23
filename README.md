@@ -29,7 +29,7 @@ can add it to your maven project, or you can download it from Releases and manua
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>algorithmStar</artifactId>
-        <version>1.18</version>
+        <version>1.19</version>
     </dependency>
 </dependencies>
 ```
@@ -95,19 +95,19 @@ need to, you can refer to the following configuration.
     <dependency>
         <groupId>org.apache.spark</groupId>
         <artifactId>spark-core_2.12</artifactId>
-        <version>3.1.3</version>
+        <version>3.4.0</version>
     </dependency>
 
     <dependency>
         <groupId>org.apache.spark</groupId>
         <artifactId>spark-sql_2.12</artifactId>
-        <version>3.1.3</version>
+        <version>3.4.0</version>
     </dependency>
 
     <dependency>
         <groupId>org.apache.spark</groupId>
         <artifactId>spark-mllib_2.12</artifactId>
-        <version>3.1.3</version>
+        <version>3.4.0</version>
     </dependency>
 
     <!-- Camera device dependency library. If you have a need to obtain data objects through the camera, you can import this dependency. -->
