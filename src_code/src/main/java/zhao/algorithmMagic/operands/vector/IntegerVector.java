@@ -243,6 +243,36 @@ public class IntegerVector extends ASVector<IntegerVector, Integer, int[]> {
     }
 
     /**
+     * 计算两个向量的内积，也称之为数量积，具体实现请参阅api说明
+     * <p>
+     * Calculate the inner product of two vectors, also known as the quantity product, please refer to the api node for the specific implementation
+     *
+     * @param vector 第二个被计算的向量对象
+     *               <p>
+     *               the second computed vector object
+     * @return 两个向量的内积
+     * waiting to be realized
+     */
+    public double innerProduct(DoubleVector vector) {
+        int[] ints1 = this.VectorArrayPrimitive;
+        double[] ints2 = vector.VectorArrayPrimitive;
+        if (ints1.length == ints2.length) {
+            int innerProduct = 0b0;
+            int indexNum = 0b0;
+            while (indexNum < ints1.length) {
+                innerProduct += ints1[indexNum] * ints2[indexNum];
+                indexNum++;
+            }
+            return innerProduct;
+        } else {
+            throw new OperatorOperationException(
+                    "'IntegerVector1 innerProduct IntegerVector2' 时，两个'IntegerVector'的向量所包含的数量不同，IntegerVector1=[" + ints1.length + "]，IntegerVector2=[" + ints2.length + "]\n" +
+                            "When 'IntegerVector1 innerProduct IntegerVector2', the two vectors of 'IntegerVector' contain different quantities, IntegerVector1=[" + ints1.length + "], IntegerVector2=[" + ints2.length + "]"
+            );
+        }
+    }
+
+    /**
      * @return 该类的实现类对象，用于拓展该接口的子类
      */
     @Override
