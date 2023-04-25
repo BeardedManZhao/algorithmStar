@@ -69,10 +69,11 @@ public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], i
      * 根据一个文件中的数据获取到对应的整形的矩阵数据对象，目前支持通过图片获取到对应的像素整形矩阵。
      *
      * @param inputString 需要被读取的文本文件或图像文件
+     * @param wh          图像提取的时候需要使用的图像尺寸交换操作。
      * @return 构建出来的结果数据对象
      */
-    public static IntegerMatrix parse(String inputString) {
-        return IntegerMatrix.parse(ASIO.parseImageGetArray(inputString));
+    public static IntegerMatrix parse(String inputString, int... wh) {
+        return IntegerMatrix.parse(ASIO.parseImageGetArray(inputString, wh));
     }
 
     /**

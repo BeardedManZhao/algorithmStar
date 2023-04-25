@@ -455,8 +455,8 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      * <p>
      * The matrix object obtained from the image.
      */
-    public static ColorMatrix parse(String inputString) {
-        return ColorMatrix.parse(ASIO.parseImageGetColorArray(inputString));
+    public static ColorMatrix parse(String inputString, int... v) {
+        return ColorMatrix.parse(ASIO.parseImageGetColorArray(inputString, v));
     }
 
     /**
@@ -505,7 +505,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
                 int[] blues = BMat.toArrays()[y];
                 for (int i = 0; i < color.length; i++) {
                     color[i] = new Color(
-                            reds[i] + greens[i] + blues[i]
+                            ASMath.rgbaTOIntRGBA(reds[i], greens[i], blues[i])
                     );
                 }
             }
@@ -556,8 +556,8 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      * @param url 需要被解析的URL对象
      * @return URL对象所对应的图像矩阵。
      */
-    public static ColorMatrix parse(URL url) {
-        return ColorMatrix.parse(ASIO.parseURLGetColorArray(url));
+    public static ColorMatrix parse(URL url, int... v) {
+        return ColorMatrix.parse(ASIO.parseURLGetColorArray(url, v));
     }
 
 

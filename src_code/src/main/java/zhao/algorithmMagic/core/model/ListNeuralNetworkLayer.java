@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * @author 赵凌宇
  * 2023/4/19 18:55
  */
-public final class ListNeuralNetworkLayer extends ArrayList<Perceptron> implements NeuralNetworkLayer {
+public class ListNeuralNetworkLayer extends ArrayList<Perceptron> implements NeuralNetworkLayer {
 
 
     /**

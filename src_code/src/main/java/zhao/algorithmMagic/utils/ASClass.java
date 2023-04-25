@@ -14,6 +14,8 @@ import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute;
 import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute2D;
 import zhao.algorithmMagic.utils.transformation.Transformation;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -388,5 +390,25 @@ public final class ASClass {
                 res[i1] = arr1[i1++];
             }
         }
+    }
+
+    /**
+     * 将 ToolkitImage 转换成为 BufferedImage
+     *
+     * @param toolkitImage 需要被转换的 ToolkitImage
+     * @param width        读取进来之后采用的宽度，将会按照此宽度进行图像变换操作。
+     *                     <p>
+     *                     The width used after reading will be used for image transformation operations based on this width.
+     * @param height       读取进来之后采用的高度，将会按照此高度进行图像变换操纵。
+     *                     <p>
+     *                     The height used after reading will be used for image transformation and manipulation according to this height.
+     * @return 转换之后的 BufferedImage
+     */
+    public static BufferedImage ImageTOBuffer(Image toolkitImage, int width, int height) {
+        BufferedImage buffImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2d = buffImage.createGraphics();
+        g2d.drawImage(toolkitImage, 0, 0, null);
+        g2d.dispose();
+        return buffImage;
     }
 }

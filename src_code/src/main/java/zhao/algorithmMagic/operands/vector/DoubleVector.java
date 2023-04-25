@@ -123,6 +123,15 @@ public class DoubleVector extends ASVector<DoubleVector, Double, double[]> {
         return parse(res);
     }
 
+    public static DoubleVector parse(int[] flatten) {
+        double[] res = new double[flatten.length];
+        int count = -1;
+        for (int i : flatten) {
+            res[++count] = i;
+        }
+        return parse(res);
+    }
+
     /**
      * 将向量的字段进行刷新
      */

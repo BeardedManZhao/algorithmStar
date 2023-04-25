@@ -58,10 +58,11 @@ public class IntegerMatrixSpace extends MatrixSpace<IntegerMatrixSpace, Integer,
      * 根据一个文件中的数据获取到对应的整形的矩阵数据对象，目前支持通过图片获取到对应的像素整形矩阵。
      *
      * @param inputString 需要被读取的文本文件或图像文件
+     * @param wh          额外可选参数，其中代表读取进来之后进行变换的宽高。
      * @return 构建出来的矩阵空间对象，其中空间有很多层矩阵，每一层矩阵都是图像的一个通道。
      */
-    public static IntegerMatrixSpace parse(String inputString) {
-        return parse(ASIO.parseImageGetArrays(inputString));
+    public static IntegerMatrixSpace parse(String inputString, int... wh) {
+        return parse(ASIO.parseImageGetArrays(inputString, wh));
     }
 
     @Override

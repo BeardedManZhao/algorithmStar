@@ -6,6 +6,7 @@ import zhao.algorithmMagic.operands.table.Cell;
 import zhao.algorithmMagic.operands.table.SingletonCell;
 import zhao.algorithmMagic.operands.vector.DoubleVector;
 import zhao.algorithmMagic.operands.vector.IntegerVector;
+import zhao.algorithmMagic.utils.ASClass;
 
 /**
  * 感知机类，该类实现了AS模型类，其由线性函数与激活函数组成，其接收线性函数中的权重矩阵与数据矩阵对象。
@@ -19,10 +20,12 @@ public final class Perceptron implements ASModel<Integer, DoubleMatrix, Cell<Dou
 
     public static final int BIAS = 1;
     final ActivationFunction FUNCTION;
+    private final String name;
     private final DoubleVector weight;
     double biasNum = 0;
 
-    Perceptron(ActivationFunction function, DoubleVector weight) {
+    Perceptron(String name, ActivationFunction function, DoubleVector weight) {
+        this.name = name;
         FUNCTION = function;
         this.weight = weight;
     }
@@ -34,8 +37,19 @@ public final class Perceptron implements ASModel<Integer, DoubleMatrix, Cell<Dou
      * @param weight   当前神经元感知机中的权重向量
      * @return 感知机
      */
-    public static Perceptron parse(ActivationFunction FUNCTION, DoubleVector weight) {
-        return new Perceptron(FUNCTION, weight);
+    public static Perceptron parse(ActivationFunction FUNCTION, int[] weight) {
+        return new Perceptron(FUNCTION.name(), FUNCTION, DoubleVector.parse(ASClass.IntArray_To_DoubleArray(weight)));
+    }
+
+    /**
+     * 提供一个激活函数，生成对应的感知机神经元对象。
+     *
+     * @param FUNCTION 激活函数实现对象
+     * @param weight   当前神经元感知机中的权重向量
+     * @return 感知机
+     */
+    public static Perceptron parse(String name, ActivationFunction FUNCTION, int[] weight) {
+        return new Perceptron(name, FUNCTION, DoubleVector.parse(ASClass.IntArray_To_DoubleArray(weight)));
     }
 
     /**
@@ -163,5 +177,12 @@ public final class Perceptron implements ASModel<Integer, DoubleMatrix, Cell<Dou
      */
     private Cell<Double> returnCell(double value) {
         return SingletonCell.$(value);
+    }
+
+    /**
+     * @return 当前感知机的名称。
+     */
+    public String getName() {
+        return name;
     }
 }

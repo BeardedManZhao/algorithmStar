@@ -1669,7 +1669,7 @@ public final class ASMath {
                 // 峰值在右侧
                 if (mv < next) left = mid;
                 else if (mv > next) {
-                    if (arr[mid - 1] > mv) {
+                    if (mid > 0 && arr[mid - 1] > mv) {
                         // 峰值在左侧
                         right = mid;
                     } else {
@@ -1716,7 +1716,7 @@ public final class ASMath {
                 if (mv > next) left = mid;
                 else if (mv < next) {
                     // 谷底值在左侧
-                    if (arr[mid - 1] < mv) right = mid;
+                    if (mid > 0 && arr[mid - 1] < mv) right = mid;
                     else {
                         res = mid;
                         isOk = true;
@@ -1755,11 +1755,10 @@ public final class ASMath {
             int left = 0, right = maxIndex;
             while (left < right) {
                 int mid = (right + left) >> 1;
-                double mv = arr[mid];
-                double next = arr[mid + 1];
+                double mv = arr[mid], next = arr[mid + 1];
                 if (mv > next) left = mid;
                 else if (mv < next) {
-                    if (arr[mid - 1] < mv) right = mid;
+                    if (mid > 0 && arr[mid - 1] < mv) right = mid;
                     else {
                         res = mid;
                         isOk = true;
