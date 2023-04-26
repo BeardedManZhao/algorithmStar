@@ -529,17 +529,14 @@ public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], i
         int colCount2 = matrix.getColCount();
         if (rowCount1 == rowCount2) {
             int res = 0;
-            int rowPointer1 = this.RowPointer;
-            int rowPointer2 = matrix.RowPointer;
-            while (this.MovePointerDown() && matrix.MovePointerDown()) {
-                int[] ints = this.toArray();
-                double[] ints1 = matrix.toArray();
-                for (int i = 0; i < ints.length; i++) {
-                    res += ints[i] * ints1[i];
+            double[][] doubles = matrix.toArrays();
+            int index = -1;
+            for (int[] ints1 : this) {
+                double[] ints2 = doubles[++index];
+                for (int i = 0; i < ints2.length; i++) {
+                    res += ints1[i] * ints2[i];
                 }
             }
-            this.RowPointer = rowPointer1;
-            matrix.RowPointer = rowPointer2;
             return res;
         } else {
             throw new OperatorOperationException("您在'IntegerMatrix1 innerProduct IntegerMatrix2'的时候发生了错误，原因是两个矩阵的行列数不一致！\n" +

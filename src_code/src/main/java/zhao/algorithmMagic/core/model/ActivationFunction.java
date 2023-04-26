@@ -24,6 +24,16 @@ public enum ActivationFunction {
         }
 
         /**
+         * 设置神经网络的输出结果，在这里要将所有的结果提供给激活函数。
+         *
+         * @param value 神经网络计算得到的结果数据。
+         */
+        @Override
+        public void setYVector(double... value) {
+
+        }
+
+        /**
          * 激活函数正向传播计算函数
          *
          * @param x 函数形参
@@ -53,6 +63,16 @@ public enum ActivationFunction {
          */
         @Override
         public void setLearnR(double value) {
+
+        }
+
+        /**
+         * 设置神经网络的输出结果，在这里要将所有的结果提供给激活函数。
+         *
+         * @param value 神经网络计算得到的结果数据。
+         */
+        @Override
+        public void setYVector(double... value) {
 
         }
 
@@ -93,6 +113,16 @@ public enum ActivationFunction {
         }
 
         /**
+         * 设置神经网络的输出结果，在这里要将所有的结果提供给激活函数。
+         *
+         * @param value 神经网络计算得到的结果数据。
+         */
+        @Override
+        public void setYVector(double... value) {
+
+        }
+
+        /**
          * 激活函数正向传播计算函数
          *
          * @param x 函数形参
@@ -126,6 +156,16 @@ public enum ActivationFunction {
         }
 
         /**
+         * 设置神经网络的输出结果，在这里要将所有的结果提供给激活函数。
+         *
+         * @param value 神经网络计算得到的结果数据。
+         */
+        @Override
+        public void setYVector(double... value) {
+
+        }
+
+        /**
          * 激活函数正向传播计算函数
          *
          * @param x 函数形参
@@ -155,6 +195,16 @@ public enum ActivationFunction {
          */
         @Override
         public void setLearnR(double value) {
+
+        }
+
+        /**
+         * 设置神经网络的输出结果，在这里要将所有的结果提供给激活函数。
+         *
+         * @param value 神经网络计算得到的结果数据。
+         */
+        @Override
+        public void setYVector(double... value) {
 
         }
 
@@ -195,6 +245,16 @@ public enum ActivationFunction {
         }
 
         /**
+         * 设置神经网络的输出结果，在这里要将所有的结果提供给激活函数。
+         *
+         * @param value 神经网络计算得到的结果数据。
+         */
+        @Override
+        public void setYVector(double... value) {
+
+        }
+
+        /**
          * 激活函数正向传播计算函数
          *
          * @param x 函数形参
@@ -224,6 +284,16 @@ public enum ActivationFunction {
          */
         @Override
         public void setLearnR(double value) {
+        }
+
+        /**
+         * 设置神经网络的输出结果，在这里要将所有的结果提供给激活函数。
+         *
+         * @param value 神经网络计算得到的结果数据。
+         */
+        @Override
+        public void setYVector(double... value) {
+
         }
 
         /**
@@ -260,6 +330,16 @@ public enum ActivationFunction {
         }
 
         /**
+         * 设置神经网络的输出结果，在这里要将所有的结果提供给激活函数。
+         *
+         * @param value 神经网络计算得到的结果数据。
+         */
+        @Override
+        public void setYVector(double... value) {
+
+        }
+
+        /**
          * 激活函数正向传播计算函数
          *
          * @param x 函数形参
@@ -282,6 +362,58 @@ public enum ActivationFunction {
             return eP / (1 - eP);
         }
     };
+/*
+    SOFTMAX {
+
+        private double denominator = 100;
+
+        /**
+         * 设置学习率
+         *
+         * @param value 学习率具体的数值。
+         * /
+        @Override
+        public void setLearnR(double value) {
+
+        }
+
+        /**
+         * 设置神经网络的输出结果，在这里要将所有的结果提供给激活函数。
+         *
+         * @param value 神经网络计算得到的结果数据。
+         * /
+        @Override
+        public void setYVector(double... value) {
+            this.denominator = 0;
+            for (double v : value) {
+                this.denominator += Math.exp(v);
+            }
+        }
+
+        /**
+         * 激活函数正向传播计算函数
+         *
+         * @param x 函数形参
+         * @return 激活函数正向传播计算的结果。
+         * /
+        @Override
+        public double function(double x) {
+            System.out.println(Math.exp(x) + " / " + this.denominator);
+            return Math.exp(x) / this.denominator;
+        }
+
+        /**
+         * 激活函数反向求导数的计算函数
+         *
+         * @param x 函数形参
+         * @return 激活函数反向传播的导数的数值。
+         * /
+        @Override
+        public double derivativeFunction(double x) {
+            return 0;
+        }
+    };
+*/
 
     /**
      * 设置学习率
@@ -289,6 +421,14 @@ public enum ActivationFunction {
      * @param value 学习率具体的数值。
      */
     public abstract void setLearnR(double value);
+
+    /**
+     * 设置神经网络的输出结果，在这里要将所有的结果提供给激活函数。
+     *
+     * @param value 神经网络计算得到的结果数据。
+     */
+    public abstract void setYVector(double... value);
+
 
     /**
      * 激活函数正向传播计算函数

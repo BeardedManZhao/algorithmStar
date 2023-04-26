@@ -476,17 +476,14 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
         int colCount2 = matrix.getColCount();
         if (rowCount1 == rowCount2) {
             double res = 0;
-            int rowPointer1 = this.RowPointer;
-            int rowPointer2 = matrix.RowPointer;
-            while (this.MovePointerDown() && matrix.MovePointerDown()) {
-                double[] doubles1 = this.toArray();
-                double[] doubles2 = matrix.toArray();
-                for (int i = 0; i < doubles1.length; i++) {
-                    res += doubles1[i] * doubles2[i];
+            int index = -1;
+            double[][] doubles = matrix.toArrays();
+            for (double[] ints1 : this) {
+                double[] ints2 = doubles[++index];
+                for (int i = 0; i < ints2.length; i++) {
+                    res += ints1[i] * ints2[i];
                 }
             }
-            this.RowPointer = rowPointer1;
-            matrix.RowPointer = rowPointer2;
             return res;
         } else {
             throw new OperatorOperationException("您在'DoubleMatrix1 innerProduct DoubleMatrix2'的时候发生了错误，原因是两个矩阵的行列数不一致！\n" +

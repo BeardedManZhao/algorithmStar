@@ -53,6 +53,17 @@ public final class Perceptron implements ASModel<Integer, DoubleMatrix, Cell<Dou
     }
 
     /**
+     * 提供一个激活函数，生成对应的感知机神经元对象。
+     *
+     * @param FUNCTION 激活函数实现对象
+     * @param weight   当前神经元感知机中的权重向量
+     * @return 感知机
+     */
+    public static Perceptron parse(String name, ActivationFunction FUNCTION, double[] weight) {
+        return new Perceptron(name, FUNCTION, DoubleVector.parse(weight));
+    }
+
+    /**
      * 针对模型进行设置。
      * <p>
      * Set up for the model.
@@ -101,6 +112,7 @@ public final class Perceptron implements ASModel<Integer, DoubleMatrix, Cell<Dou
      * The calculated result data can be of any type.
      */
     public Cell<Double> function(DoubleVector input) {
+        this.FUNCTION.setYVector(input.toArray());
         return this.returnCell(this.FUNCTION.function(input.innerProduct(weight) + biasNum));
     }
 

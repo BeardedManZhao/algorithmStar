@@ -36,7 +36,7 @@ public class LSNeuralNetwork extends LNeuralNetwork {
         DoubleVector doubleVector = input[maxIndex];
         double[] W = doubleVector.toArray();
         // 获取到神经网络层
-        ListNeuralNetworkLayer listNeuralNetworkLayer = new ListNeuralNetworkLayer(doubleVector);
+        ListNeuralNetworkLayer listNeuralNetworkLayer = new ListNeuralNetworkLayer();
         // 添加神经元
         this.perceptron.FUNCTION.setLearnR(this.learningRate);
         listNeuralNetworkLayer.addPerceptron(this.perceptron);
@@ -83,7 +83,7 @@ public class LSNeuralNetwork extends LNeuralNetwork {
         DoubleVector doubleVector = input[maxIndex];
         double[] W = doubleVector.toArray();
         // 获取到神经网络层
-        final ListNeuralNetworkLayer listNeuralNetworkLayer = new ListNeuralNetworkLayer(doubleVector);
+        final ListNeuralNetworkLayer listNeuralNetworkLayer = new ListNeuralNetworkLayer();
         // 设置激活函数以及添加神经元
         this.perceptron.FUNCTION.setLearnR(this.learningRate);
         listNeuralNetworkLayer.addPerceptron(this.perceptron);

@@ -12,6 +12,7 @@ import zhao.algorithmMagic.utils.ASMath;
 import zhao.algorithmMagic.utils.transformation.Transformation;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.concurrent.CountDownLatch;
 
@@ -96,7 +97,7 @@ public final class SingleLayerCNNModel extends ListNeuralNetworkLayer implements
         if (this.kernel == null) {
             throw new OperatorOperationException("Please set the convolution kernel first before adding the target.");
         }
-        super.add(Perceptron.parse(
+        super.addPerceptron(Perceptron.parse(
                         targetName, this.activationFunction,
                         this.transformation.function(colorMatrix.foldingAndSumRGB(this.kw, this.kh, kernel))
                                 .getChannel(this.colorChannel)
@@ -183,7 +184,7 @@ public final class SingleLayerCNNModel extends ListNeuralNetworkLayer implements
      * The calculated result data can be of any type.
      */
     @Override
-    public HashMap<Perceptron, ArrayList<IntegerMatrixSpace>> functionConcurrency(IntegerMatrixSpace[] input) {
+    public HashMap<Perceptron, ArrayList<IntegerMatrixSpace>> functionConcurrency(IntegerMatrixSpace... input) {
         HashMap<Perceptron, ArrayList<IntegerMatrixSpace>> hashMap = new HashMap<>();
         CountDownLatch countDownLatch = new CountDownLatch(input.length);
         for (IntegerMatrixSpace integerMatrices : input) {
@@ -202,6 +203,11 @@ public final class SingleLayerCNNModel extends ListNeuralNetworkLayer implements
                 classification(hashMap, integerMatrices, perceptron);
                 countDownLatch.countDown();
             }).start();
+        }
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         return hashMap;
     }
