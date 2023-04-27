@@ -575,11 +575,11 @@ public class MAIN1 {
         // 获取到线性神经网络模型
         LNeuralNetwork lNeuralNetwork = ASModel.L_NEURAL_NETWORK;
         // 设置学习率 为 0.4
-        lNeuralNetwork.setArg(LNeuralNetwork.LEARNING_RATE, SingletonCell.$(0.4));
+        lNeuralNetwork.setArg(LNeuralNetwork.LEARNING_RATE, SingletonCell.$(0.2));
         // 设置激活函数为 LEAKY_RE_LU 同时在这里设置该神经元使用的权重对象
         lNeuralNetwork.setArg(LNeuralNetwork.PERCEPTRON, SingletonCell.$(Perceptron.parse(ActivationFunction.RELU, W)));
-        // 设置学习次数 为 12 * 目标数
-        lNeuralNetwork.setArg(LNeuralNetwork.LEARN_COUNT, SingletonCell.$(12));
+        // 设置学习次数 为 24 * 目标数
+        lNeuralNetwork.setArg(LNeuralNetwork.LEARN_COUNT, SingletonCell.$(24));
         // 设置目标数值
         lNeuralNetwork.setArg(
                 LNeuralNetwork.TARGET,

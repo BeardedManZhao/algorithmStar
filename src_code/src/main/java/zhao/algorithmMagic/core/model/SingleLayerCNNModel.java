@@ -8,12 +8,13 @@ import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixSpace;
 import zhao.algorithmMagic.operands.table.Cell;
 import zhao.algorithmMagic.operands.vector.DoubleVector;
 import zhao.algorithmMagic.utils.ASClass;
-import zhao.algorithmMagic.utils.ASMath;
+import zhao.algorithmMagic.utils.dataContainer.KeyValue;
 import zhao.algorithmMagic.utils.transformation.Transformation;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -22,32 +23,38 @@ import java.util.concurrent.CountDownLatch;
  * @author 赵凌宇
  * 2023/4/25 11:21
  */
-public final class SingleLayerCNNModel extends ListNeuralNetworkLayer implements ASModel<Integer, IntegerMatrixSpace, HashMap<Perceptron, ArrayList<IntegerMatrixSpace>>> {
+public final class SingleLayerCNNModel implements ASModel<Integer, IntegerMatrixSpace, ClassificationModel<IntegerMatrixSpace>> {
 
-    public final static int COLOR_CHANNEL = 2, Activation_Function = 3, KERNEL = 4, TRANSFORMATION = 5;
+    public final static int COLOR_CHANNEL = 2;
+    public final static int Activation_Function = 3;
+    public final static int KERNEL = 4;
+    public final static int TRANSFORMATION = 5;
+    public final static int LEARN_COUNT = 6;
+    public final static int LEARNING_RATE = 7;
+    private static final long serialVersionUID = -8785883488441048941L;
 
-
-    // 卷积核的宽高 以及 需要被提取的颜色通道
-    private int kw = 0, kh = 0, colorChannel = ColorMatrix._G_;
-
+    // 准备随机数对象
+    private final Random random = new Random();
+    // 设置权重
+    private final ArrayList<KeyValue<String, DoubleVector>> W1 = new ArrayList<>();
+    // 准备损失函数计算组件
+    LossFunction lossFunction = LossFunction.MSE;
+    // 卷积核的宽高 样本的宽高 以及 需要被提取的颜色通道
+    private int kw = 0, kh = 0, ww = -1, wh = -1, colorChannel = ColorMatrix._G_;
+    // 训练次数 与 学习率
+    private int learnCount = 100;
+    private float learningRate = 0.2f;
     // 神经元的激活函数
     private ActivationFunction activationFunction = ActivationFunction.RELU;
-
     // 卷积核
     private DoubleMatrixSpace kernel;
-
     // 图像卷积与进入神经网络之间的附加中间计算任务逻辑实现，其中的参数是图像的卷积结果，一般情况下，这里是池化或二值化的操作。
     private Transformation<ColorMatrix, ColorMatrix> transformation = colorMatrix -> colorMatrix;
+    // 设置所有类别的目标数值，用于计算损失
+    private DoubleVector[] target;
 
-    private static void classification(HashMap<Perceptron, ArrayList<IntegerMatrixSpace>> hashMap, IntegerMatrixSpace integerMatrices, Perceptron perceptron) {
-        ArrayList<IntegerMatrixSpace> integerMatrixSpaces = hashMap.get(perceptron);
-        if (integerMatrixSpaces != null) {
-            integerMatrixSpaces.add(integerMatrices);
-        } else {
-            ArrayList<IntegerMatrixSpace> objects = new ArrayList<>();
-            objects.add(integerMatrices);
-            hashMap.put(perceptron, objects);
-        }
+    public void setLossFunction(LossFunction lossFunction) {
+        this.lossFunction = lossFunction;
     }
 
     /**
@@ -88,22 +95,50 @@ public final class SingleLayerCNNModel extends ListNeuralNetworkLayer implements
         this.transformation = transformation;
     }
 
-    /***
-     * 添加一分类目标，并对其进行名称的设置。
-     * @param targetName 当前目标的名称。
-     * @param colorMatrix 当前目标对应的图像矩阵空间对象。
+    /**
+     * 设置学习训练次数
+     *
+     * @param learnCount 该参数将代表模型训练次数。
      */
-    public void addTarget(String targetName, IntegerMatrixSpace colorMatrix) {
-        if (this.kernel == null) {
-            throw new OperatorOperationException("Please set the convolution kernel first before adding the target.");
+    public void setLearnCount(int learnCount) {
+        this.learnCount = learnCount;
+    }
+
+    /**
+     * 设置目标数据与其对应的初始权重，权重将会被不断的调整，最终使得结果更加贴近目标数据。
+     *
+     * @param target 目标数据向量组，其中每一个向量对应一个权重数据
+     * @param w1     权重数据组，其中每一个权重对应一个目标数据组
+     */
+    public void setWeight(DoubleVector[] target, List<KeyValue<String, IntegerMatrixSpace>> w1) {
+        if (target.length == w1.size()) {
+            this.W1.clear();
+            int w = -1, h = -1;
+            for (KeyValue<String, IntegerMatrixSpace> kv : w1) {
+                IntegerMatrixSpace value = kv.getValue();
+                if (w == -1) {
+                    w = value.getColCount();
+                    h = value.getRowCount();
+                } else if (w != value.getColCount() || h != value.getRowCount()) {
+                    throw new OperatorOperationException("Please provide ya with consistent length and width.");
+                }
+                this.W1.add(new KeyValue<>(kv.getKey(), DoubleVector.parse(
+                                this.transformation.function(
+                                        value.foldingAndSumRGB(this.kw, this.kh, this.kernel)
+                                ).getChannel(this.colorChannel).flatten())
+                        )
+                );
+            }
+            this.ww = w;
+            this.wh = h;
+            this.target = target;
+        } else {
+            throw new OperatorOperationException("You should ensure that the quantity of target data is consistent with the weight data.");
         }
-        super.addPerceptron(Perceptron.parse(
-                        targetName, this.activationFunction,
-                        this.transformation.function(colorMatrix.foldingAndSumRGB(this.kw, this.kh, kernel))
-                                .getChannel(this.colorChannel)
-                                .flatten()
-                )
-        );
+    }
+
+    public void setLearningRate(float learningRate) {
+        this.learningRate = learningRate;
     }
 
     /**
@@ -137,6 +172,10 @@ public final class SingleLayerCNNModel extends ListNeuralNetworkLayer implements
             case TRANSFORMATION:
                 this.setTransformation(ASClass.transform(value.getValue()));
                 break;
+            case LEARN_COUNT:
+                this.setLearnCount(value.getIntValue());
+            case LEARNING_RATE:
+                this.setLearningRate((float) value.getDoubleValue());
         }
     }
 
@@ -153,22 +192,8 @@ public final class SingleLayerCNNModel extends ListNeuralNetworkLayer implements
      * The calculated result data can be of any type.
      */
     @Override
-    public HashMap<Perceptron, ArrayList<IntegerMatrixSpace>> function(IntegerMatrixSpace... input) {
-        HashMap<Perceptron, ArrayList<IntegerMatrixSpace>> hashMap = new HashMap<>();
-        for (IntegerMatrixSpace integerMatrices : input) {
-            // 将当前的图像进行卷积 然后传递给神经网络计算
-            double[] doubles = super.forward(
-                    DoubleVector.parse(
-                            this.transformation.function(
-                                    integerMatrices.foldingAndSumRGB(this.kw, this.kh, kernel)
-                            ).getChannel(ColorMatrix._G_).flatten()
-                    )
-            ).toArray();
-            // 最终获取到最大得分值对应的类别，生成结果包裹。
-            Perceptron perceptron = this.get(ASMath.findMaxIndex(doubles));
-            classification(hashMap, integerMatrices, perceptron);
-        }
-        return hashMap;
+    public ClassificationModel<IntegerMatrixSpace> function(IntegerMatrixSpace... input) {
+        return function(SingleLayerCNNModel.TaskConsumer.VOID, input);
     }
 
     /**
@@ -176,39 +201,202 @@ public final class SingleLayerCNNModel extends ListNeuralNetworkLayer implements
      * <p>
      * Start the model and calculate the operands in it.
      *
-     * @param input 需要被计算的所有操作数对象。
-     *              <p>
-     *              All operand objects that need to be calculated.
+     * @param consumer 运行时附加任务处理器，其中的key是损失函数，value是训练出来的权重。
+     * @param input    需要被计算的所有操作数对象。
+     *                 <p>
+     *                 All operand objects that need to be calculated.
      * @return 计算之后的结果数据，数据可以是任何类型。
      * <p>
      * The calculated result data can be of any type.
      */
-    @Override
-    public HashMap<Perceptron, ArrayList<IntegerMatrixSpace>> functionConcurrency(IntegerMatrixSpace... input) {
-        HashMap<Perceptron, ArrayList<IntegerMatrixSpace>> hashMap = new HashMap<>();
-        CountDownLatch countDownLatch = new CountDownLatch(input.length);
+    public ClassificationModel<IntegerMatrixSpace> function(SingleLayerCNNModel.TaskConsumer consumer, IntegerMatrixSpace... input) {
+        // 将输入的图像进行卷积和附加任务的处理
+        // 构建 X 向量 是等待分类的训练向量
+        DoubleVector[] X1 = new DoubleVector[input.length];
+        int index1 = -1;
         for (IntegerMatrixSpace integerMatrices : input) {
-            new Thread(() -> {
-                // 将当前的图像进行卷积 然后传递给神经网络计算
-                // 最终获取到最大得分值对应的类别，生成结果包裹。
-                Perceptron perceptron = this.get(ASMath.findMaxIndex(
-                        super.forward(
+            X1[++index1] = DoubleVector.parse(
+                    this.transformation.function(
+                            integerMatrices.foldingAndSumRGB(this.kw, this.kh, this.kernel)
+                    ).getChannel(this.colorChannel).flatten()
+            );
+        }
+        ListNeuralNetworkLayer listNeuralNetworkLayer = new ListNeuralNetworkLayer();
+        // 将所有的初始权重添加到神经元中
+        for (KeyValue<String, DoubleVector> doubleVector : W1) {
+            listNeuralNetworkLayer.addPerceptron(Perceptron.parse(doubleVector.getKey(), this.activationFunction, doubleVector.getValue()));
+        }
+        // 开始训练
+        for (int i = 0; i < this.learnCount; i++) {
+            // 获取到当前的样本与目标编号 并获取到对应的权重和样本集
+            int id = random.nextInt(index1);
+            // 开始前向传播
+            DoubleVector forward = listNeuralNetworkLayer.forward(X1[id]);
+            // 开始计算损失
+            double loss = lossFunction.function(forward.toArray(), target[id].toArray());
+            // 开始反向传播
+            DoubleVector doubleVector = listNeuralNetworkLayer.backForward(DoubleVector.parse(loss));
+            double[] doubles1 = doubleVector.toArray();
+            consumer.accept(loss, doubles1, W1);
+            // 开始计算梯度
+            int index2 = -1;
+            for (double v : doubles1) {
+                // 调整当前神经元的权重
+                double gs = learningRate * v;
+                double[] doubles = W1.get(++index2).getValue().toArray();
+                for (int i1 = 0; i1 < doubles.length; i1++) {
+                    doubles[i1] -= gs;
+                }
+            }
+        }
+        // 生成模型
+        return new ClassificationModel<IntegerMatrixSpace>() {
+
+            final ListNeuralNetworkLayer lnn = listNeuralNetworkLayer;
+            final Transformation<ColorMatrix, ColorMatrix> tf = transformation;
+            // 类别
+            final String[] names = new String[lnn.size()];
+            // 卷积核的宽高 样本的宽高 以及 需要被提取的颜色通道
+            private final int kw1 = kw, kh1 = kh, ww1 = ww, wh1 = wh, cc = colorChannel;
+            // 卷积核
+            private final DoubleMatrixSpace kernel1 = kernel;
+
+            {
+                int index = -1;
+                // 先构造对应的类别名称
+                for (Perceptron perceptron : lnn) {
+                    names[++index] = perceptron.getName();
+                }
+            }
+
+            /**
+             * 针对模型进行设置。
+             * <p>
+             * Set up for the model.
+             *
+             * @param key   模型中配置的项目编号，一般情况下在实现类中都有提供静态参数编号。
+             *              <p>
+             *              The project number configured in the model is usually provided with a static parameter number in the implementation class.
+             * @param value 模型中配置项的具体数据，其可以是任何类型的单元格对象。
+             *              <p>
+             */
+            @Override
+            public void setArg(Integer key, @NotNull Cell<?> value) {
+
+            }
+
+            /**
+             * 启动模型，将其中的操作数进行计算操作。
+             * <p>
+             * Start the model and calculate the operands in it.
+             *
+             * @param input 需要被计算的所有操作数对象。
+             *              <p>
+             *              All operand objects that need to be calculated.
+             * @return 计算之后的结果数据，数据可以是任何类型。
+             * <p>
+             * The calculated result data can be of any type.
+             */
+            @Override
+            public KeyValue<String[], DoubleVector[]> function(IntegerMatrixSpace... input) {
+                DoubleVector[] X = new DoubleVector[input.length];
+                int index = -1;
+                for (IntegerMatrixSpace integerMatrices : input) {
+                    if (integerMatrices.getColCount() == this.ww1 && integerMatrices.getRowCount() == this.wh1) {
+                        X[++index] = lnn.forward(
                                 DoubleVector.parse(
-                                        this.transformation.function(
-                                                integerMatrices.foldingAndSumRGB(this.kw, this.kh, kernel)
-                                        ).getChannel(ColorMatrix._G_).flatten()
+                                        this.tf.function(
+                                                integerMatrices.foldingAndSumRGB(this.kw1, this.kh1, this.kernel1)
+                                        ).getChannel(this.cc).flatten()
                                 )
-                        ).toArray()
-                ));
-                classification(hashMap, integerMatrices, perceptron);
-                countDownLatch.countDown();
-            }).start();
-        }
-        try {
-            countDownLatch.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return hashMap;
+                        );
+                    } else {
+                        throw new OperatorOperationException("The image matrix you provided cannot be used for the current model. The current model supports w * h = [" + this.ww1 + " * " + this.wh1 + "]");
+                    }
+                }
+                return new KeyValue<>(this.names, X);
+            }
+
+            /**
+             * 启动模型，将其中的操作数进行计算操作。
+             * <p>
+             * Start the model and calculate the operands in it.
+             *
+             * @param input 需要被计算的所有操作数对象。
+             *              <p>
+             *              All operand objects that need to be calculated.
+             * @return 计算之后的结果数据，数据可以是任何类型。
+             * <p>
+             * The calculated result data can be of any type.
+             */
+            @Override
+            public KeyValue<String[], DoubleVector[]> functionConcurrency(IntegerMatrixSpace... input) {
+                DoubleVector[] X = new DoubleVector[input.length];
+                final int[] index = {-1};
+                CountDownLatch countDownLatch = new CountDownLatch(input.length);
+                for (IntegerMatrixSpace integerMatrices : input) {
+                    if (integerMatrices.getColCount() == this.ww1 && integerMatrices.getRowCount() == this.wh1) {
+                        new Thread(() -> {
+                            X[++index[0]] = lnn.forward(
+                                    DoubleVector.parse(
+                                            this.tf.function(
+                                                    integerMatrices.foldingAndSumRGB(this.kw1, this.kh1, this.kernel1)
+                                            ).getChannel(this.cc).flatten()
+                                    )
+                            );
+                            countDownLatch.countDown();
+                        }).start();
+                    } else {
+                        throw new OperatorOperationException("The image matrix you provided cannot be used for the current model. The current model supports w * h = [" + this.ww1 + " * " + this.wh1 + "]");
+                    }
+                    try {
+                        countDownLatch.await();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                return new KeyValue<>(this.names, X);
+            }
+        };
     }
+
+    /**
+     * 启动模型，将其中的操作数进行计算操作。
+     * <p>
+     * Start the model and calculate the operands in it.
+     *
+     * @param input 需要被计算的所有操作数对象。
+     *              <p>
+     *              All operand objects that need to be calculated.
+     * @return 计算之后的结果数据，数据可以是任何类型。
+     * <p>
+     * The calculated result data can be of any type.
+     */
+    @Override
+    public ClassificationModel<IntegerMatrixSpace> functionConcurrency(IntegerMatrixSpace[] input) {
+        return null;
+    }
+
+    /**
+     * 训练过程附加任务。
+     */
+    public interface TaskConsumer extends Serializable {
+
+        SingleLayerCNNModel.TaskConsumer VOID = VoidTask.VOID_TASK;
+
+        /**
+         * 任务处理逻辑
+         *
+         * @param loss   本次调整之后的损失函数。
+         *               <p>
+         *               The loss function after this adjustment.
+         * @param g      本次调整之后的梯度。
+         *               <p>
+         *               The gradient after this adjustment.
+         * @param weight 本次调整之后的权重数值。
+         *               <p>
+         */
+        void accept(double loss, double[] g, ArrayList<KeyValue<String, DoubleVector>> weight);
+    }
+
 }

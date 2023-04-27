@@ -15,6 +15,7 @@ import zhao.algorithmMagic.utils.ASIO;
 import zhao.algorithmMagic.utils.ASMath;
 import zhao.algorithmMagic.utils.filter.DoubleFiltering;
 import zhao.algorithmMagic.utils.transformation.ManyTrans;
+import zhao.algorithmMagic.utils.transformation.PoolRgbOboMAX;
 import zhao.algorithmMagic.utils.transformation.ProTransForm;
 import zhao.algorithmMagic.utils.transformation.Transformation;
 
@@ -343,20 +344,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      * <p>
      * The pooling logic implementation extracts the maximum values of R, G, and B color values from all pixels in the current matrix individually, and obtains new colors.
      */
-    public final static Transformation<ColorMatrix, Color> POOL_RGB_OBO_MAX = colorMatrix -> {
-        int maxR = 0, maxG = maxR, maxB = maxG;
-        for (Color[] matrix : colorMatrix) {
-            for (Color color : matrix) {
-                int red = color.getRed();
-                int green = color.getGreen();
-                int blue = color.getBlue();
-                if (red > maxR) maxR = red;
-                if (green < maxG) maxG = green;
-                if (blue < maxB) maxB = blue;
-            }
-        }
-        return new Color(maxR, maxG, maxB);
-    };
+    public final static Transformation<ColorMatrix, Color> POOL_RGB_OBO_MAX = new PoolRgbOboMAX();
 
     /**
      * 池化逻辑实现，将当前矩阵内的所有像素中 RGB 颜色数值的最大值直接提取出来，成为新颜色。
@@ -1599,9 +1587,8 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         for (Color[] colors : this.toArrays()) {
             int index = -1;
             for (Color color : colors) {
-                if (((color.getRGB() >> Mode) & 0xFF) > colorBoundary) {
-                    colors[++index] = color1;
-                } else colors[++index] = color2;
+                if (color == null || ((color.getRGB() >> Mode) & 0xFF) <= colorBoundary) colors[++index] = color2;
+                else colors[++index] = color1;
             }
         }
     }

@@ -2,6 +2,8 @@ package zhao.algorithmMagic.core.model;
 
 import zhao.algorithmMagic.operands.vector.DoubleVector;
 
+import java.io.Serializable;
+
 /**
  * 神经网络层类，该类中包含一层神经网络的所有感知机，同时支持当前神经网络层的结果向量获取核反向传播。
  * <p>
@@ -10,7 +12,7 @@ import zhao.algorithmMagic.operands.vector.DoubleVector;
  * @author 赵凌宇
  * 2023/4/19 18:25
  */
-public interface NeuralNetworkLayer {
+public interface NeuralNetworkLayer extends Serializable {
 
     /**
      * 向当前神经网络层中添加一个感知机神经元对象。

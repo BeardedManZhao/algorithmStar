@@ -86,40 +86,7 @@ public class LNeuralNetwork implements ASModel<Integer, DoubleVector, NumberMode
      */
     @Override
     public NumberModel function(DoubleVector... input) {
-        if (this.perceptron == null) {
-            throw new OperatorOperationException("请设置一个神经元。");
-        }
-        // 构建权重
-        DoubleVector doubleVector = input[input.length - 1];
-        // 获取到神经网络层
-        ListNeuralNetworkLayer listNeuralNetworkLayer = new ListNeuralNetworkLayer();
-        // 添加神经元
-        this.perceptron.FUNCTION.setLearnR(this.learningRate);
-        listNeuralNetworkLayer.addPerceptron(this.perceptron);
-        // 构建偏置项
-        double bias = 0;
-        double[] W = doubleVector.toArray();
-        // 获取到每一组数据进行训练
-        for (int i1 = 0, max = input.length - 1; i1 < max; i1++) {
-            DoubleVector XX = input[i1];
-            double YY = Y[i1];
-            // 开始进行神经网络训练
-            for (int i = 0; i < this.learnCount; i++) {
-                // 将 X 进行前向传播，获取到临时 Y 向量
-                DoubleVector tempY = listNeuralNetworkLayer.forward(XX);
-                // 将 临时结果与真实结果之间的损失函数计算出来
-                double tempYNum = tempY.toArray()[0], loss = tempYNum - YY;
-                // 根据 损失函数 反向求偏导，获取梯度数值
-                double v = this.learningRate * (listNeuralNetworkLayer.backForward(DoubleVector.parse(tempYNum)).toArray()[0] * (loss * this.learningRate));
-                // 更新参数
-                int wi = -1;
-                for (double w : W) {
-                    W[++wi] = w - v;
-                }
-            }
-        }
-        // 生成训练好的模型
-        return getNumberModel(input[0].toArray().length, W, bias);
+        return function(TaskConsumer.VOID, input);
     }
 
     /**
@@ -136,6 +103,9 @@ public class LNeuralNetwork implements ASModel<Integer, DoubleVector, NumberMode
      * The calculated result data can be of any type.
      */
     public NumberModel function(TaskConsumer consumer, DoubleVector... input) {
+        if (this.perceptron == null) {
+            throw new OperatorOperationException("请设置一个神经元。");
+        }
         // 构建权重
         DoubleVector doubleVector = input[input.length - 1];
         double[] W = doubleVector.toArray();
@@ -158,10 +128,10 @@ public class LNeuralNetwork implements ASModel<Integer, DoubleVector, NumberMode
                 double tempYNum = tempY.toArray()[0];
                 double loss = tempYNum - YY;
                 // 根据 损失函数 反向求偏导，获取梯度数值
-                DoubleVector g = listNeuralNetworkLayer.backForward(DoubleVector.parse(tempYNum));
+                DoubleVector g = listNeuralNetworkLayer.backForward(DoubleVector.parse(loss));
                 double gs = g.toArray()[0];
                 consumer.accept(loss, gs, W);
-                double v = this.learningRate * (gs * (loss * this.learningRate));
+                double v = this.learningRate * gs;
                 // 更新参数
                 int wi = -1;
                 for (double w : W) {
@@ -196,13 +166,13 @@ public class LNeuralNetwork implements ASModel<Integer, DoubleVector, NumberMode
             }
 
             @Override
-            public Double function(Double[] input) {
+            public Double function(Double... input) {
                 this.checkDimension(input);
                 return wv.innerProduct(DoubleVector.parse(input)) + biasNum;
             }
 
             @Override
-            public Double functionConcurrency(Double[] input) {
+            public Double functionConcurrency(Double... input) {
                 throw new UnsupportedOperationException("The mathematical calculation model currently does not support on-site operations");
             }
 
@@ -245,6 +215,9 @@ public class LNeuralNetwork implements ASModel<Integer, DoubleVector, NumberMode
      * 训练过程附加任务。
      */
     public interface TaskConsumer {
+
+        TaskConsumer VOID = VoidTask.VOID_TASK;
+
         /**
          * 任务处理逻辑
          *

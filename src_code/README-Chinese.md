@@ -8,7 +8,8 @@
 
 ### 更新日志
 
-* 框架版本：1.18 - 1.19
+* 框架版本：1.19 - 1.20
+* 移除冗余的
 * 神经元对象进行重构，权重字段添加至感知机对象中，提供给感知机进行管理。
 
 ```java
@@ -58,12 +59,12 @@ public class MAIN1 {
         DoubleVector W = DoubleVector.parse(20, 18, 18);
         // 获取到线性神经网络模型
         LNeuralNetwork lNeuralNetwork = ASModel.L_NEURAL_NETWORK;
-        // 设置学习率 为 0.4
-        lNeuralNetwork.setArg(LNeuralNetwork.LEARNING_RATE, SingletonCell.$(0.4));
+        // 设置学习率 为 0.2
+        lNeuralNetwork.setArg(LNeuralNetwork.LEARNING_RATE, SingletonCell.$(0.2));
         // 设置激活函数为 LEAKY_RE_LU 同时在这里设置该神经元使用的权重对象
         lNeuralNetwork.setArg(LNeuralNetwork.PERCEPTRON, SingletonCell.$(Perceptron.parse(ActivationFunction.RELU, W)));
-        // 设置学习次数 为 12 * 目标数
-        lNeuralNetwork.setArg(LNeuralNetwork.LEARN_COUNT, SingletonCell.$(12));
+        // 设置学习次数 为 24 * 目标数
+        lNeuralNetwork.setArg(LNeuralNetwork.LEARN_COUNT, SingletonCell.$(24));
         // 设置目标数值
         lNeuralNetwork.setArg(
                 LNeuralNetwork.TARGET,
@@ -130,42 +131,44 @@ public class MAIN1 {
 }
 ```
 
-* 支持图像矩阵对象的图像卷积神经网络计算分类模型。
+* 支持图像卷积神经网络进行图像分类训练，能够实现图像分类模型的训练，其会返回训练好的模型，模型能够被保存到磁盘。
 
 ```java
 package zhao.algorithmMagic;
 
-import zhao.algorithmMagic.core.model.ASModel;
-import zhao.algorithmMagic.core.model.Perceptron;
-import zhao.algorithmMagic.core.model.SingleLayerCNNModel;
+import zhao.algorithmMagic.core.model.*;
 import zhao.algorithmMagic.operands.matrix.ColorMatrix;
 import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
 import zhao.algorithmMagic.operands.matrix.block.DoubleMatrixSpace;
 import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixSpace;
 import zhao.algorithmMagic.operands.table.FinalCell;
+import zhao.algorithmMagic.operands.vector.DoubleVector;
+import zhao.algorithmMagic.utils.dataContainer.KeyValue;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
+import java.util.List;
 
 public class MAIN1 {
+
+    // 在 main 函数中进行模型的保存和读取以及使用
     public static void main(String[] args) throws MalformedURLException {
+
         // 指定图尺寸
         int w = 91, h = 87;
-        // 准备目标数据样本，代表不同的类别（有多少个类别就有多少个神经元）
-        IntegerMatrixSpace WX = IntegerMatrixSpace.parse(
-                new URL("https://user-images.githubusercontent.com/113756063/234247472-1df7f892-89b5-467f-9d8d-eb397b92c6ce.jpg"), w, h
-        );
-        IntegerMatrixSpace WY = IntegerMatrixSpace.parse(
-                new URL("https://user-images.githubusercontent.com/113756063/234247497-0a329b5d-a15d-451f-abf7-abdc1655b77d.jpg"), w, h
-        );
-        IntegerMatrixSpace WZ = IntegerMatrixSpace.parse(
-                new URL("https://user-images.githubusercontent.com/113756063/234247437-32e5b5ff-0baf-4637-805c-27472f07fd17.jpg"), w, h
-        );
 
         // 准备 CNN 神经网络模型
         SingleLayerCNNModel singleLayerCnnModel = ASModel.SINGLE_LAYER_CNN_MODEL;
+        // 设置学习率
+        singleLayerCnnModel.setLearningRate(0.2f);
+        // 设置训练次数
+        singleLayerCnnModel.setLearnCount(200);
+        // 设置激活函数
+        singleLayerCnnModel.setActivationFunction(ActivationFunction.RELU);
+        // 设置损失函数
+        singleLayerCnnModel.setLossFunction(LossFunction.MAE);
 
         // 准备卷积核，目标为突出图形轮廓
         DoubleMatrix parse = DoubleMatrix.parse(
@@ -176,44 +179,119 @@ public class MAIN1 {
         DoubleMatrixSpace core = DoubleMatrixSpace.parse(parse, parse, parse);
         // 设置 卷积核
         singleLayerCnnModel.setArg(SingleLayerCNNModel.KERNEL, new FinalCell<>(core));
-        // 设置 附加任务 池化 然后进行二值化操作
-        singleLayerCnnModel.setTransformation(colorMatrix -> {
-            ColorMatrix pooling = colorMatrix.pooling(2, 2, ColorMatrix.POOL_RGB_OBO_MAX);
-            pooling.globalBinary(ColorMatrix._R_, 50, 0xffffff, 0);
-            pooling.show("pool");
-            return pooling;
-        });
+        // 设置 附加任务 池化 然后进行二值化操作 TODO 注意 如果需要模型的保存，请使用 Class 的方式进行设置，使用 lambda 将会导致模型无法反序列化
+        // 如果不需要，此处可以不进行设置
+        singleLayerCnnModel.setTransformation(
+                new PoolBinaryTfTask(2, 1, true, 50, 0x011001, 0x010101, ColorMatrix._R_)
+        );
 
-        // 将所有的目标类别添加到神经网络中
-        singleLayerCnnModel.addTarget("X类别", WX);
-        singleLayerCnnModel.addTarget("Y类别", WY);
-        singleLayerCnnModel.addTarget("A类别", WZ);
+        // 构建每一个类别对应的标签 以及其对应的结果向量
+        String[] kings = {"X类别", "Y类别", "A类别"};
+        DoubleVector[] doubleVectors = {
+                DoubleVector.parse(10, 1, 1),
+                DoubleVector.parse(1, 10, 1),
+                DoubleVector.parse(1, 1, 10)
+        };
+        // 获取到所有带有标签的数据样本，这些就是数据本身的类别
+        List<KeyValue<String, IntegerMatrixSpace>> weight = getWeight(w, h, kings);
+        // 将权重设置到网络
+        singleLayerCnnModel.setWeight(doubleVectors, weight);
+        // 准备训练时的附加任务 打印信息
+        SingleLayerCNNModel.TaskConsumer taskConsumer = (loss, g, weight1) -> {
+            System.out.println("\n损失函数 = " + loss);
+            System.out.println("梯度数据 = " + Arrays.toString(g));
+        };
+        // 训练出结果模型
+        long start = System.currentTimeMillis();
+        ClassificationModel<IntegerMatrixSpace> model = singleLayerCnnModel.function(taskConsumer, getData(w, h));
+        System.out.println("训练模型完成，耗时：" + (System.currentTimeMillis() - start));
+        // 保存模型
+        ASModel.Utils.write(new File("C:\\Users\\Liming\\Desktop\\fsDownload\\MytModel.as"), model);
 
-        // 开始启动 CNN 在这里指定所有需要被分类的图形组
-        {
-            long start = System.currentTimeMillis();
-            HashMap<Perceptron, ArrayList<IntegerMatrixSpace>> function = singleLayerCnnModel.function(
-                    IntegerMatrixSpace.parse(
-                            new URL("https://user-images.githubusercontent.com/113756063/234247607-bfc59b79-bc6a-4ff1-992c-7ab1e9fd0116.jpg"), w, h
-                    ),
-                    IntegerMatrixSpace.parse(
-                            new URL("https://user-images.githubusercontent.com/113756063/234247550-01777cee-493a-420f-8665-da31e60a1cbe.jpg"), w, h
-                    ),
-                    IntegerMatrixSpace.parse(
-                            new URL("https://user-images.githubusercontent.com/113756063/234247630-46319338-b8e6-47bf-9918-4b734e665cf9.jpg"), w, h
-                    )
-            );
-            System.out.println("分类完成，耗时 = " + (System.currentTimeMillis() - start));
-            // 查看分类结果
-            function.forEach((k, v) -> {
-                // 获取到当前类别
-                String name = k.getName();
-                // 将当前类别的所有图像打印出来
-                for (IntegerMatrixSpace integerMatrices : v) {
-                    ColorMatrix.parse(integerMatrices).show(name);
-                }
-            });
-        }
+        // 提供一个新图 开始进行测试
+        IntegerMatrixSpace parse1 = IntegerMatrixSpace.parse("C:\\Users\\Liming\\Desktop\\fsDownload\\字母4.jpg", w, h);
+        // 放到模型中 获取到结果
+        KeyValue<String[], DoubleVector[]> function = model.function(new IntegerMatrixSpace[]{parse1});
+        // 提取结果向量
+        DoubleVector[] value = function.getValue();
+        // 由于被分类的图像对象只有一个，因此直接查看 0 索引的数据就好 这里是一个向量，其中每一个索引代表对应索引的类别得分值
+        System.out.println(value[0]);
+        // 查看向量中不同维度对应的类别
+        System.out.println(Arrays.toString(function.getKey()));
+    }
+
+    /**
+     * 获取到训练的时候使用的图像样本。
+     */
+    public static IntegerMatrixSpace[] getData(int w, int h) throws MalformedURLException {
+        return new IntegerMatrixSpace[]{
+                IntegerMatrixSpace.parse(
+                        new URL("https://user-images.githubusercontent.com/113756063/234247607-bfc59b79-bc6a-4ff1-992c-7ab1e9fd0116.jpg"), w, h
+                ),
+                IntegerMatrixSpace.parse(
+                        new URL("https://user-images.githubusercontent.com/113756063/234247550-01777cee-493a-420f-8665-da31e60a1cbe.jpg"), w, h
+                ),
+                IntegerMatrixSpace.parse(
+                        new URL("https://user-images.githubusercontent.com/113756063/234247630-46319338-b8e6-47bf-9918-4b734e665cf9.jpg"), w, h
+                )
+        };
+    }
+
+    /**
+     * 获取到权重数据样本
+     */
+    public static List<KeyValue<String, IntegerMatrixSpace>> getWeight(int w, int h, String... kings) throws MalformedURLException {
+        // 获取到所有带有标签的数据样本，这些就是数据本身的类别
+        IntegerMatrixSpace WX = IntegerMatrixSpace.parse(
+                new URL("https://user-images.githubusercontent.com/113756063/234247472-1df7f892-89b5-467f-9d8d-eb397b92c6ce.jpg"), w, h
+        );
+        IntegerMatrixSpace WY = IntegerMatrixSpace.parse(
+                new URL("https://user-images.githubusercontent.com/113756063/234247497-0a329b5d-a15d-451f-abf7-abdc1655b77d.jpg"), w, h
+        );
+        IntegerMatrixSpace WA = IntegerMatrixSpace.parse(
+                new URL("https://user-images.githubusercontent.com/113756063/234247437-32e5b5ff-0baf-4637-805c-27472f07fd17.jpg"), w, h
+        );
+        return Arrays.asList(
+                new KeyValue<>(kings[0], WX),
+                new KeyValue<>(kings[1], WY),
+                new KeyValue<>(kings[2], WA)
+        );
+    }
+}
+```
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.core.model.ASModel;
+import zhao.algorithmMagic.core.model.ClassificationModel;
+import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixSpace;
+import zhao.algorithmMagic.operands.vector.DoubleVector;
+import zhao.algorithmMagic.utils.ASClass;
+import zhao.algorithmMagic.utils.ASMath;
+import zhao.algorithmMagic.utils.dataContainer.KeyValue;
+
+import java.io.File;
+import java.util.Arrays;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        ClassificationModel<IntegerMatrixSpace> model = ASClass.transform(
+                ASModel.Utils.read(new File("C:\\Users\\Liming\\Desktop\\fsDownload\\MytModel.as"))
+        );
+        // 提供一个新图 开始进行测试
+        IntegerMatrixSpace parse1 = IntegerMatrixSpace.parse("C:\\Users\\Liming\\Desktop\\fsDownload\\字母4.jpg", 91, 87);
+        // 放到模型中 获取到结果
+        KeyValue<String[], DoubleVector[]> function = model.function(new IntegerMatrixSpace[]{parse1});
+        // 提取结果向量
+        DoubleVector[] value = function.getValue();
+        // 由于被分类的图像对象只有一个，因此直接查看 0 索引的数据就好 这里是一个向量，其中每一个索引代表对应索引的类别得分值
+        System.out.println(value[0]);
+        // 查看向量中不同维度对应的类别
+        String[] key = function.getKey();
+        System.out.println(Arrays.toString(key));
+        // 根据索引查看当前图像分类得分最大值对应的类别
+        System.out.println("当前图像属于 " + key[ASMath.findMaxIndex(value[0].toArray())]);
     }
 }
 ```

@@ -89,7 +89,7 @@ public class ListNeuralNetworkLayer extends ArrayList<Perceptron> implements Neu
         double[] res = new double[this.size()];
         int index = -1;
         for (Perceptron perceptron : this) {
-            res[++index] = perceptron.FUNCTION.derivativeFunction(loss[index]);
+            res[++index] = perceptron.backFunction(loss[0]).getDoubleValue();
         }
         return DoubleVector.parse(res);
     }

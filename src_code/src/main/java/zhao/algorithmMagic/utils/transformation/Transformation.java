@@ -1,5 +1,7 @@
 package zhao.algorithmMagic.utils.transformation;
 
+import java.io.Serializable;
+
 /**
  * 转换函数接口，针对需要进行lambda设计的一切转换函数，都可以将此接接口作为形参数据类型。
  * <p>
@@ -12,7 +14,7 @@ package zhao.algorithmMagic.utils.transformation;
  *                     <p>
  *                     Data output data type, which represents the data type returned by lambda function.
  */
-public interface Transformation<InputType, OutputType> {
+public interface Transformation<InputType, OutputType> extends Serializable {
     /**
      * 、
      *

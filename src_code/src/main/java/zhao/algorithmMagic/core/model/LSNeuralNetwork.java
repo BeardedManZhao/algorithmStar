@@ -50,7 +50,7 @@ public class LSNeuralNetwork extends LNeuralNetwork {
             double tempYNum = tempY.toArray()[0];
             double loss = tempYNum - this.Y[index];
             // 根据 损失函数 反向求偏导，获取梯度数值
-            double v = this.learningRate * (listNeuralNetworkLayer.backForward(DoubleVector.parse(tempYNum)).toArray()[0] * (loss * this.learningRate));
+            double v = this.learningRate * listNeuralNetworkLayer.backForward(DoubleVector.parse(loss)).toArray()[0];
             // 更新参数
             int wi = -1;
             for (double w : W) {
@@ -98,7 +98,7 @@ public class LSNeuralNetwork extends LNeuralNetwork {
             double loss = tempYNum - this.Y[index];
             // 根据 损失函数 反向求偏导，获取梯度数值
             double gs = listNeuralNetworkLayer.backForward(DoubleVector.parse(loss)).toArray()[0];
-            double v = this.learningRate * (gs * (loss * this.learningRate));
+            double v = this.learningRate * gs;
             consumer.accept(loss, gs, W);
             // 更新参数
             int wi = -1;
