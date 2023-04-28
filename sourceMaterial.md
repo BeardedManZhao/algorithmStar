@@ -37,9 +37,13 @@
 ![字母样本A](https://user-images.githubusercontent.com/113756063/234247437-32e5b5ff-0baf-4637-805c-27472f07fd17.jpg)
 ![字母样本X](https://user-images.githubusercontent.com/113756063/234247472-1df7f892-89b5-467f-9d8d-eb397b92c6ce.jpg)
 ![字母样本Y](https://user-images.githubusercontent.com/113756063/234247497-0a329b5d-a15d-451f-abf7-abdc1655b77d.jpg)
+![字母样本Z](https://user-images.githubusercontent.com/113756063/235150408-233cc477-c97d-48a1-b39e-ff9a497ea9ff.jpg)
 ![字母A1](https://user-images.githubusercontent.com/113756063/234247630-46319338-b8e6-47bf-9918-4b734e665cf9.jpg)
 ![字母X1](https://user-images.githubusercontent.com/113756063/234247550-01777cee-493a-420f-8665-da31e60a1cbe.jpg)
+![字母X2](https://user-images.githubusercontent.com/113756063/235150686-c4b84e78-1b24-409d-a26f-6a860ed104d8.jpg)
 ![字母Y1](https://user-images.githubusercontent.com/113756063/234247607-bfc59b79-bc6a-4ff1-992c-7ab1e9fd0116.jpg)
+![字母Y2](https://user-images.githubusercontent.com/113756063/235150464-9d082c41-ae06-4ee7-a680-59e62cd55b10.jpg)
+![字母Z1](https://user-images.githubusercontent.com/113756063/235150989-e71036bd-f8bb-43b9-b566-e3131827d7ac.jpg)
 
 
 ## 风景类
