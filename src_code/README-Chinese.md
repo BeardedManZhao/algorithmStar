@@ -137,24 +137,22 @@ public class MAIN1 {
 package zhao.algorithmMagic;
 
 import zhao.algorithmMagic.core.model.*;
+import zhao.algorithmMagic.core.model.dataSet.ASDataSet;
 import zhao.algorithmMagic.operands.matrix.ColorMatrix;
 import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
 import zhao.algorithmMagic.operands.matrix.block.DoubleMatrixSpace;
 import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixSpace;
 import zhao.algorithmMagic.operands.table.FinalCell;
 import zhao.algorithmMagic.operands.vector.DoubleVector;
+import zhao.algorithmMagic.utils.ASMath;
 import zhao.algorithmMagic.utils.dataContainer.KeyValue;
 
 import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Arrays;
-import java.util.List;
 
 public class MAIN1 {
 
-    // 在 main 函数中进行模型的保存和读取以及使用
-    public static void main(String[] args) throws MalformedURLException {
+    public static void main(String[] args) {
 
         // 指定图尺寸
         int w = 91, h = 87;
@@ -162,11 +160,11 @@ public class MAIN1 {
         // 准备 CNN 神经网络模型
         SingleLayerCNNModel singleLayerCnnModel = ASModel.SINGLE_LAYER_CNN_MODEL;
         // 设置学习率
-        singleLayerCnnModel.setLearningRate(0.2f);
+        singleLayerCnnModel.setLearningRate(0.1f);
         // 设置训练次数
         singleLayerCnnModel.setLearnCount(200);
         // 设置激活函数
-        singleLayerCnnModel.setActivationFunction(ActivationFunction.RELU);
+        singleLayerCnnModel.setActivationFunction(ActivationFunction.LEAKY_RE_LU);
         // 设置损失函数
         singleLayerCnnModel.setLossFunction(LossFunction.MAE);
 
@@ -185,31 +183,27 @@ public class MAIN1 {
                 new PoolBinaryTfTask(2, 1, true, 50, 0x011001, 0x010101, ColorMatrix._R_)
         );
 
-        // 构建每一个类别对应的标签 以及其对应的结果向量
-        String[] kings = {"X类别", "Y类别", "A类别"};
-        DoubleVector[] doubleVectors = {
-                DoubleVector.parse(10, 1, 1),
-                DoubleVector.parse(1, 10, 1),
-                DoubleVector.parse(1, 1, 10)
-        };
-        // 获取到所有带有标签的数据样本，这些就是数据本身的类别
-        List<KeyValue<String, IntegerMatrixSpace>> weight = getWeight(w, h, kings);
-        // 将权重设置到网络
-        singleLayerCnnModel.setWeight(doubleVectors, weight);
+        // 获取到字母数据集
+        ASDataSet load = ASDataSet.Load.LETTER.load(w, h);
+        // 将目标数值与权重设置到网络
+        singleLayerCnnModel.setWeight(load.getImageY_train(), load.getImageWeight());
+
         // 准备训练时的附加任务 打印信息
         SingleLayerCNNModel.TaskConsumer taskConsumer = (loss, g, weight1) -> {
             System.out.println("\n损失函数 = " + loss);
             System.out.println("梯度数据 = " + Arrays.toString(g));
         };
+
         // 训练出结果模型
         long start = System.currentTimeMillis();
-        ClassificationModel<IntegerMatrixSpace> model = singleLayerCnnModel.function(taskConsumer, getData(w, h));
+        ClassificationModel<IntegerMatrixSpace> model = singleLayerCnnModel.function(taskConsumer, load.getImageX_train());
         System.out.println("训练模型完成，耗时：" + (System.currentTimeMillis() - start));
         // 保存模型
         ASModel.Utils.write(new File("C:\\Users\\Liming\\Desktop\\fsDownload\\MytModel.as"), model);
 
+
         // 提供一个新图 开始进行测试
-        IntegerMatrixSpace parse1 = IntegerMatrixSpace.parse("C:\\Users\\Liming\\Desktop\\fsDownload\\字母4.jpg", w, h);
+        IntegerMatrixSpace parse1 = IntegerMatrixSpace.parse("C:\\Users\\Liming\\Desktop\\fsDownload\\字母5.jpg", w, h);
         // 放到模型中 获取到结果
         KeyValue<String[], DoubleVector[]> function = model.function(new IntegerMatrixSpace[]{parse1});
         // 提取结果向量
@@ -218,44 +212,7 @@ public class MAIN1 {
         System.out.println(value[0]);
         // 查看向量中不同维度对应的类别
         System.out.println(Arrays.toString(function.getKey()));
-    }
-
-    /**
-     * 获取到训练的时候使用的图像样本。
-     */
-    public static IntegerMatrixSpace[] getData(int w, int h) throws MalformedURLException {
-        return new IntegerMatrixSpace[]{
-                IntegerMatrixSpace.parse(
-                        new URL("https://user-images.githubusercontent.com/113756063/234247607-bfc59b79-bc6a-4ff1-992c-7ab1e9fd0116.jpg"), w, h
-                ),
-                IntegerMatrixSpace.parse(
-                        new URL("https://user-images.githubusercontent.com/113756063/234247550-01777cee-493a-420f-8665-da31e60a1cbe.jpg"), w, h
-                ),
-                IntegerMatrixSpace.parse(
-                        new URL("https://user-images.githubusercontent.com/113756063/234247630-46319338-b8e6-47bf-9918-4b734e665cf9.jpg"), w, h
-                )
-        };
-    }
-
-    /**
-     * 获取到权重数据样本
-     */
-    public static List<KeyValue<String, IntegerMatrixSpace>> getWeight(int w, int h, String... kings) throws MalformedURLException {
-        // 获取到所有带有标签的数据样本，这些就是数据本身的类别
-        IntegerMatrixSpace WX = IntegerMatrixSpace.parse(
-                new URL("https://user-images.githubusercontent.com/113756063/234247472-1df7f892-89b5-467f-9d8d-eb397b92c6ce.jpg"), w, h
-        );
-        IntegerMatrixSpace WY = IntegerMatrixSpace.parse(
-                new URL("https://user-images.githubusercontent.com/113756063/234247497-0a329b5d-a15d-451f-abf7-abdc1655b77d.jpg"), w, h
-        );
-        IntegerMatrixSpace WA = IntegerMatrixSpace.parse(
-                new URL("https://user-images.githubusercontent.com/113756063/234247437-32e5b5ff-0baf-4637-805c-27472f07fd17.jpg"), w, h
-        );
-        return Arrays.asList(
-                new KeyValue<>(kings[0], WX),
-                new KeyValue<>(kings[1], WY),
-                new KeyValue<>(kings[2], WA)
-        );
+        System.out.println("当前图像类别 = " + function.getKey()[ASMath.findMaxIndex(value[0].toArray())]);
     }
 }
 ```

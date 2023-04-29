@@ -10,6 +10,7 @@ import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
 import zhao.algorithmMagic.utils.ASMath;
 
 import java.util.Arrays;
+import java.util.Random;
 
 /**
  * Java类于 2022/10/9 18:50:31 创建
@@ -130,6 +131,14 @@ public class DoubleVector extends ASVector<DoubleVector, Double, double[]> {
             res[++count] = i;
         }
         return parse(res);
+    }
+
+    public static DoubleVector random(int width, Random random) {
+        double[] row = new double[width];
+        for (int x = 0; x < width; x++) {
+            row[x] = random.nextInt();
+        }
+        return parse(row);
     }
 
     /**

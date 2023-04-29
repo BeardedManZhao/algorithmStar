@@ -189,7 +189,10 @@ public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], i
      * A randomly generated matrix object with a specified number of rows and columns.
      */
     public static IntegerMatrix random(int width, int height, int randSeed) {
-        Random random = new Random(randSeed);
+        return random(width, height, new Random(randSeed));
+    }
+
+    public static IntegerMatrix random(int width, int height, Random random) {
         int[][] res = new int[height][];
         for (int y = 0; y < height; y++) {
             int[] row = new int[width];
