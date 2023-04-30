@@ -1609,43 +1609,15 @@ public final class ASMath {
      * @return arr数组中的最大值对应的索引
      */
     public static int findMaxIndex(int[] arr) {
-        int res = 0;
-        int maxIndex = arr.length - 1;
-        {
-            boolean isOk = false;
-            int left = 0, right = maxIndex;
-            while (left < right) {
-                int mid = (right + left) >> 1;
-                int mv = arr[mid];
-                int next = arr[mid + 1];
-                // 峰值在右侧
-                if (mv < next) left = mid;
-                else if (mv > next) {
-                    if (arr[mid - 1] > mv) {
-                        // 峰值在左侧
-                        right = mid;
-                    } else {
-                        res = mid;
-                        isOk = true;
-                        break;
-                    }
-                }
-            }
-            if (!isOk) {
-                res = arr[left] > arr[right] ? left : right;
+        int index = 0, index1 = -1, value = arr[0];
+        for (int v : arr) {
+            ++index1;
+            if (value < v) {
+                index = index1;
+                value = v;
             }
         }
-        int valueIndex = 0;
-        int value = arr[valueIndex];
-        {
-            int i = arr[maxIndex];
-            if (value < i) {
-                valueIndex = maxIndex;
-                value = i;
-            }
-        }
-        if (value > arr[res]) return valueIndex;
-        else return res;
+        return index;
     }
 
     /**
@@ -1655,45 +1627,31 @@ public final class ASMath {
      * @return arr数组中的最大值对应的索引
      */
     public static int findMaxIndex(double[] arr) {
-        int res = 0;
-        int maxIndex = arr.length - 1;
-        {
-            boolean isOk = false;
-            int left = 0, right = maxIndex, backL = -1, backR = -1;
-            while (left < right && (backL != left || backR != right)) {
-                backL = left;
-                backR = right;
-                int mid = (right + left) >> 1;
-                double mv = arr[mid];
-                double next = arr[mid + 1];
-                // 峰值在右侧
-                if (mv < next) left = mid;
-                else if (mv > next) {
-                    if (mid > 0 && arr[mid - 1] > mv) {
-                        // 峰值在左侧
-                        right = mid;
-                    } else {
-                        res = mid;
-                        isOk = true;
-                        break;
-                    }
-                }
-            }
-            if (!isOk) {
-                res = arr[left] > arr[right] ? left : right;
+/*
+        int n = arr.length, l = 1, r = n - 1;
+        int last = arr.length - 1;
+        while (l < r) {
+            int mid = l + (r - l >> 1);
+            if (arr[mid] < arr[mid + 1])
+                l = mid + 1;
+            else
+                r = mid;
+        }
+        double v = arr[l];
+        if (v < arr[0]) return 0;
+        else if (v < arr[last]) return last;
+        return l;
+*/
+        double value = arr[0];
+        int index = 0, index1 = -1;
+        for (double v : arr) {
+            ++index1;
+            if (value < v) {
+                index = index1;
+                value = v;
             }
         }
-        int valueIndex = 0;
-        double value = arr[valueIndex];
-        {
-            double i = arr[maxIndex];
-            if (value < i) {
-                valueIndex = maxIndex;
-                value = i;
-            }
-        }
-        if (value > arr[res]) return valueIndex;
-        else return res;
+        return index;
     }
 
     /**
@@ -1703,42 +1661,15 @@ public final class ASMath {
      * @return arr数组中的最大值对应的索引
      */
     public static int findMinIndex(int[] arr) {
-        int res = 0;
-        int maxIndex = arr.length - 1;
-        if (maxIndex > 1) {
-            boolean isOk = false;
-            int left = 0, right = maxIndex;
-            while (left < right) {
-                int mid = (right + left) >> 1;
-                int mv = arr[mid];
-                int next = arr[mid + 1];
-                // 谷底值在右侧
-                if (mv > next) left = mid;
-                else if (mv < next) {
-                    // 谷底值在左侧
-                    if (mid > 0 && arr[mid - 1] < mv) right = mid;
-                    else {
-                        res = mid;
-                        isOk = true;
-                        break;
-                    }
-                }
-            }
-            if (!isOk) {
-                res = arr[left] < arr[right] ? left : right;
-            }
+        int index = 0, index1 = -1, value = arr[0];
+        for (int v : arr) {
+            ++index1;
+            if (value > v)
+                index = index1;
+            value = v;
+
         }
-        int valueIndex = 0;
-        int value = arr[valueIndex];
-        {
-            int i = arr[maxIndex];
-            if (value > i) {
-                valueIndex = maxIndex;
-                value = i;
-            }
-        }
-        if (value < arr[res]) return valueIndex;
-        else return res;
+        return index;
     }
 
     /**
@@ -1748,39 +1679,16 @@ public final class ASMath {
      * @return arr数组中的最大值对应的索引
      */
     public static int findMinIndex(double[] arr) {
-        int res = 0;
-        int maxIndex = arr.length - 1;
-        if (maxIndex > 1) {
-            boolean isOk = false;
-            int left = 0, right = maxIndex;
-            while (left < right) {
-                int mid = (right + left) >> 1;
-                double mv = arr[mid], next = arr[mid + 1];
-                if (mv > next) left = mid;
-                else if (mv < next) {
-                    if (mid > 0 && arr[mid - 1] < mv) right = mid;
-                    else {
-                        res = mid;
-                        isOk = true;
-                        break;
-                    }
-                }
-            }
-            if (!isOk) {
-                res = arr[left] < arr[right] ? left : right;
+        int index = 0, index1 = -1;
+        double value = arr[0];
+        for (double v : arr) {
+            ++index1;
+            if (value > v) {
+                index = index1;
+                value = v;
             }
         }
-        int valueIndex = 0;
-        double value = arr[valueIndex];
-        {
-            double i = arr[maxIndex];
-            if (value > i) {
-                valueIndex = maxIndex;
-                value = i;
-            }
-        }
-        if (value < arr[res]) return valueIndex;
-        else return res;
+        return index;
     }
 
     /**
