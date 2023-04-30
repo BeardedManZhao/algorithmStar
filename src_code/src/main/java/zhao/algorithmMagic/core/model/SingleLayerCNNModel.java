@@ -53,6 +53,118 @@ public final class SingleLayerCNNModel implements ASModel<Integer, IntegerMatrix
     // 设置所有类别的目标数值，用于计算损失
     private DoubleVector[] target;
 
+    @NotNull
+    private static ClassificationModel<IntegerMatrixSpace> getModel(ListNeuralNetworkLayer perceptron, Transformation<ColorMatrix, ColorMatrix> transformation, int kw, int kh, int ww, int wh, int colorChannel, DoubleMatrixSpace kernel) {
+        return new ClassificationModel<IntegerMatrixSpace>() {
+
+            final ListNeuralNetworkLayer lnn = perceptron;
+            final Transformation<ColorMatrix, ColorMatrix> tf = transformation;
+            // 类别
+            final String[] names = new String[lnn.size()];
+            // 卷积核的宽高 样本的宽高 以及 需要被提取的颜色通道
+            private final int kw1 = kw, kh1 = kh, ww1 = ww, wh1 = wh, cc = colorChannel;
+            // 卷积核
+            private final DoubleMatrixSpace kernel1 = kernel;
+
+            {
+                int index = -1;
+                // 先构造对应的类别名称
+                for (Perceptron perceptron : lnn) {
+                    names[++index] = perceptron.getName();
+                }
+            }
+
+            /**
+             * 针对模型进行设置。
+             * <p>
+             * Set up for the model.
+             *
+             * @param key   模型中配置的项目编号，一般情况下在实现类中都有提供静态参数编号。
+             *              <p>
+             *              The project number configured in the model is usually provided with a static parameter number in the implementation class.
+             * @param value 模型中配置项的具体数据，其可以是任何类型的单元格对象。
+             *              <p>
+             */
+            @Override
+            public void setArg(Integer key, @NotNull Cell<?> value) {
+
+            }
+
+            /**
+             * 启动模型，将其中的操作数进行计算操作。
+             * <p>
+             * Start the model and calculate the operands in it.
+             *
+             * @param input 需要被计算的所有操作数对象。
+             *              <p>
+             *              All operand objects that need to be calculated.
+             * @return 计算之后的结果数据，数据可以是任何类型。
+             * <p>
+             * The calculated result data can be of any type.
+             */
+            @Override
+            public KeyValue<String[], DoubleVector[]> function(IntegerMatrixSpace... input) {
+                DoubleVector[] X = new DoubleVector[input.length];
+                int index = -1;
+                for (IntegerMatrixSpace integerMatrices : input) {
+                    if (integerMatrices.getColCount() == this.ww1 && integerMatrices.getRowCount() == this.wh1) {
+                        X[++index] = lnn.forward(
+                                DoubleVector.parse(
+                                        this.tf.function(
+                                                integerMatrices.foldingAndSumRGB(this.kw1, this.kh1, this.kernel1)
+                                        ).getChannel(this.cc).flatten()
+                                )
+                        );
+                    } else {
+                        throw new OperatorOperationException("The image matrix you provided cannot be used for the current model. The current model supports w * h = [" + this.ww1 + " * " + this.wh1 + "]");
+                    }
+                }
+                return new KeyValue<>(this.names, X);
+            }
+
+            /**
+             * 启动模型，将其中的操作数进行计算操作。
+             * <p>
+             * Start the model and calculate the operands in it.
+             *
+             * @param input 需要被计算的所有操作数对象。
+             *              <p>
+             *              All operand objects that need to be calculated.
+             * @return 计算之后的结果数据，数据可以是任何类型。
+             * <p>
+             * The calculated result data can be of any type.
+             */
+            @Override
+            public KeyValue<String[], DoubleVector[]> functionConcurrency(IntegerMatrixSpace... input) {
+                DoubleVector[] X = new DoubleVector[input.length];
+                final int[] index = {-1};
+                CountDownLatch countDownLatch = new CountDownLatch(input.length);
+                for (IntegerMatrixSpace integerMatrices : input) {
+                    if (integerMatrices.getColCount() == this.ww1 && integerMatrices.getRowCount() == this.wh1) {
+                        new Thread(() -> {
+                            X[++index[0]] = lnn.forward(
+                                    DoubleVector.parse(
+                                            this.tf.function(
+                                                    integerMatrices.foldingAndSumRGB(this.kw1, this.kh1, this.kernel1)
+                                            ).getChannel(this.cc).flatten()
+                                    )
+                            );
+                            countDownLatch.countDown();
+                        }).start();
+                    } else {
+                        throw new OperatorOperationException("The image matrix you provided cannot be used for the current model. The current model supports w * h = [" + this.ww1 + " * " + this.wh1 + "]");
+                    }
+                    try {
+                        countDownLatch.await();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                return new KeyValue<>(this.names, X);
+            }
+        };
+    }
+
     public void setLossFunction(LossFunction lossFunction) {
         this.lossFunction = lossFunction;
     }
@@ -250,114 +362,7 @@ public final class SingleLayerCNNModel implements ASModel<Integer, IntegerMatrix
             }
         }
         // 生成模型
-        return new ClassificationModel<IntegerMatrixSpace>() {
-
-            final ListNeuralNetworkLayer lnn = listNeuralNetworkLayer;
-            final Transformation<ColorMatrix, ColorMatrix> tf = transformation;
-            // 类别
-            final String[] names = new String[lnn.size()];
-            // 卷积核的宽高 样本的宽高 以及 需要被提取的颜色通道
-            private final int kw1 = kw, kh1 = kh, ww1 = ww, wh1 = wh, cc = colorChannel;
-            // 卷积核
-            private final DoubleMatrixSpace kernel1 = kernel;
-
-            {
-                int index = -1;
-                // 先构造对应的类别名称
-                for (Perceptron perceptron : lnn) {
-                    names[++index] = perceptron.getName();
-                }
-            }
-
-            /**
-             * 针对模型进行设置。
-             * <p>
-             * Set up for the model.
-             *
-             * @param key   模型中配置的项目编号，一般情况下在实现类中都有提供静态参数编号。
-             *              <p>
-             *              The project number configured in the model is usually provided with a static parameter number in the implementation class.
-             * @param value 模型中配置项的具体数据，其可以是任何类型的单元格对象。
-             *              <p>
-             */
-            @Override
-            public void setArg(Integer key, @NotNull Cell<?> value) {
-
-            }
-
-            /**
-             * 启动模型，将其中的操作数进行计算操作。
-             * <p>
-             * Start the model and calculate the operands in it.
-             *
-             * @param input 需要被计算的所有操作数对象。
-             *              <p>
-             *              All operand objects that need to be calculated.
-             * @return 计算之后的结果数据，数据可以是任何类型。
-             * <p>
-             * The calculated result data can be of any type.
-             */
-            @Override
-            public KeyValue<String[], DoubleVector[]> function(IntegerMatrixSpace... input) {
-                DoubleVector[] X = new DoubleVector[input.length];
-                int index = -1;
-                for (IntegerMatrixSpace integerMatrices : input) {
-                    if (integerMatrices.getColCount() == this.ww1 && integerMatrices.getRowCount() == this.wh1) {
-                        X[++index] = lnn.forward(
-                                DoubleVector.parse(
-                                        this.tf.function(
-                                                integerMatrices.foldingAndSumRGB(this.kw1, this.kh1, this.kernel1)
-                                        ).getChannel(this.cc).flatten()
-                                )
-                        );
-                    } else {
-                        throw new OperatorOperationException("The image matrix you provided cannot be used for the current model. The current model supports w * h = [" + this.ww1 + " * " + this.wh1 + "]");
-                    }
-                }
-                return new KeyValue<>(this.names, X);
-            }
-
-            /**
-             * 启动模型，将其中的操作数进行计算操作。
-             * <p>
-             * Start the model and calculate the operands in it.
-             *
-             * @param input 需要被计算的所有操作数对象。
-             *              <p>
-             *              All operand objects that need to be calculated.
-             * @return 计算之后的结果数据，数据可以是任何类型。
-             * <p>
-             * The calculated result data can be of any type.
-             */
-            @Override
-            public KeyValue<String[], DoubleVector[]> functionConcurrency(IntegerMatrixSpace... input) {
-                DoubleVector[] X = new DoubleVector[input.length];
-                final int[] index = {-1};
-                CountDownLatch countDownLatch = new CountDownLatch(input.length);
-                for (IntegerMatrixSpace integerMatrices : input) {
-                    if (integerMatrices.getColCount() == this.ww1 && integerMatrices.getRowCount() == this.wh1) {
-                        new Thread(() -> {
-                            X[++index[0]] = lnn.forward(
-                                    DoubleVector.parse(
-                                            this.tf.function(
-                                                    integerMatrices.foldingAndSumRGB(this.kw1, this.kh1, this.kernel1)
-                                            ).getChannel(this.cc).flatten()
-                                    )
-                            );
-                            countDownLatch.countDown();
-                        }).start();
-                    } else {
-                        throw new OperatorOperationException("The image matrix you provided cannot be used for the current model. The current model supports w * h = [" + this.ww1 + " * " + this.wh1 + "]");
-                    }
-                    try {
-                        countDownLatch.await();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                return new KeyValue<>(this.names, X);
-            }
-        };
+        return getModel(listNeuralNetworkLayer, transformation, kw, kh, ww, wh, colorChannel, kernel);
     }
 
     /**
@@ -374,8 +379,9 @@ public final class SingleLayerCNNModel implements ASModel<Integer, IntegerMatrix
      */
     @Override
     public ClassificationModel<IntegerMatrixSpace> functionConcurrency(IntegerMatrixSpace[] input) {
-        return null;
+        return this.function(input);
     }
+
 
     /**
      * 训练过程附加任务。
@@ -396,7 +402,7 @@ public final class SingleLayerCNNModel implements ASModel<Integer, IntegerMatrix
          * @param weight 本次调整之后的权重数值。
          *               <p>
          */
-        void accept(double loss, double[] g, ArrayList<KeyValue<String, DoubleVector>> weight);
+        void accept(double loss, double[] g, List<KeyValue<String, DoubleVector>> weight);
     }
 
 }

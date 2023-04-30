@@ -609,7 +609,7 @@ public class MAIN1 {
         // 获取到字母数据集
         ASDataSet load = ASDataSet.Load.LETTER.load(w, h);
         // 将目标数值与权重设置到网络
-        singleLayerCnnModel.setWeight(load.getImageY_train(), load.getImageWeight());
+        singleLayerCnnModel.setWeight(load.getY_train(), load.getImageWeight());
 
         // 准备训练时的附加任务 打印信息
         SingleLayerCNNModel.TaskConsumer taskConsumer = (loss, g, weight1) -> {
@@ -619,7 +619,7 @@ public class MAIN1 {
 
         // 训练出结果模型
         long start = System.currentTimeMillis();
-        ClassificationModel<IntegerMatrixSpace> model = singleLayerCnnModel.function(taskConsumer, load.getImageX_train());
+        ClassificationModel<IntegerMatrixSpace> model = singleLayerCnnModel.function(taskConsumer, load.getX_train());
         System.out.println("训练模型完成，耗时：" + (System.currentTimeMillis() - start));
         // 保存模型
         ASModel.Utils.write(new File("C:\\Users\\Liming\\Desktop\\fsDownload\\MytModel.as"), model);
