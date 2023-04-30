@@ -48,6 +48,7 @@
 ![字母Y1](https://user-images.githubusercontent.com/113756063/234247607-bfc59b79-bc6a-4ff1-992c-7ab1e9fd0116.jpg)
 ![字母Y2](https://user-images.githubusercontent.com/113756063/235150464-9d082c41-ae06-4ee7-a680-59e62cd55b10.jpg)
 ![字母Z1](https://user-images.githubusercontent.com/113756063/235150989-e71036bd-f8bb-43b9-b566-e3131827d7ac.jpg)
+![字母2](https://user-images.githubusercontent.com/113756063/235335680-05f44579-9ea6-407b-b301-bf8774a68b2a.jpg)
 
 
 ## 风景类
