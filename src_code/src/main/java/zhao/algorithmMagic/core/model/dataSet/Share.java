@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
+ * 数据集共享函数类包。
  * @author zhao
  */
 public final class Share {
