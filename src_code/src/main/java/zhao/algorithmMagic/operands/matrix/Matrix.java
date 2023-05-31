@@ -485,6 +485,9 @@ public abstract class Matrix<ImplementationType
      */
     public abstract ArrayType flatten();
 
+
+    public abstract ImplementationType expand();
+
     @Override
     public final void forEach(Consumer<? super IteratorType> action) {
         Iterable.super.forEach(action);

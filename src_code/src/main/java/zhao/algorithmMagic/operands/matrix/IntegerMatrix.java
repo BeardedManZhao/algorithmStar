@@ -341,6 +341,100 @@ public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], i
         }
     }
 
+    /**
+     * 将两个操作数进行求和的方法，具体用法请参阅API说明。
+     * <p>
+     * The method for summing two operands, please refer to the API description for specific usage.
+     *
+     * @param value 被求和的参数  Parameters to be summed
+     * @return 求和之后的数值  the value after the sum
+     * <p>
+     * There is no description for the super interface, please refer to the subclass documentation
+     */
+    @Override
+    public IntegerMatrix add(Number value) {
+        int[][] res = this.copyToNewArrays();
+        int v = value.intValue();
+        for (int[] re : res) {
+            for (int i = 0; i < re.length; i++) {
+                re[i] += v;
+            }
+        }
+        return IntegerMatrix.parse(res);
+    }
+
+    /**
+     * 在两个操作数之间做差的方法，具体用法请参阅API说明。
+     * <p>
+     * The method of making a difference between two operands, please refer to the API description for specific usage.
+     *
+     * @param value 被做差的参数（被减数）  The parameter to be subtracted (minuend)
+     * @return 差异数值  difference value
+     * There is no description for the super interface, please refer to the subclass documentation
+     */
+    @Override
+    public IntegerMatrix diff(Number value) {
+        int[][] res = this.copyToNewArrays();
+        int v = value.intValue();
+        for (int[] re : res) {
+            for (int i = 0; i < re.length; i++) {
+                re[i] -= v;
+            }
+        }
+        return IntegerMatrix.parse(res);
+    }
+
+    /**
+     * 将两个操作数进行求和的方法，具体用法请参阅API说明。
+     * <p>
+     * The method for summing two operands, please refer to the API description for specific usage.
+     *
+     * @param value 被求和的参数  Parameters to be summed
+     * @return 求和之后的数值  the value after the sum
+     * <p>
+     * There is no description for the super interface, please refer to the subclass documentation
+     */
+    @Override
+    public IntegerMatrix add(Vector<?, ?, ?> value) {
+        if (value instanceof IntegerVector) {
+            // 获取到数据
+            IntegerVector transform = ASClass.transform(value);
+            // 开始进行计算
+            int[][] res = this.copyToNewArrays();
+            int index = -1;
+            for (int[] re : res) {
+                res[++index] = IntegerVector.parse(re).add(transform).toArray();
+            }
+            return IntegerMatrix.parse(res);
+        }
+        throw new ClassCastException("您只能提供整形向量或者矩形对象来参与到矩阵的运算中。\nYou can only provide int vectors or rectangular objects to participate in matrix operations.");
+    }
+
+    /**
+     * 在两个操作数之间做差的方法，具体用法请参阅API说明。
+     * <p>
+     * The method of making a difference between two operands, please refer to the API description for specific usage.
+     *
+     * @param value 被做差的参数（被减数）  The parameter to be subtracted (minuend)
+     * @return 差异数值  difference value
+     * There is no description for the super interface, please refer to the subclass documentation
+     */
+    @Override
+    public IntegerMatrix diff(Vector<?, ?, ?> value) {
+        if (value instanceof IntegerVector) {
+            // 获取到数据
+            IntegerVector transform = ASClass.transform(value);
+            // 开始进行计算
+            int[][] res = this.copyToNewArrays();
+            int index = -1;
+            for (int[] re : res) {
+                res[++index] = IntegerVector.parse(re).diff(transform).toArray();
+            }
+            return IntegerMatrix.parse(res);
+        }
+        throw new ClassCastException("您只能提供整形向量或者矩形对象来参与到矩阵的运算中。\nYou can only provide int vectors or rectangular objects to participate in matrix operations.");
+    }
+
 
     /**
      * 在两个向量对象之间进行计算的函数，自从1.13版本开始支持该函数的调用，该函数中的计算并不会产生一个新的向量，而是将计算操作作用于原操作数中

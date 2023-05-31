@@ -244,6 +244,55 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
     }
 
     /**
+     * 将两个操作数进行求和的方法，具体用法请参阅API说明。
+     * <p>
+     * The method for summing two operands, please refer to the API description for specific usage.
+     *
+     * @param value 被求和的参数  Parameters to be summed
+     * @return 求和之后的数值  the value after the sum
+     * <p>
+     * There is no description for the super interface, please refer to the subclass documentation
+     */
+    @Override
+    public DoubleMatrix add(Vector<?, ?, ?> value) {
+        if (value instanceof DoubleVector) {
+            double[][] res = this.copyToNewArrays();
+            DoubleVector v = ((DoubleVector) value).expand();
+            int index = -1;
+            for (double[] re : res) {
+                res[++index] = DoubleVector.parse(re).add(v).toArray();
+            }
+            return DoubleMatrix.parse(res);
+        } else {
+            throw new ClassCastException("您只能提供整形向量或者矩形对象来参与到矩阵的运算中。\nYou can only provide int vectors or rectangular objects to participate in matrix operations.");
+        }
+    }
+
+    /**
+     * 在两个操作数之间做差的方法，具体用法请参阅API说明。
+     * <p>
+     * The method of making a difference between two operands, please refer to the API description for specific usage.
+     *
+     * @param value 被做差的参数（被减数）  The parameter to be subtracted (minuend)
+     * @return 差异数值  difference value
+     * There is no description for the super interface, please refer to the subclass documentation
+     */
+    @Override
+    public DoubleMatrix diff(Vector<?, ?, ?> value) {
+        if (value instanceof DoubleVector) {
+            double[][] res = this.copyToNewArrays();
+            DoubleVector v = ((DoubleVector) value).expand();
+            int index = -1;
+            for (double[] re : res) {
+                res[++index] = DoubleVector.parse(re).diff(v).toArray();
+            }
+            return DoubleMatrix.parse(res);
+        } else {
+            throw new ClassCastException("您只能提供整形向量或者矩形对象来参与到矩阵的运算中。\nYou can only provide int vectors or rectangular objects to participate in matrix operations.");
+        }
+    }
+
+    /**
      * 获取到矩阵中指定坐标点的数值
      *
      * @param row 行编号 从0开始
@@ -360,6 +409,49 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
                     "You have an error in 'DoubleMatrix1 diff DoubleMatrix2' because the number of rows and columns of the two matrices is inconsistent!\n" +
                     "DoubleMatrix1 =>  rowCount = [" + rowCount1 + "]   colCount = [" + colCount1 + "]\nDoubleMatrix2 =>  rowCount = [" + rowCount2 + "]   colCount = [" + colCount2 + "]");
         }
+    }
+
+    /**
+     * 将两个操作数进行求和的方法，具体用法请参阅API说明。
+     * <p>
+     * The method for summing two operands, please refer to the API description for specific usage.
+     *
+     * @param value 被求和的参数  Parameters to be summed
+     * @return 求和之后的数值  the value after the sum
+     * <p>
+     * There is no description for the super interface, please refer to the subclass documentation
+     */
+    @Override
+    public DoubleMatrix add(Number value) {
+        double[][] res = this.copyToNewArrays();
+        int v = value.intValue();
+        for (double[] re : res) {
+            for (int i = 0; i < re.length; i++) {
+                re[i] += v;
+            }
+        }
+        return DoubleMatrix.parse(res);
+    }
+
+    /**
+     * 在两个操作数之间做差的方法，具体用法请参阅API说明。
+     * <p>
+     * The method of making a difference between two operands, please refer to the API description for specific usage.
+     *
+     * @param value 被做差的参数（被减数）  The parameter to be subtracted (minuend)
+     * @return 差异数值  difference value
+     * There is no description for the super interface, please refer to the subclass documentation
+     */
+    @Override
+    public DoubleMatrix diff(Number value) {
+        double[][] res = this.copyToNewArrays();
+        int v = value.intValue();
+        for (double[] re : res) {
+            for (int i = 0; i < re.length; i++) {
+                re[i] -= v;
+            }
+        }
+        return DoubleMatrix.parse(res);
     }
 
     /**

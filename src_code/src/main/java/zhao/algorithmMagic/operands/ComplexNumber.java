@@ -1,5 +1,6 @@
 package zhao.algorithmMagic.operands;
 
+import zhao.algorithmMagic.exception.ConversionException;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.utils.ASMath;
 
@@ -14,11 +15,11 @@ import java.util.regex.Pattern;
  *
  * @author zhao
  */
-public class ComplexNumber implements Operands<ComplexNumber> {
+public class ComplexNumber extends Number implements Operands<ComplexNumber> {
 
     protected final static Pattern ADD_SUBTRACT_SEPARATOR = Pattern.compile("[" + ASMath.MATHEMATICAL_SYMBOLS_PLUS + ASMath.MATHEMATICAL_SYMBOLS_SUBTRACT + "]\\s*?");
-    private final int real;
-    private final int imaginary;
+    private final double real;
+    private final double imaginary;
     private final String expression;
 
     /**
@@ -29,7 +30,7 @@ public class ComplexNumber implements Operands<ComplexNumber> {
      * @param real      复数的实部
      * @param imaginary 复数的虚部
      */
-    public ComplexNumber(int real, int imaginary) {
+    public ComplexNumber(double real, double imaginary) {
         this.real = real;
         this.imaginary = imaginary;
         this.expression = real + (imaginary >= 0 ? " + " + imaginary : " - " + -imaginary) + "i";
@@ -44,13 +45,13 @@ public class ComplexNumber implements Operands<ComplexNumber> {
      * @param imaginary  复数的虚部
      * @param expression 复数的表达式
      */
-    protected ComplexNumber(int real, int imaginary, String expression) {
+    protected ComplexNumber(double real, double imaginary, String expression) {
         this.real = real;
         this.imaginary = imaginary;
         this.expression = expression;
     }
 
-    public static ComplexNumber parse(int real, int imaginary) {
+    public static ComplexNumber parse(double real, double imaginary) {
         return new ComplexNumber(real, imaginary);
     }
 
@@ -75,18 +76,18 @@ public class ComplexNumber implements Operands<ComplexNumber> {
                 String bi = split[1];
                 int length = bi.length();
                 // 运算符前后各有一位 && 运算符后包含一个”i“ && i是最后一位
-                int bi1 = Integer.parseInt(bi.substring(0, length - 1).trim());
-                return new ComplexNumber(Integer.parseInt(a.trim()), trim.charAt(a.length()) == '-' ? -bi1 : bi1, s);
+                double bi1 = Double.parseDouble(bi.substring(0, length - 1).trim());
+                return new ComplexNumber(Double.parseDouble(a.trim()), trim.charAt(a.length()) == '-' ? -bi1 : bi1, s);
             }
         }
         throw new OperatorOperationException("[" + s + "]似乎不是一个正确的复数形式哦！正确的复数形式应为：[a + bi] or [a - bi]");
     }
 
-    public int getReal() {
+    public double getReal() {
         return real;
     }
 
-    public int getImaginary() {
+    public double getImaginary() {
         return imaginary;
     }
 
@@ -123,6 +124,49 @@ public class ComplexNumber implements Operands<ComplexNumber> {
     }
 
     /**
+     * 将两个操作数进行求和的方法，具体用法请参阅API说明。
+     * <p>
+     * The method for summing two operands, please refer to the API description for specific usage.
+     *
+     * @param value 被求和的参数  Parameters to be summed
+     * @return 求和之后的数值  the value after the sum
+     * <p>
+     * There is no description for the super interface, please refer to the subclass documentation
+     */
+    @Override
+    public ComplexNumber add(Number value) {
+        return ComplexNumber.parse(this.real + value.doubleValue(), this.imaginary);
+    }
+
+    /**
+     * 在两个操作数之间做差的方法，具体用法请参阅API说明。
+     * <p>
+     * The method of making a difference between two operands, please refer to the API description for specific usage.
+     *
+     * @param value 被做差的参数（被减数）  The parameter to be subtracted (minuend)
+     * @return 差异数值  difference value
+     * There is no description for the super interface, please refer to the subclass documentation
+     */
+    @Override
+    public ComplexNumber diff(Number value) {
+        return ComplexNumber.parse(this.real - value.doubleValue(), this.imaginary);
+    }
+
+    /**
+     * 将当前对象转换成为其子类实现，其具有强大的类型拓展效果，能够实现父类到子类的转换操作。
+     * <p>
+     * Transforming the current object into its subclass implementation has a powerful type extension effect, enabling the conversion operation from parent class to subclass.
+     *
+     * @return 当前类对应的子类实现数据类型的对象。
+     * <p>
+     * The subclass corresponding to the current class implements objects of data type.
+     */
+    @Override
+    public ComplexNumber expand() {
+        return this;
+    }
+
+    /**
      * 在两个操作数之间做乘的方法，具体用法请参阅API说明。
      * <p>
      * The method of making a difference between two operands, please refer to the API description for specific usage.
@@ -133,10 +177,10 @@ public class ComplexNumber implements Operands<ComplexNumber> {
      * (a + bi)(c + di) = (ac-bd)+(bc+ad)i = ac+adi+bci+bdi²
      */
     public ComplexNumber multiply(ComplexNumber value) {
-        int a = this.getReal();
-        int b = this.getImaginary();
-        int c = value.getReal();
-        int d = value.getImaginary();
+        double a = this.getReal();
+        double b = this.getImaginary();
+        double c = value.getReal();
+        double d = value.getImaginary();
         return new ComplexNumber((a * c) - (b * d), (b * c) + (a * d));
     }
 
@@ -151,11 +195,11 @@ public class ComplexNumber implements Operands<ComplexNumber> {
      * (ac + bd) / (c² + d²) + (bc - ad) / (c² + d²) i
      */
     public ComplexNumber divide(ComplexNumber value) {
-        int a = this.getReal();
-        int b = this.getImaginary();
-        int c = value.getReal();
-        int d = value.getImaginary();
-        int SumCD = ASMath.Power2(c) + ASMath.Power2(d);
+        double a = this.getReal();
+        double b = this.getImaginary();
+        double c = value.getReal();
+        double d = value.getImaginary();
+        double SumCD = ASMath.Power2(c) + ASMath.Power2(d);
         return new ComplexNumber(((a * c) + (b * d)) / SumCD, ((b * c) - (a * d)) / SumCD);
     }
 
@@ -171,5 +215,57 @@ public class ComplexNumber implements Operands<ComplexNumber> {
     @Override
     public String toString() {
         return this.expression;
+    }
+
+    /**
+     * Returns the value of the specified number as an {@code int},
+     * which may involve rounding or truncation.
+     *
+     * @return the numeric value represented by this object after conversion
+     * to type {@code int}.
+     */
+    @Override
+    public int intValue() {
+        return (int) this.doubleValue();
+    }
+
+    /**
+     * Returns the value of the specified number as a {@code long},
+     * which may involve rounding or truncation.
+     *
+     * @return the numeric value represented by this object after conversion
+     * to type {@code long}.
+     */
+    @Override
+    public long longValue() {
+        return (long) this.doubleValue();
+    }
+
+    /**
+     * Returns the value of the specified number as a {@code float},
+     * which may involve rounding.
+     *
+     * @return the numeric value represented by this object after conversion
+     * to type {@code float}.
+     */
+    @Override
+    public float floatValue() {
+        return (float) this.doubleValue();
+    }
+
+    /**
+     * Returns the value of the specified number as a {@code double},
+     * which may involve rounding.
+     *
+     * @return the numeric value represented by this object after conversion
+     * to type {@code double}.
+     */
+    @Override
+    public double doubleValue() {
+        if (this.imaginary == 0) {
+            return this.real;
+        } else {
+            throw new ConversionException("无法将一个虚部不为0的复数转换成为实数。\nCannot convert a complex number with an imaginary part other than 0 to a real number.\nERROR => " + this);
+        }
     }
 }

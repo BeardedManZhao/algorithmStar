@@ -57,6 +57,27 @@ public class FDataFrame implements DataFrame {
         this.primaryIndex = primaryIndex;
     }
 
+    /**
+     * 构建一个 DataFrame 对象。
+     * <p>
+     * Build a DataFrame object.
+     *
+     * @param colNameRow   列名称数据行。
+     *                     <p>
+     *                     Column name data row.
+     * @param primaryIndex 当前数据表中的 DF 主键。
+     *                     <p>
+     *                     The DF primary key in the current data table.
+     * @param arrayList    当前 DF 对象中的数据行List。
+     *                     <p>
+     *                     List of data rows in the current DF object.
+     * @param rowHashMap   当前 DF 对象中的行索引数据。
+     *                     <p>
+     *                     The row index data in the current DF object.
+     * @param colHashMap   当前 DF 对象中的列索引数据。
+     *                     <p>
+     *                     The column index data in the current DF object.
+     */
     public FDataFrame(Series colNameRow, int primaryIndex, ArrayList<Series> arrayList, HashMap<String, Integer> rowHashMap, HashMap<String, Integer> colHashMap) {
         this.primaryIndex = primaryIndex;
         list = arrayList;
@@ -1126,5 +1147,62 @@ public class FDataFrame implements DataFrame {
                 this.colNameRow, this.primaryIndex, arrayList,
                 new HashMap<>(), this.colHashMap
         ).refreshField(true, false);
+    }
+
+    /**
+     * 将两个操作数进行求和的方法，具体用法请参阅API说明。
+     * <p>
+     * The method for summing two operands, please refer to the API description for specific usage.
+     *
+     * @param value 被求和的参数  Parameters to be summed
+     * @return 求和之后的数值  the value after the sum
+     * <p>
+     * There is no description for the super interface, please refer to the subclass documentation
+     */
+    @Override
+    public DataFrame add(Number value) {
+        ArrayList<Series> arrayList = new ArrayList<>(this.list);
+        for (Series cells : this) {
+            arrayList.add(cells.add(value));
+        }
+        return new FDataFrame(
+                this.colNameRow, this.primaryIndex, arrayList,
+                new HashMap<>(this.rowHashMap), new HashMap<>(this.colHashMap)
+        );
+    }
+
+    /**
+     * 在两个操作数之间做差的方法，具体用法请参阅API说明。
+     * <p>
+     * The method of making a difference between two operands, please refer to the API description for specific usage.
+     *
+     * @param value 被做差的参数（被减数）  The parameter to be subtracted (minuend)
+     * @return 差异数值  difference value
+     * There is no description for the super interface, please refer to the subclass documentation
+     */
+    @Override
+    public DataFrame diff(Number value) {
+        ArrayList<Series> arrayList = new ArrayList<>(this.list);
+        for (Series cells : this) {
+            arrayList.add(cells.diff(value));
+        }
+        return new FDataFrame(
+                this.colNameRow, this.primaryIndex, arrayList,
+                new HashMap<>(this.rowHashMap), new HashMap<>(this.colHashMap)
+        );
+    }
+
+    /**
+     * 将当前对象转换成为其子类实现，其具有强大的类型拓展效果，能够实现父类到子类的转换操作。
+     * <p>
+     * Transforming the current object into its subclass implementation has a powerful type extension effect, enabling the conversion operation from parent class to subclass.
+     *
+     * @return 当前类对应的子类实现数据类型的对象。
+     * <p>
+     * The subclass corresponding to the current class implements objects of data type.
+     */
+    @Override
+    public DataFrame expand() {
+        return this;
     }
 }

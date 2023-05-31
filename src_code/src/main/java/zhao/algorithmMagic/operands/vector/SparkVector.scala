@@ -78,19 +78,6 @@ final class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mll
   }
 
   /**
-   *
-   * @return 将本对象中存储的向量序列数组拷贝到一个新数组并将新数组返回，这里返回的是一个新数组，支持修改等操作。
-   *
-   *         Copy the vector sequence array stored in this object to a new array and return the new array. Here, a new array is returned, which supports modification and other operations.
-   */
-  override def copyToNewArray(): Array[Double] = vector.toArray
-
-  /**
-   * @return 该类的实现类对象，用于拓展该接口的子类
-   */
-  override def expand(): SparkVector = this
-
-  /**
    * 将两个操作数进行求和的方法，具体用法请参阅API说明。
    * <p>
    * The method for summing two operands, please refer to the API description for specific usage.
@@ -114,6 +101,14 @@ final class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mll
     }
     else throw new OperatorOperationException("'DoubleVector1 add DoubleVector2' 时，两个'DoubleVector'的向量所包含的数量不同，DoubleVector1=[" + numberOfDimensions1 + "]，DoubleVector2=[" + numberOfDimensions2 + "]\n" + "When 'DoubleVector1 add DoubleVector2', the two vectors of 'DoubleVector' contain different quantities, DoubleVector1=[" + numberOfDimensions1 + "], DoubleVector2=[" + numberOfDimensions2 + "]")
   }
+
+  /**
+   *
+   * @return 将本对象中存储的向量序列数组拷贝到一个新数组并将新数组返回，这里返回的是一个新数组，支持修改等操作。
+   *
+   *         Copy the vector sequence array stored in this object to a new array and return the new array. Here, a new array is returned, which supports modification and other operations.
+   */
+  override def copyToNewArray(): Array[Double] = vector.toArray
 
   /**
    * @return 向量中包含的维度数量
@@ -167,6 +162,56 @@ final class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mll
    *         Objects after disruption.
    */
   override def shuffle(seed: Long): SparkVector = SparkVector.parse(sparkContext, ASMath.shuffle(this.copyToNewArray(), seed, false))
+
+  /**
+   * 将两个操作数进行求和的方法，具体用法请参阅API说明。
+   * <p>
+   * The method for summing two operands, please refer to the API description for specific usage.
+   *
+   * @param value 被求和的参数  Parameters to be summed
+   * @return 求和之后的数值  the value after the sum
+   *         <p>
+   *         There is no description for the super interface, please refer to the subclass documentation
+   */
+  override def add(value: Number): SparkVector = {
+    val dimensions = this.getNumberOfDimensions
+    val doubles = this.copyToNewArray()
+    val v = value.doubleValue()
+    for (i <- 0 until dimensions) {
+      doubles(i) -= v
+    }
+    SparkVector.parse(sparkContext, doubles)
+  }
+
+  /**
+   * 在两个操作数之间做差的方法，具体用法请参阅API说明。
+   * <p>
+   * The method of making a difference between two operands, please refer to the API description for specific usage.
+   *
+   * @param value 被做差的参数（被减数）  The parameter to be subtracted (minuend)
+   * @return 差异数值  difference value
+   *         There is no description for the super interface, please refer to the subclass documentation
+   */
+  override def diff(value: Number): SparkVector = {
+    val dimensions = this.getNumberOfDimensions
+    val doubles = this.copyToNewArray()
+    val v = value.doubleValue()
+    for (i <- 0 until dimensions) {
+      doubles(i) += v
+    }
+    SparkVector.parse(sparkContext, doubles)
+  }
+
+  /**
+   * 将当前对象转换成为其子类实现，其具有强大的类型拓展效果，能够实现父类到子类的转换操作。
+   *
+   * Transforming the current object into its subclass implementation has a powerful type extension effect, enabling the conversion operation from parent class to subclass.
+   *
+   * @return 当前类对应的子类实现数据类型的对象。
+   *
+   *         The subclass corresponding to the current class implements objects of data type.
+   */
+  override def expand(): SparkVector = this
 }
 
 object SparkVector {

@@ -717,6 +717,51 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
     }
 
     /**
+     * 将两个操作数进行求和的方法，具体用法请参阅API说明。
+     * <p>
+     * The method for summing two operands, please refer to the API description for specific usage.
+     *
+     * @param value 被求和的参数  Parameters to be summed
+     * @return 求和之后的数值  the value after the sum
+     * <p>
+     * There is no description for the super interface, please refer to the subclass documentation
+     */
+    @Override
+    public ColorMatrix add(Number value) {
+        Color[][] colors1 = this.copyToNewArrays();
+        int v = value.intValue();
+        for (Color[] colors : colors1) {
+            int index = -1;
+            for (Color color : colors) {
+                colors[++index] = new Color(color.getRGB() + v);
+            }
+        }
+        return ColorMatrix.parse(colors1);
+    }
+
+    /**
+     * 在两个操作数之间做差的方法，具体用法请参阅API说明。
+     * <p>
+     * The method of making a difference between two operands, please refer to the API description for specific usage.
+     *
+     * @param value 被做差的参数（被减数）  The parameter to be subtracted (minuend)
+     * @return 差异数值  difference value
+     * There is no description for the super interface, please refer to the subclass documentation
+     */
+    @Override
+    public ColorMatrix diff(Number value) {
+        Color[][] colors1 = this.copyToNewArrays();
+        int v = value.intValue();
+        for (Color[] colors : colors1) {
+            int index = -1;
+            for (Color color : colors) {
+                colors[++index] = new Color(color.getRGB() - v);
+            }
+        }
+        return ColorMatrix.parse(colors1);
+    }
+
+    /**
      * 在两个向量对象之间进行计算的函数，自从1.13版本开始支持该函数的调用，该函数中的计算并不会产生一个新的向量，而是将计算操作作用于原操作数中
      * <p>
      * The function that calculates between two vector objects supports the call of this function since version 1.13. The calculation in this function will not generate a new vector, but will apply the calculation operation to the original operand

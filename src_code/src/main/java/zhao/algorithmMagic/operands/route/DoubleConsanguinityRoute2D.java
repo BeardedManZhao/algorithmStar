@@ -207,6 +207,45 @@ public class DoubleConsanguinityRoute2D implements Route2D<DoubleConsanguinityRo
         );
     }
 
+    /**
+     * 将两个操作数进行求和的方法，具体用法请参阅API说明。
+     * <p>
+     * The method for summing two operands, please refer to the API description for specific usage.
+     *
+     * @param value 被求和的参数  Parameters to be summed
+     * @return 求和之后的数值  the value after the sum
+     * <p>
+     * There is no description for the super interface, please refer to the subclass documentation
+     */
+    @Override
+    public DoubleConsanguinityRoute2D add(Number value) {
+        return new DoubleConsanguinityRoute2D(
+                this.StartingCoordinateName,
+                this.EndPointCoordinateName,
+                this.StartingCoordinate.add(value),
+                this.EndPointCoordinate.add(value)
+        );
+    }
+
+    /**
+     * 在两个操作数之间做差的方法，具体用法请参阅API说明。
+     * <p>
+     * The method of making a difference between two operands, please refer to the API description for specific usage.
+     *
+     * @param value 被做差的参数（被减数）  The parameter to be subtracted (minuend)
+     * @return 差异数值  difference value
+     * There is no description for the super interface, please refer to the subclass documentation
+     */
+    @Override
+    public DoubleConsanguinityRoute2D diff(Number value) {
+        return new DoubleConsanguinityRoute2D(
+                this.StartingCoordinateName,
+                this.EndPointCoordinateName,
+                this.StartingCoordinate.diff(value),
+                this.EndPointCoordinate.diff(value)
+        );
+    }
+
     @Override
     public String toString() {
         return this.StartingCoordinateName + StartingCoordinate + " -> " + this.EndPointCoordinateName + EndPointCoordinate;

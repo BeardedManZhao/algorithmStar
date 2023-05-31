@@ -87,6 +87,23 @@ public class IntegerMatrixSpace extends MatrixSpace<IntegerMatrixSpace, Integer,
         }
     }
 
+    /**
+     * 提供子类类型数据，构造出当前子类的实例化对象，用于父类在不知道子类数据类型的情况下，创建子类矩阵。
+     * <p>
+     * Provide subclass type data, construct an instantiated object of the current subclass, and use it for the parent class to create a subclass matrix without knowing the subclass data type.
+     *
+     * @param arrayType 构造一个新的与当前数据类型一致的矩阵对象。
+     *                  <p>
+     *                  Construct a new matrix object that is consistent with the current data type.
+     * @return 该类的实现类对象，用于拓展该接口的子类。
+     * <p>
+     * The implementation class object of this class is used to extend the subclasses of this interface.
+     */
+    @Override
+    public IntegerMatrixSpace expand(IntegerMatrix[] arrayType) {
+        return parse(arrayType);
+    }
+
     @Override
     public Integer get(int row, int col) {
         return get(Math.max(RowPointer, 0), row, col);
