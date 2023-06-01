@@ -366,6 +366,39 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         return maxColor;
     };
 
+    /**
+     * 池化逻辑实现，将当前矩阵内的所有像素中 R G B 三个通道的颜色数值的均值逐个计算出来，并根据结果获取新颜色。
+     *
+     * The pooling logic implementation calculates the average color values of the R, G, and B channels in all pixels in the current matrix one by one, and obtains new colors based on the results.
+     */
+    public final static Transformation<ColorMatrix, Color> POOL_RGB_OBO_MEAN = colorMatrix -> {
+        int mean_r = 0, mean_g = 0, mean_b = 0;
+        for (Color[] matrix : colorMatrix) {
+            for (Color color : matrix) {
+                mean_r += color.getRed();
+                mean_g += color.getGreen();
+                mean_b += color.getBlue();
+            }
+        }
+        int size = colorMatrix.getNumberOfDimensions();
+        return new Color(mean_r / size, mean_g / size, mean_b / size);
+    };
+
+    /**
+     * 池化逻辑实现，将当前矩阵内的所有像素中 RGB 颜色数值的均值逐个计算出来，并根据结果获取新颜色。
+     *
+     * The pooling logic implementation calculates the average color values of the R, G, and B channels in all pixels in the current matrix one by one, and obtains new colors based on the results.
+     */
+    public final static Transformation<ColorMatrix, Color> POOL_RGB_MEAN = colorMatrix -> {
+        int mean = 0;
+        for (Color[] matrix : colorMatrix) {
+            for (Color color : matrix) {
+                mean += color.getRGB();
+            }
+        }
+        return new Color(mean / colorMatrix.getNumberOfDimensions());
+    };
+
     private boolean isGrayscale;
 
     /**
