@@ -475,6 +475,20 @@ public abstract class Matrix<ImplementationType
     }
 
     /**
+     * 针对矩阵操作数的形状进行重新设定，使得矩阵中的数据维度的更改能够更加友好。
+     * <p>
+     * Reset the shape of the matrix operands to make changes to the data dimensions in the matrix more user-friendly.
+     *
+     * @param shape 需要被重新设置的新维度信息，其中包含2个维度信息，第一个代表矩阵的行数量，第二个代表矩阵的列数量。
+     *              <p>
+     *              The new dimension information that needs to be reset includes two dimensions: the first represents the number of rows in the matrix, and the second represents the number of columns in the matrix.
+     * @return 重设之后的新矩阵对象。
+     * <p>
+     * The new matrix object after resetting.
+     */
+    public abstract ImplementationType reShape(int... shape);
+
+    /**
      * 将当前矩阵中的所有元素进行扁平化操作，获取到扁平化之后的数组对象。
      * <p>
      * Flatten all elements in the current matrix to obtain the flattened array object.
@@ -484,9 +498,6 @@ public abstract class Matrix<ImplementationType
      * The result of flattening each row of elements in the current matrix.
      */
     public abstract ArrayType flatten();
-
-
-    public abstract ImplementationType expand();
 
     @Override
     public final void forEach(Consumer<? super IteratorType> action) {

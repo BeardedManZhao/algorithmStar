@@ -5,6 +5,7 @@ import zhao.algorithmMagic.operands.ComplexNumber;
 import zhao.algorithmMagic.operands.vector.Vector;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASMath;
+import zhao.algorithmMagic.utils.transformation.Transformation;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -453,6 +454,27 @@ public class ComplexNumberMatrix extends Matrix<ComplexNumberMatrix, ComplexNumb
             complexNumbers[++count] = numbers[index];
         }
         return complexNumbers;
+    }
+
+    /**
+     * 针对矩阵操作数的形状进行重新设定，使得矩阵中的数据维度的更改能够更加友好。
+     * <p>
+     * Reset the shape of the matrix operands to make changes to the data dimensions in the matrix more user-friendly.
+     *
+     * @param shape 需要被重新设置的新维度信息，其中包含2个维度信息，第一个代表矩阵的行数量，第二个代表矩阵的列数量。
+     *              <p>
+     *              The new dimension information that needs to be reset includes two dimensions: the first represents the number of rows in the matrix, and the second represents the number of columns in the matrix.
+     * @return 重设之后的新矩阵对象。
+     * <p>
+     * The new matrix object after resetting.
+     */
+    @Override
+    public ComplexNumberMatrix reShape(int... shape) {
+        return ComplexNumberMatrix.parse(
+                ASClass.reShape(
+                        this, (Transformation<int[], ComplexNumber[][]>) ints -> new ComplexNumber[ints[0]][ints[1]], shape
+                )
+        );
     }
 
     /**

@@ -23,7 +23,7 @@ import zhao.algorithmMagic.utils.ASClass;
  *                             <p>
  *                             Matrix fast, the matrix type in each layer of matrix.
  */
-public abstract class MatrixSpace<ImplementationType extends Matrix<?, ?, ?, ?, ?>, ElementType, ArrayType, MatrixType
+public abstract class MatrixSpace<ImplementationType extends MatrixSpace<?, ?, ?, ?>, ElementType, ArrayType, MatrixType
         extends Matrix<?, ElementType, ?, ?, ?>>
         extends Matrix<ImplementationType, ElementType, ArrayType, MatrixType, MatrixType[]> {
     private final int layer;
@@ -242,4 +242,38 @@ public abstract class MatrixSpace<ImplementationType extends Matrix<?, ?, ?, ?, 
         }
         return this.expand(matrixTypes);
     }
+
+    /**
+     * 按照本矩阵空间的创建方式创建出一个新的矩阵对象，该函数通常用于父类需要子类帮助创建同类型的参数的场景。
+     * <p>
+     * Create a new matrix object according to the creation method of this matrix space, which is usually used in scenarios where the parent class needs the help of subclasses to create parameters of the same type.
+     *
+     * @param layer 新矩阵矩阵空间的层数。
+     *              <p>
+     *              The number of layers in the new matrix space.
+     * @param row   新创建的矩阵空间中每个矩阵的行数。
+     *              <p>
+     *              The number of rows for each matrix in the newly created matrix space.
+     * @param col   新创建的矩阵空间中每个矩阵的列数。
+     *              <p>
+     *              The number of columns for each matrix in the newly created matrix space.
+     * @return 创建出来的矩阵空间对象.
+     * <p>
+     * The created matrix space object
+     */
+    protected abstract ImplementationType create(int layer, int row, int col);
+
+    /**
+     * 按照本矩阵空间的创建方式创建出一个新的矩阵对象，该函数通常用于父类需要子类帮助创建同类型的参数的场景。
+     * <p>
+     * Create a new matrix object according to the creation method of this matrix space, which is usually used in scenarios where the parent class needs the help of subclasses to create parameters of the same type.
+     *
+     * @param data 新矩阵空间对象中的元素。
+     *             <p>
+     *             Elements in the new matrix space object.
+     * @return 创建出来的新的矩阵空间对象。
+     * <p>
+     * Create a new matrix space object.
+     */
+    protected abstract ImplementationType create(ArrayType[] data);
 }

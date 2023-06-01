@@ -1,5 +1,6 @@
 package zhao.algorithmMagic.utils;
 
+import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
 import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateMany;
 import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo;
@@ -8,6 +9,12 @@ import zhao.algorithmMagic.operands.coordinateNet.DoubleRoute2DNet;
 import zhao.algorithmMagic.operands.coordinateNet.DoubleRouteNet;
 import zhao.algorithmMagic.operands.coordinateNet.IntegerRoute2DNet;
 import zhao.algorithmMagic.operands.coordinateNet.IntegerRouteNet;
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
+import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
+import zhao.algorithmMagic.operands.matrix.Matrix;
+import zhao.algorithmMagic.operands.matrix.block.DoubleMatrixSpace;
+import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixSpace;
+import zhao.algorithmMagic.operands.matrix.block.MatrixSpace;
 import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute;
 import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute2D;
 import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute;
@@ -17,6 +24,7 @@ import zhao.algorithmMagic.utils.transformation.Transformation;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -410,5 +418,314 @@ public final class ASClass {
         g2d.drawImage(toolkitImage, 0, 0, null);
         g2d.dispose();
         return buffImage;
+    }
+
+    /**
+     * 迭代器内元素的转换函数。
+     *
+     * @param transformation 转换逻辑映射关系实现。
+     * @param arrInit        初始化结果数据容器的逻辑实现。
+     * @param data           需要被转换的数据对象。
+     * @param <I>            映射关系转换中的输入参数。
+     * @param <O>            映射关系转换中的输出参数。
+     * @return 转换之后的结果数组。
+     */
+    public static <I, O> O[] map(Transformation<I, O> transformation, Transformation<I[], O[]> arrInit, I[] data) {
+        O[] function = arrInit.function(data);
+        int index = -1;
+        for (I datum : data) {
+            function[++index] = transformation.function(datum);
+        }
+        return function;
+    }
+
+    /**
+     * 维度检查函数，通常用于维度重设之前进行矩阵维度的检查操作。
+     *
+     * @param arr   维度对应的矩阵对象。
+     * @param shape 新维度数值。
+     */
+    public static void checkShapeMS(MatrixSpace<?, ?, ?, ?> arr, int... shape) {
+        if (shape == null) {
+            throw new OperatorOperationException("The shape parameter cannot be null!!!");
+        }
+        if (shape.length != 3) {
+            throw new OperatorOperationException("矩阵维度重设操作需要的是一个包含 3 个元素的维度信息，你传递的维度元素数量错误!\n" +
+                    "The matrix dimension reset operation requires a dimension information containing 2 elements. The number of dimension elements you passed is incorrect!\n" +
+                    "you shape = " + Arrays.toString(shape));
+        }
+        int i = shape[0] * shape[1] * shape[2];
+        int numberOfDimensions = arr.getNumberOfDimensions() * arr.getRowCount() * arr.getColCount();
+        if (i != numberOfDimensions) {
+            throw new OperatorOperationException("The number of matrix elements you provided cannot be converted into dimensions.\n" +
+                    "you shape = " + Arrays.toString(shape) + "\tNumber of Elements Required = " + i +
+                    "\nyou matrix shape = [" + arr.getNumberOfDimensions() + ',' + arr.getRowCount() + ',' + arr.getColCount() + "]\tNumber of Elements Required = " + numberOfDimensions
+            );
+        }
+    }
+
+    /**
+     * 维度检查函数，通常用于维度重设之前进行矩阵维度的检查操作。
+     *
+     * @param arr   维度对应的矩阵对象。
+     * @param shape 新维度数值。
+     */
+    public static void checkShapeMat(Matrix<?, ?, ?, ?, ?> arr, int... shape) {
+        if (shape == null) {
+            throw new OperatorOperationException("The shape parameter cannot be null!!!");
+        }
+        if (shape.length != 2) {
+            throw new OperatorOperationException("矩阵维度重设操作需要的是一个包含 2 个元素的维度信息，你传递的维度元素数量错误!\n" +
+                    "The matrix dimension reset operation requires a dimension information containing 2 elements. The number of dimension elements you passed is incorrect!" +
+                    "you shape = " + Arrays.toString(shape));
+        }
+        int i = shape[0] * shape[1];
+        int numberOfDimensions = arr.getNumberOfDimensions();
+        if (i != numberOfDimensions) {
+            throw new OperatorOperationException("The number of matrix elements you provided cannot be converted into dimensions.\n" +
+                    "you shape = " + Arrays.toString(shape) + "\tNumber of Elements Required = " + i +
+                    "\nyou matrix shape = [" + arr.getRowCount() + ',' + arr.getColCount() + "]\tNumber of Elements Required = " + numberOfDimensions
+            );
+        }
+    }
+
+    /**
+     * 二维矩阵数组对象维度转换函数。
+     *
+     * @param arr   需要被转换的矩阵对象。
+     * @param shape 转换之后的期望维度数据，其中第一个元素是行数量 第二个元素是列数量。
+     * @return 转换操作成功之后的新数组
+     */
+    public static int[][] reShape(IntegerMatrix arr, int... shape) {
+        // 检查维度
+        checkShapeMat(arr, shape);
+        // 重设维度
+        int[][] res = new int[shape[0]][];
+        // 准备指针
+        int dy = -1, dx = -1;
+        // 准备结果容器
+        int i = shape[1], maxRowIndex = i - 1;
+        int[] row = new int[i];
+        for (int[] ints : arr) {
+            for (int anInt : ints) {
+                // 填充容器 直到容器无法装下
+                if (dx < maxRowIndex) {
+                    // 能够装下
+                    row[++dx] = anInt;
+                    continue;
+                }
+                // 装不下就换新行
+                res[++dy] = row;
+                row = new int[i];
+                dx = 0;
+                row[dx] = anInt;
+            }
+        }
+        res[++dy] = row;
+        return res;
+    }
+
+    /**
+     * 二维矩阵数组对象维度转换函数。
+     *
+     * @param arr   需要被转换的矩阵对象。
+     * @param shape 转换之后的期望维度数据，其中第一个元素是行数量 第二个元素是列数量。
+     * @return 转换操作成功之后的新数组
+     */
+    public static double[][] reShape(DoubleMatrix arr, int... shape) {
+        // 检查维度
+        checkShapeMat(arr, shape);
+        // 重设维度
+        double[][] res = new double[shape[0]][];
+        // 准备指针
+        int dy = -1, dx = -1;
+        // 准备结果容器
+        int i = shape[1], maxRowIndex = i - 1;
+        double[] row = new double[i];
+        for (double[] ints : arr) {
+            for (double anInt : ints) {
+                // 填充容器 直到容器无法装下
+                if (dx < maxRowIndex) {
+                    // 能够装下
+                    row[++dx] = anInt;
+                    continue;
+                }
+                // 装不下就换新行
+                res[++dy] = row;
+                row = new double[i];
+                dx = 0;
+                row[dx] = anInt;
+            }
+        }
+        res[++dy] = row;
+        return res;
+    }
+
+    /**
+     * 二维矩阵数组对象维度转换函数。
+     *
+     * @param arr       需要被转换的矩阵对象。
+     * @param createArr 创建新结果数组的实现逻辑对象，其中输出参数是设置的维度数据.
+     * @param shape     转换之后的期望维度数据，其中第一个元素是行数量 第二个元素是列数量。
+     * @return 转换操作成功之后的新数组
+     */
+    public static <T> T[][] reShape(Matrix<?, T, ?, ?, ?> arr, Transformation<int[], T[][]> createArr, int... shape) {
+        // 检查维度
+        checkShapeMat(arr, shape);
+        // 重设维度
+        T[][] res = createArr.function(shape);
+        // 准备指针
+        int dy = -1, dx = -1;
+        // 准备结果容器
+        int i = shape[1], maxRowIndex = i - 1;
+        T[] row = res[++dy];
+        for (T[] ints : ASClass.<Object, T[][]>transform(arr.toArrays())) {
+            for (T anInt : ints) {
+                // 填充容器 直到容器无法装下
+                if (dx < maxRowIndex) {
+                    // 能够装下
+                    row[++dx] = anInt;
+                    continue;
+                }
+                // 装不下就换新行
+                row = res[++dy];
+                dx = 0;
+                row[dx] = anInt;
+            }
+        }
+        return res;
+    }
+
+    /**
+     * 三维矩阵数组对象维度转换函数。
+     *
+     * @param arr   需要被转换的矩阵对象。
+     * @param shape 转换之后的期望维度数据，其中第一个元素是行数量 第二个元素是列数量。
+     * @return 转换操作成功之后的新数组
+     */
+    public static int[][][] reShape(IntegerMatrixSpace arr, int... shape) {
+        // 检查维度
+        checkShapeMS(arr, shape);
+        // 重设维度
+        int[][][] res = new int[shape[0]][shape[1]][];
+        // 准备指针
+        int dl = 0, dy = -1, dx = -1;
+        // 准备结果容器
+        int i1 = shape[1], maxRowIndex1 = i1 - 1;
+        int i2 = shape[2], maxRowIndex2 = i2 - 1;
+        int[] row = new int[i2];
+        for (IntegerMatrix re : arr.toArrays()) {
+            for (int[] ints : re) {
+                for (int anInt : ints) {
+                    // 填充容器 直到容器无法装下
+                    if (dx < maxRowIndex2) {
+                        // 能够装下
+                        row[++dx] = anInt;
+                        continue;
+                    }
+                    // 装不下就换新行
+                    if (dy >= maxRowIndex1) {
+                        // 如果当前层满了，就直接切换下一层
+                        dl += 1;
+                        dy = -1;
+                    }
+                    System.out.println(dl + " " + dy);
+                    res[dl][++dy] = row;
+                    row = new int[i2];
+                    dx = 0;
+                    row[dx] = anInt;
+                }
+            }
+        }
+        res[dl][++dy] = row;
+        return res;
+    }
+
+    /**
+     * 二维矩阵数组对象维度转换函数。
+     *
+     * @param arr   需要被转换的矩阵对象。
+     * @param shape 转换之后的期望维度数据，其中第一个元素是行数量 第二个元素是列数量。
+     * @return 转换操作成功之后的新数组
+     */
+    public static double[][][] reShape(DoubleMatrixSpace arr, int... shape) {
+        // 检查维度
+        checkShapeMS(arr, shape);
+        // 重设维度
+        double[][][] res = new double[shape[0]][shape[1]][];
+        // 准备指针
+        int dl = 0, dy = -1, dx = -1;
+        // 准备结果容器
+        int i1 = shape[1], maxRowIndex1 = i1 - 1;
+        int i2 = shape[2], maxRowIndex2 = i2 - 1;
+        double[] row = new double[i2];
+        for (DoubleMatrix re : arr.toArrays()) {
+            for (double[] ints : re) {
+                for (double anInt : ints) {
+                    // 填充容器 直到容器无法装下
+                    if (dx < maxRowIndex2) {
+                        // 能够装下
+                        row[++dx] = anInt;
+                        continue;
+                    }
+                    // 装不下就换新行
+                    if (dy >= maxRowIndex1) {
+                        // 如果当前层满了，就直接切换下一层
+                        dl += 1;
+                        dy = -1;
+                    }
+                    res[dl][++dy] = row;
+                    row = new double[i2];
+                    dx = 0;
+                    row[dx] = anInt;
+                }
+            }
+        }
+        res[dl][++dy] = row;
+        return res;
+    }
+
+    /**
+     * 二维矩阵数组对象维度转换函数。
+     *
+     * @param arr       需要被转换的矩阵对象。
+     * @param createArr 创建新结果数组的实现逻辑对象，其中输出参数是设置的维度数据.
+     * @param shape     转换之后的期望维度数据，其中第一个元素是行数量 第二个元素是列数量。
+     * @return 转换操作成功之后的新数组
+     */
+    public static <T> T[][][] reShape(MatrixSpace<?, T, ?, ?> arr, Transformation<int[], T[][][]> createArr, int... shape) {
+        // 检查维度
+        checkShapeMS(arr, shape);
+        // 重设维度
+        T[][][] res = createArr.function(shape);
+        // 准备指针
+        int dl = -1, dy = -1, dx = -1;
+        // 准备结果容器
+        int i1 = shape[1], maxRowIndex1 = i1 - 1;
+        int i2 = shape[1], maxRowIndex2 = i2 - 1;
+        T[][] layer = res[++dl];
+        T[] row = layer[++dy];
+        for (T[][] re : res) {
+            for (T[] ints : re) {
+                for (T anInt : ints) {
+                    // 填充容器 直到容器无法装下
+                    if (dx < maxRowIndex2) {
+                        // 能够装下
+                        row[++dx] = anInt;
+                        continue;
+                    }
+                    // 装不下就换新行
+                    if (dy >= maxRowIndex1) {
+                        // 如果当前层满了，就直接切换下一层
+                        layer = res[++dl];
+                        dy = -1;
+                    }
+                    row = layer[++dy];
+                    dx = 0;
+                    row[dx] = anInt;
+                }
+            }
+        }
+        return res;
     }
 }

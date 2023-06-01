@@ -4,8 +4,10 @@ import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.operands.matrix.ColorMatrix;
 import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
 import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
+import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASIO;
 import zhao.algorithmMagic.utils.ASMath;
+import zhao.algorithmMagic.utils.transformation.Transformation;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -22,6 +24,9 @@ import java.util.Iterator;
  * @author zhao
  */
 public class IntegerMatrixSpace extends MatrixSpace<IntegerMatrixSpace, Integer, int[][], IntegerMatrix> {
+
+    public final static Transformation<int[][], IntegerMatrix> CREATE_MAP_T = IntegerMatrix::parse;
+    public final static Transformation<int[][][], IntegerMatrix[]> CREATE_MAP_INIT = ints -> new IntegerMatrix[ints.length];
 
     /**
      * 构造一个空的矩阵，指定其矩阵的行列数
@@ -148,6 +153,25 @@ public class IntegerMatrixSpace extends MatrixSpace<IntegerMatrixSpace, Integer,
     }
 
     /**
+     * 针对矩阵操作数的形状进行重新设定，使得矩阵中的数据维度的更改能够更加友好。
+     * <p>
+     * Reset the shape of the matrix operands to make changes to the data dimensions in the matrix more user-friendly.
+     *
+     * @param shape 需要被重新设置的新维度信息，其中包含2个维度信息，第一个代表矩阵的行数量，第二个代表矩阵的列数量。
+     *              <p>
+     *              The new dimension information that needs to be reset includes two dimensions: the first represents the number of rows in the matrix, and the second represents the number of columns in the matrix.
+     * @return 重设之后的新矩阵对象。
+     * <p>
+     * The new matrix object after resetting.
+     */
+    @Override
+    public IntegerMatrixSpace reShape(int... shape) {
+        return this.create(
+                ASClass.reShape(this, shape)
+        );
+    }
+
+    /**
      * 将两个操作数进行求和的方法，具体用法请参阅API说明。
      * <p>
      * The method for summing two operands, please refer to the API description for specific usage.
@@ -245,6 +269,58 @@ public class IntegerMatrixSpace extends MatrixSpace<IntegerMatrixSpace, Integer,
             integerMatrices2[++count] = integerMatrix.transpose();
         }
         return parse(integerMatrices2);
+    }
+
+    /**
+     * 按照本矩阵空间的创建方式创建出一个新的矩阵对象，该函数通常用于父类需要子类帮助创建同类型的参数的场景。
+     * <p>
+     * Create a new matrix object according to the creation method of this matrix space, which is usually used in scenarios where the parent class needs the help of subclasses to create parameters of the same type.
+     *
+     * @param layer 新矩阵矩阵空间的层数。
+     *              <p>
+     *              The number of layers in the new matrix space.
+     * @param row   新创建的矩阵空间中每个矩阵的行数。
+     *              <p>
+     *              The number of rows for each matrix in the newly created matrix space.
+     * @param col   新创建的矩阵空间中每个矩阵的列数。
+     *              <p>
+     *              The number of columns for each matrix in the newly created matrix space.
+     * @return 创建出来的矩阵空间对象.
+     * <p>
+     * The created matrix space object
+     */
+    @Override
+    protected IntegerMatrixSpace create(int layer, int row, int col) {
+        return IntegerMatrixSpace.parse(
+                ASClass.map(
+                        CREATE_MAP_T,
+                        CREATE_MAP_INIT,
+                        new int[layer][row][col]
+                )
+        );
+    }
+
+    /**
+     * 按照本矩阵空间的创建方式创建出一个新的矩阵对象，该函数通常用于父类需要子类帮助创建同类型的参数的场景。
+     * <p>
+     * Create a new matrix object according to the creation method of this matrix space, which is usually used in scenarios where the parent class needs the help of subclasses to create parameters of the same type.
+     *
+     * @param data 新矩阵空间对象中的元素。
+     *             <p>
+     *             Elements in the new matrix space object.
+     * @return 创建出来的新的矩阵空间对象。
+     * <p>
+     * Create a new matrix space object.
+     */
+    @Override
+    protected IntegerMatrixSpace create(int[][][] data) {
+        return IntegerMatrixSpace.parse(
+                ASClass.map(
+                        CREATE_MAP_T,
+                        CREATE_MAP_INIT,
+                        data
+                )
+        );
     }
 
     /**
