@@ -199,7 +199,7 @@ public class MAIN1 {
         ClassificationModel<IntegerMatrixSpace> model = singleLayerCnnModel.function(taskConsumer, load.getX_train());
         System.out.println("训练模型完成，耗时：" + (System.currentTimeMillis() - start));
         // 保存模型
-        ASModel.Utils.write(new File("C:\\Users\\Liming\\Desktop\\fsDownload\\MytModel.as"), model);
+        ASModel.Utils.write(new File("C:\\Users\\Liming\\Desktop\\fsDownload\\MyModel.as"), model);
 
 
         // 提供一个新图 开始进行测试
@@ -234,7 +234,7 @@ import java.util.Arrays;
 public class MAIN1 {
     public static void main(String[] args) {
         ClassificationModel<IntegerMatrixSpace> model = ASClass.transform(
-                ASModel.Utils.read(new File("C:\\Users\\Liming\\Desktop\\fsDownload\\MytModel.as"))
+                ASModel.Utils.read(new File("C:\\Users\\Liming\\Desktop\\fsDownload\\MyModel.as"))
         );
         // 提供一个新图 开始进行测试
         IntegerMatrixSpace parse1 = IntegerMatrixSpace.parse("C:\\Users\\Liming\\Desktop\\fsDownload\\字母4.jpg", 91, 87);
@@ -311,6 +311,176 @@ public class MAIN1 {
         // 保存模型
         ASModel.Utils.write(new File("MyModel.as"), model);
         System.out.println("模型保存成功，您可以开始使用模型了!!!");
+    }
+}
+```
+
+* 针对复数操作数对象，其具有了更加贴近Java原生数值类型的操作，实现了Number类，下面是一个实现。
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.ComplexNumber;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 获取到复数对象
+        ComplexNumber parse = ComplexNumber.parse("1.2 + 0i");
+        // 获取到复数的各个部分
+        System.out.println(parse);
+        System.out.println(parse.getReal());
+        System.out.println(parse.getImaginary());
+        // 使用复数进行一个简单的计算操作
+        ComplexNumber divide = parse.divide(parse);
+        System.out.println(divide);
+        // 转换成为实数
+        System.out.println(parse.doubleValue());
+    }
+}
+```
+
+* 所有操作数的加减函数都支持拓展维度的方式来进行计算，意味着其现在已经允许矩阵与数值或向量计算等操作。
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
+import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
+import zhao.algorithmMagic.operands.vector.DoubleVector;
+import zhao.algorithmMagic.operands.vector.IntegerVector;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 获取到整形与浮点矩阵对象
+        DoubleMatrix doubleMatrix = DoubleMatrix.parse(
+                new double[]{1.5, 2.5, 3.5},
+                new double[]{3.5, 4.5, 5.5},
+                new double[]{7.5, 8.5, 9.5}
+        );
+
+        IntegerMatrix integerMatrix = IntegerMatrix.parse(
+                new int[]{1, 2, 3},
+                new int[]{3, 4, 5},
+                new int[]{7, 8, 9}
+        );
+
+        // 获取到两个向量
+        IntegerVector integerVector = IntegerVector.parse(10, 20, 30);
+        DoubleVector doubleVector = DoubleVector.parse(10.5, 20.5, 30.5);
+
+        // 使用矩阵与向量之间进行计算
+        System.out.println(doubleMatrix.add(doubleVector));
+        System.out.println(integerMatrix.add(integerVector));
+
+        // 矩阵与数值之间的计算
+        System.out.println(doubleMatrix.add(10));
+        System.out.println(integerMatrix.add(10));
+        System.out.println(doubleMatrix.diff(10));
+        System.out.println(integerMatrix.diff(10));
+
+        // 向量与数值之间的计算
+        System.out.println(doubleVector.add(10));
+        System.out.println(integerVector.add(10));
+        System.out.println(doubleVector.diff(10));
+        System.out.println(integerVector.diff(10));
+    }
+}
+```
+
+* 矩阵对象支持维度的重设操作，其能够按照指定的新维度来进行维度的检查与重新排布操作。
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
+import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 准备矩阵对象
+        DoubleMatrix doubleMatrix = DoubleMatrix.parse(
+                new double[]{1.5, 2.5, 3.5, 4.5},
+                new double[]{5.5, 6.5, 7.5, 8.5}
+        );
+
+        IntegerMatrix integerMatrix = IntegerMatrix.parse(
+                new int[]{1, 2, 3, 4, 5, 10},
+                new int[]{5, 6, 7, 8, 9, 10}
+        );
+
+        // 开始进行维度重设
+        System.out.println(doubleMatrix.reShape(4, 2));
+        System.out.println(integerMatrix.reShape(3, 4));
+        System.out.println(doubleMatrix.reShape(8, 1));
+        System.out.println(integerMatrix.reShape(6, 2));
+    }
+}
+```
+
+* 矩阵空间对象已支持维度重设的函数操作，其接收一个3维度信息，并进行维度检查与重设。
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
+import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
+import zhao.algorithmMagic.operands.matrix.block.DoubleMatrixSpace;
+import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixSpace;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 准备矩阵对象
+        DoubleMatrix doubleMatrix = DoubleMatrix.parse(
+                new double[]{1.5, 2.5, 3.5, 4.5},
+                new double[]{5.5, 6.5, 7.5, 8.5}
+        );
+
+        IntegerMatrix integerMatrix = IntegerMatrix.parse(
+                new int[]{1, 2, 3, 4, 5, 10},
+                new int[]{5, 6, 7, 8, 9, 10}
+        );
+        // 准备矩阵空间
+        DoubleMatrixSpace doubleMatrices = DoubleMatrixSpace.parse(
+                doubleMatrix, doubleMatrix, doubleMatrix
+        );
+
+        IntegerMatrixSpace integerMatrices = IntegerMatrixSpace.parse(
+                integerMatrix, integerMatrix, integerMatrix
+        );
+        // 开始进行维度重设操作
+        System.out.println(integerMatrices.reShape(1, 2, 18));
+        System.out.println(doubleMatrices.reShape(1, 3, 8));
+    }
+}
+```
+
+* 针对图像矩阵开始支持均值池化操作，其能够通过简单的常量设置均值池化，提高灵活性。
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.io.InputCamera;
+import zhao.algorithmMagic.io.InputCameraBuilder;
+import zhao.algorithmMagic.io.InputComponent;
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+import zhao.algorithmMagic.operands.table.SingletonCell;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 获取到相机设备数据输入组件
+        InputComponent jpeg = InputCamera.builder()
+                .addInputArg(InputCameraBuilder.Camera_Index, SingletonCell.$(0))
+                .addInputArg(InputCameraBuilder.Image_Format, SingletonCell.$_String("JPEG"))
+                .create();
+        // 读取一张图
+        ColorMatrix colorMatrix = ColorMatrix.parse(jpeg);
+        // 显示原图
+        colorMatrix.show("原图");
+        // 开始池化 在新版本中 新增了均值池化与分通道均值池化两种模式
+        // 首先是均值池化 指定 3x3 的局部池化方案
+        colorMatrix.pooling(3, 3, ColorMatrix.POOL_RGB_MEAN).show("均值池化");
+        // 然后是分通道池化
+        colorMatrix.pooling(3, 3, ColorMatrix.POOL_RGB_OBO_MEAN).show("分通道均值池化");
     }
 }
 ```

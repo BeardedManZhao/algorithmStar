@@ -368,7 +368,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
 
     /**
      * 池化逻辑实现，将当前矩阵内的所有像素中 R G B 三个通道的颜色数值的均值逐个计算出来，并根据结果获取新颜色。
-     *
+     * <p>
      * The pooling logic implementation calculates the average color values of the R, G, and B channels in all pixels in the current matrix one by one, and obtains new colors based on the results.
      */
     public final static Transformation<ColorMatrix, Color> POOL_RGB_OBO_MEAN = colorMatrix -> {
@@ -386,7 +386,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
 
     /**
      * 池化逻辑实现，将当前矩阵内的所有像素中 RGB 颜色数值的均值逐个计算出来，并根据结果获取新颜色。
-     *
+     * <p>
      * The pooling logic implementation calculates the average color values of the R, G, and B channels in all pixels in the current matrix one by one, and obtains new colors based on the results.
      */
     public final static Transformation<ColorMatrix, Color> POOL_RGB_MEAN = colorMatrix -> {

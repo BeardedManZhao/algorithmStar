@@ -1,14 +1,20 @@
 package zhao.algorithmMagic;
 
+import zhao.algorithmMagic.io.InputCamera;
+import zhao.algorithmMagic.io.InputCameraBuilder;
+import zhao.algorithmMagic.io.InputComponent;
 import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+import zhao.algorithmMagic.operands.table.SingletonCell;
 
 public class MAIN1 {
     public static void main(String[] args) {
-        // 读取一张图 并将其规整到 208x208 的尺寸
-        ColorMatrix colorMatrix = ColorMatrix.parse(
-                "C:\\Users\\Liming\\Downloads\\194830221-abe24fcc-484b-4769-b3b7-ec6d8138f436.png",
-                208, 208
-        );
+        // 获取到相机设备数据输入组件
+        InputComponent jpeg = InputCamera.builder()
+                .addInputArg(InputCameraBuilder.Camera_Index, SingletonCell.$(0))
+                .addInputArg(InputCameraBuilder.Image_Format, SingletonCell.$_String("JPEG"))
+                .create();
+        // 读取一张图
+        ColorMatrix colorMatrix = ColorMatrix.parse(jpeg);
         // 显示原图
         colorMatrix.show("原图");
         // 开始池化 在新版本中 新增了均值池化与分通道均值池化两种模式

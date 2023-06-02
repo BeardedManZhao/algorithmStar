@@ -58,24 +58,21 @@ final class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mll
    * <p>
    * Calculate the inner product of two vectors, also known as the quantity product, please refer to the api node for the specific implementation
    *
-   * @param vector 第二个被计算的向量对象
-   *               <p>
-   *               the second computed vector object
+   * @param v 第二个被计算的向量对象
+   *          <p>
+   *          the second computed vector object
    * @return 两个向量的内积
    *         waiting to be realized
    */
-  override def innerProduct(vector: SparkVector): Double = {
-    val doubles1: Array[Double] = this.copyToNewArray()
-    val doubles2: Array[Double] = vector.copyToNewArray()
-    if (doubles1.length == doubles2.length) {
-      var innerProduct: Double = 0
-      for (indexNum <- doubles1.indices) {
-        innerProduct += doubles1(indexNum) * doubles2(indexNum)
-      }
-      innerProduct
-    }
-    else throw new OperatorOperationException("'DoubleVector1 innerProduct DoubleVector2' 时，两个'DoubleVector'的向量所包含的数量不同，DoubleVector1=[" + doubles1.length + "]，DoubleVector2=[" + doubles2.length + "]\n" + "When 'DoubleVector1 innerProduct DoubleVector2', the two vectors of 'DoubleVector' contain different quantities, DoubleVector1=[" + doubles1.length + "], DoubleVector2=[" + doubles2.length + "]")
-  }
+  override def innerProduct(v: SparkVector): Double = this.toThirdArray.dot(v.toThirdArray)
+
+  /**
+   *
+   * @return 第三方向量中所维护的向量序列，通过此函数您可以直接获取到第三方库中的对象。
+   *
+   *         The vector sequence maintained in the third direction quantity. Through this function, you can directly obtain the objects in the third party library.
+   */
+  override def toThirdArray: org.apache.spark.mllib.linalg.Vector = this.vector
 
   /**
    * 将两个操作数进行求和的方法，具体用法请参阅API说明。
@@ -140,14 +137,6 @@ final class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mll
     }
     else throw new OperatorOperationException("'DoubleVector1 diff DoubleVector2' 时，两个'DoubleVector'的向量所包含的数量不同，DoubleVector1=[" + numberOfDimensions1 + "]，DoubleVector2=[" + numberOfDimensions2 + "]\n" + "When 'DoubleVector1 diff DoubleVector2', the two vectors of 'DoubleVector' contain different quantities, DoubleVector1=[" + numberOfDimensions1 + "], DoubleVector2=[" + numberOfDimensions2 + "]")
   }
-
-  /**
-   *
-   * @return 第三方向量中所维护的向量序列，通过此函数您可以直接获取到第三方库中的对象。
-   *
-   *         The vector sequence maintained in the third direction quantity. Through this function, you can directly obtain the objects in the third party library.
-   */
-  override def toThirdArray: org.apache.spark.mllib.linalg.Vector = this.vector
 
   /**
    * 将本对象中的所有数据进行洗牌打乱，随机分布数据行的排列。
