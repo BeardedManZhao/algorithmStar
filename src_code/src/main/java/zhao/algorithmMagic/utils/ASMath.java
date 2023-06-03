@@ -2177,4 +2177,61 @@ public final class ASMath {
         return res;
     }
 
+    /**
+     * 数组填充函数实现。
+     *
+     * @param value 填充数组数据时，数组中的填充元素。
+     * @param len   被填充的元素个数。
+     * @return 填充之后返回的新数组对象。
+     */
+    public static int[] fill(int value, int len) {
+        int[] x = new int[len];
+        Arrays.fill(x, value);
+        return x;
+    }
+
+    /**
+     * 矩阵填充函数实现
+     *
+     * @param value 填充矩阵数据时，矩阵中的填充元素。
+     * @param row   填充矩阵中的矩阵的行数.
+     * @param col   填充矩阵中的矩阵的列数。
+     * @return 填充之后返回的新二维数组对象。
+     */
+    public static int[][] fill(int value, int row, int col) {
+        int[][] x = new int[row][];
+        for (int i = 0; i < x.length; i++) {
+            x[i] = fill(value, col);
+        }
+        return x;
+    }
+
+    /**
+     * 数组填充函数实现。
+     *
+     * @param value 填充数组数据时，数组中的填充元素。
+     * @param len   被填充的元素个数。
+     * @return 填充之后返回的新数组对象。
+     */
+    public static double[] fill(double value, int len) {
+        double[] x = new double[len];
+        Arrays.fill(x, value);
+        return x;
+    }
+
+    /**
+     * 矩阵填充函数实现
+     *
+     * @param value 填充矩阵数据时，矩阵中的填充元素。
+     * @param row   填充矩阵中的矩阵的行数.
+     * @param col   填充矩阵中的矩阵的列数。
+     * @return 填充之后返回的新二维数组对象。
+     */
+    public static double[][] fill(double value, int row, int col) {
+        double[][] x = new double[row][];
+        for (int i = 0; i < x.length; i++) {
+            x[i] = fill(value, col);
+        }
+        return x;
+    }
 }

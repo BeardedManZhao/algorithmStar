@@ -18,7 +18,6 @@ public final class SingletonCell<valueType> extends FinalCell<valueType> {
      * 单例哈希维护
      */
     private final static HashMap<String, Cell<?>> SING_HASH_MAP = new HashMap<>();
-
     /**
      * key数据
      */
@@ -40,6 +39,15 @@ public final class SingletonCell<valueType> extends FinalCell<valueType> {
         super(string, isNumber);
         key = string;
         SING_HASH_MAP.put(key, this);
+    }
+
+    /**
+     * 清理所有的单例数据存储元素，通过该操作，能够实现清理掉内存中已经缓存了的单元格数据。
+     * <p>
+     * Clean up all single instance data storage elements, and through this operation, it is possible to clean up cached cell data in memory.
+     */
+    public static void clearSHM() {
+        SING_HASH_MAP.clear();
     }
 
     /**

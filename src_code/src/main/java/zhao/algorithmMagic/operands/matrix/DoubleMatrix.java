@@ -43,6 +43,28 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
     }
 
     /**
+     * 将数组填充到一个指定长宽的矩阵对象中。
+     * <p>
+     * Fill the array into a specified length and width matrix object.
+     *
+     * @param value 填充数组时需要使用的元素数据。
+     *              <p>
+     *              The element data required to fill the array.
+     * @param row   填充数组时，被填充矩阵的行数量。
+     *              <p>
+     *              When filling an array, the number of rows to be filled in the matrix.
+     * @param col   填充数组时，被填充矩阵的列数量。
+     *              <p>
+     *              When filling an array, the number of columns in the filled matrix.
+     * @return 填充之后的新数据矩阵对象。
+     * <p>
+     * The new data matrix object after filling.
+     */
+    public static DoubleMatrix fill(double value, int row, int col) {
+        return DoubleMatrix.parse(ASMath.fill(value, row, col));
+    }
+
+    /**
      * 构造一个矩阵，矩阵的列数量以矩阵的第一行为准！
      * <p>
      * Construct a matrix, the number of columns of the matrix is based on the first row of the matrix!
