@@ -87,6 +87,10 @@ public final class Share {
 
     /**
      * 获取到训练的时候使用的图像样本。
+     *
+     * @param w    获取图像的尺寸-宽
+     * @param h    获取图像的尺寸-高
+     * @param urls 需要被获取的所有图像对应的URL
      */
     public static IntegerMatrixSpace[] getData(int w, int h, String... urls) throws MalformedURLException {
         IntegerMatrixSpace[] integerMatrixSpaces = new IntegerMatrixSpace[urls.length];
@@ -100,6 +104,10 @@ public final class Share {
 
     /**
      * 获取到训练的时候使用的图像样本。
+     *
+     * @param w    获取图像的尺寸-宽
+     * @param h    获取图像的尺寸-高
+     * @param urls 需要被获取的所有图像对应的URL
      */
     public static IntegerMatrixSpace[] getData(int w, int h, String[]... urls) throws MalformedURLException {
         IntegerMatrixSpace[] integerMatrixSpaces = new IntegerMatrixSpace[urls.length * urls[0].length];
@@ -115,6 +123,10 @@ public final class Share {
 
     /**
      * 获取到权重数据样本
+     *
+     * @param w 获取图像的尺寸-宽
+     * @param h 获取图像的尺寸-高
+     * @throws MalformedURLException 从网络中提取数据的异常
      */
     public static List<KeyValue<String, IntegerMatrixSpace>> getImageWeight(int w, int h, List<KeyValue<String, String>> nameAndUrl) throws MalformedURLException {
         ArrayList<KeyValue<String, IntegerMatrixSpace>> list = new ArrayList<>(nameAndUrl.size() + 2);

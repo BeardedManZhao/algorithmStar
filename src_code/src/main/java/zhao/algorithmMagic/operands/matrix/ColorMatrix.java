@@ -472,6 +472,9 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      * @param inputString 要读取的目标图像文件路径。
      *                    <p>
      *                    The target image file path to read.
+     * @param v           矩阵中的所有图像的尺寸参数。
+     *                    <p>
+     *                    The size parameters of all images in the matrix.
      * @return 根据图像获取到的矩阵对象。
      * <p>
      * The matrix object obtained from the image.
@@ -575,6 +578,9 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      * 将图像URL解析，并获取对应的图像矩阵
      *
      * @param url 需要被解析的URL对象
+     * @param v   矩阵中的所有图像的尺寸参数。
+     *            <p>
+     *            The size parameters of all images in the matrix.
      * @return URL对象所对应的图像矩阵。
      */
     public static ColorMatrix parse(URL url, int... v) {

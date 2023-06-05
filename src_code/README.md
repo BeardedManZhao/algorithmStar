@@ -468,4 +468,49 @@ public class MAIN1 {
 }
 ```
 
+* 支持从 AS库的 DataFrame 到 Spark的 DataFrame 对象的转换操作，接下来是一个示例。
+
+```java
+package zhao.algorithmMagic;
+
+
+import org.apache.spark.sql.SparkSession;
+import zhao.algorithmMagic.io.OutputComponent;
+import zhao.algorithmMagic.io.OutputSparkDF;
+import zhao.algorithmMagic.operands.table.DataFrame;
+import zhao.algorithmMagic.operands.table.FinalCell;
+import zhao.algorithmMagic.operands.table.SFDataFrame;
+import zhao.algorithmMagic.operands.table.SingletonSeries;
+
+public class MAIN1 {
+
+    public static void main(String[] args) {
+        // 准备 sparkSession 对象
+        final SparkSession sparkSession = SparkSession.builder()
+                .appName("zhao")
+                .master("local[*]")
+                .getOrCreate();
+
+        // 手动创建出一个 SDF 对象
+        final DataFrame dataFrame = SFDataFrame.select(
+                SingletonSeries.parse("id", "name", "age", "sex"), 1
+        );
+        // 添加两行数据 并查看
+        dataFrame
+                .insert("1", "zhao", "19", "M")
+                .insert("2", "tang", "20", "F");
+
+        // 将数据注册到 Spark 中的 df 表 首先获取到SparkDF 输出对象
+        final OutputComponent outputComponent = OutputSparkDF.builder()
+                .addOutputArg(OutputSparkDFBuilder.SPARK_SESSION(), new FinalCell<>(sparkSession))
+                .addOutputArg(OutputSparkDFBuilder.TABLE_NAME(), new FinalCell<>("df"))
+                .create();
+        // 然后通过数据输出对象输出 DataFrame 对象
+        dataFrame.into_outComponent(outputComponent);
+        // 最后使用Spark获取到df表数据
+        sparkSession.sql("select * from df").show();
+    }
+}
+```
+
 ### Version update date : xx xx-xx-xx

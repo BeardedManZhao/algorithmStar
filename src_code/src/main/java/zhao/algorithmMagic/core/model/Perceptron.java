@@ -44,6 +44,7 @@ public final class Perceptron implements ASModel<Integer, DoubleMatrix, Cell<Dou
     /**
      * 提供一个激活函数，生成对应的感知机神经元对象。
      *
+     * @param name     感知机名称
      * @param FUNCTION 激活函数实现对象
      * @param weight   当前神经元感知机中的权重向量
      * @return 感知机
@@ -55,6 +56,7 @@ public final class Perceptron implements ASModel<Integer, DoubleMatrix, Cell<Dou
     /**
      * 提供一个激活函数，生成对应的感知机神经元对象。
      *
+     * @param name     感知机名称
      * @param FUNCTION 激活函数实现对象
      * @param weight   当前神经元感知机中的权重向量
      * @return 感知机
@@ -77,6 +79,7 @@ public final class Perceptron implements ASModel<Integer, DoubleMatrix, Cell<Dou
     /**
      * 提供一个激活函数，生成对应的感知机神经元对象。
      *
+     * @param name     感知机名称
      * @param FUNCTION 激活函数实现对象
      * @param weight   当前神经元感知机中的权重向量
      * @return 感知机

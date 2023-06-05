@@ -25,7 +25,6 @@ public class VoidTask implements SingleLayerCNNModel.TaskConsumer, LNeuralNetwor
      *               <p>
      *               The gradient after this adjustment.
      * @param weight 本次调整之后的权重数值。
-     *               <p>
      */
     @Override
     public void accept(double loss, double g, double[] weight) {

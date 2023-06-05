@@ -262,7 +262,6 @@ public final class SingleLayerCNNModel implements ASModel<Integer, IntegerMatrix
      *              <p>
      *              The project number configured in the model is usually provided with a static parameter number in the implementation class.
      * @param value 模型中配置项的具体数据，其可以是任何类型的单元格对象。
-     *              <p>
      */
     @Override
     public void setArg(Integer key, @NotNull Cell<?> value) {
@@ -400,7 +399,6 @@ public final class SingleLayerCNNModel implements ASModel<Integer, IntegerMatrix
          *               <p>
          *               The gradient after this adjustment.
          * @param weight 本次调整之后的权重数值。
-         *               <p>
          */
         void accept(double loss, double[] g, List<KeyValue<String, DoubleVector>> weight);
     }

@@ -147,6 +147,9 @@ public final class ASIO {
      * 将一个图片中的所有像素RGB值所构成的整形二维矩阵获取到！
      *
      * @param inputString 需要被读取的图像文件路径
+     * @param v           矩阵中的所有图像的尺寸参数。
+     *                    <p>
+     *                    The size parameters of all images in the matrix.
      * @return 读取成功之后返回的整形矩阵
      */
     public static Color[][] parseImageGetColorArray(String inputString, int... v) {
@@ -444,7 +447,9 @@ public final class ASIO {
     /**
      * 将一个图片中的所有像素RGB值所构成的整形三维矩阵空间获取到！
      *
-     * @param image 需要被读取的图像文件路径
+     * @param image  需要被读取的图像文件路径
+     * @param width  获取图像的尺寸-宽
+     * @param height 获取图像的尺寸-高
      * @return 读取成功之后返回的整形矩阵空间，其中每一层代表图形的一层颜色通道。
      */
     public static IntegerMatrix[] parseImageGetArrays(BufferedImage image, int width, int height) {

@@ -5,8 +5,10 @@ import zhao.algorithmMagic.operands.matrix.ColorMatrix;
 import java.awt.*;
 
 /**
+ * 最大池化操作实现类
+ *
  * @author 赵凌宇
- * @date 2023/4/27 20:42
+ * 2023/4/27 20:42
  */
 public class PoolRgbOboMAX implements Transformation<ColorMatrix, Color> {
     /**
