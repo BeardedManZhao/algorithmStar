@@ -2053,6 +2053,8 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      *                          <p>
      *                          Image convolution step size value. An increase in this value will enhance the speed and performance of the calculation, while a decrease in this value will enhance the accuracy of the calculation.
      * @param cFilter           相似系数过滤逻辑实现，在这里您将可以自定义的书写相似度系数的过滤操作，符合的系数对应的信息将会被添加到结果数据中。
+     *                          <p>
+     *                          The implementation of similarity coefficient filtering logic allows you to customize the filtering operation of writing similarity coefficients, and the information corresponding to the corresponding coefficients will be added to the result data.
      * @return 图像中所有符合过滤条件的子矩阵信息数据对象。
      * <p>
      * All sub matrix information data objects in the image that meet the filtering conditions.

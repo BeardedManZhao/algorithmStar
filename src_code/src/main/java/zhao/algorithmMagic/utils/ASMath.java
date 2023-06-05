@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import zhao.algorithmMagic.core.ASDynamicLibrary;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.operands.ComplexNumber;
+import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
 import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
 import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
 import zhao.algorithmMagic.operands.matrix.block.DoubleMatrixSpace;
@@ -2233,5 +2234,31 @@ public final class ASMath {
             x[i] = fill(value, col);
         }
         return x;
+    }
+
+    /**
+     * 通过对角坐标计算出两个矩阵的覆盖率系数。
+     *
+     * @param startC1 第一个矩阵中的左上角坐标。
+     * @param endC1   第一个矩阵中的右下角坐标。
+     * @param startC2 第二个矩阵中的左上角坐标。
+     * @param endC2   第二个矩阵中的右下角坐标。
+     * @return 计算出来的两个矩阵的覆盖率。
+     */
+    public static double coverageRate(
+            IntegerCoordinateTwo startC1, IntegerCoordinateTwo endC1,
+            IntegerCoordinateTwo startC2, IntegerCoordinateTwo endC2
+    ) {
+        // 计算出两个矩阵尺寸
+        int C1X = ASMath.absoluteValue(startC1.getX() - endC1.getX());
+        int C1Y = ASMath.absoluteValue(startC1.getY() - endC1.getY());
+        int C2X = ASMath.absoluteValue(startC2.getX() - endC2.getX());
+        int C2Y = ASMath.absoluteValue(startC2.getY() - endC2.getY());
+        int x1 = startC1.getX(), y1 = startC1.getY();
+        int x2 = endC1.getX(), y2 = endC1.getX();
+        int a1 = startC2.getX(), b1 = startC2.getX();
+        int a2 = endC2.getX(), b2 = endC2.getY();
+        // 计算覆盖率
+        return Math.min(Math.min(x2, a2) - Math.max(x1, a1) * (Math.min(y2, b2) - Math.max(y1, b1)), 0) / (double) (C1X * C1Y + C2X * C2Y);
     }
 }
