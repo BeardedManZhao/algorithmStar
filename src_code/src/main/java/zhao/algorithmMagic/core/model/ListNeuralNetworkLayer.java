@@ -12,17 +12,24 @@ import java.util.ArrayList;
  * @author 赵凌宇
  * 2023/4/19 18:55
  */
-public final class ListNeuralNetworkLayer extends ArrayList<Perceptron> implements NeuralNetworkLayer {
+public class ListNeuralNetworkLayer extends ArrayList<Perceptron> implements NeuralNetworkLayer {
 
-    private final DoubleVector weight;
 
     /**
      * 构造出当前神经网络层。
      *
      * @param weight 当前神经网络层的初始权重对象。
+     * @deprecated 神经网络中已不再管理权重，将权重管理任务交由当前层的所有感知机进行。
      */
-    public ListNeuralNetworkLayer(DoubleVector weight) {
-        this.weight = weight;
+    @Deprecated
+    public ListNeuralNetworkLayer(DoubleVector... weight) {
+
+    }
+
+    /**
+     * 构造出当前神经网络层。
+     */
+    public ListNeuralNetworkLayer() {
     }
 
     /**
@@ -36,9 +43,7 @@ public final class ListNeuralNetworkLayer extends ArrayList<Perceptron> implemen
      */
     @Override
     public void addPerceptron(Perceptron perceptron) {
-        if (perceptron != null) {
-            this.add(perceptron);
-        }
+        this.add(perceptron);
     }
 
     /**
@@ -55,15 +60,14 @@ public final class ListNeuralNetworkLayer extends ArrayList<Perceptron> implemen
      */
     @Override
     public DoubleVector forward(DoubleVector doubleVector) {
-        // 首先计算出来内积数值。
-        double inner = doubleVector.innerProduct(weight);
-        // 构建结果向量容器 容器中的元素数量与神经元个数一致
-        double[] res = new double[this.size()];
+        // 计算内积 并传递给激活函数
+        double[] inner = new double[this.size()];
         int index = -1;
         for (Perceptron perceptron : this) {
-            res[++index] = perceptron.function(inner).getValue();
+            inner[++index] = perceptron.function(doubleVector).getDoubleValue();
         }
-        return DoubleVector.parse(res);
+        // 返回结果
+        return DoubleVector.parse(inner);
     }
 
     /**
@@ -85,7 +89,7 @@ public final class ListNeuralNetworkLayer extends ArrayList<Perceptron> implemen
         double[] res = new double[this.size()];
         int index = -1;
         for (Perceptron perceptron : this) {
-            res[++index] = perceptron.FUNCTION.derivativeFunction(loss[index]);
+            res[++index] = perceptron.backFunction(loss[0]).getDoubleValue();
         }
         return DoubleVector.parse(res);
     }

@@ -43,6 +43,28 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
     }
 
     /**
+     * 将数组填充到一个指定长宽的矩阵对象中。
+     * <p>
+     * Fill the array into a specified length and width matrix object.
+     *
+     * @param value 填充数组时需要使用的元素数据。
+     *              <p>
+     *              The element data required to fill the array.
+     * @param row   填充数组时，被填充矩阵的行数量。
+     *              <p>
+     *              When filling an array, the number of rows to be filled in the matrix.
+     * @param col   填充数组时，被填充矩阵的列数量。
+     *              <p>
+     *              When filling an array, the number of columns in the filled matrix.
+     * @return 填充之后的新数据矩阵对象。
+     * <p>
+     * The new data matrix object after filling.
+     */
+    public static DoubleMatrix fill(double value, int row, int col) {
+        return DoubleMatrix.parse(ASMath.fill(value, row, col));
+    }
+
+    /**
      * 构造一个矩阵，矩阵的列数量以矩阵的第一行为准！
      * <p>
      * Construct a matrix, the number of columns of the matrix is based on the first row of the matrix!
@@ -244,6 +266,55 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
     }
 
     /**
+     * 将两个操作数进行求和的方法，具体用法请参阅API说明。
+     * <p>
+     * The method for summing two operands, please refer to the API description for specific usage.
+     *
+     * @param value 被求和的参数  Parameters to be summed
+     * @return 求和之后的数值  the value after the sum
+     * <p>
+     * There is no description for the super interface, please refer to the subclass documentation
+     */
+    @Override
+    public DoubleMatrix add(Vector<?, ?, ?> value) {
+        if (value instanceof DoubleVector) {
+            double[][] res = this.copyToNewArrays();
+            DoubleVector v = ((DoubleVector) value).expand();
+            int index = -1;
+            for (double[] re : res) {
+                res[++index] = DoubleVector.parse(re).add(v).toArray();
+            }
+            return DoubleMatrix.parse(res);
+        } else {
+            throw new ClassCastException("您只能提供整形向量或者矩形对象来参与到矩阵的运算中。\nYou can only provide int vectors or rectangular objects to participate in matrix operations.");
+        }
+    }
+
+    /**
+     * 在两个操作数之间做差的方法，具体用法请参阅API说明。
+     * <p>
+     * The method of making a difference between two operands, please refer to the API description for specific usage.
+     *
+     * @param value 被做差的参数（被减数）  The parameter to be subtracted (minuend)
+     * @return 差异数值  difference value
+     * There is no description for the super interface, please refer to the subclass documentation
+     */
+    @Override
+    public DoubleMatrix diff(Vector<?, ?, ?> value) {
+        if (value instanceof DoubleVector) {
+            double[][] res = this.copyToNewArrays();
+            DoubleVector v = ((DoubleVector) value).expand();
+            int index = -1;
+            for (double[] re : res) {
+                res[++index] = DoubleVector.parse(re).diff(v).toArray();
+            }
+            return DoubleMatrix.parse(res);
+        } else {
+            throw new ClassCastException("您只能提供整形向量或者矩形对象来参与到矩阵的运算中。\nYou can only provide int vectors or rectangular objects to participate in matrix operations.");
+        }
+    }
+
+    /**
      * 获取到矩阵中指定坐标点的数值
      *
      * @param row 行编号 从0开始
@@ -363,6 +434,49 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
     }
 
     /**
+     * 将两个操作数进行求和的方法，具体用法请参阅API说明。
+     * <p>
+     * The method for summing two operands, please refer to the API description for specific usage.
+     *
+     * @param value 被求和的参数  Parameters to be summed
+     * @return 求和之后的数值  the value after the sum
+     * <p>
+     * There is no description for the super interface, please refer to the subclass documentation
+     */
+    @Override
+    public DoubleMatrix add(Number value) {
+        double[][] res = this.copyToNewArrays();
+        int v = value.intValue();
+        for (double[] re : res) {
+            for (int i = 0; i < re.length; i++) {
+                re[i] += v;
+            }
+        }
+        return DoubleMatrix.parse(res);
+    }
+
+    /**
+     * 在两个操作数之间做差的方法，具体用法请参阅API说明。
+     * <p>
+     * The method of making a difference between two operands, please refer to the API description for specific usage.
+     *
+     * @param value 被做差的参数（被减数）  The parameter to be subtracted (minuend)
+     * @return 差异数值  difference value
+     * There is no description for the super interface, please refer to the subclass documentation
+     */
+    @Override
+    public DoubleMatrix diff(Number value) {
+        double[][] res = this.copyToNewArrays();
+        int v = value.intValue();
+        for (double[] re : res) {
+            for (int i = 0; i < re.length; i++) {
+                re[i] -= v;
+            }
+        }
+        return DoubleMatrix.parse(res);
+    }
+
+    /**
      * 在两个向量对象之间进行计算的函数，自从1.13版本开始支持该函数的调用，该函数中的计算并不会产生一个新的向量，而是将计算操作作用于原操作数中
      * <p>
      * The function that calculates between two vector objects supports the call of this function since version 1.13. The calculation in this function will not generate a new vector, but will apply the calculation operation to the original operand
@@ -476,17 +590,14 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
         int colCount2 = matrix.getColCount();
         if (rowCount1 == rowCount2) {
             double res = 0;
-            int rowPointer1 = this.RowPointer;
-            int rowPointer2 = matrix.RowPointer;
-            while (this.MovePointerDown() && matrix.MovePointerDown()) {
-                double[] doubles1 = this.toArray();
-                double[] doubles2 = matrix.toArray();
-                for (int i = 0; i < doubles1.length; i++) {
-                    res += doubles1[i] * doubles2[i];
+            int index = -1;
+            double[][] doubles = matrix.toArrays();
+            for (double[] ints1 : this) {
+                double[] ints2 = doubles[++index];
+                for (int i = 0; i < ints2.length; i++) {
+                    res += ints1[i] * ints2[i];
                 }
             }
-            this.RowPointer = rowPointer1;
-            matrix.RowPointer = rowPointer2;
             return res;
         } else {
             throw new OperatorOperationException("您在'DoubleMatrix1 innerProduct DoubleMatrix2'的时候发生了错误，原因是两个矩阵的行列数不一致！\n" +
@@ -867,6 +978,25 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
             ASMath.arrayReverse(this.toArrays());
             return this;
         }
+    }
+
+    /**
+     * 针对矩阵操作数的形状进行重新设定，使得矩阵中的数据维度的更改能够更加友好。
+     * <p>
+     * Reset the shape of the matrix operands to make changes to the data dimensions in the matrix more user-friendly.
+     *
+     * @param shape 需要被重新设置的新维度信息，其中包含2个维度信息，第一个代表矩阵的行数量，第二个代表矩阵的列数量。
+     *              <p>
+     *              The new dimension information that needs to be reset includes two dimensions: the first represents the number of rows in the matrix, and the second represents the number of columns in the matrix.
+     * @return 重设之后的新矩阵对象。
+     * <p>
+     * The new matrix object after resetting.
+     */
+    @Override
+    public DoubleMatrix reShape(int... shape) {
+        return DoubleMatrix.parse(
+                ASClass.reShape(this, shape)
+        );
     }
 
     /**

@@ -1,5 +1,7 @@
 package zhao.algorithmMagic.operands.matrix;
 
+import zhao.algorithmMagic.operands.vector.Vector;
+
 /**
  * 数值矩阵，其中的每一个元素都应是一个数值类型的对象，数值矩阵支持维度选择等函数。
  * <p>
@@ -35,6 +37,29 @@ public abstract class NumberMatrix<ImplementationType extends Matrix<?, ?, ?, ?,
     public final int getNumberOfDimensions() {
         return getRowCount() * getColCount();
     }
+
+    /**
+     * 将两个操作数进行求和的方法，具体用法请参阅API说明。
+     * <p>
+     * The method for summing two operands, please refer to the API description for specific usage.
+     *
+     * @param value 被求和的参数  Parameters to be summed
+     * @return 求和之后的数值  the value after the sum
+     * <p>
+     * There is no description for the super interface, please refer to the subclass documentation
+     */
+    public abstract ImplementationType add(Vector<?, ?, ?> value);
+
+    /**
+     * 在两个操作数之间做差的方法，具体用法请参阅API说明。
+     * <p>
+     * The method of making a difference between two operands, please refer to the API description for specific usage.
+     *
+     * @param value 被做差的参数（被减数）  The parameter to be subtracted (minuend)
+     * @return 差异数值  difference value
+     * There is no description for the super interface, please refer to the subclass documentation
+     */
+    public abstract ImplementationType diff(Vector<?, ?, ?> value);
 
     /**
      * 去除冗余特征维度，将当前矩阵中的每一个维度都进行方差或无向差计算，并将过于稳定的冗余特征去除。

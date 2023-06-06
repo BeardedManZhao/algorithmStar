@@ -15,6 +15,7 @@ import zhao.algorithmMagic.utils.ASIO;
 import zhao.algorithmMagic.utils.ASMath;
 import zhao.algorithmMagic.utils.filter.DoubleFiltering;
 import zhao.algorithmMagic.utils.transformation.ManyTrans;
+import zhao.algorithmMagic.utils.transformation.PoolRgbOboMAX;
 import zhao.algorithmMagic.utils.transformation.ProTransForm;
 import zhao.algorithmMagic.utils.transformation.Transformation;
 
@@ -343,20 +344,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      * <p>
      * The pooling logic implementation extracts the maximum values of R, G, and B color values from all pixels in the current matrix individually, and obtains new colors.
      */
-    public final static Transformation<ColorMatrix, Color> POOL_RGB_OBO_MAX = colorMatrix -> {
-        int maxR = 0, maxG = maxR, maxB = maxG;
-        for (Color[] matrix : colorMatrix) {
-            for (Color color : matrix) {
-                int red = color.getRed();
-                int green = color.getGreen();
-                int blue = color.getBlue();
-                if (red > maxR) maxR = red;
-                if (green < maxG) maxG = green;
-                if (blue < maxB) maxB = blue;
-            }
-        }
-        return new Color(maxR, maxG, maxB);
-    };
+    public final static Transformation<ColorMatrix, Color> POOL_RGB_OBO_MAX = new PoolRgbOboMAX();
 
     /**
      * 池化逻辑实现，将当前矩阵内的所有像素中 RGB 颜色数值的最大值直接提取出来，成为新颜色。
@@ -376,6 +364,39 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             }
         }
         return maxColor;
+    };
+
+    /**
+     * 池化逻辑实现，将当前矩阵内的所有像素中 R G B 三个通道的颜色数值的均值逐个计算出来，并根据结果获取新颜色。
+     * <p>
+     * The pooling logic implementation calculates the average color values of the R, G, and B channels in all pixels in the current matrix one by one, and obtains new colors based on the results.
+     */
+    public final static Transformation<ColorMatrix, Color> POOL_RGB_OBO_MEAN = colorMatrix -> {
+        int mean_r = 0, mean_g = 0, mean_b = 0;
+        for (Color[] matrix : colorMatrix) {
+            for (Color color : matrix) {
+                mean_r += color.getRed();
+                mean_g += color.getGreen();
+                mean_b += color.getBlue();
+            }
+        }
+        int size = colorMatrix.getNumberOfDimensions();
+        return new Color(mean_r / size, mean_g / size, mean_b / size);
+    };
+
+    /**
+     * 池化逻辑实现，将当前矩阵内的所有像素中 RGB 颜色数值的均值逐个计算出来，并根据结果获取新颜色。
+     * <p>
+     * The pooling logic implementation calculates the average color values of the R, G, and B channels in all pixels in the current matrix one by one, and obtains new colors based on the results.
+     */
+    public final static Transformation<ColorMatrix, Color> POOL_RGB_MEAN = colorMatrix -> {
+        int mean = 0;
+        for (Color[] matrix : colorMatrix) {
+            for (Color color : matrix) {
+                mean += color.getRGB();
+            }
+        }
+        return new Color(mean / colorMatrix.getNumberOfDimensions());
     };
 
     private boolean isGrayscale;
@@ -451,12 +472,15 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      * @param inputString 要读取的目标图像文件路径。
      *                    <p>
      *                    The target image file path to read.
+     * @param v           矩阵中的所有图像的尺寸参数。
+     *                    <p>
+     *                    The size parameters of all images in the matrix.
      * @return 根据图像获取到的矩阵对象。
      * <p>
      * The matrix object obtained from the image.
      */
-    public static ColorMatrix parse(String inputString) {
-        return ColorMatrix.parse(ASIO.parseImageGetColorArray(inputString));
+    public static ColorMatrix parse(String inputString, int... v) {
+        return ColorMatrix.parse(ASIO.parseImageGetColorArray(inputString, v));
     }
 
     /**
@@ -505,7 +529,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
                 int[] blues = BMat.toArrays()[y];
                 for (int i = 0; i < color.length; i++) {
                     color[i] = new Color(
-                            reds[i] + greens[i] + blues[i]
+                            ASMath.rgbaTOIntRGBA(reds[i], greens[i], blues[i])
                     );
                 }
             }
@@ -554,10 +578,13 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      * 将图像URL解析，并获取对应的图像矩阵
      *
      * @param url 需要被解析的URL对象
+     * @param v   矩阵中的所有图像的尺寸参数。
+     *            <p>
+     *            The size parameters of all images in the matrix.
      * @return URL对象所对应的图像矩阵。
      */
-    public static ColorMatrix parse(URL url) {
-        return ColorMatrix.parse(ASIO.parseURLGetColorArray(url));
+    public static ColorMatrix parse(URL url, int... v) {
+        return ColorMatrix.parse(ASIO.parseURLGetColorArray(url, v));
     }
 
 
@@ -726,6 +753,51 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
     @Override
     public ColorMatrix diff(ColorMatrix value) {
         return agg(value, COLOR_DIFF_REMAINDER);
+    }
+
+    /**
+     * 将两个操作数进行求和的方法，具体用法请参阅API说明。
+     * <p>
+     * The method for summing two operands, please refer to the API description for specific usage.
+     *
+     * @param value 被求和的参数  Parameters to be summed
+     * @return 求和之后的数值  the value after the sum
+     * <p>
+     * There is no description for the super interface, please refer to the subclass documentation
+     */
+    @Override
+    public ColorMatrix add(Number value) {
+        Color[][] colors1 = this.copyToNewArrays();
+        int v = value.intValue();
+        for (Color[] colors : colors1) {
+            int index = -1;
+            for (Color color : colors) {
+                colors[++index] = new Color(color.getRGB() + v);
+            }
+        }
+        return ColorMatrix.parse(colors1);
+    }
+
+    /**
+     * 在两个操作数之间做差的方法，具体用法请参阅API说明。
+     * <p>
+     * The method of making a difference between two operands, please refer to the API description for specific usage.
+     *
+     * @param value 被做差的参数（被减数）  The parameter to be subtracted (minuend)
+     * @return 差异数值  difference value
+     * There is no description for the super interface, please refer to the subclass documentation
+     */
+    @Override
+    public ColorMatrix diff(Number value) {
+        Color[][] colors1 = this.copyToNewArrays();
+        int v = value.intValue();
+        for (Color[] colors : colors1) {
+            int index = -1;
+            for (Color color : colors) {
+                colors[++index] = new Color(color.getRGB() - v);
+            }
+        }
+        return ColorMatrix.parse(colors1);
     }
 
     /**
@@ -1126,6 +1198,27 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             ASMath.arrayReverse(this.toArrays());
             return this;
         }
+    }
+
+    /**
+     * 针对矩阵操作数的形状进行重新设定，使得矩阵中的数据维度的更改能够更加友好。
+     * <p>
+     * Reset the shape of the matrix operands to make changes to the data dimensions in the matrix more user-friendly.
+     *
+     * @param shape 需要被重新设置的新维度信息，其中包含2个维度信息，第一个代表矩阵的行数量，第二个代表矩阵的列数量。
+     *              <p>
+     *              The new dimension information that needs to be reset includes two dimensions: the first represents the number of rows in the matrix, and the second represents the number of columns in the matrix.
+     * @return 重设之后的新矩阵对象。
+     * <p>
+     * The new matrix object after resetting.
+     */
+    @Override
+    public ColorMatrix reShape(int... shape) {
+        return ColorMatrix.parse(
+                ASClass.reShape(
+                        this, (Transformation<int[], Color[][]>) ints -> new Color[ints[0]][ints[1]], shape
+                )
+        );
     }
 
     /**
@@ -1599,9 +1692,8 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         for (Color[] colors : this.toArrays()) {
             int index = -1;
             for (Color color : colors) {
-                if (((color.getRGB() >> Mode) & 0xFF) > colorBoundary) {
-                    colors[++index] = color1;
-                } else colors[++index] = color2;
+                if (color == null || ((color.getRGB() >> Mode) & 0xFF) <= colorBoundary) colors[++index] = color2;
+                else colors[++index] = color1;
             }
         }
     }
@@ -1967,6 +2059,8 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      *                          <p>
      *                          Image convolution step size value. An increase in this value will enhance the speed and performance of the calculation, while a decrease in this value will enhance the accuracy of the calculation.
      * @param cFilter           相似系数过滤逻辑实现，在这里您将可以自定义的书写相似度系数的过滤操作，符合的系数对应的信息将会被添加到结果数据中。
+     *                          <p>
+     *                          The implementation of similarity coefficient filtering logic allows you to customize the filtering operation of writing similarity coefficients, and the information corresponding to the corresponding coefficients will be added to the result data.
      * @return 图像中所有符合过滤条件的子矩阵信息数据对象。
      * <p>
      * All sub matrix information data objects in the image that meet the filtering conditions.

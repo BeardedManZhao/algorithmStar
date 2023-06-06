@@ -3,6 +3,7 @@ package zhao.algorithmMagic.operands.matrix.block;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.operands.matrix.Matrix;
 import zhao.algorithmMagic.operands.vector.Vector;
+import zhao.algorithmMagic.utils.ASClass;
 
 /**
  * 矩阵块抽象类，其中维护了一个矩阵数组，数组中每一个元素都属于一个矩阵对象。
@@ -22,7 +23,7 @@ import zhao.algorithmMagic.operands.vector.Vector;
  *                             <p>
  *                             Matrix fast, the matrix type in each layer of matrix.
  */
-public abstract class MatrixSpace<ImplementationType extends Matrix<?, ?, ?, ?, ?>, ElementType, ArrayType, MatrixType
+public abstract class MatrixSpace<ImplementationType extends MatrixSpace<?, ?, ?, ?>, ElementType, ArrayType, MatrixType
         extends Matrix<?, ElementType, ?, ?, ?>>
         extends Matrix<ImplementationType, ElementType, ArrayType, MatrixType, MatrixType[]> {
     private final int layer;
@@ -43,6 +44,20 @@ public abstract class MatrixSpace<ImplementationType extends Matrix<?, ?, ?, ?, 
         super(rowCount, colCount, matrixTypes.length - 2, matrixTypes);
         this.layer = matrixTypes.length;
     }
+
+    /**
+     * 提供子类类型数据，构造出当前子类的实例化对象，用于父类在不知道子类数据类型的情况下，创建子类矩阵。
+     * <p>
+     * Provide subclass type data, construct an instantiated object of the current subclass, and use it for the parent class to create a subclass matrix without knowing the subclass data type.
+     *
+     * @param arrayType 构造一个新的与当前数据类型一致的矩阵对象。
+     *                  <p>
+     *                  Construct a new matrix object that is consistent with the current data type.
+     * @return 该类的实现类对象，用于拓展该接口的子类。
+     * <p>
+     * The implementation class object of this class is used to extend the subclasses of this interface.
+     */
+    public abstract ImplementationType expand(MatrixType[] arrayType);
 
     /**
      * @return 向量中包含的维度数量，在这里代表的是矩阵块中的矩阵层数。
@@ -188,4 +203,77 @@ public abstract class MatrixSpace<ImplementationType extends Matrix<?, ?, ?, ?, 
     public final ArrayType flatten() {
         throw new OperatorOperationException("Matrix space does not support flattening operations.");
     }
+
+    /**
+     * 将两个操作数进行求和的方法，具体用法请参阅API说明。
+     * <p>
+     * The method for summing two operands, please refer to the API description for specific usage.
+     *
+     * @param value 被求和的参数  Parameters to be summed
+     * @return 求和之后的数值  the value after the sum
+     * <p>
+     * There is no description for the super interface, please refer to the subclass documentation
+     */
+    @Override
+    public ImplementationType add(Number value) {
+        MatrixType[] matrixTypes = this.copyToNewArrays();
+        int index = -1;
+        for (MatrixType matrixType : matrixTypes) {
+            matrixTypes[++index] = ASClass.transform(matrixType.add(value));
+        }
+        return this.expand(matrixTypes);
+    }
+
+    /**
+     * 在两个操作数之间做差的方法，具体用法请参阅API说明。
+     * <p>
+     * The method of making a difference between two operands, please refer to the API description for specific usage.
+     *
+     * @param value 被做差的参数（被减数）  The parameter to be subtracted (minuend)
+     * @return 差异数值  difference value
+     * There is no description for the super interface, please refer to the subclass documentation
+     */
+    @Override
+    public ImplementationType diff(Number value) {
+        MatrixType[] matrixTypes = this.copyToNewArrays();
+        int index = -1;
+        for (MatrixType matrixType : matrixTypes) {
+            matrixTypes[++index] = ASClass.transform(matrixType.diff(value));
+        }
+        return this.expand(matrixTypes);
+    }
+
+    /**
+     * 按照本矩阵空间的创建方式创建出一个新的矩阵对象，该函数通常用于父类需要子类帮助创建同类型的参数的场景。
+     * <p>
+     * Create a new matrix object according to the creation method of this matrix space, which is usually used in scenarios where the parent class needs the help of subclasses to create parameters of the same type.
+     *
+     * @param layer 新矩阵矩阵空间的层数。
+     *              <p>
+     *              The number of layers in the new matrix space.
+     * @param row   新创建的矩阵空间中每个矩阵的行数。
+     *              <p>
+     *              The number of rows for each matrix in the newly created matrix space.
+     * @param col   新创建的矩阵空间中每个矩阵的列数。
+     *              <p>
+     *              The number of columns for each matrix in the newly created matrix space.
+     * @return 创建出来的矩阵空间对象.
+     * <p>
+     * The created matrix space object
+     */
+    protected abstract ImplementationType create(int layer, int row, int col);
+
+    /**
+     * 按照本矩阵空间的创建方式创建出一个新的矩阵对象，该函数通常用于父类需要子类帮助创建同类型的参数的场景。
+     * <p>
+     * Create a new matrix object according to the creation method of this matrix space, which is usually used in scenarios where the parent class needs the help of subclasses to create parameters of the same type.
+     *
+     * @param data 新矩阵空间对象中的元素。
+     *             <p>
+     *             Elements in the new matrix space object.
+     * @return 创建出来的新的矩阵空间对象。
+     * <p>
+     * Create a new matrix space object.
+     */
+    protected abstract ImplementationType create(ArrayType[] data);
 }

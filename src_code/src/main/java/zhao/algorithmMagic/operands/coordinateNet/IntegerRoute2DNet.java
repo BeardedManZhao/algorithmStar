@@ -2,7 +2,6 @@ package zhao.algorithmMagic.operands.coordinateNet;
 
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.integrator.Route2DDrawingIntegrator;
-import zhao.algorithmMagic.integrator.launcher.Route2DDrawingLauncher;
 import zhao.algorithmMagic.integrator.launcher.Route2DDrawingLauncher2;
 import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
 import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute2D;
@@ -201,6 +200,35 @@ public class IntegerRoute2DNet implements RouteNet<IntegerCoordinateTwo, Integer
         }
     }
 
+    /**
+     * 将两个操作数进行求和的方法，具体用法请参阅API说明。
+     * <p>
+     * The method for summing two operands, please refer to the API description for specific usage.
+     *
+     * @param value 被求和的参数  Parameters to be summed
+     * @return 求和之后的数值  the value after the sum
+     * <p>
+     * There is no description for the super interface, please refer to the subclass documentation
+     */
+    @Override
+    public RouteNet<IntegerCoordinateTwo, IntegerConsanguinityRoute2D> add(Number value) {
+        throw NOT_SUP;
+    }
+
+    /**
+     * 在两个操作数之间做差的方法，具体用法请参阅API说明。
+     * <p>
+     * The method of making a difference between two operands, please refer to the API description for specific usage.
+     *
+     * @param value 被做差的参数（被减数）  The parameter to be subtracted (minuend)
+     * @return 差异数值  difference value
+     * There is no description for the super interface, please refer to the subclass documentation
+     */
+    @Override
+    public RouteNet<IntegerCoordinateTwo, IntegerConsanguinityRoute2D> diff(Number value) {
+        throw NOT_SUP;
+    }
+
     @Override
     public boolean containsKeyFromRoute2DHashMap(String RouteName) {
         return this.integerConsanguinityRoute2DHashMap.containsKey(RouteName) || this.integerConsanguinityRoute2DHashMap_SubMark.containsKey(RouteName) || this.integerConsanguinityRoute2DHashMap_MasterTag.containsKey(RouteName);
@@ -248,7 +276,7 @@ public class IntegerRoute2DNet implements RouteNet<IntegerCoordinateTwo, Integer
      * The subclass implementation of the launcher is used to display the conversion to the subclass. Generally, only a "this" return is required here.
      */
     @Override
-    public Route2DDrawingLauncher expand() {
+    public IntegerRoute2DNet expand() {
         return this;
     }
 

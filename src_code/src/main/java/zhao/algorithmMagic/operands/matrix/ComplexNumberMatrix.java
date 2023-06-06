@@ -5,6 +5,7 @@ import zhao.algorithmMagic.operands.ComplexNumber;
 import zhao.algorithmMagic.operands.vector.Vector;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASMath;
+import zhao.algorithmMagic.utils.transformation.Transformation;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -163,6 +164,49 @@ public class ComplexNumberMatrix extends Matrix<ComplexNumberMatrix, ComplexNumb
                     "You have an error in 'DoubleMatrix1 add DoubleMatrix2' because the number of rows and columns of the two matrices is inconsistent!\n" +
                     "DoubleMatrix1 =>  rowCount = [" + rowCount1 + "]   colCount = [" + colCount1 + "]\nDoubleMatrix2 =>  rowCount = [" + rowCount2 + "]   colCount = [" + colCount2 + "]");
         }
+    }
+
+    /**
+     * 将两个操作数进行求和的方法，具体用法请参阅API说明。
+     * <p>
+     * The method for summing two operands, please refer to the API description for specific usage.
+     *
+     * @param value 被求和的参数  Parameters to be summed
+     * @return 求和之后的数值  the value after the sum
+     * <p>
+     * There is no description for the super interface, please refer to the subclass documentation
+     */
+    @Override
+    public ComplexNumberMatrix add(Number value) {
+        ComplexNumber[][] complexNumbers = this.copyToNewArrays();
+        for (ComplexNumber[] complexNumber : complexNumbers) {
+            int index = -1;
+            for (ComplexNumber number : complexNumber) {
+                complexNumber[++index] = number.add(value);
+            }
+        }
+        return ComplexNumberMatrix.parse(complexNumbers);
+    }
+
+    /**
+     * 在两个操作数之间做差的方法，具体用法请参阅API说明。
+     * <p>
+     * The method of making a difference between two operands, please refer to the API description for specific usage.
+     *
+     * @param value 被做差的参数（被减数）  The parameter to be subtracted (minuend)
+     * @return 差异数值  difference value
+     * There is no description for the super interface, please refer to the subclass documentation
+     */
+    @Override
+    public ComplexNumberMatrix diff(Number value) {
+        ComplexNumber[][] complexNumbers = this.copyToNewArrays();
+        for (ComplexNumber[] complexNumber : complexNumbers) {
+            int index = -1;
+            for (ComplexNumber number : complexNumber) {
+                complexNumber[++index] = number.diff(value);
+            }
+        }
+        return ComplexNumberMatrix.parse(complexNumbers);
     }
 
     /**
@@ -410,6 +454,27 @@ public class ComplexNumberMatrix extends Matrix<ComplexNumberMatrix, ComplexNumb
             complexNumbers[++count] = numbers[index];
         }
         return complexNumbers;
+    }
+
+    /**
+     * 针对矩阵操作数的形状进行重新设定，使得矩阵中的数据维度的更改能够更加友好。
+     * <p>
+     * Reset the shape of the matrix operands to make changes to the data dimensions in the matrix more user-friendly.
+     *
+     * @param shape 需要被重新设置的新维度信息，其中包含2个维度信息，第一个代表矩阵的行数量，第二个代表矩阵的列数量。
+     *              <p>
+     *              The new dimension information that needs to be reset includes two dimensions: the first represents the number of rows in the matrix, and the second represents the number of columns in the matrix.
+     * @return 重设之后的新矩阵对象。
+     * <p>
+     * The new matrix object after resetting.
+     */
+    @Override
+    public ComplexNumberMatrix reShape(int... shape) {
+        return ComplexNumberMatrix.parse(
+                ASClass.reShape(
+                        this, (Transformation<int[], ComplexNumber[][]>) ints -> new ComplexNumber[ints[0]][ints[1]], shape
+                )
+        );
     }
 
     /**

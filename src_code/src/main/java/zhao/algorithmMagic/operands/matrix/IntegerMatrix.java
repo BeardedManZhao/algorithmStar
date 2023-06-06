@@ -48,6 +48,28 @@ public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], i
     }
 
     /**
+     * 将数组填充到一个指定长宽的矩阵对象中。
+     * <p>
+     * Fill the array into a specified length and width matrix object.
+     *
+     * @param value 填充数组时需要使用的元素数据。
+     *              <p>
+     *              The element data required to fill the array.
+     * @param row   填充数组时，被填充矩阵的行数量。
+     *              <p>
+     *              When filling an array, the number of rows to be filled in the matrix.
+     * @param col   填充数组时，被填充矩阵的列数量。
+     *              <p>
+     *              When filling an array, the number of columns in the filled matrix.
+     * @return 填充之后的新数据矩阵对象。
+     * <p>
+     * The new data matrix object after filling.
+     */
+    public static IntegerMatrix fill(int value, int row, int col) {
+        return IntegerMatrix.parse(ASMath.fill(value, row, col));
+    }
+
+    /**
      * 构造一个矩阵，矩阵的列数量以矩阵的第一行为准！
      * <p>
      * Construct a matrix, the number of columns of the matrix is based on the first row of the matrix!
@@ -69,10 +91,11 @@ public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], i
      * 根据一个文件中的数据获取到对应的整形的矩阵数据对象，目前支持通过图片获取到对应的像素整形矩阵。
      *
      * @param inputString 需要被读取的文本文件或图像文件
+     * @param wh          图像提取的时候需要使用的图像尺寸交换操作。
      * @return 构建出来的结果数据对象
      */
-    public static IntegerMatrix parse(String inputString) {
-        return IntegerMatrix.parse(ASIO.parseImageGetArray(inputString));
+    public static IntegerMatrix parse(String inputString, int... wh) {
+        return IntegerMatrix.parse(ASIO.parseImageGetArray(inputString, wh));
     }
 
     /**
@@ -188,7 +211,10 @@ public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], i
      * A randomly generated matrix object with a specified number of rows and columns.
      */
     public static IntegerMatrix random(int width, int height, int randSeed) {
-        Random random = new Random(randSeed);
+        return random(width, height, new Random(randSeed));
+    }
+
+    public static IntegerMatrix random(int width, int height, Random random) {
         int[][] res = new int[height][];
         for (int y = 0; y < height; y++) {
             int[] row = new int[width];
@@ -335,6 +361,100 @@ public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], i
                     "You have an error in 'intMatrix1 diff intMatrix2' because the number of rows and columns of the two matrices is inconsistent!\n" +
                     "intMatrix1 =>  rowCount = [" + rowCount1 + "]   colCount = [" + colCount1 + "]\nintMatrix2 =>  rowCount = [" + rowCount2 + "]   colCount = [" + colCount2 + "]");
         }
+    }
+
+    /**
+     * 将两个操作数进行求和的方法，具体用法请参阅API说明。
+     * <p>
+     * The method for summing two operands, please refer to the API description for specific usage.
+     *
+     * @param value 被求和的参数  Parameters to be summed
+     * @return 求和之后的数值  the value after the sum
+     * <p>
+     * There is no description for the super interface, please refer to the subclass documentation
+     */
+    @Override
+    public IntegerMatrix add(Number value) {
+        int[][] res = this.copyToNewArrays();
+        int v = value.intValue();
+        for (int[] re : res) {
+            for (int i = 0; i < re.length; i++) {
+                re[i] += v;
+            }
+        }
+        return IntegerMatrix.parse(res);
+    }
+
+    /**
+     * 在两个操作数之间做差的方法，具体用法请参阅API说明。
+     * <p>
+     * The method of making a difference between two operands, please refer to the API description for specific usage.
+     *
+     * @param value 被做差的参数（被减数）  The parameter to be subtracted (minuend)
+     * @return 差异数值  difference value
+     * There is no description for the super interface, please refer to the subclass documentation
+     */
+    @Override
+    public IntegerMatrix diff(Number value) {
+        int[][] res = this.copyToNewArrays();
+        int v = value.intValue();
+        for (int[] re : res) {
+            for (int i = 0; i < re.length; i++) {
+                re[i] -= v;
+            }
+        }
+        return IntegerMatrix.parse(res);
+    }
+
+    /**
+     * 将两个操作数进行求和的方法，具体用法请参阅API说明。
+     * <p>
+     * The method for summing two operands, please refer to the API description for specific usage.
+     *
+     * @param value 被求和的参数  Parameters to be summed
+     * @return 求和之后的数值  the value after the sum
+     * <p>
+     * There is no description for the super interface, please refer to the subclass documentation
+     */
+    @Override
+    public IntegerMatrix add(Vector<?, ?, ?> value) {
+        if (value instanceof IntegerVector) {
+            // 获取到数据
+            IntegerVector transform = ASClass.transform(value);
+            // 开始进行计算
+            int[][] res = this.copyToNewArrays();
+            int index = -1;
+            for (int[] re : res) {
+                res[++index] = IntegerVector.parse(re).add(transform).toArray();
+            }
+            return IntegerMatrix.parse(res);
+        }
+        throw new ClassCastException("您只能提供整形向量或者矩形对象来参与到矩阵的运算中。\nYou can only provide int vectors or rectangular objects to participate in matrix operations.");
+    }
+
+    /**
+     * 在两个操作数之间做差的方法，具体用法请参阅API说明。
+     * <p>
+     * The method of making a difference between two operands, please refer to the API description for specific usage.
+     *
+     * @param value 被做差的参数（被减数）  The parameter to be subtracted (minuend)
+     * @return 差异数值  difference value
+     * There is no description for the super interface, please refer to the subclass documentation
+     */
+    @Override
+    public IntegerMatrix diff(Vector<?, ?, ?> value) {
+        if (value instanceof IntegerVector) {
+            // 获取到数据
+            IntegerVector transform = ASClass.transform(value);
+            // 开始进行计算
+            int[][] res = this.copyToNewArrays();
+            int index = -1;
+            for (int[] re : res) {
+                res[++index] = IntegerVector.parse(re).diff(transform).toArray();
+            }
+            return IntegerMatrix.parse(res);
+        }
+        throw new ClassCastException("您只能提供整形向量或者矩形对象来参与到矩阵的运算中。\nYou can only provide int vectors or rectangular objects to participate in matrix operations.");
     }
 
 
@@ -528,17 +648,14 @@ public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], i
         int colCount2 = matrix.getColCount();
         if (rowCount1 == rowCount2) {
             int res = 0;
-            int rowPointer1 = this.RowPointer;
-            int rowPointer2 = matrix.RowPointer;
-            while (this.MovePointerDown() && matrix.MovePointerDown()) {
-                int[] ints = this.toArray();
-                double[] ints1 = matrix.toArray();
-                for (int i = 0; i < ints.length; i++) {
-                    res += ints[i] * ints1[i];
+            double[][] doubles = matrix.toArrays();
+            int index = -1;
+            for (int[] ints1 : this) {
+                double[] ints2 = doubles[++index];
+                for (int i = 0; i < ints2.length; i++) {
+                    res += ints1[i] * ints2[i];
                 }
             }
-            this.RowPointer = rowPointer1;
-            matrix.RowPointer = rowPointer2;
             return res;
         } else {
             throw new OperatorOperationException("您在'IntegerMatrix1 innerProduct IntegerMatrix2'的时候发生了错误，原因是两个矩阵的行列数不一致！\n" +
@@ -920,6 +1037,25 @@ public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], i
             ASMath.arrayReverse(this.toArrays());
             return this;
         }
+    }
+
+    /**
+     * 针对矩阵操作数的形状进行重新设定，使得矩阵中的数据维度的更改能够更加友好。
+     * <p>
+     * Reset the shape of the matrix operands to make changes to the data dimensions in the matrix more user-friendly.
+     *
+     * @param shape 需要被重新设置的新维度信息，其中包含2个维度信息，第一个代表矩阵的行数量，第二个代表矩阵的列数量。
+     *              <p>
+     *              The new dimension information that needs to be reset includes two dimensions: the first represents the number of rows in the matrix, and the second represents the number of columns in the matrix.
+     * @return 重设之后的新矩阵对象。
+     * <p>
+     * The new matrix object after resetting.
+     */
+    @Override
+    public IntegerMatrix reShape(int... shape) {
+        return IntegerMatrix.parse(
+                ASClass.reShape(this, shape)
+        );
     }
 
     /**

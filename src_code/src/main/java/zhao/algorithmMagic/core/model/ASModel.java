@@ -53,6 +53,13 @@ public interface ASModel<K, I, O> extends Serializable {
     LSNeuralNetwork LS_NEURAL_NETWORK = new LSNeuralNetwork();
 
     /**
+     * CNN 图像矩阵卷积神经网络，在该网络中，能够实现有效的图像分类计算，其中您还可以图像矩阵的卷积和神经网络层的中间层进行附加的任务实现。
+     * <p>
+     * CNN image matrix convolutional neural network, in which effective image classification calculations can be achieved, and you can also perform additional tasks on the convolution of the image matrix and the middle layer of the neural network layer.
+     */
+    SingleLayerCNNModel SINGLE_LAYER_CNN_MODEL = new SingleLayerCNNModel();
+
+    /**
      * 针对模型进行设置。
      * <p>
      * Set up for the model.

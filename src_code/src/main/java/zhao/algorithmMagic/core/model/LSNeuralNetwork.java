@@ -36,7 +36,7 @@ public class LSNeuralNetwork extends LNeuralNetwork {
         DoubleVector doubleVector = input[maxIndex];
         double[] W = doubleVector.toArray();
         // 获取到神经网络层
-        ListNeuralNetworkLayer listNeuralNetworkLayer = new ListNeuralNetworkLayer(doubleVector);
+        ListNeuralNetworkLayer listNeuralNetworkLayer = new ListNeuralNetworkLayer();
         // 添加神经元
         this.perceptron.FUNCTION.setLearnR(this.learningRate);
         listNeuralNetworkLayer.addPerceptron(this.perceptron);
@@ -50,12 +50,11 @@ public class LSNeuralNetwork extends LNeuralNetwork {
             double tempYNum = tempY.toArray()[0];
             double loss = tempYNum - this.Y[index];
             // 根据 损失函数 反向求偏导，获取梯度数值
-            DoubleVector g = listNeuralNetworkLayer.backForward(DoubleVector.parse(loss));
-            double gs = g.toArray()[0];
+            double v = this.learningRate * listNeuralNetworkLayer.backForward(DoubleVector.parse(loss)).toArray()[0];
             // 更新参数
             int wi = -1;
             for (double w : W) {
-                W[++wi] = w - this.learningRate * gs;
+                W[++wi] = w - v;
             }
         }
         // 生成训练好的模型
@@ -84,7 +83,7 @@ public class LSNeuralNetwork extends LNeuralNetwork {
         DoubleVector doubleVector = input[maxIndex];
         double[] W = doubleVector.toArray();
         // 获取到神经网络层
-        final ListNeuralNetworkLayer listNeuralNetworkLayer = new ListNeuralNetworkLayer(doubleVector);
+        final ListNeuralNetworkLayer listNeuralNetworkLayer = new ListNeuralNetworkLayer();
         // 设置激活函数以及添加神经元
         this.perceptron.FUNCTION.setLearnR(this.learningRate);
         listNeuralNetworkLayer.addPerceptron(this.perceptron);
@@ -99,11 +98,12 @@ public class LSNeuralNetwork extends LNeuralNetwork {
             double loss = tempYNum - this.Y[index];
             // 根据 损失函数 反向求偏导，获取梯度数值
             double gs = listNeuralNetworkLayer.backForward(DoubleVector.parse(loss)).toArray()[0];
+            double v = this.learningRate * gs;
             consumer.accept(loss, gs, W);
             // 更新参数
             int wi = -1;
             for (double w : W) {
-                W[++wi] = w - this.learningRate * gs;
+                W[++wi] = w - v;
             }
         }
         // 生成训练好的模型

@@ -5,7 +5,7 @@
 
     <groupId>io.github.BeardedManZhao</groupId>
     <artifactId>algorithmStar</artifactId>
-    <version>1.19</version>
+    <version>1.20</version>
     <packaging>jar</packaging>
     <name>algorithmStar</name>
     <description>algorithmStar-java</description>

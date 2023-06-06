@@ -34,6 +34,24 @@
 ![test4](https://user-images.githubusercontent.com/113756063/229441864-ec1770d5-1154-4e9c-837e-a4acfc5fb259.jpg)
 ![赵](https://user-images.githubusercontent.com/113756063/231062465-f8396edb-993d-4c65-a1cc-43ea45c40359.jpg)
 
+![字母样本A](https://user-images.githubusercontent.com/113756063/234247437-32e5b5ff-0baf-4637-805c-27472f07fd17.jpg)
+![字母样本B](https://user-images.githubusercontent.com/113756063/235287575-fcd9f3a9-7be7-4528-8190-8c9e54cef7fd.jpg)
+![字母样本C](https://user-images.githubusercontent.com/113756063/235287578-29acf0f9-df03-4a62-8455-ed7a56f8f35c.jpg)
+![字母样本X](https://user-images.githubusercontent.com/113756063/234247472-1df7f892-89b5-467f-9d8d-eb397b92c6ce.jpg)
+![字母样本Y](https://user-images.githubusercontent.com/113756063/234247497-0a329b5d-a15d-451f-abf7-abdc1655b77d.jpg)
+![字母样本Z](https://user-images.githubusercontent.com/113756063/235150408-233cc477-c97d-48a1-b39e-ff9a497ea9ff.jpg)
+![字母A1](https://user-images.githubusercontent.com/113756063/234247630-46319338-b8e6-47bf-9918-4b734e665cf9.jpg)
+![字母B1](https://user-images.githubusercontent.com/113756063/235287584-90f2361b-0292-41cc-9469-6d4a64258c8d.jpg)
+![字母C1](https://user-images.githubusercontent.com/113756063/235287616-446108e1-1e1c-4416-991b-3b0cbb888d5b.jpg)
+![字母C2](https://user-images.githubusercontent.com/113756063/235335944-9e7b1a84-9b44-40d1-b943-30fc290b11ac.jpg)
+![字母X1](https://user-images.githubusercontent.com/113756063/234247550-01777cee-493a-420f-8665-da31e60a1cbe.jpg)
+![字母X2](https://user-images.githubusercontent.com/113756063/235150686-c4b84e78-1b24-409d-a26f-6a860ed104d8.jpg)
+![字母Y1](https://user-images.githubusercontent.com/113756063/234247607-bfc59b79-bc6a-4ff1-992c-7ab1e9fd0116.jpg)
+![字母Y2](https://user-images.githubusercontent.com/113756063/235150464-9d082c41-ae06-4ee7-a680-59e62cd55b10.jpg)
+![字母Z1](https://user-images.githubusercontent.com/113756063/235150989-e71036bd-f8bb-43b9-b566-e3131827d7ac.jpg)
+![字母2](https://user-images.githubusercontent.com/113756063/235335680-05f44579-9ea6-407b-b301-bf8774a68b2a.jpg)
+
+
 ## 风景类
 
 ![7c58100e7b96a7e87bf0e9b135e2e9f](https://user-images.githubusercontent.com/113756063/231062982-0620903f-183d-48fe-ad7b-d295fcbd7b95.jpg)

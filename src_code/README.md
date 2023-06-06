@@ -8,759 +8,40 @@
 
 ### Update log:
 
-* Framework version: 1.18 - 1.19
-* Fix the startup log header data of the library, correct its header to AlgorithmStar-Java.
-* The transformation calculation function of the image matrix implements new scaling logic, which can perform
-  unidirectional scaling operations according to specified multiples. Below is a code example that reduces the original
-  image to half of its original size.
+* Framework version: 1.19 - 1.20
+* The neuron object is reconstructed, and the weight field is added to the perceptron object and provided to the
+  perceptron for management.
 
 ```java
 package zhao.algorithmMagic;
 
-import zhao.algorithmMagic.core.AlgorithmStar;
-import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+import zhao.algorithmMagic.core.model.ActivationFunction;
+import zhao.algorithmMagic.core.model.Perceptron;
 import zhao.algorithmMagic.operands.table.Cell;
-import zhao.algorithmMagic.operands.table.FinalCell;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.HashMap;
-
-public class MAIN1 {
-    public static void main(String[] args) throws MalformedURLException {
-        // 获取到用于测试的图像
-        ColorMatrix colorMatrix = AlgorithmStar.parseImage(
-                new URL("https://user-images.githubusercontent.com/113756063/194830221-abe24fcc-484b-4769-b3b7-ec6d8138f436.png")
-        );
-        // 将图像进行备份
-        ColorMatrix parse = ColorMatrix.parse(colorMatrix.copyToNewArrays());
-        // 准备缩放需要的配置文件，开始进行缩放
-        HashMap<String, Cell<?>> map = new HashMap<>();
-        // 在这里指定缩放的倍数为2
-        map.put("times", new FinalCell<>(2));
-        // 将备份的图像进行横向缩放
-        ColorMatrix converter1 = parse.converter(ColorMatrix.SCALE_LR, map);
-        converter1.show("image1");
-        // 再一次进行纵向缩放
-        ColorMatrix converter2 = converter1.converter(ColorMatrix.SCALE_BT, map);
-        // 开始对比原图像与新图像的差距
-        colorMatrix.show("src");
-        converter2.show("res");
-    }
-}
-```
-
-* Add an SFDataFrame object, in which all cells are unique in memory. When there is a large amount of the same data in
-  the DataFrame, SFDataFrame can save a lot of space in memory, and its usage is completely consistent with FDataFrame.
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.io.InputByStream;
-import zhao.algorithmMagic.io.InputByStreamBuilder;
-import zhao.algorithmMagic.io.InputComponent;
-import zhao.algorithmMagic.operands.table.*;
-
-import java.net.MalformedURLException;
-
-public class MAIN1 {
-    public static void main(String[] args) {
-        // 获取到数据输入组件
-        InputComponent inputComponent = InputByStream.builder()
-                .addInputArg(InputByStreamBuilder.INPUT_STREAM, SingletonCell.$(System.in))
-                .addInputArg(InputByStreamBuilder.CHARSET, SingletonCell.$("utf-8"))
-                .addInputArg(InputByStreamBuilder.PK, SingletonCell.$(1))
-                .addInputArg(InputByStreamBuilder.ROW_LEN, SingletonCell.$(3))
-                .addInputArg(InputByStreamBuilder.SEP, SingletonCell.$(','))
-                .create();
-        // 开始通过数据输入组件获取到 DF 对象 输入数据如下所示 其中的性别列有两个数据是一样的
-        /*
-            id,name,sex,age
-            1,zhao,M,19
-            2,tang,W,21
-            3,yang,W,18
-        */
-        // 提取到最后两行数据 从索引1开始提取2行。
-        DataFrame dataFrame = SFDataFrame.builder(inputComponent).limit(1, 2);
-        // 打印其中的数据
-        dataFrame.show();
-        // 提取出 性别列 中的数据 并判断其中的两个 W 是否属于同一个内存
-        Series sex = dataFrame.select(FieldCell.$("sex"));
-        System.out.println(sex.getCell(0) == sex.getCell(1));
-    }
-}
-```
-
-* For queries with only one row or column field data, a Series object will be directly returned to facilitate more
-  operations on sequence objects.
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.operands.table.*;
-
-public class MAIN1 {
-    public static void main(String[] args) {
-        // 创建一个 DF 数据对象
-        DataFrame dataFrame = FDataFrame.select(
-                        FieldCell.parse("id", "name", "age", "sex"), 1
-                )
-                // 向其中添加一些数据
-                .insert(FinalSeries.parse("1", "zhao", "19", "M"))
-                .insert(FinalSeries.parse("2", "yang", "18", "W"))
-                .insert(FinalSeries.parse("3", "tang", "21", "W"))
-                // 改别名
-                .select(
-                        FieldCell.$("name").as("名字"),
-                        FieldCell.$("sex").as("性别")
-                );
-        // 查询出列 name 的数据
-        Series name = dataFrame.select(FieldCell.$("名字"));
-        System.out.println(name);
-        // 查询出 主键字段数值为 zhao 的行
-        Series row = dataFrame.selectRow("zhao");
-        System.out.println(row);
-    }
-}
-```
-
-* Support the acquisition of static SF DF objects through the portal class of the AS library.
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.core.AlgorithmStar;
-import zhao.algorithmMagic.io.InputByStream;
-import zhao.algorithmMagic.io.InputByStreamBuilder;
-import zhao.algorithmMagic.io.InputComponent;
-import zhao.algorithmMagic.operands.table.DataFrame;
-import zhao.algorithmMagic.operands.table.FinalCell;
-
-import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-
-
-public class MAIN1 {
-    public static void main(String[] args) throws SQLException {
-        /* *****************************************************
-         * TODO 从数据流中读取到数据
-         * *****************************************************/
-        // 开始将所有的参数配置到设备对象中，构建出数据输入设备
-        InputComponent inputComponent = InputByStream.builder()
-                .addInputArg(InputByStreamBuilder.INPUT_STREAM, new FinalCell<>(System.in))
-                .addInputArg(InputByStreamBuilder.CHARSET, new FinalCell<>("utf-8"))
-                .addInputArg(InputByStreamBuilder.SEP, new FinalCell<>(','))
-                .addInputArg(InputByStreamBuilder.PK, new FinalCell<>(1))
-                .addInputArg(InputByStreamBuilder.ROW_LEN, new FinalCell<>(3))
-                .create();
-
-        // TODO 开始通过 algorithmStar 构建出DataFrame对象 这里是通过文件 数据库 数据输入组件 来进行构建
-        File file = new File("C:\\Users\\zhao\\Downloads\\test.csv");
-        DataFrame dataFrame1 = AlgorithmStar.parseSDF(file).setSep(',')
-                .create("year", "month", "day", "week", "temp_2", "temp_1", "average", "actual", "friend")
-                .execute();
-        dataFrame1.show();
-
-        DataFrame dataFrame2 = AlgorithmStar.parseSDF(inputComponent, false);
-        dataFrame2.show();
-
-        Connection connection = DriverManager.getConnection("");
-        DataFrame dataFrame3 = AlgorithmStar.parseSDF(connection)
-                .from("xxx")
-                .execute();
-        dataFrame3.show();
-    }
-}
-```
-
-* Pure numerical matrix objects support random data generation operations and can effectively achieve data random
-  generation.
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.operands.matrix.ColorMatrix;
-import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
-import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
-
-
-public class MAIN1 {
-    public static void main(String[] args) {
-        // 随机生成一个 3列 4行 的整数矩阵对象
-        IntegerMatrix random1 = IntegerMatrix.random(3, 4, 1024);
-        // 随机生成一个 3列 4行 的浮点矩阵对象
-        DoubleMatrix random2 = DoubleMatrix.random(3, 4, 1024);
-        // 随机生成一个 120x100 的图像矩阵对象
-        ColorMatrix random3 = ColorMatrix.random(120, 100, 1024);
-        // 查看结果
-        System.out.println(random1);
-        System.out.println(random2);
-        random3.show("random3");
-    }
-}
-```
-
-* Add a printer device data output object that can provide data to the specified printer and perform other operations
-  through this object.
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.io.OutputComponent;
-import zhao.algorithmMagic.io.PrintServiceOutput;
-import zhao.algorithmMagic.io.PrintServiceOutputBuilder;
-import zhao.algorithmMagic.operands.matrix.ColorMatrix;
-import zhao.algorithmMagic.operands.table.FinalCell;
-
-import javax.print.DocFlavor;
-import javax.print.attribute.HashPrintRequestAttributeSet;
-
-
-public class MAIN1 {
-    public static void main(String[] args) {
-        // 获取到需要被输出的图像矩阵
-        ColorMatrix colorMatrix = ColorMatrix.parse("C:\\Users\\zhao\\Pictures\\Screenshots\\屏幕截图_20230116_163341.png");
-        // 获取到打印机设备数据输出对象
-        HashPrintRequestAttributeSet hashPrintRequestAttributeSet = new HashPrintRequestAttributeSet();
-        OutputComponent outputComponent = PrintServiceOutput.builder()
-                // 设置打印的数据的格式 这里是数组的JPG图像
-                .addOutputArg(PrintServiceOutputBuilder.DOC_FLAVOR, new FinalCell<>(DocFlavor.BYTE_ARRAY.JPEG))
-                // 设置打印的属性配置集合
-                .addOutputArg(PrintServiceOutputBuilder.ATTR, new FinalCell<>(hashPrintRequestAttributeSet))
-                // 设置打印机的名称
-                .addOutputArg(PrintServiceOutputBuilder.PRINT_SERVER_NAME, new FinalCell<>("HPFF15E0 (HP DeskJet 2700 series)"))
-                // 创建出打印机设备数据输入对象
-                .create();
-        // 开始查看图像并将图像输出
-        colorMatrix.show("image", 1024, 512);
-        colorMatrix.save(outputComponent);
-    }
-}
-```
-
-* The image matrix object supports a single channel color extraction operation, which will return an image matrix object
-  with better performance.
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.operands.matrix.ColorMatrix;
-
-
-public class MAIN1 {
-    public static void main(String[] args) {
-        // 获取到需要被输出的图像矩阵
-        ColorMatrix colorMatrix = ColorMatrix.parse("C:\\Users\\Liming\\Desktop\\fsDownload\\person1.jpg");
-        // 获取到图像中的红色层
-        ColorMatrix colorChannel = colorMatrix.getColorChannel(ColorMatrix._R_);
-        colorChannel.show("red");
-        // 获取到图像中的蓝色层
-        colorChannel = colorMatrix.getColorChannel(ColorMatrix._G_);
-        colorChannel.show("green");
-        // 获取到图像中的蓝色层
-        colorChannel = colorMatrix.getColorChannel(ColorMatrix._B_);
-        colorChannel.show("blue");
-    }
-}
-```
-
-* The image matrix object supports multi-layer extraction operations for multiple color channels, which will overlay all
-  color channels into the image space.
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.operands.matrix.ColorMatrix;
-import zhao.algorithmMagic.operands.matrix.block.ColorMatrixSpace;
-
-
-public class MAIN1 {
-    public static void main(String[] args) {
-        // 获取到需要被输出的图像矩阵
-        ColorMatrix colorMatrix = ColorMatrix.parse("C:\\Users\\Liming\\Desktop\\fsDownload\\person1.jpg");
-        // 接下来的函数中 TODO Blue色通道将会自动加上 因此不需要进行 + 符号的追加
-        // 获取到蓝色颜色通道组成的图像空间 如果只提取蓝色可以进行下面操作
-        ColorMatrixSpace colorMatrices = colorMatrix.toRGBSpace(ColorMatrix._B_);
-        colorMatrices.show("image1", colorMatrix.getColCount(), colorMatrices.getRowCount());
-        // 获取到由红和蓝颜色颜色通道层组成的图像空间
-        colorMatrices = colorMatrix.toRGBSpace(ColorMatrix._R_);
-        colorMatrices.show("image2", colorMatrix.getColCount(), colorMatrices.getRowCount());
-        // 获取到由所有颜色通道层组成的图像空间 因此就是 红 + 绿 就可以实现全部提取了（注意，单独进行 红+绿 提取暂不支持）
-        colorMatrices = colorMatrix.toRGBSpace(ColorMatrix._R_ + ColorMatrix._G_);
-        colorMatrices.show("image3", colorMatrix.getColCount(), colorMatrices.getRowCount());
-    }
-}
-```
-
-* Support the conversion of image matrix objects to integer matrix space objects, and support the calculation operation
-  of specifying the number of channels.
-* The convolution kernel in the convolution calculation operation function of the reshaping matrix space supports'
-  matrix objects composed of double matrix data types.
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.core.AlgorithmStar;
-import zhao.algorithmMagic.operands.matrix.ColorMatrix;
-import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
-import zhao.algorithmMagic.operands.matrix.block.DoubleMatrixSpace;
-import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixSpace;
-
-
-public class MAIN1 {
-    public static void main(String[] args) {
-        // 获取到需要被输出的图像矩阵
-        ColorMatrix colorMatrix = ColorMatrix.parse("C:\\Users\\Liming\\Desktop\\fsDownload\\person1.jpg");
-        // 提取出 红色 绿色 蓝色 通道叠加成为的新整形矩阵空间对象
-        IntegerMatrixSpace integerMatrices = colorMatrix.toIntRGBSpace(ColorMatrix._R_, ColorMatrix._G_, ColorMatrix._B_);
-        // 准备一个 double 卷积核 该卷积核的左右为求均值计算。
-        double r = 1 / 9.0;
-        System.out.println(r);
-        DoubleMatrix doubleMatrix = AlgorithmStar.parseDoubleMat(
-                new double[]{r, r, r},
-                new double[]{r, r, r},
-                new double[]{r, r, r}
-        );
-        // 将卷积核矩阵空间对象计算出来
-        DoubleMatrixSpace core = DoubleMatrixSpace.parse(doubleMatrix, doubleMatrix, doubleMatrix);
-        // 开始进行图像的卷积操作
-        ColorMatrix colorMatrix1 = integerMatrices.foldingAndSumRGB(3, 3, core);
-        // 查看结果图像
-        colorMatrix1.show("image");
-    }
-}
-```
-
-* Add the AS model package, which provides many built-in and well implemented models that can reduce code development
-  under certain circumstances. The model objects can be directly passed to AlgorithmStar for calculation, including
-  single threaded and multithreaded calculation implementations.
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.core.AlgorithmStar;
-import zhao.algorithmMagic.core.model.ASModel;
-import zhao.algorithmMagic.core.model.SingleTargetContour;
-import zhao.algorithmMagic.io.InputCamera;
-import zhao.algorithmMagic.io.InputCameraBuilder;
-import zhao.algorithmMagic.io.InputComponent;
-import zhao.algorithmMagic.operands.matrix.ColorMatrix;
-import zhao.algorithmMagic.operands.table.FinalCell;
-import zhao.algorithmMagic.operands.table.SingletonCell;
-
-import java.awt.*;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-
-public class MAIN1 {
-    public static void main(String[] args) throws MalformedURLException {
-        // 获取到摄像头设备
-        InputComponent inputComponent = InputCamera.builder()
-                .addInputArg(InputCameraBuilder.Camera_Index, SingletonCell.$(0))
-                .addInputArg(InputCameraBuilder.Image_Format, SingletonCell.$("JPG"))
-                .create();
-        // 开始将三个图像矩形拍摄出来
-        ColorMatrix[] colorMatrices = new ColorMatrix[3];
-        for (int i = 0; i < 3; i++) {
-            colorMatrices[i] = AlgorithmStar.parseImage(inputComponent, true);
-        }
-        // 获取到目标数据样本 这里是人脸轮廓
-        ColorMatrix yb = AlgorithmStar.parseImage(
-                new URL("https://user-images.githubusercontent.com/113756063/230775389-4477aad4-795c-47c2-a946-0afeadafad44.jpg")
-        );
-        // 获取到单目标矩形模型
-        SingleTargetContour singleTargetContour = ASModel.SINGLE_TARGET_CONTOUR;
-        // 设置需要被用于做为目标的图像矩阵 由于样本不常用，因此在这里没有使用单例单元格，因为单例单元格会保存数据对象
-        singleTargetContour.setArg(SingleTargetContour.TARGET, new FinalCell<>(yb));
-        // 设置本次绘制识别使用二值化操作，贴近样本
-        singleTargetContour.setArg(SingleTargetContour.isBinary, SingletonCell.$(true));
-        // 设置矩形轮廓的颜色对象
-        singleTargetContour.setArg(SingleTargetContour.OUTLINE_COLOR, SingletonCell.$(new Color(255, 0, 245)));
-        long startTime = System.currentTimeMillis();
-        // 开始单线程绘制并查看
-        for (ColorMatrix colorMatrix : AlgorithmStar.model(singleTargetContour, colorMatrices)) {
-            colorMatrix.show("image");
-        }
-        System.out.println("耗时：" + (System.currentTimeMillis() - startTime));
-    }
-}
-```
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.core.AlgorithmStar;
-import zhao.algorithmMagic.core.model.ASModel;
-import zhao.algorithmMagic.core.model.SingleTargetContour;
-import zhao.algorithmMagic.io.InputCamera;
-import zhao.algorithmMagic.io.InputCameraBuilder;
-import zhao.algorithmMagic.io.InputComponent;
-import zhao.algorithmMagic.operands.matrix.ColorMatrix;
-import zhao.algorithmMagic.operands.table.FinalCell;
-import zhao.algorithmMagic.operands.table.SingletonCell;
-
-import java.awt.*;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-
-public class MAIN1 {
-    public static void main(String[] args) throws MalformedURLException {
-        // 获取到摄像头设备
-        InputComponent inputComponent = InputCamera.builder()
-                .addInputArg(InputCameraBuilder.Camera_Index, SingletonCell.$(0))
-                .addInputArg(InputCameraBuilder.Image_Format, SingletonCell.$("JPG"))
-                .create();
-        // 开始将三个图像矩形拍摄出来
-        ColorMatrix[] colorMatrices = new ColorMatrix[3];
-        for (int i = 0; i < 3; i++) {
-            colorMatrices[i] = AlgorithmStar.parseImage(inputComponent, true);
-        }
-        // 获取到目标数据样本 这里是人脸轮廓
-        ColorMatrix yb = AlgorithmStar.parseImage(
-                new URL("https://user-images.githubusercontent.com/113756063/230775389-4477aad4-795c-47c2-a946-0afeadafad44.jpg")
-        );
-        // 获取到单目标矩形模型
-        SingleTargetContour singleTargetContour = ASModel.SINGLE_TARGET_CONTOUR;
-        // 设置需要被用于做为目标的图像矩阵 由于样本不常用，因此在这里没有使用单例单元格，因为单例单元格会保存数据对象
-        singleTargetContour.setArg(SingleTargetContour.TARGET, new FinalCell<>(yb));
-        // 设置本次绘制识别使用二值化操作，贴近样本
-        singleTargetContour.setArg(SingleTargetContour.isBinary, SingletonCell.$(true));
-        // 设置矩形轮廓的颜色对象
-        singleTargetContour.setArg(SingleTargetContour.OUTLINE_COLOR, SingletonCell.$(new Color(255, 0, 245)));
-        long startTime = System.currentTimeMillis();
-        // 开始多线程绘制并查看
-        for (ColorMatrix colorMatrix : AlgorithmStar.modelConcurrency(singleTargetContour, colorMatrices)) {
-            colorMatrix.show("image");
-        }
-        System.out.println("耗时：" + (System.currentTimeMillis() - startTime));
-    }
-}
-```
-
-* In the AS model library, an image classification model is added, which supports the supervised learning classification
-  model of multiple images. The model also supports both single thread and multithreaded computing operations.
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.core.AlgorithmStar;
-import zhao.algorithmMagic.core.model.ASModel;
-import zhao.algorithmMagic.core.model.SingleTargetContour;
-import zhao.algorithmMagic.core.model.TarImageClassification;
-import zhao.algorithmMagic.operands.matrix.ColorMatrix;
-import zhao.algorithmMagic.operands.table.FinalCell;
-import zhao.algorithmMagic.operands.table.SingletonCell;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Map;
-
-
-public class MAIN1 {
-    public static void main(String[] args) throws MalformedURLException {
-        // 获取到 人脸样本
-        ColorMatrix person = ColorMatrix.parse(
-                new URL("https://user-images.githubusercontent.com/113756063/230775389-4477aad4-795c-47c2-a946-0afeadafad44.jpg")
-        );
-        // 获取到 小猫样本
-        ColorMatrix cat = ColorMatrix.parse(
-                new URL("https://user-images.githubusercontent.com/113756063/232627018-1ab647ff-38f7-408c-a3df-365028463152.jpg")
-        );
-
-
-        // 获取到需要被识别的图像
-        ColorMatrix parse1 = ColorMatrix.parse(
-                new URL("https://user-images.githubusercontent.com/113756063/231062649-34268530-801a-4520-81ae-176936a3a981.jpg")
-        );
-        ColorMatrix parse2 = ColorMatrix.parse(
-                new URL("https://user-images.githubusercontent.com/113756063/232627057-a49d6958-d608-4d44-b309-f63454998aaa.jpg")
-        );
-
-        // 获取到图像分类模型
-        TarImageClassification tarImageClassification = ASModel.TAR_IMAGE_CLASSIFICATION;
-        // 设置人脸类型标签样本
-        tarImageClassification.setArg("person", new FinalCell<>(person));
-        // 设置小猫类型标签样本
-        tarImageClassification.setArg("cat", new FinalCell<>(cat));
-        // 设置启用二值化操作
-        TarImageClassification.SINGLE_TARGET_CONTOUR.setArg(SingleTargetContour.isBinary, SingletonCell.$(true));
-
-        ColorMatrix[] colorMatrices = {parse1, parse2};
-        // 需要注意的是，当指定了二值化操作之后，传递进去的图像矩阵将会被更改 因此在这里使用模型的时候使用克隆出来的矩阵数组
-        ColorMatrix[] clone = {ColorMatrix.parse(parse1.copyToNewArrays()), ColorMatrix.parse(parse2.copyToNewArrays())};
-        long start = System.currentTimeMillis();
-        // 开始计算并迭代计算出来的类别集合，进行结果查看
-        for (Map.Entry<String, ArrayList<Integer>> entry : AlgorithmStar.model(tarImageClassification, clone).entrySet()) {
-            String k = entry.getKey() + "类别";
-            for (int index : entry.getValue()) {
-                colorMatrices[index].show(k);
-            }
-        }
-        System.out.println("耗时：" + (System.currentTimeMillis() - start));
-    }
-}
-```
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.core.AlgorithmStar;
-import zhao.algorithmMagic.core.model.ASModel;
-import zhao.algorithmMagic.core.model.SingleTargetContour;
-import zhao.algorithmMagic.core.model.TarImageClassification;
-import zhao.algorithmMagic.operands.matrix.ColorMatrix;
-import zhao.algorithmMagic.operands.table.FinalCell;
-import zhao.algorithmMagic.operands.table.SingletonCell;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Map;
-
-
-public class MAIN1 {
-    public static void main(String[] args) throws MalformedURLException {
-        // 获取到 人脸样本
-        ColorMatrix person = ColorMatrix.parse(
-                new URL("https://user-images.githubusercontent.com/113756063/230775389-4477aad4-795c-47c2-a946-0afeadafad44.jpg")
-        );
-        // 获取到 小猫样本
-        ColorMatrix cat = ColorMatrix.parse(
-                new URL("https://user-images.githubusercontent.com/113756063/232627018-1ab647ff-38f7-408c-a3df-365028463152.jpg")
-        );
-
-
-        // 获取到需要被识别的图像
-        ColorMatrix parse1 = ColorMatrix.parse(
-                new URL("https://user-images.githubusercontent.com/113756063/231062649-34268530-801a-4520-81ae-176936a3a981.jpg")
-        );
-        ColorMatrix parse2 = ColorMatrix.parse(
-                new URL("https://user-images.githubusercontent.com/113756063/232627057-a49d6958-d608-4d44-b309-f63454998aaa.jpg")
-        );
-
-        // 获取到图像分类模型
-        TarImageClassification tarImageClassification = ASModel.TAR_IMAGE_CLASSIFICATION;
-        // 设置人脸类型标签样本
-        tarImageClassification.setArg("person", new FinalCell<>(person));
-        // 设置小猫类型标签样本
-        tarImageClassification.setArg("cat", new FinalCell<>(cat));
-        // 设置启用二值化操作
-        TarImageClassification.SINGLE_TARGET_CONTOUR.setArg(SingleTargetContour.isBinary, SingletonCell.$(true));
-
-        ColorMatrix[] colorMatrices = {parse1, parse2};
-        // 需要注意的是，当指定了二值化操作之后，传递进去的图像矩阵将会被更改 因此在这里使用模型的时候使用克隆出来的矩阵数组
-        ColorMatrix[] clone = {ColorMatrix.parse(parse1.copyToNewArrays()), ColorMatrix.parse(parse2.copyToNewArrays())};
-        long start = System.currentTimeMillis();
-        // 开始计算并迭代计算出来的类别集合，进行结果查看
-        for (Map.Entry<String, ArrayList<Integer>> entry : AlgorithmStar.modelConcurrency(tarImageClassification, clone).entrySet()) {
-            String k = entry.getKey() + "类别";
-            for (int index : entry.getValue()) {
-                colorMatrices[index].show(k);
-            }
-        }
-        System.out.println("耗时：" + (System.currentTimeMillis() - start));
-    }
-}
-```
-
-* Support the save and reload operations of AS model objects, which can effectively save the processed model.
-
-```java
-package zhao.algorithmMagic;
-
-import org.jetbrains.annotations.NotNull;
-import zhao.algorithmMagic.core.AlgorithmStar;
-import zhao.algorithmMagic.core.model.ASModel;
-import zhao.algorithmMagic.operands.matrix.ColorMatrix;
-import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
-import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixSpace;
-import zhao.algorithmMagic.operands.table.Cell;
-import zhao.algorithmMagic.utils.ASClass;
-
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-
-public class MAIN1 {
-
-    // 在 main 函数中进行模型的保存和读取以及使用
-    public static void main(String[] args) throws MalformedURLException {
-        // 获取到 人脸样本
-        ColorMatrix person = ColorMatrix.parse(
-                new URL("https://user-images.githubusercontent.com/113756063/230775389-4477aad4-795c-47c2-a946-0afeadafad44.jpg")
-        );
-        // 将自定义实现模型类加载进来
-        MyModel myModel1 = new MyModel();
-        // 将模型对象保存到磁盘
-        File file = new File("C:\\Users\\Liming\\Desktop\\fsDownload\\MytModel.as");
-        ASModel.Utils.write(file, myModel1);
-        // 将模型对象重新加载进磁盘
-        MyModel myModel2 = ASClass.transform(ASModel.Utils.read(file));
-        // 使用模型处理图像
-        ColorMatrix model = AlgorithmStar.model(myModel2, new ColorMatrix[]{person});
-        // 查看结果图像
-        model.show("res");
-    }
-
-    /**
-     * 这里是实现出来的自定义 图像卷积池化 模型对象
-     */
-    public static class MyModel implements ASModel<String, ColorMatrix, ColorMatrix> {
-
-        private int width = 3, height = 3;
-
-        @Override
-        public void setArg(String key, @NotNull Cell<?> value) {
-            switch (key) {
-                case "w" -> width = value.getIntValue();
-                case "h" -> height = value.getIntValue();
-                default -> System.out.println("不认识的参数：" + key);
-            }
-        }
-
-        @Override
-        public ColorMatrix function(ColorMatrix[] input) {
-            // 转换成为像素矩阵空间
-            IntegerMatrixSpace integerMatrices = input[0].toIntRGBSpace(ColorMatrix._R_, ColorMatrix._G_, ColorMatrix._B_);
-            // 构造一个卷积核 这里是将从右到左的边界提取出来的卷积核
-            IntegerMatrix parse = IntegerMatrix.parse(
-                    new int[]{-1, 0, 1},
-                    new int[]{-1, 0, 1},
-                    new int[]{-1, 0, 1}
-            );
-            IntegerMatrixSpace core = IntegerMatrixSpace.parse(parse, parse, parse);
-            // 将人脸样本进行卷积
-            ColorMatrix colorMatrix = integerMatrices.foldingAndSumRGB(width, height, core);
-            // 将人脸样本进行 R G B 三种通道的最大值取值 池化
-            return colorMatrix.pooling(width, height, ColorMatrix.POOL_RGB_OBO_MAX);
-        }
-
-        @Override
-        public ColorMatrix functionConcurrency(ColorMatrix[] input) {
-            System.out.println("暂不支持多线程计算。");
-            return null;
-        }
-    }
-}
-```
-
-* Support the pooling calculation operation of image matrices, whose functional parameters receive pooling convolutional
-  kernels and pooling operation implementation objects.
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.operands.matrix.ColorMatrix;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-
-
-public class MAIN1 {
-
-    // 在 main 函数中进行模型的保存和读取以及使用
-    public static void main(String[] args) throws MalformedURLException {
-        // 获取到 人脸样本
-        ColorMatrix person = ColorMatrix.parse(
-                new URL("https://user-images.githubusercontent.com/113756063/230775389-4477aad4-795c-47c2-a946-0afeadafad44.jpg")
-        );
-        // 查看原图
-        person.show("person");
-        // 将人脸图像进行池化操作 指定 3x3 的卷积核 以及 R G B 三种颜色的最大池化操作
-        ColorMatrix res1 = person.pooling(3, 3, ColorMatrix.POOL_RGB_MAX);
-        // 将人脸图像进行池化操作 指定 3x3 的卷积核 以及 RGB数值的最大池化操作
-        ColorMatrix res2 = person.pooling(3, 3, ColorMatrix.POOL_RGB_OBO_MAX);
-        // 查看结果图像
-        res1.show("res1");
-        res2.show("res2");
-    }
-}
-```
-
-* Add a linear neural network regression model in ASModel, which has stronger accuracy and simpler API calls, returning
-  a model object that can be saved.
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.core.model.*;
-import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
-import zhao.algorithmMagic.operands.table.SingletonCell;
 import zhao.algorithmMagic.operands.vector.DoubleVector;
 
 public class MAIN1 {
 
     // 在 main 函数中进行模型的保存和读取以及使用
     public static void main(String[] args) {
-
-        // 构建 X 数据的容器 将矩阵中的数据拷贝到向量数组中
-        DoubleVector[] X = (DoubleVector[]) DoubleMatrix.parse(
-                new double[]{100, 50, 50},
-                new double[]{50, 50, 50},
-                new double[]{50, 100, 50}
-                // 在这里将矩阵按行拷贝到一个 长度为 4 的数组中
-        ).toVectors(new DoubleVector[4]);
-        // 数组中之所以要多一个元素的位置是因为数组的尾部要添加权重，才能够被训练
-        X[3] = DoubleVector.parse(20, 18, 18);
-
-
-        // 构建 Y 数据
-        double[] Y = {300, 200, 250, 350};
-
-        // 将 线性随机神经网络模型获取到
-        LNeuralNetwork lNeuralNetwork = ASModel.LS_NEURAL_NETWORK;
-        // 设置学习率
-        lNeuralNetwork.setArg(LNeuralNetwork.LEARNING_RATE, SingletonCell.$(0.02));
-        // 设置所有数据样本的训练次数 为 1024
-        lNeuralNetwork.setArg(LNeuralNetwork.LEARN_COUNT, SingletonCell.$(1024));
-        // 设置当前神经网络中神经元的激活函数
-        lNeuralNetwork.setArg(LNeuralNetwork.PERCEPTRON, SingletonCell.$(Perceptron.parse(ActivationFunction.RELU)));
-        // 设置当前神经网络中的目标数值
-        lNeuralNetwork.setArg(LNeuralNetwork.TARGET, SingletonCell.$(Y));
-
-        // 开始训练 在这里传递进需要被学习的数据 并获取到模型 需要注意这里参数的最后一个元素是初始权重向量
-        NumberModel numberModel = lNeuralNetwork.function(X);
-        System.out.println(numberModel);
-        // 这里直接调用模型 预测 x1 = 200   x2 = 100  x3 = 50 时候的结果  期望数值是 550
-        Double function = numberModel.function(new Double[]{200.0, 100.0, 50.0});
+        // 构建初始权重向量
+        DoubleVector W = DoubleVector.parse(20, 18, 18, 18);
+        // 获取到神经元感知机对象 这里分别设置激活函数与神经元对应的权重向量
+        Perceptron perceptron = Perceptron.parse(ActivationFunction.SIGMOID, W);
+        // 生成一个 X 向量
+        DoubleVector parseX = DoubleVector.parse(1, 2, 3, 4);
+        // 通过感知机对象进行计算
+        Cell<Double> function = perceptron.function(parseX);
         System.out.println(function);
+        // 通过感知机对象进行反向求导
+        System.out.println(perceptron.backFunction(function.getDoubleValue()));
     }
 }
 ```
 
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.core.model.*;
-
-import java.io.File;
-
-public class MAIN1 {
-
-    // 在 main 函数中进行模型的保存和读取以及使用
-    public static void main(String[] args) {
-        // 从磁盘中加载刚刚保存的模型
-        ASModel<Integer, Double, Double> asModel = ASModel.Utils.read(new File("C:\\Users\\Liming\\Desktop\\fsDownload\\MytModel.as"));
-        // 构造一组 自变量数据
-        Double[] doubles = {150.0, 100.0, 100.0};
-        // 计算这组数据在模型中计算后如果，查看是否达到预测效果  预期结果是 500
-        // 因为刚刚的训练数据中 数据的公共公式为 f(x) = x1 * 2 + x2 * 1 + x2 * 1
-        Double function = asModel.function(doubles);
-        System.out.println(function);
-        // 打印模型公式
-        System.out.println(asModel);
-    }
-}
-```
-
-* Support the implementation of additional tasks during linear neural network training, which are task implementation
-  objects used for information viewing or processing during the training process.
+* The linear neural network is reconstructed, taking the loss function and learning rate as the direct variables of
+  parameter adjustment, and taking the output of the first network layer as the back-propagation input of the first
+  layer, so that it has more powerful convergence.
 
 ```java
 package zhao.algorithmMagic;
@@ -776,14 +57,16 @@ public class MAIN1 {
 
     // 在 main 函数中进行模型的保存和读取以及使用
     public static void main(String[] args) {
+        // 构建初始权重向量
+        DoubleVector W = DoubleVector.parse(20, 18, 18);
         // 获取到线性神经网络模型
         LNeuralNetwork lNeuralNetwork = ASModel.L_NEURAL_NETWORK;
-        // 设置学习率 为 0.01
-        lNeuralNetwork.setArg(LNeuralNetwork.LEARNING_RATE, SingletonCell.$(0.01));
-        // 设置激活函数为 LEAKY_RE_LU
-        lNeuralNetwork.setArg(LNeuralNetwork.PERCEPTRON, SingletonCell.$(Perceptron.parse(ActivationFunction.LEAKY_RE_LU)));
-        // 设置学习次数 为 570 * 目标数
-        lNeuralNetwork.setArg(LNeuralNetwork.LEARN_COUNT, SingletonCell.$(570));
+        // 设置学习率 为 0.4
+        lNeuralNetwork.setArg(LNeuralNetwork.LEARNING_RATE, SingletonCell.$(0.2));
+        // 设置激活函数为 LEAKY_RE_LU 同时在这里设置该神经元使用的权重对象
+        lNeuralNetwork.setArg(LNeuralNetwork.PERCEPTRON, SingletonCell.$(Perceptron.parse(ActivationFunction.RELU, W)));
+        // 设置学习次数 为 24 * 目标数
+        lNeuralNetwork.setArg(LNeuralNetwork.LEARN_COUNT, SingletonCell.$(24));
         // 设置目标数值
         lNeuralNetwork.setArg(
                 LNeuralNetwork.TARGET,
@@ -796,8 +79,7 @@ public class MAIN1 {
         DoubleVector X3 = DoubleVector.parse(120, 50, 50);
         DoubleVector x4 = DoubleVector.parse(100, 100, 100);
         DoubleVector x5 = DoubleVector.parse(150, 100, 100);
-        // 构建初始权重向量
-        DoubleVector W = DoubleVector.parse(20, 18, 18);
+
         // 实例化出附加 Task 任务对象
         LNeuralNetwork.TaskConsumer taskConsumer = (loss, g, weight) -> {
             // 在这里打印出每一次训练的信息
@@ -807,6 +89,8 @@ public class MAIN1 {
         };
         // 训练出模型 TODO 在这里指定出每一次训练时的附加任务
         NumberModel model = lNeuralNetwork.function(taskConsumer, X1, X2, X3, x4, x5, W);
+        System.out.println(model);
+
         // TODO 接下来开始使用模型进行一些测试
         // 向模型中传递一些数值
         Double function1 = model.function(new Double[]{100.0, 50.0, 50.0});
@@ -823,164 +107,410 @@ public class MAIN1 {
 }
 ```
 
-* It supports the linear stochastic neural network training model, in which the training performance will be better, and
-  it can also show good fitting for randomly distributed samples.
+* Support image convolutional neural networks for image classification training, which can achieve the training of image
+  classification models. The trained models will be returned, and the models can be saved to disk.
 
 ```java
 package zhao.algorithmMagic;
 
 import zhao.algorithmMagic.core.model.*;
-import zhao.algorithmMagic.operands.table.SingletonCell;
-import zhao.algorithmMagic.operands.vector.DoubleVector;
-
-public class MAIN1 {
-
-    // 在 main 函数中进行模型的保存和读取以及使用
-    public static void main(String[] args) {
-
-        // 构建 X 数据
-        DoubleVector[] X = {
-                DoubleVector.parse(100, 50, 50),
-                DoubleVector.parse(50, 50, 50),
-                DoubleVector.parse(50, 100, 50),
-                // 最后一行是初始权重数据
-                DoubleVector.parse(20, 18, 18)
-        };
-        // 构建 Y 数据
-        double[] Y = {300, 200, 250, 350};
-
-        // 将 线性随机神经网络模型获取到
-        LNeuralNetwork lNeuralNetwork = ASModel.LS_NEURAL_NETWORK;
-        // 设置学习率
-        lNeuralNetwork.setArg(LNeuralNetwork.LEARNING_RATE, SingletonCell.$(0.02));
-        // 设置所有数据样本的训练次数 为 1024
-        lNeuralNetwork.setArg(LNeuralNetwork.LEARN_COUNT, SingletonCell.$(1024));
-        // 设置当前神经网络中神经元的激活函数
-        lNeuralNetwork.setArg(LNeuralNetwork.PERCEPTRON, SingletonCell.$(Perceptron.parse(ActivationFunction.RELU)));
-        // 设置当前神经网络中的目标数值
-        lNeuralNetwork.setArg(LNeuralNetwork.TARGET, SingletonCell.$(Y));
-
-        // 开始训练 在这里传递进需要被学习的数据 并获取到模型
-        NumberModel numberModel = lNeuralNetwork.function(X);
-        System.out.println(numberModel);
-        // 这里直接调用模型 预测 x1 = 200   x2 = 100  x3 = 50 时候的结果  期望数值是 550
-        Double function = numberModel.function(new Double[]{200.0, 100.0, 50.0});
-        System.out.println(function);
-    }
-}
-```
-
-* Numeric matrix objects support data loading operations through data input components, which have a more flexible
-  loading method.
-
-```java
-package zhao.algorithmMagic;
-
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.fs.Path;
-import zhao.algorithmMagic.io.InputComponent;
-import zhao.algorithmMagic.io.InputHDFS;
-import zhao.algorithmMagic.io.InputHDFSBuilder;
+import zhao.algorithmMagic.core.model.dataSet.ASDataSet;
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
 import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
-import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
+import zhao.algorithmMagic.operands.matrix.block.DoubleMatrixSpace;
+import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixSpace;
 import zhao.algorithmMagic.operands.table.FinalCell;
-import zhao.algorithmMagic.operands.table.SingletonCell;
+import zhao.algorithmMagic.operands.vector.DoubleVector;
+import zhao.algorithmMagic.utils.ASMath;
+import zhao.algorithmMagic.utils.dataContainer.KeyValue;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-
-public class MAIN1 {
-
-    // 在 main 函数中进行模型的保存和读取以及使用
-    public static void main(String[] args) throws IOException {
-        // 构建 HDFS 数据输入对象
-        Path path = new Path("hdfs://192.168.0.141:8020");
-        FileSystem fileSystem = path.getFileSystem(new Configuration());
-        InputComponent inputComponent = InputHDFS.builder()
-                .addInputArg(InputHDFSBuilder.CHAR_SET, SingletonCell.$(','))
-                .addInputArg(InputHDFSBuilder.FILE_SYSTEM, new FinalCell<>(fileSystem))
-                .addInputArg(InputHDFSBuilder.IN_PATH, SingletonCell.$_String("hdfs://192.168.0.141:8020/myFile/test.csv"))
-                .addInputArg(InputHDFSBuilder.FIELD, new FinalCell<>(new String[]{"null"}))
-                .create();
-        // 从 HDFS 中获取到 Double 矩阵对象
-        DoubleMatrix doubleMatrix = DoubleMatrix.parse(inputComponent);
-        // 从 HDFS 中获取到 Integer 矩阵对象
-        IntegerMatrix integerMatrix = IntegerMatrix.parse(inputComponent);
-        // 打印矩阵
-        System.out.println(doubleMatrix);
-        System.out.println(integerMatrix);
-        // 关闭 fileSystem
-        fileSystem.close();
-    }
-}
-```
-
-* Matrix objects support flattening operations, which can easily flatten a matrix object into an array.
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
-
+import java.io.File;
 import java.util.Arrays;
 
 public class MAIN1 {
 
-    // 在 main 函数中进行模型的保存和读取以及使用
     public static void main(String[] args) {
-        // 构建一个矩阵对象
-        DoubleMatrix doubleMatrix = DoubleMatrix.parse(
-                new double[]{100, 50, 50},
-                new double[]{50, 50, 50},
-                new double[]{50, 100, 50}
+
+        // 指定图尺寸
+        int w = 91, h = 87;
+
+        // 准备 CNN 神经网络模型
+        SingleLayerCNNModel singleLayerCnnModel = ASModel.SINGLE_LAYER_CNN_MODEL;
+        // 设置学习率
+        singleLayerCnnModel.setLearningRate(0.1f);
+        // 设置训练次数
+        singleLayerCnnModel.setLearnCount(300);
+        // 设置激活函数
+        singleLayerCnnModel.setActivationFunction(ActivationFunction.LEAKY_RE_LU);
+        // 设置损失函数
+        singleLayerCnnModel.setLossFunction(LossFunction.MAE);
+
+        // 准备卷积核，目标为突出图形轮廓
+        DoubleMatrix parse = DoubleMatrix.parse(
+                new double[]{-1, -1, -1},
+                new double[]{-1, 8, -1},
+                new double[]{-1, -1, -1}
         );
-        // 将矩阵进行扁平化操作，获取到数组对象
-        double[] flatten = doubleMatrix.flatten();
-        System.out.println(Arrays.toString(flatten));
+        DoubleMatrixSpace core = DoubleMatrixSpace.parse(parse, parse, parse);
+        // 设置 卷积核
+        singleLayerCnnModel.setArg(SingleLayerCNNModel.KERNEL, new FinalCell<>(core));
+        // 设置 附加任务 池化 然后进行二值化操作 TODO 注意 如果需要模型的保存，请使用 Class 的方式进行设置，使用 lambda 将会导致模型无法反序列化
+        // 如果不需要，此处可以不进行设置
+        singleLayerCnnModel.setTransformation(
+                new PoolBinaryTfTask(2, 1, true, 50, 0x011001, 0x010101, ColorMatrix._R_)
+        );
+
+        // 获取到字母数据集
+        ASDataSet load = ASDataSet.Load.LETTER.load(w, h);
+        // 将目标数值与权重设置到网络
+        singleLayerCnnModel.setWeight(load.getY_train(), load.getImageWeight());
+
+        // 准备训练时的附加任务 打印信息
+        SingleLayerCNNModel.TaskConsumer taskConsumer = (loss, g, weight1) -> {
+            System.out.println("\n损失函数 = " + loss);
+            System.out.println("梯度数据 = " + Arrays.toString(g));
+        };
+
+        // 训练出结果模型
+        long start = System.currentTimeMillis();
+        ClassificationModel<IntegerMatrixSpace> model = singleLayerCnnModel.function(taskConsumer, load.getX_train());
+        System.out.println("训练模型完成，耗时：" + (System.currentTimeMillis() - start));
+        // 保存模型
+        ASModel.Utils.write(new File("C:\\Users\\Liming\\Desktop\\fsDownload\\MyModel.as"), model);
+
+
+        // 提供一个新图 开始进行测试
+        IntegerMatrixSpace parse1 = IntegerMatrixSpace.parse("C:\\Users\\Liming\\Desktop\\fsDownload\\字母5.jpg", w, h);
+        // 放到模型中 获取到结果
+        KeyValue<String[], DoubleVector[]> function = model.function(new IntegerMatrixSpace[]{parse1});
+        // 提取结果向量
+        DoubleVector[] value = function.getValue();
+        // 由于被分类的图像对象只有一个，因此直接查看 0 索引的数据就好 这里是一个向量，其中每一个索引代表对应索引的类别得分值
+        System.out.println(value[0]);
+        // 查看向量中不同维度对应的类别
+        System.out.println(Arrays.toString(function.getKey()));
+        System.out.println("当前图像类别 = " + function.getKey()[ASMath.findMaxIndex(value[0].toArray())]);
     }
 }
 ```
 
-* The DF object supports obtaining the corresponding row in the tool DF through the row primary key name, and also
-  supports conversion operations from the DF object to the matrix object.
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.core.model.ASModel;
+import zhao.algorithmMagic.core.model.ClassificationModel;
+import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixSpace;
+import zhao.algorithmMagic.operands.vector.DoubleVector;
+import zhao.algorithmMagic.utils.ASClass;
+import zhao.algorithmMagic.utils.ASMath;
+import zhao.algorithmMagic.utils.dataContainer.KeyValue;
+
+import java.io.File;
+import java.util.Arrays;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        ClassificationModel<IntegerMatrixSpace> model = ASClass.transform(
+                ASModel.Utils.read(new File("C:\\Users\\Liming\\Desktop\\fsDownload\\MyModel.as"))
+        );
+        // 提供一个新图 开始进行测试
+        IntegerMatrixSpace parse1 = IntegerMatrixSpace.parse("C:\\Users\\Liming\\Desktop\\fsDownload\\字母4.jpg", 91, 87);
+        // 放到模型中 获取到结果
+        KeyValue<String[], DoubleVector[]> function = model.function(new IntegerMatrixSpace[]{parse1});
+        // 提取结果向量
+        DoubleVector[] value = function.getValue();
+        // 由于被分类的图像对象只有一个，因此直接查看 0 索引的数据就好 这里是一个向量，其中每一个索引代表对应索引的类别得分值
+        System.out.println(value[0]);
+        // 查看向量中不同维度对应的类别
+        String[] key = function.getKey();
+        System.out.println(Arrays.toString(key));
+        // 根据索引查看当前图像分类得分最大值对应的类别
+        System.out.println("当前图像属于 " + key[ASMath.findMaxIndex(value[0].toArray())]);
+    }
+}
+```
+
+* For complex operand objects, it has operations that are closer to Java native numerical types and implements the
+  Number class. Here is an implementation
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.ComplexNumber;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 获取到复数对象
+        ComplexNumber parse = ComplexNumber.parse("1.2 + 0i");
+        // 获取到复数的各个部分
+        System.out.println(parse);
+        System.out.println(parse.getReal());
+        System.out.println(parse.getImaginary());
+        // 使用复数进行一个简单的计算操作
+        ComplexNumber divide = parse.divide(parse);
+        System.out.println(divide);
+        // 转换成为实数
+        System.out.println(parse.doubleValue());
+    }
+}
+```
+
+* The addition and subtraction functions of all operands support dimensionality expansion for calculation, which means
+  they now allow operations such as matrix and numerical or vector calculations.
 
 ```java
 package zhao.algorithmMagic;
 
 import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
 import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
-import zhao.algorithmMagic.operands.table.DataFrame;
-import zhao.algorithmMagic.operands.table.SFDataFrame;
-import zhao.algorithmMagic.operands.table.SingletonSeries;
-
-import java.io.File;
+import zhao.algorithmMagic.operands.vector.DoubleVector;
+import zhao.algorithmMagic.operands.vector.IntegerVector;
 
 public class MAIN1 {
-
-    // 在 main 函数中进行模型的保存和读取以及使用
     public static void main(String[] args) {
-        // 构建一个 DF 对象
-        DataFrame dataFrame = SFDataFrame.builder(new File("C:\\Users\\zhao\\Desktop\\out\\dataFrame.csv"))
-                .create("id", "name", "sex", "age")
-                .primaryKey("name")
-                .setSep(',')
-                .execute();
-        // 查看 DF 对象
-        dataFrame.show();
-        // 查询其中 主键为 zhao 的行
-        System.out.println(dataFrame.selectRow("zhao"));
+        // 获取到整形与浮点矩阵对象
+        DoubleMatrix doubleMatrix = DoubleMatrix.parse(
+                new double[]{1.5, 2.5, 3.5},
+                new double[]{3.5, 4.5, 5.5},
+                new double[]{7.5, 8.5, 9.5}
+        );
 
-        // 将 DF 转换成 矩阵 TODO 这类操作将会使得其中的数值类型成为新矩阵中的元素，新矩阵中的行列数以 DF 中的第一行为准
-        dataFrame.insert(SingletonSeries.parse("4", "zhao123", "MAN", "20", "1"));
-        // 将 DF 对象转换成为 Double矩阵 
-        DoubleMatrix doubleMatrix = dataFrame.toDoubleMatrix();
-        System.out.println(doubleMatrix);
-        // 将 DF 对象转换成为 Integer矩阵
-        IntegerMatrix integerMatrix = dataFrame.toIntegerMatrix();
-        System.out.println(integerMatrix);
+        IntegerMatrix integerMatrix = IntegerMatrix.parse(
+                new int[]{1, 2, 3},
+                new int[]{3, 4, 5},
+                new int[]{7, 8, 9}
+        );
+
+        // 获取到两个向量
+        IntegerVector integerVector = IntegerVector.parse(10, 20, 30);
+        DoubleVector doubleVector = DoubleVector.parse(10.5, 20.5, 30.5);
+
+        // 使用矩阵与向量之间进行计算
+        System.out.println(doubleMatrix.add(doubleVector));
+        System.out.println(integerMatrix.add(integerVector));
+
+        // 矩阵与数值之间的计算
+        System.out.println(doubleMatrix.add(10));
+        System.out.println(integerMatrix.add(10));
+        System.out.println(doubleMatrix.diff(10));
+        System.out.println(integerMatrix.diff(10));
+
+        // 向量与数值之间的计算
+        System.out.println(doubleVector.add(10));
+        System.out.println(integerVector.add(10));
+        System.out.println(doubleVector.diff(10));
+        System.out.println(integerVector.diff(10));
     }
 }
 ```
 
-### Version update date : 2023-04-09
+* Matrix objects support dimension reset operations, which can check and rearrange dimensions according to specified new
+  dimensions.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
+import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 准备矩阵对象
+        DoubleMatrix doubleMatrix = DoubleMatrix.parse(
+                new double[]{1.5, 2.5, 3.5, 4.5},
+                new double[]{5.5, 6.5, 7.5, 8.5}
+        );
+
+        IntegerMatrix integerMatrix = IntegerMatrix.parse(
+                new int[]{1, 2, 3, 4, 5, 10},
+                new int[]{5, 6, 7, 8, 9, 10}
+        );
+
+        // 开始进行维度重设
+        System.out.println(doubleMatrix.reShape(4, 2));
+        System.out.println(integerMatrix.reShape(3, 4));
+        System.out.println(doubleMatrix.reShape(8, 1));
+        System.out.println(integerMatrix.reShape(6, 2));
+    }
+}
+```
+
+* The matrix space object already supports the function operation of dimension resetting, which receives a 3-dimensional
+  information and performs dimension checking and resetting.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
+import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
+import zhao.algorithmMagic.operands.matrix.block.DoubleMatrixSpace;
+import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixSpace;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 准备矩阵对象
+        DoubleMatrix doubleMatrix = DoubleMatrix.parse(
+                new double[]{1.5, 2.5, 3.5, 4.5},
+                new double[]{5.5, 6.5, 7.5, 8.5}
+        );
+
+        IntegerMatrix integerMatrix = IntegerMatrix.parse(
+                new int[]{1, 2, 3, 4, 5, 10},
+                new int[]{5, 6, 7, 8, 9, 10}
+        );
+        // 准备矩阵空间
+        DoubleMatrixSpace doubleMatrices = DoubleMatrixSpace.parse(
+                doubleMatrix, doubleMatrix, doubleMatrix
+        );
+
+        IntegerMatrixSpace integerMatrices = IntegerMatrixSpace.parse(
+                integerMatrix, integerMatrix, integerMatrix
+        );
+        // 开始进行维度重设操作
+        System.out.println(integerMatrices.reShape(1, 2, 18));
+        System.out.println(doubleMatrices.reShape(1, 3, 8));
+    }
+}
+```
+
+* Starting to support mean pooling operations for image matrices, it can improve flexibility by setting mean pooling
+  through simple constants.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.io.InputCamera;
+import zhao.algorithmMagic.io.InputCameraBuilder;
+import zhao.algorithmMagic.io.InputComponent;
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+import zhao.algorithmMagic.operands.table.SingletonCell;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 获取到相机设备数据输入组件
+        InputComponent jpeg = InputCamera.builder()
+                .addInputArg(InputCameraBuilder.Camera_Index, SingletonCell.$(0))
+                .addInputArg(InputCameraBuilder.Image_Format, SingletonCell.$_String("JPEG"))
+                .create();
+        // 读取一张图
+        ColorMatrix colorMatrix = ColorMatrix.parse(jpeg);
+        // 显示原图
+        colorMatrix.show("原图");
+        // 开始池化 在新版本中 新增了均值池化与分通道均值池化两种模式
+        // 首先是均值池化 指定 3x3 的局部池化方案
+        colorMatrix.pooling(3, 3, ColorMatrix.POOL_RGB_MEAN).show("均值池化");
+        // 然后是分通道池化
+        colorMatrix.pooling(3, 3, ColorMatrix.POOL_RGB_OBO_MEAN).show("分通道均值池化");
+    }
+}
+```
+
+* For matrix objects of numerical type, data filling operations can now be supported, reducing the code required for
+  matrix creation.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
+import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 准备全是 1 的整形与浮点 3x4 矩阵
+        final IntegerMatrix matrix1 = IntegerMatrix.fill(1, 3, 4);
+        final DoubleMatrix matrix2 = DoubleMatrix.fill(1, 3, 4);
+        // 查看其中的数据
+        System.out.println(matrix1);
+        System.out.println(matrix2);
+    }
+}
+```
+
+* The hash table for single instance data storage of single instance cell objects supports manual cleaning. When there
+  are many single instance DF objects that are not needed, calling this function can reduce excessive memory usage, and
+  the JVM will automatically reclaim unnecessary data objects.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.table.*;
+
+public class MAIN1 {
+
+    public static void println(Cell<?> zhao1, Cell<?> zhao2) {
+        System.out.print("zhao1的数据 = " + zhao1);
+        System.out.print("\tzhao2的数据 = " + zhao2);
+        System.out.println("\t是否为同一内存 = " + (zhao1 == zhao2));
+    }
+
+    public static void main(String[] args) {
+        // 手动创建出一个 SDF 对象
+        final DataFrame dataFrame = SFDataFrame.select(
+                SingletonSeries.parse("id", "name"), 1
+        );
+        // 添加一行数据 并查看
+        dataFrame.insert("1", "zhao").show();
+        // 使用 单例单元格 创建字符串 zhao
+        // TODO 注：$_String 与 $ 函数的作用差不多，不过就是不会隐式转换为数值类型
+        final Cell<?> zhao1 = SingletonCell.$_String("zhao");
+        // 从 df 中查询出 zhao
+        final Cell<?> zhao2 = dataFrame.select("name").getCell(0);
+        // 查看两者的数据 以及 是否为同一个内存空间的数据
+        println(zhao1, zhao2);
+
+        // 调用单例池清理函数 TODO 这个时候 单例池中的数据将会被清理
+        SingletonCell.clearSHM();
+        // 因此这个时候再创建 zhao 就不能通过但历史获取到原先的数据对象了，而是一个新对象
+        final Cell<?> zhao3 = SingletonCell.$("zhao");
+        // 再一次创建字符串 zhao 然后查看两者的关系
+        println(zhao3, zhao2);
+    }
+}
+```
+
+* 支持从 AS库的 DataFrame 到 Spark的 DataFrame 对象的转换操作，接下来是一个示例。
+
+```java
+package zhao.algorithmMagic;
+
+
+import org.apache.spark.sql.SparkSession;
+import zhao.algorithmMagic.io.OutputComponent;
+import zhao.algorithmMagic.io.OutputSparkDF;
+import zhao.algorithmMagic.operands.table.DataFrame;
+import zhao.algorithmMagic.operands.table.FinalCell;
+import zhao.algorithmMagic.operands.table.SFDataFrame;
+import zhao.algorithmMagic.operands.table.SingletonSeries;
+
+public class MAIN1 {
+
+    public static void main(String[] args) {
+        // 准备 sparkSession 对象
+        final SparkSession sparkSession = SparkSession.builder()
+                .appName("zhao")
+                .master("local[*]")
+                .getOrCreate();
+
+        // 手动创建出一个 SDF 对象
+        final DataFrame dataFrame = SFDataFrame.select(
+                SingletonSeries.parse("id", "name", "age", "sex"), 1
+        );
+        // 添加两行数据 并查看
+        dataFrame
+                .insert("1", "zhao", "19", "M")
+                .insert("2", "tang", "20", "F");
+
+        // 将数据注册到 Spark 中的 df 表 首先获取到SparkDF 输出对象
+        final OutputComponent outputComponent = OutputSparkDF.builder()
+                .addOutputArg(OutputSparkDFBuilder.SPARK_SESSION(), new FinalCell<>(sparkSession))
+                .addOutputArg(OutputSparkDFBuilder.TABLE_NAME(), new FinalCell<>("df"))
+                .create();
+        // 然后通过数据输出对象输出 DataFrame 对象
+        dataFrame.into_outComponent(outputComponent);
+        // 最后使用Spark获取到df表数据
+        sparkSession.sql("select * from df").show();
+    }
+}
+```
+
+### Version update date : 2023-06-05
