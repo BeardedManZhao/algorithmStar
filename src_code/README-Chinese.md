@@ -9,7 +9,6 @@
 ### 更新日志
 
 * 框架版本：1.19 - 1.20
-* 移除冗余的
 * 神经元对象进行重构，权重字段添加至感知机对象中，提供给感知机进行管理。
 
 ```java
@@ -590,4 +589,4 @@ public class MAIN1 {
 }
 ```
 
-### Version update date : xx xx-xx-xx
+### Version update date : 2023-06-05
