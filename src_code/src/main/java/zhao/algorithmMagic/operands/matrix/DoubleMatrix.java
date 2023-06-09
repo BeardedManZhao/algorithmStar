@@ -97,8 +97,8 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
                 int rowMax = Integer.MIN_VALUE;
                 int colMax = Integer.MIN_VALUE;
                 for (double[] anInt : ints) {
-                    int rowNum = (int) anInt[2];
-                    int colNum = (int) anInt[1];
+                    int rowNum = (int) anInt[1];
+                    int colNum = (int) anInt[2];
                     // 获取最大横坐标
                     if (rowMax < rowNum) rowMax = rowNum;
                     // 获取最大列坐标
@@ -834,7 +834,7 @@ public class DoubleMatrix extends NumberMatrix<DoubleMatrix, Double, double[], d
         double[][] srcImage = this.toArrays();
         for (double[] color : colors) {
             double[] row = srcImage[y1++];
-            if (color.length - x1 >= 0) System.arraycopy(row, x1, color, x1, color.length - x1);
+            if (color.length - x1 >= 0) System.arraycopy(row, x1, color, 0, color.length - x1);
         }
         return DoubleMatrix.parse(colors);
     }

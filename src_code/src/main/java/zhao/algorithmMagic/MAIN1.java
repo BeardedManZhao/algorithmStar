@@ -1,22 +1,14 @@
 package zhao.algorithmMagic;
 
-
-import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
-import zhao.algorithmMagic.core.ASDynamicLibrary;
-
-import java.io.File;
-
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
 
 public class MAIN1 {
-
-    // 在 main 函数中进行模型的保存和读取以及使用
     public static void main(String[] args) {
-        System.out.println(OperationAlgorithmManager.VERSION);
-        if (args.length > 0) {
-            ASDynamicLibrary.addDllDir(new File(args[0]));
-            System.out.println(OperationAlgorithmManager.getAlgorithmStarUrl());
-        } else {
-            System.out.println("感谢您的使用。");
-        }
+        // 随机生成 9 行 5 列 的矩阵
+        DoubleMatrix random = DoubleMatrix.random(5, 9, 22);
+        System.out.println(random);
+        // 提取出其中从 (0, 1) 到 (4, 5) 的子矩阵对象
+        DoubleMatrix mat = random.extractMat(0, 1, 4, 5);
+        System.out.println(mat);
     }
 }

@@ -9,6 +9,7 @@ import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASMath;
 
 import java.awt.*;
+import java.util.Random;
 
 /**
  * Java类于 2022/10/20 14:58:56 创建
@@ -114,6 +115,29 @@ public class IntegerVector extends ASVector<IntegerVector, Integer, int[]> {
             }
         }
         return parse(res);
+    }
+
+    /**
+     * 使用随机生成的方式创建出来一个向量对象。
+     * <p>
+     * Create a vector object using random generation.
+     *
+     * @param width  需要随机生成的长度。
+     *               <p>
+     *               The length that needs to be randomly generated.
+     * @param random 生成向量时需要使用的随机数据生成器对象。
+     *               <p>
+     *               The random data generator object that needs to be used when generating vectors.
+     * @return 随机生成的向量对象。
+     * <p>
+     * Randomly generated vector objects.
+     */
+    public static IntegerVector random(int width, Random random) {
+        int[] row = new int[width];
+        for (int x = 0; x < width; x++) {
+            row[x] = random.nextInt();
+        }
+        return parse(row);
     }
 
     /**

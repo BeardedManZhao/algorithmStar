@@ -133,12 +133,55 @@ public class DoubleVector extends ASVector<DoubleVector, Double, double[]> {
         return parse(res);
     }
 
-    public static DoubleVector random(int width, Random random) {
+    /**
+     * 使用随机生成的方式创建出来一个向量对象。
+     * <p>
+     * Create a vector object using random generation.
+     *
+     * @param width    需要随机生成的长度。
+     *                 <p>
+     *                 The length that needs to be randomly generated.
+     * @param random   生成向量时需要使用的随机数据生成器对象。
+     *                 <p>
+     *                 The random data generator object that needs to be used when generating vectors.
+     * @param useFloat 浮点参数指定项，如果指定为true 代表随机生成操作中将会随机生成浮点数，反之则是整数。
+     *                 <p>
+     *                 The specified item of floating point parameter, if it is specified as true, means that Floating-point arithmetic number will be randomly generated in random generation operation, otherwise it is an integer.
+     * @return 随机生成的向量对象。
+     * <p>
+     * Randomly generated vector objects.
+     */
+    public static DoubleVector random(int width, Random random, boolean useFloat) {
         double[] row = new double[width];
-        for (int x = 0; x < width; x++) {
-            row[x] = random.nextInt();
+        if (useFloat) {
+            for (int x = 0; x < width; x++) {
+                row[x] = random.nextDouble();
+            }
+        } else {
+            for (int x = 0; x < width; x++) {
+                row[x] = random.nextInt();
+            }
         }
         return parse(row);
+    }
+
+    /**
+     * 使用随机生成的方式创建出来一个向量对象。
+     * <p>
+     * Create a vector object using random generation.
+     *
+     * @param width  需要随机生成的长度。
+     *               <p>
+     *               The length that needs to be randomly generated.
+     * @param random 生成向量时需要使用的随机数据生成器对象。
+     *               <p>
+     *               The random data generator object that needs to be used when generating vectors.
+     * @return 随机生成的向量对象。
+     * <p>
+     * Randomly generated vector objects.
+     */
+    public static DoubleVector random(int width, Random random) {
+        return random(width, random, false);
     }
 
     /**
