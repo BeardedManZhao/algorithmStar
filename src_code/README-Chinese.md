@@ -9,7 +9,8 @@
 ### 更新日志
 
 * 框架版本：1.20 - 1.21
-* 针对稀疏矩阵对象的创建函数实现进行了重写，使得其参数中的坐标能够不受限制，在正整数范围内将可以随意的设置区间数值。
+* 修复1.20以及之前版本中的scala插件编译器依赖问题，在1.20以及1.20之前的版本中，scala类没有被正常包含，1.21以及此版本之后已修复。
+* 针对稀疏矩阵对象的创建函数实现进行了重写，使得其参数中的坐标能够不受限制，在正整数范围内将可以随意的设置区间的数值。
 
 ```java
 package zhao.algorithmMagic;
@@ -82,5 +83,37 @@ public class MAIN1 {
     }
 }
 ```
+
+* 针对矩阵空间对象中的内积与乘积操作进行了实现，其在1.21版本以及之后的版本都进行了实现与支持。
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
+import zhao.algorithmMagic.operands.matrix.block.DoubleMatrixSpace;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 获取到矩阵对象
+        final DoubleMatrix matrix1 = DoubleMatrix.parse(
+                new double[]{1, 2, 3, 4},
+                new double[]{5, 6, 7, 8},
+                new double[]{9, 10, 11, 12}
+        );
+        final DoubleMatrix matrix2 = DoubleMatrix.parse(matrix1.toArrays().clone());
+        // 将矩阵对象叠加三次 封装成为矩阵空间对象
+        final DoubleMatrixSpace space1 = DoubleMatrixSpace.parse(matrix1, matrix1, matrix1);
+        final DoubleMatrixSpace space2 = DoubleMatrixSpace.parse(matrix2, matrix2, matrix2);
+        // 计算内积
+        final Double aDouble = space1.innerProduct(space2);
+        // 计算外积
+        final DoubleMatrixSpace multiply = space1.multiply(space2);
+        System.out.println(aDouble);
+        System.out.println(multiply);
+    }
+}
+```
+
+* 针对 吗，
 
 ### Version update date : xx xx-xx-xx

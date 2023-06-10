@@ -9,7 +9,9 @@
 ### Update log:
 
 * Framework version: 1.20 - 1.21
-* *The creation function implementation of Sparse matrix object is rewritten, so that the coordinates in its parameters
+* Fixed the dependency issue with the scala plugin compiler in versions 1.20 and earlier. In versions 1.20 and earlier,
+  scala classes were not included properly, and have been fixed in versions 1.21 and later.
+* The creation function implementation of Sparse matrix object is rewritten, so that the coordinates in its parameters
   can be unrestricted, and interval values can be set at will within the range of positive integers.
 
 ```java
@@ -81,6 +83,36 @@ public class MAIN1 {
         // 提取出其中从 (0, 1) 到 (4, 5) 的子矩阵对象
         DoubleMatrix mat = random.extractMat(0, 1, 4, 5);
         System.out.println(mat);
+    }
+}
+```
+
+* Implemented and supported inner product and product operations in matrix space objects in versions 1.21 and later.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
+import zhao.algorithmMagic.operands.matrix.block.DoubleMatrixSpace;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 获取到矩阵对象
+        final DoubleMatrix matrix1 = DoubleMatrix.parse(
+                new double[]{1, 2, 3, 4},
+                new double[]{5, 6, 7, 8},
+                new double[]{9, 10, 11, 12}
+        );
+        final DoubleMatrix matrix2 = DoubleMatrix.parse(matrix1.toArrays().clone());
+        // 将矩阵对象叠加三次 封装成为矩阵空间对象
+        final DoubleMatrixSpace space1 = DoubleMatrixSpace.parse(matrix1, matrix1, matrix1);
+        final DoubleMatrixSpace space2 = DoubleMatrixSpace.parse(matrix2, matrix2, matrix2);
+        // 计算内积
+        final Double aDouble = space1.innerProduct(space2);
+        // 计算外积
+        final DoubleMatrixSpace multiply = space1.multiply(space2);
+        System.out.println(aDouble);
+        System.out.println(multiply);
     }
 }
 ```

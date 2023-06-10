@@ -419,13 +419,47 @@ public class DoubleMatrixSpace extends MatrixSpace<DoubleMatrixSpace, Double, do
      * <p>
      * The multiplication of two vectors is also the outer product of the two vectors. For the specific implementation, please refer to the api description.
      *
-     * @param vector 被做乘的向量
+     * @param value 被做乘的向量
      * @return 向量的外积
      * waiting to be realized
      */
     @Override
-    public DoubleMatrixSpace multiply(DoubleMatrixSpace vector) {
-        return null;
+    public DoubleMatrixSpace multiply(DoubleMatrixSpace value) {
+        if (this.getNumberOfDimensions() < value.getNumberOfDimensions()) {
+            // 获取到最小层与最大层
+            int length1 = this.getNumberOfDimensions();
+            int length2 = value.getNumberOfDimensions();
+            DoubleMatrix[] doubleMatrixBlock = new DoubleMatrix[length2];
+            int count = -1;
+            // 开始进行计算合并
+            for (int i = 0; i < length1; i++) {
+                doubleMatrixBlock[++count] = this.get(i).multiply(value.get(i), true);
+            }
+            // 将剩余数据合并
+            int length3 = value.getNumberOfDimensions() - count;
+            for (int i = 0; i < length3; i++) {
+                doubleMatrixBlock[++count] = value.get(i);
+            }
+            // 返回结果
+            return new DoubleMatrixSpace(this.getRowCount(), this.getColCount(), doubleMatrixBlock);
+        } else {
+            // 获取到最小层与最大层
+            int length1 = value.getNumberOfDimensions();
+            int length2 = this.getNumberOfDimensions();
+            DoubleMatrix[] doubleMatrixBlock = new DoubleMatrix[length2];
+            int count = -1;
+            // 开始进行计算合并
+            for (int i = 0; i < length1; i++) {
+                doubleMatrixBlock[++count] = this.get(i).multiply(value.get(i), true);
+            }
+            // 将剩余数据合并
+            int length3 = this.getNumberOfDimensions() - count - 1;
+            for (int i = 0; i < length3; i++) {
+                doubleMatrixBlock[++count] = this.get(i);
+            }
+            // 返回结果
+            return new DoubleMatrixSpace(this.getRowCount(), this.getColCount(), doubleMatrixBlock);
+        }
     }
 
     /**
@@ -441,7 +475,19 @@ public class DoubleMatrixSpace extends MatrixSpace<DoubleMatrixSpace, Double, do
      */
     @Override
     public Double innerProduct(DoubleMatrixSpace vector) {
-        return null;
+        final int numberOfDimensions1 = this.getNumberOfDimensions();
+        final int numberOfDimensions2 = vector.getNumberOfDimensions();
+        double res = 0;
+        if (numberOfDimensions1 == numberOfDimensions2) {
+            final Iterator<DoubleMatrix> iterator1 = vector.iterator();
+            final Iterator<DoubleMatrix> iterator2 = this.iterator();
+            while (iterator1.hasNext() && iterator2.hasNext()) {
+                res += iterator1.next().innerProduct(iterator2.next());
+            }
+            return res;
+        } else {
+            throw new OperatorOperationException("计算内积时的两个矩阵空间的矩阵层数不一致，因此无法计算矩阵空间内积。\nWhen calculating the inner product, the number of matrix layers in the two matrix spaces is inconsistent, so it is not possible to calculate the inner product in the matrix space.");
+        }
     }
 
     @Override

@@ -692,6 +692,7 @@ public final class ASClass {
      * @param arr       需要被转换的矩阵对象。
      * @param createArr 创建新结果数组的实现逻辑对象，其中输出参数是设置的维度数据.
      * @param shape     转换之后的期望维度数据，其中第一个元素是行数量 第二个元素是列数量。
+     * @param <T>       数组中的元素数据类型
      * @return 转换操作成功之后的新数组
      */
     public static <T> T[][][] reShape(MatrixSpace<?, T, ?, ?> arr, Transformation<int[], T[][][]> createArr, int... shape) {
