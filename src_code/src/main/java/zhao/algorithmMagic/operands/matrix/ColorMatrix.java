@@ -663,7 +663,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      * @param colors 需要被转换的颜色矩阵（注意，该矩阵将会被修改）
      * @return 转换之后的颜色矩阵
      */
-    private static ColorMatrix GrayscaleColors(Color[][] colors) {
+    protected static ColorMatrix GrayscaleColors(Color[][] colors) {
         for (Color[] color : colors) {
             int count = -1;
             for (Color color1 : color) {
@@ -2336,10 +2336,14 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
 
     /**
      * 将当前图像矩阵中的图像绘制到 image 对象中。
+     * <p>
+     * Draw the image from the current image matrix into the image object.
      *
      * @param image 需要被绘制的图像对象。
+     *              <p>
+     *              The image object that needs to be drawn.
      */
-    public final void drawToImage(Image image) {
+    public void drawToImage(Image image) {
         Graphics graphics = image.getGraphics();
         // 开始绘制图形
         int yc = -1;
