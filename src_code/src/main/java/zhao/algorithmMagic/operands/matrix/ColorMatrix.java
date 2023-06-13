@@ -480,7 +480,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      * The matrix object obtained from the image.
      */
     public static ColorMatrix parse(String inputString, int... v) {
-        return ColorMatrix.parse(ASIO.parseImageGetColorArray(inputString, v));
+        return parse(ASIO.parseImageGetColorArray(inputString, v));
     }
 
     /**
@@ -497,7 +497,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      */
     public static ColorMatrix parseGrayscale(String inputString) {
         Color[][] colors = ASIO.parseImageGetColorArray(inputString);
-        return ColorMatrix.GrayscaleColors(colors);
+        return GrayscaleColors(colors);
     }
 
     /**
@@ -534,7 +534,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
                 }
             }
         }
-        return ColorMatrix.parse(colors);
+        return parse(colors);
     }
 
     /**
@@ -563,7 +563,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
                     row[i] = new Color(anInt, anInt, anInt);
                 }
             }
-            return ColorMatrix.parse(colors);
+            return parse(colors);
         }
         for (int[] ints : integerMatrix.toArrays()) {
             Color[] row = colors[++y];
@@ -571,7 +571,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
                 row[i] = new Color(ints[i]);
             }
         }
-        return ColorMatrix.parse(colors);
+        return parse(colors);
     }
 
     /**
@@ -584,7 +584,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      * @return URL对象所对应的图像矩阵。
      */
     public static ColorMatrix parse(URL url, int... v) {
-        return ColorMatrix.parse(ASIO.parseURLGetColorArray(url, v));
+        return parse(ASIO.parseURLGetColorArray(url, v));
     }
 
 
@@ -595,7 +595,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      * @return URL对象所对应的图像矩阵。
      */
     public static ColorMatrix parseGrayscale(URL url) {
-        return ColorMatrix.GrayscaleColors(ASIO.parseURLGetColorArray(url));
+        return GrayscaleColors(ASIO.parseURLGetColorArray(url));
     }
 
     /**
@@ -626,7 +626,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         }
         if (isOk) {
             // 开始进行数据提取
-            ColorMatrix parse = ColorMatrix.parse(ASIO.parseImageGetColorArray(inputComponent.getBufferedImage()));
+            ColorMatrix parse = parse(ASIO.parseImageGetColorArray(inputComponent.getBufferedImage()));
             if (isOC) ASIO.close(inputComponent);
             return parse;
         } else throw new OperatorOperationException("Unable to open your inputComponent.");
@@ -907,6 +907,25 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
     @Override
     public Color get(int row, int col) {
         return toArrays()[row][col];
+    }
+
+    /**
+     * 将指定的像素设置到指定的坐标上。
+     * <p>
+     * Set the specified pixel to the specified coordinates.
+     *
+     * @param row   纵坐标 代表的是 行索引。
+     *              <p>
+     *              The vertical axis represents the row index.
+     * @param col   横坐标 代表的是 列索引。
+     *              <p>
+     *              The horizontal axis represents the column index.
+     * @param color 当前坐标上要覆盖的新颜色对象。
+     *              <p>
+     *              The new color object to be overlaid on the current coordinate.
+     */
+    public void set(int row, int col, Color color) {
+        this.toArrays()[row][col] = color;
     }
 
     /**

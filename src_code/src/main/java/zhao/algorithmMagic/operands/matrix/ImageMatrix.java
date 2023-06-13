@@ -199,6 +199,25 @@ public class ImageMatrix extends ColorMatrix implements ImageObserver {
     }
 
     /**
+     * 将指定的像素设置到指定的坐标上。
+     * <p>
+     * Set the specified pixel to the specified coordinates.
+     *
+     * @param row   纵坐标 代表的是 行索引。
+     *              <p>
+     *              The vertical axis represents the row index.
+     * @param col   横坐标 代表的是 列索引。
+     *              <p>
+     *              The horizontal axis represents the column index.
+     * @param color 当前坐标上要覆盖的新颜色对象。
+     */
+    @Override
+    public void set(int row, int col, Color color) {
+        super.set(row, col, color);
+        this.image.setRGB(row, col, color.getRGB());
+    }
+
+    /**
      * @return 该类的实现类对象，用于拓展该接口的子类
      */
     @Override
@@ -288,6 +307,34 @@ public class ImageMatrix extends ColorMatrix implements ImageObserver {
         Graphics2D graphics = bufferedImage.createGraphics();
         graphics.drawImage(scaledInstance, 0, 0, this);
         return parse(bufferedImage);
+    }
+
+    /**
+     * 将当前的图像矩阵对象转换成为 Image 对象。
+     * <p>
+     * Convert the current image matrix object into an Image object.
+     *
+     * @return 当前矩阵对象中存储的 Java Image 对象，需要注意的是，此返回的数值不支持修改操作。
+     * <p>
+     * The Java Image object stored in the front matrix object should be noted that this object does not support modification operations.
+     */
+    public final Image toImage() {
+        return this.image;
+    }
+
+    /**
+     * 以拷贝的方式获取到本矩阵中的 Image 对象，并将次对象返回出去。
+     * <p>
+     * Obtain the Image object in this matrix by copying and return the secondary object.
+     *
+     * @return 拷贝方式获取到的 Image 对象，该对象支持修改，其与源矩阵无任何关联。
+     * <p>
+     * The Image object obtained by copying method supports modification and has no association with the source matrix.
+     */
+    public final BufferedImage copyToNewImage() {
+        BufferedImage bufferedImage = new BufferedImage(this.getColCount(), this.getRowCount(), BufferedImage.TYPE_INT_RGB);
+        bufferedImage.createGraphics().drawImage(this.image, 0, 0, this);
+        return bufferedImage;
     }
 
     /**

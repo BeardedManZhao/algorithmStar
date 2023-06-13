@@ -138,4 +138,86 @@ public class MAIN1 {
 }
 ```
 
+* 针对图像矩阵类的对象，其能够单独修改指定坐标的像素，使用Color对象。
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.matrix.ImageMatrix;
+
+import java.awt.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+public class MAIN1 {
+    public static void main(String[] args) throws MalformedURLException {
+        URL url = new URL("https://img-blog.csdnimg.cn/img_convert/e4d7330af33b768ccfad3fe821042a6a.png");
+        // 使用 ImageMatrix 对象读取一张图
+        ImageMatrix colors = ImageMatrix.parseGrayscale(url);
+        // 将缩放之后的图像中 (0, 15) .... (100, 150) 坐标处的像素更改为 粉色
+        for (int y = 0; y <= 100; y++) {
+            for (int x = 1; x <= 150; x++) {
+                // TODO 在这里调用了 set 函数修改像素
+                colors.set(x, y, Color.MAGENTA);
+            }
+        }
+        // 保存图像
+        colors.save("D:\\liming\\Project\\My_Book\\项目笔记\\TensorFlow\\res.jpg");
+    }
+}
+```
+
+* Image 矩阵对象支持进行矩阵对象到 Image 类的转换操作，使得其能够更加轻松实现转换操作。
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.matrix.ImageMatrix;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+public class MAIN1 {
+    public static void main(String[] args) throws MalformedURLException {
+        URL url = new URL("https://img-blog.csdnimg.cn/img_convert/e4d7330af33b768ccfad3fe821042a6a.png");
+        // 使用 ImageMatrix 对象读取一张图
+        ImageMatrix colors = ImageMatrix.parseGrayscale(url);
+        // 将缩放之后的 Image 对象直接提取出来
+        Image image = colors.toImage();
+        // 将缩放之后的 Image 对象拷贝提取出来
+        BufferedImage bufferedImage = colors.copyToNewImage();
+    }
+}
+```
+
+* 针对图像在内存中占用过多的情况，我们可以使用 HashColorMatrix 对象来进行创建，此类能够实现相同像素点的存储与复用，降低了内存的占用。
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+import zhao.algorithmMagic.operands.matrix.HashColorMatrix;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+
+public class MAIN1 {
+    public static void main(String[] args) throws MalformedURLException {
+        URL url = new URL("https://img-blog.csdnimg.cn/img_convert/e4d7330af33b768ccfad3fe821042a6a.png");
+        // 在获取图像之前打印下缓冲区中的像素数量
+        System.out.println("加载图像之前的缓冲区像素数量 = " + HashColorMatrix.getHashColorLength());
+        // 使用 ImageMatrix 对象读取一张图
+        ColorMatrix colors = HashColorMatrix.parse(url);
+        // 打印图中的像素数量 以及 展示图
+        System.out.println("图像中包含的所有像素数量 = " + colors.getNumberOfDimensions());
+        colors.show("win");
+        // 在获取图像之后打印下缓冲区中的像素数量 这个数量就是加载一张图像使用到的像素数量
+        // 缓冲区中的元素将会被其它的图复用。
+        System.out.println("加载图像之后的缓冲区像素数量 = " + HashColorMatrix.getHashColorLength());
+    }
+}
+```
+
 ### Version update date : xx xx-xx-xx
