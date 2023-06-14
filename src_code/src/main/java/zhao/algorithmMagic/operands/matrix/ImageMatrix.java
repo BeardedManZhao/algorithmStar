@@ -287,6 +287,23 @@ public class ImageMatrix extends ColorMatrix implements ImageObserver {
     }
 
     /**
+     * 使用克隆的方式创建出一个新的矩阵对象。
+     *
+     * @param colorMatrix 需要被克隆的原矩阵对象。
+     * @param isCopy      克隆操作中的元素是否使用深拷贝
+     * @return 克隆操作成功之后的新矩阵对象。
+     */
+    @Override
+    public ImageMatrix clone(ColorMatrix colorMatrix, boolean isCopy) {
+        return new ImageMatrix(
+                colorMatrix.getRowCount(), colorMatrix.getColCount(),
+                isCopy ? colorMatrix.copyToNewArrays() : colorMatrix.toArrays(),
+                isCopy ? (BufferedImage) ((ImageMatrix) colorMatrix).toImage() : ((ImageMatrix) colorMatrix).copyToNewImage(),
+                colorMatrix.isGrayscale()
+        );
+    }
+
+    /**
      * 将当前图像的尺寸进行缩放，使得图像能够在不改变自身样貌的前提下将尺寸更改。
      * <p>
      * Scales the size of the current image so that the image can be resized without changing its appearance.

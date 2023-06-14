@@ -1,23 +1,25 @@
 package zhao.algorithmMagic;
 
-import zhao.algorithmMagic.operands.matrix.ColorMatrix;
-import zhao.algorithmMagic.operands.matrix.HashColorMatrix;
-
-import java.net.MalformedURLException;
-import java.net.URL;
+import zhao.algorithmMagic.operands.table.FDataFrame;
+import zhao.algorithmMagic.operands.table.SFDataFrame;
+import zhao.algorithmMagic.operands.table.SingletonCell;
+import zhao.algorithmMagic.operands.table.SingletonSeries;
 
 public class MAIN1 {
-    public static void main(String[] args) throws MalformedURLException {
-        URL url = new URL("https://img-blog.csdnimg.cn/img_convert/e4d7330af33b768ccfad3fe821042a6a.png");
-        // 在获取图像之前打印下缓冲区中的像素数量
-        System.out.println("加载图像之前的缓冲区像素数量 = " + HashColorMatrix.getHashColorLength());
-        // 使用 ImageMatrix 对象读取一张图
-        ColorMatrix colors = HashColorMatrix.parse(url);
-        // 打印图中的像素数量 以及 展示图
-        System.out.println("图像中包含的所有像素数量 = " + colors.getNumberOfDimensions());
-        colors.show("win");
-        // 在获取图像之后打印下缓冲区中的像素数量 这个数量就是加载一张图像使用到的像素数量
-        // 缓冲区中的元素将会被其它的图复用。
-        System.out.println("加载图像之后的缓冲区像素数量 = " + HashColorMatrix.getHashColorLength());
+    public static void main(String[] args) {
+        // 创建一个 DF 对象
+        FDataFrame dataFrame = SFDataFrame.select(
+                SingletonSeries.parse("id", "name", "age"), 1
+        );
+        // 插入一行数据
+        dataFrame.insert("1", "zhao", "19");
+        // 查询出 zhao 对应的行
+        System.out.println(dataFrame.selectRow("zhao"));
+        // 将当前行的 age 列 + 1
+        dataFrame.updateCol(
+                // TODO 针对列数据的更新操作，支持字符串指定列名称了
+                "age",
+                v -> SingletonCell.$(v.getIntValue() + 1)
+        ).show();
     }
 }

@@ -727,6 +727,21 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
     }
 
     /**
+     * 使用克隆的方式创建出一个新的矩阵对象。
+     *
+     * @param colorMatrix 需要被克隆的原矩阵对象。
+     * @param isCopy      克隆操作中的元素是否使用深拷贝
+     * @return 克隆操作成功之后的新矩阵对象。
+     */
+    public ColorMatrix clone(ColorMatrix colorMatrix, boolean isCopy) {
+        return new ColorMatrix(
+                colorMatrix.getColCount(), colorMatrix.getRowCount(),
+                isCopy ? colorMatrix.copyToNewArrays() : colorMatrix.toArrays(),
+                colorMatrix.isGrayscale
+        );
+    }
+
+    /**
      * 将两个操作数进行求和的方法，具体用法请参阅API说明。
      * <p>
      * The method for summing two operands, please refer to the API description for specific usage.

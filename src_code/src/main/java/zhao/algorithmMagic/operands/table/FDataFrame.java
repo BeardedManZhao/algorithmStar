@@ -630,7 +630,7 @@ public class FDataFrame implements DataFrame {
      * The DataFrame object after adding column fields and column data.
      */
     @Override
-    public DataFrame insertColGetNew(FieldCell fieldName, Transformation<Series, Cell<?>> transformation) {
+    public DataFrame insertColGetNew(Cell<?> fieldName, Transformation<Series, Cell<?>> transformation) {
         ArrayList<Series> arrayList = new ArrayList<>(this.list.size() + 10);
         for (Series cells : this.list) {
             arrayList.add(FinalSeries.merge(
@@ -659,8 +659,28 @@ public class FDataFrame implements DataFrame {
      * DF data object after update.
      */
     @Override
-    public DataFrame updateCol(FieldCell fieldCell, Transformation<Cell<?>, Cell<?>> transformation) {
-        Integer integer = this.colHashMap.get(fieldCell.toString());
+    public DataFrame updateCol(Cell<?> fieldCell, Transformation<Cell<?>, Cell<?>> transformation) {
+        return updateCol(fieldCell.toString(), transformation);
+    }
+
+    /**
+     * 将一列字段对应的所有数据按照指定的函数进行更新。
+     * <p>
+     * Update all data corresponding to a column of fields according to the specified function.
+     *
+     * @param fieldCell      需要被提取的列字段名称。
+     *                       <p>
+     *                       The name of the column field to be extracted.
+     * @param transformation 列数据更新逻辑实现，在这里传递进来的是被修改的列数据字段。
+     *                       <p>
+     *                       Column data update logic implementation, where the modified column data field is passed in.
+     * @return 更新之后的DF数据对象。
+     * <p>
+     * DF data object after update.
+     */
+    @Override
+    public DataFrame updateCol(String fieldCell, Transformation<Cell<?>, Cell<?>> transformation) {
+        Integer integer = this.colHashMap.get(fieldCell);
         if (integer != null) {
             for (Series cells : this.list) {
                 cells.setCell(integer, transformation.function(cells.getCell(integer)));

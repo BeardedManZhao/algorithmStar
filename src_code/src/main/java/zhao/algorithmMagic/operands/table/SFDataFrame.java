@@ -112,7 +112,7 @@ public class SFDataFrame extends FDataFrame {
      * The DataFrame object after adding column fields and column data.
      */
     @Override
-    public DataFrame insertColGetNew(FieldCell fieldName, Transformation<Series, Cell<?>> transformation) {
+    public DataFrame insertColGetNew(Cell<?> fieldName, Transformation<Series, Cell<?>> transformation) {
         ArrayList<Series> arrayList = new ArrayList<>(this.list.size() + 10);
         for (Series cells : this.list) {
             arrayList.add(FinalSeries.merge(
