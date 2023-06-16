@@ -227,7 +227,8 @@ public class MAIN1 {
 }
 ```
 
-* The column data update operation for DataFrame objects in the AS library supports specifying column names using strings, which is more convenient.
+* The column data update operation for DataFrame objects in the AS library supports specifying column names using
+  strings, which is more convenient.
 
 ```java
 package zhao.algorithmMagic;
@@ -238,22 +239,83 @@ import zhao.algorithmMagic.operands.table.SingletonCell;
 import zhao.algorithmMagic.operands.table.SingletonSeries;
 
 public class MAIN1 {
-  public static void main(String[] args) {
-    // 创建一个 DF 对象
-    FDataFrame dataFrame = SFDataFrame.select(
-            SingletonSeries.parse("id", "name", "age"), 1
-    );
-    // 插入一行数据
-    dataFrame.insert("1", "zhao", "19");
-    // 查询出 zhao 对应的行
-    System.out.println(dataFrame.selectRow("zhao"));
-    // 将当前行的 age 列 + 1
-    dataFrame.updateCol(
-            // TODO 针对列数据的更新操作，支持字符串指定列名称了
-            "age",
-            v -> SingletonCell.$(v.getIntValue() + 1)
-    ).show();
-  }
+    public static void main(String[] args) {
+        // 创建一个 DF 对象
+        FDataFrame dataFrame = SFDataFrame.select(
+                SingletonSeries.parse("id", "name", "age"), 1
+        );
+        // 插入多行数据
+        dataFrame
+                .insert("1", "zhao", "19")
+                .insert("2", "tang", "20");
+        // 查询出 zhao 与 tang 对应的行
+        System.out.println(dataFrame.selectRow("zhao", "tang"));
+        // 将当前行的 age 列 + 1 并查看更新后的 DF 表
+        dataFrame.updateCol(
+                // TODO 针对列数据的更新操作，支持字符串指定列名称了
+                "age",
+                v -> SingletonCell.$(v.getIntValue() + 1)
+        ).show();
+    }
 }
 ```
+
+* For the viewing operation of DF objects, a display of the source is provided. After displaying the data content, not
+  only the table will be displayed, but also the source of the table data will be displayed.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.table.FDataFrame;
+import zhao.algorithmMagic.operands.table.SFDataFrame;
+import zhao.algorithmMagic.operands.table.SingletonSeries;
+
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+
+public class MAIN1 {
+    public static void main(String[] args) throws IOException {
+        // 创建一个 DF 对象
+        FDataFrame dataFrame = SFDataFrame.select(
+                SingletonSeries.parse("id", "name", "age"), 1
+        );
+        // 插入多行数据
+        dataFrame
+                .insert("1", "zhao", "19")
+                .insert("2", "tang", "20");
+        // 使用 toString 打印出 df 对象的数值
+        System.out.print(dataFrame);
+        // 使用 show 函数打印出 df 对象的数值
+        dataFrame.show();
+        // 使用数据缓冲区对象打印出 df 对象的数值
+        BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(System.out));
+        dataFrame.show(bufferedWriter);
+        bufferedWriter.flush();
+        bufferedWriter.close();
+    }
+}
+```
+
+* For DF data objects without any data, their desc can be used normally in the new version, and for non-existent data, '
+  ---' will be used to fill in.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.table.DataFrame;
+import zhao.algorithmMagic.operands.table.SFDataFrame;
+import zhao.algorithmMagic.operands.table.SingletonSeries;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 创建一个 DF 对象
+        DataFrame dataFrame = SFDataFrame.select(
+                SingletonSeries.parse("id", "name", "age"), 1
+        );
+        dataFrame.desc().show();
+    }
+}
+```
+
 ### Version update date : xx xx-xx-xx

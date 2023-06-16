@@ -379,6 +379,13 @@ public interface DataFrame extends AggDataFrameData, Iterable<Series>, Serializa
      */
     void show(BufferedWriter bufferedWriter);
 
+    /**
+     * 指定数据流的方式查看 DF 数据对象中的数据，该操作将会使得 DF 数据被输出到数据流中。
+     * <p>
+     * Specify the method of viewing data in the DF data object through a data stream, which will cause the DF data to be output into the data stream.
+     *
+     * @param printStream 需要传递数据的数据流对象。
+     */
     void show(PrintStream printStream);
 
     /**

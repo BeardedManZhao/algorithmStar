@@ -231,22 +231,80 @@ import zhao.algorithmMagic.operands.table.SingletonCell;
 import zhao.algorithmMagic.operands.table.SingletonSeries;
 
 public class MAIN1 {
-  public static void main(String[] args) {
-    // 创建一个 DF 对象
-    FDataFrame dataFrame = SFDataFrame.select(
-            SingletonSeries.parse("id", "name", "age"), 1
-    );
-    // 插入一行数据
-    dataFrame.insert("1", "zhao", "19");
-    // 查询出 zhao 对应的行
-    System.out.println(dataFrame.selectRow("zhao"));
-    // 将当前行的 age 列 + 1
-    dataFrame.updateCol(
-            // TODO 针对列数据的更新操作，支持字符串指定列名称了
-            "age",
-            v -> SingletonCell.$(v.getIntValue() + 1)
-    ).show();
-  }
+    public static void main(String[] args) {
+        // 创建一个 DF 对象
+        FDataFrame dataFrame = SFDataFrame.select(
+                SingletonSeries.parse("id", "name", "age"), 1
+        );
+        // 插入多行数据
+        dataFrame
+                .insert("1", "zhao", "19")
+                .insert("2", "tang", "20");
+        // 查询出 zhao 与 tang 对应的行
+        System.out.println(dataFrame.selectRow("zhao", "tang"));
+        // 将当前行的 age 列 + 1 并查看更新后的 DF 表
+        dataFrame.updateCol(
+                // TODO 针对列数据的更新操作，支持字符串指定列名称了
+                "age",
+                v -> SingletonCell.$(v.getIntValue() + 1)
+        ).show();
+    }
+}
+```
+
+* 针对 DF 对象的查看操作，提供了来源的显示，其在显示出来数据内容之后，不仅仅会显示表，还会显示出表数据的来源。
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.table.FDataFrame;
+import zhao.algorithmMagic.operands.table.SFDataFrame;
+import zhao.algorithmMagic.operands.table.SingletonSeries;
+
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+
+public class MAIN1 {
+    public static void main(String[] args) throws IOException {
+        // 创建一个 DF 对象
+        FDataFrame dataFrame = SFDataFrame.select(
+                SingletonSeries.parse("id", "name", "age"), 1
+        );
+        // 插入多行数据
+        dataFrame
+                .insert("1", "zhao", "19")
+                .insert("2", "tang", "20");
+        // 使用 toString 打印出 df 对象的数值
+        System.out.print(dataFrame);
+        // 使用 show 函数打印出 df 对象的数值
+        dataFrame.show();
+        // 使用数据缓冲区对象打印出 df 对象的数值
+        BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(System.out));
+        dataFrame.show(bufferedWriter);
+        bufferedWriter.flush();
+        bufferedWriter.close();
+    }
+}
+```
+
+* 针对没有任何数据的 DF 数据对象，其desc在新版本中是可以正常使用的，针对不存在的数据将会使用'---'进行填充。
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.table.DataFrame;
+import zhao.algorithmMagic.operands.table.SFDataFrame;
+import zhao.algorithmMagic.operands.table.SingletonSeries;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 创建一个 DF 对象
+        DataFrame dataFrame = SFDataFrame.select(
+                SingletonSeries.parse("id", "name", "age"), 1
+        );
+        dataFrame.desc().show();
+    }
 }
 ```
 

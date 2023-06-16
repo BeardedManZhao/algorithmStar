@@ -237,6 +237,15 @@ public class FDataFrame implements DataFrame {
             for (int i = 1, ok1 = primaryIndex + 4; i < strings3.length; i++) {
                 strings3[i] = i == ok1 || i == 3 ? "Yes" : "No";
             }
+        } else {
+            final String s = "---";
+            int index = 3;
+            for (Cell<?> field : this.getFields()) {
+                strings1[++index] = field.getStringValue();
+            }
+            Arrays.fill(strings2, 3, length, s);
+            Arrays.fill(strings3, 1, length, s);
+            Arrays.fill(strings4, 4, length, s);
         }
         // 开始生成数据
         return new FDataFrame(
@@ -882,12 +891,23 @@ public class FDataFrame implements DataFrame {
                 }
                 bufferedWriter.write('\n');
             }
-            bufferedWriter.append(s);
+            bufferedWriter
+                    .append(s)
+                    .append("from show(")
+                    .append(String.valueOf(bufferedWriter))
+                    .append(")\n");
         } catch (IOException e) {
             throw new OperatorOperationException(e);
         }
     }
 
+    /**
+     * 将一行数据按照 DF 表的方式提取出来，在这里会针对指定列添加表格轮廓。
+     *
+     * @param split 分割轮廓缓冲区。
+     * @param field 列数据存储区域。
+     * @return 指定的数据对象。
+     */
     public final String getFieldRowStr(StringBuilder split, StringBuilder field) {
         String s;
         split.append('├');
@@ -929,7 +949,11 @@ public class FDataFrame implements DataFrame {
             }
             printStream.append('\n');
         }
-        printStream.append(s);
+        printStream
+                .append(s)
+                .append("from show(")
+                .append(String.valueOf(printStream))
+                .println(")");
     }
 
     /**
@@ -1038,6 +1062,7 @@ public class FDataFrame implements DataFrame {
             stringBuilder.append('\n');
         }
         stringBuilder.append(s);
+        stringBuilder.append("from toString()\n");
         return s + stringBuilder;
     }
 
