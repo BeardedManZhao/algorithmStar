@@ -5,6 +5,7 @@ import zhao.algorithmMagic.core.ASDynamicLibrary;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.operands.ComplexNumber;
 import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
 import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
 import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
 import zhao.algorithmMagic.operands.matrix.block.DoubleMatrixSpace;
@@ -2254,11 +2255,52 @@ public final class ASMath {
         int C1Y = ASMath.absoluteValue(startC1.getY() - endC1.getY());
         int C2X = ASMath.absoluteValue(startC2.getX() - endC2.getX());
         int C2Y = ASMath.absoluteValue(startC2.getY() - endC2.getY());
-        int x1 = startC1.getX(), y1 = startC1.getY();
-        int x2 = endC1.getX(), y2 = endC1.getX();
-        int a1 = startC2.getX(), b1 = startC2.getX();
-        int a2 = endC2.getX(), b2 = endC2.getY();
+        // 获取到两个矩阵共占的尺寸
+        int ix = ASMath.absoluteValue(startC1.getX() - endC2.getX());
+        int iy = ASMath.absoluteValue(startC1.getY() - endC2.getY());
+        // 判断是否相交 如果两个矩阵共占的尺寸 大于 两个矩阵的尺寸 代表两个矩阵不相交也不相切 而是相离
+        if (ix > C1X + C2X || iy > C1Y + C2Y) {
+            return 0;
+        }
+        int s = ASMath.absoluteValue(C1X + C2X - ix) *
+                ASMath.absoluteValue(C1Y + C2Y - iy);
         // 计算覆盖率
-        return Math.min(Math.min(x2, a2) - Math.max(x1, a1) * (Math.min(y2, b2) - Math.max(y1, b1)), 0) / (double) (C1X * C1Y + C2X * C2Y);
+        return s > 0 ? s / ((double) (C1X * C1Y) + (C2X * C2Y)) : 0;
+    }
+
+    /**
+     * @param data 需要被指定覆盖剔除的坐标 list 对象(要求其中的所有元素按照相似度正序排序)。
+     * @param rate 剔除阈值，覆盖率超过这个数值将会被剔除，能够容忍的最大重叠率。
+     * @param temp 模板对象
+     * @return 剔除之后的结果list对象。
+     */
+    public static ArrayList<Map.Entry<Double, IntegerCoordinateTwo>> overwriteElimination(
+            ArrayList<Map.Entry<Double, IntegerCoordinateTwo>> data, ColorMatrix temp, float rate) {
+        // 获取到模板尺寸坐标对象
+        IntegerCoordinateTwo integerCoordinateTwo = new IntegerCoordinateTwo(temp.getColCount(), temp.getRowCount());
+        ArrayList<Map.Entry<Double, IntegerCoordinateTwo>> res = new ArrayList<>(data.size());
+        // 将其中的所有元素进行按照坐标分组
+        for (Map.Entry<Double, IntegerCoordinateTwo> datum : data) {
+            IntegerCoordinateTwo value1 = datum.getValue();
+            IntegerCoordinateTwo value2 = value1.add(integerCoordinateTwo);
+            // 将当前元素与 res 中的所有元素进行覆盖率的计算校验
+            int index = -1;
+            boolean isAdd = true;
+            for (Map.Entry<Double, IntegerCoordinateTwo> re : res) {
+                // 如果当前的元素与res中的某个元素有交叉，就选出最优的元素，并进行替换操作
+                IntegerCoordinateTwo value3 = re.getValue();
+                ++index;
+                if (coverageRate(value1, value2, value3, value2.add(integerCoordinateTwo)) > rate) {
+                    // 有交叉 选出最优的新框 TODO 由于这里参数data要求是相似度升序，因此后来的新值最优秀
+                    res.set(index, datum);
+                    isAdd = false;
+                }
+            }
+            if (isAdd) {
+                // 如果没有交叉就直接进行结果的新增
+                res.add(datum);
+            }
+        }
+        return res;
     }
 }

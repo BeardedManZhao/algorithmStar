@@ -252,7 +252,7 @@ public interface DataFrame extends AggDataFrameData, Iterable<Series>, Serializa
      * <p>
      * The DataFrame object after adding column fields and column data.
      */
-    DataFrame insertColGetNew(FieldCell fieldName, Transformation<Series, Cell<?>> transformation);
+    DataFrame insertColGetNew(Cell<?> fieldName, Transformation<Series, Cell<?>> transformation);
 
     /**
      * 将一列字段对应的所有数据按照指定的函数进行更新。
@@ -269,7 +269,24 @@ public interface DataFrame extends AggDataFrameData, Iterable<Series>, Serializa
      * <p>
      * DF data object after update.
      */
-    DataFrame updateCol(FieldCell fieldCell, Transformation<Cell<?>, Cell<?>> transformation);
+    DataFrame updateCol(Cell<?> fieldCell, Transformation<Cell<?>, Cell<?>> transformation);
+
+    /**
+     * 将一列字段对应的所有数据按照指定的函数进行更新。
+     * <p>
+     * Update all data corresponding to a column of fields according to the specified function.
+     *
+     * @param fieldCell      需要被提取的列字段名称。
+     *                       <p>
+     *                       The name of the column field to be extracted.
+     * @param transformation 列数据更新逻辑实现，在这里传递进来的是被修改的列数据字段。
+     *                       <p>
+     *                       Column data update logic implementation, where the modified column data field is passed in.
+     * @return 更新之后的DF数据对象。
+     * <p>
+     * DF data object after update.
+     */
+    DataFrame updateCol(String fieldCell, Transformation<Cell<?>, Cell<?>> transformation);
 
     /**
      * 将一行字段对应的所有数据按照指定的函数进行更新。
@@ -313,6 +330,18 @@ public interface DataFrame extends AggDataFrameData, Iterable<Series>, Serializa
      */
     DataFrame into_outfile(String outPath, String sep);
 
+    /**
+     * 将当前 DF 对象中的数据以 HTML 代表的方式写到指定的数据流对象中，实现有效的 DF 到 HTML 之间的转换操作。
+     * <p>
+     * Write the data in the current DF object in HTML representation to the specified data stream object, achieving effective conversion operations between DF and HTML.
+     *
+     * @param bufferedWriter 需要写入数据的目标数据流对象。
+     *                       <p>
+     *                       The target data stream object that needs to be written to.
+     * @param tableName      构建 HTML 数据表的时候，指定表的名称。
+     *                       <p>
+     *                       When building an HTML data table, specify the name of the table.
+     */
     void into_outHTMLStream(BufferedWriter bufferedWriter, String tableName);
 
     /**
@@ -350,6 +379,13 @@ public interface DataFrame extends AggDataFrameData, Iterable<Series>, Serializa
      */
     void show(BufferedWriter bufferedWriter);
 
+    /**
+     * 指定数据流的方式查看 DF 数据对象中的数据，该操作将会使得 DF 数据被输出到数据流中。
+     * <p>
+     * Specify the method of viewing data in the DF data object through a data stream, which will cause the DF data to be output into the data stream.
+     *
+     * @param printStream 需要传递数据的数据流对象。
+     */
     void show(PrintStream printStream);
 
     /**

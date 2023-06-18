@@ -113,8 +113,8 @@ public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], i
                 int rowMax = Integer.MIN_VALUE;
                 int colMax = Integer.MIN_VALUE;
                 for (int[] anInt : ints) {
-                    int rowNum = anInt[2];
-                    int colNum = anInt[1];
+                    int rowNum = anInt[1];
+                    int colNum = anInt[2];
                     // 获取最大横坐标
                     if (rowMax < rowNum) rowMax = rowNum;
                     // 获取最大列坐标

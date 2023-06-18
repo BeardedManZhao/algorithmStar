@@ -88,9 +88,11 @@ public final class Share {
     /**
      * 获取到训练的时候使用的图像样本。
      *
-     * @param w    获取图像的尺寸-宽
-     * @param h    获取图像的尺寸-高
-     * @param urls 需要被获取的所有图像对应的URL
+     * @param w    获取图像的尺寸-宽。
+     * @param h    获取图像的尺寸-高。
+     * @param urls 需要被获取的所有图像对应的URL。
+     * @return 经过处理之后返回的所有数据矩阵叠加成为的矩阵空间对象。
+     * @throws MalformedURLException URL 格式错误会抛出此异常。
      */
     public static IntegerMatrixSpace[] getData(int w, int h, String... urls) throws MalformedURLException {
         IntegerMatrixSpace[] integerMatrixSpaces = new IntegerMatrixSpace[urls.length];
@@ -108,6 +110,8 @@ public final class Share {
      * @param w    获取图像的尺寸-宽
      * @param h    获取图像的尺寸-高
      * @param urls 需要被获取的所有图像对应的URL
+     * @return 经过处理之后返回的所有数据矩阵叠加成为的矩阵空间对象。
+     * @throws MalformedURLException URL 格式错误会抛出此异常。
      */
     public static IntegerMatrixSpace[] getData(int w, int h, String[]... urls) throws MalformedURLException {
         IntegerMatrixSpace[] integerMatrixSpaces = new IntegerMatrixSpace[urls.length * urls[0].length];
@@ -124,8 +128,10 @@ public final class Share {
     /**
      * 获取到权重数据样本
      *
-     * @param w 获取图像的尺寸-宽
-     * @param h 获取图像的尺寸-高
+     * @param w          获取图像的尺寸-宽
+     * @param h          获取图像的尺寸-高
+     * @param nameAndUrl 所有图像的名称以及其对应的URL的list。
+     * @return 经过处理之后返回的所有数据矩阵叠加成为的矩阵空间对象。
      * @throws MalformedURLException 从网络中提取数据的异常
      */
     public static List<KeyValue<String, IntegerMatrixSpace>> getImageWeight(int w, int h, List<KeyValue<String, String>> nameAndUrl) throws MalformedURLException {

@@ -51,6 +51,21 @@ public class ComplexNumber extends Number implements Operands<ComplexNumber> {
         this.expression = expression;
     }
 
+    /**
+     * 使用实部数值与虚部数值进行复数对象的创建操作。
+     * <p>
+     * Create complex objects using real and imaginary values.
+     *
+     * @param real      实数部分的数值。
+     *                  <p>
+     *                  The numerical value of the real part.
+     * @param imaginary 虚部的数值。
+     *                  <p>
+     *                  The numerical value of the imaginary part.
+     * @return 由指定的实部数值与虚部数值解析出来的复数对象。
+     * <p>
+     * A complex object parsed from the specified real and imaginary values.
+     */
     public static ComplexNumber parse(double real, double imaginary) {
         return new ComplexNumber(real, imaginary);
     }
@@ -83,10 +98,28 @@ public class ComplexNumber extends Number implements Operands<ComplexNumber> {
         throw new OperatorOperationException("[" + s + "]似乎不是一个正确的复数形式哦！正确的复数形式应为：[a + bi] or [a - bi]");
     }
 
+    /**
+     * 从对象中提取指定部分的数值。
+     * <p>
+     * Extract the specified part of the numerical value from the object.
+     *
+     * @return 提取出对象的是实部数值。
+     * <p>
+     * The extracted object is a real part value.
+     */
     public double getReal() {
         return real;
     }
 
+    /**
+     * 从对象中提取指定部分的数值。
+     * <p>
+     * Extract the specified part of the numerical value from the object.
+     *
+     * @return 提取出对象的是实部数值。
+     * <p>
+     * The extracted object is imaginary value.
+     */
     public double getImaginary() {
         return imaginary;
     }

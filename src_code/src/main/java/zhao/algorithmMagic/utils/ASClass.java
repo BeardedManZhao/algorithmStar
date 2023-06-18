@@ -692,6 +692,7 @@ public final class ASClass {
      * @param arr       需要被转换的矩阵对象。
      * @param createArr 创建新结果数组的实现逻辑对象，其中输出参数是设置的维度数据.
      * @param shape     转换之后的期望维度数据，其中第一个元素是行数量 第二个元素是列数量。
+     * @param <T>       数组中的元素数据类型
      * @return 转换操作成功之后的新数组
      */
     public static <T> T[][][] reShape(MatrixSpace<?, T, ?, ?> arr, Transformation<int[], T[][][]> createArr, int... shape) {
@@ -728,5 +729,23 @@ public final class ASClass {
             }
         }
         return res;
+    }
+
+    /**
+     * 将一个矩阵，填充到一个矩阵数组中。
+     *
+     * @param useCopy 布尔数值 代表是否使用深拷贝叠加多个层。
+     * @param res     需要被填充的矩阵数组对象。
+     * @param w_lay   需要作为填充数值的矩阵对象。
+     */
+    public static void matToArray(boolean useCopy, DoubleMatrix[] res, DoubleMatrix w_lay) {
+        if (useCopy) {
+            res[0] = w_lay;
+            for (int i = 1; i < res.length; i++) {
+                res[i] = DoubleMatrix.parse(w_lay.copyToNewArrays());
+            }
+        } else {
+            Arrays.fill(res, w_lay);
+        }
     }
 }

@@ -237,6 +237,15 @@ public class FDataFrame implements DataFrame {
             for (int i = 1, ok1 = primaryIndex + 4; i < strings3.length; i++) {
                 strings3[i] = i == ok1 || i == 3 ? "Yes" : "No";
             }
+        } else {
+            final String s = "---";
+            int index = 3;
+            for (Cell<?> field : this.getFields()) {
+                strings1[++index] = field.getStringValue();
+            }
+            Arrays.fill(strings2, 3, length, s);
+            Arrays.fill(strings3, 1, length, s);
+            Arrays.fill(strings4, 4, length, s);
         }
         // 开始生成数据
         return new FDataFrame(
@@ -630,7 +639,7 @@ public class FDataFrame implements DataFrame {
      * The DataFrame object after adding column fields and column data.
      */
     @Override
-    public DataFrame insertColGetNew(FieldCell fieldName, Transformation<Series, Cell<?>> transformation) {
+    public DataFrame insertColGetNew(Cell<?> fieldName, Transformation<Series, Cell<?>> transformation) {
         ArrayList<Series> arrayList = new ArrayList<>(this.list.size() + 10);
         for (Series cells : this.list) {
             arrayList.add(FinalSeries.merge(
@@ -659,8 +668,28 @@ public class FDataFrame implements DataFrame {
      * DF data object after update.
      */
     @Override
-    public DataFrame updateCol(FieldCell fieldCell, Transformation<Cell<?>, Cell<?>> transformation) {
-        Integer integer = this.colHashMap.get(fieldCell.toString());
+    public DataFrame updateCol(Cell<?> fieldCell, Transformation<Cell<?>, Cell<?>> transformation) {
+        return updateCol(fieldCell.toString(), transformation);
+    }
+
+    /**
+     * 将一列字段对应的所有数据按照指定的函数进行更新。
+     * <p>
+     * Update all data corresponding to a column of fields according to the specified function.
+     *
+     * @param fieldCell      需要被提取的列字段名称。
+     *                       <p>
+     *                       The name of the column field to be extracted.
+     * @param transformation 列数据更新逻辑实现，在这里传递进来的是被修改的列数据字段。
+     *                       <p>
+     *                       Column data update logic implementation, where the modified column data field is passed in.
+     * @return 更新之后的DF数据对象。
+     * <p>
+     * DF data object after update.
+     */
+    @Override
+    public DataFrame updateCol(String fieldCell, Transformation<Cell<?>, Cell<?>> transformation) {
+        Integer integer = this.colHashMap.get(fieldCell);
         if (integer != null) {
             for (Series cells : this.list) {
                 cells.setCell(integer, transformation.function(cells.getCell(integer)));
@@ -862,12 +891,23 @@ public class FDataFrame implements DataFrame {
                 }
                 bufferedWriter.write('\n');
             }
-            bufferedWriter.append(s);
+            bufferedWriter
+                    .append(s)
+                    .append("from show(")
+                    .append(String.valueOf(bufferedWriter))
+                    .append(")\n");
         } catch (IOException e) {
             throw new OperatorOperationException(e);
         }
     }
 
+    /**
+     * 将一行数据按照 DF 表的方式提取出来，在这里会针对指定列添加表格轮廓。
+     *
+     * @param split 分割轮廓缓冲区。
+     * @param field 列数据存储区域。
+     * @return 指定的数据对象。
+     */
     public final String getFieldRowStr(StringBuilder split, StringBuilder field) {
         String s;
         split.append('├');
@@ -909,7 +949,11 @@ public class FDataFrame implements DataFrame {
             }
             printStream.append('\n');
         }
-        printStream.append(s);
+        printStream
+                .append(s)
+                .append("from show(")
+                .append(String.valueOf(printStream))
+                .println(")");
     }
 
     /**
@@ -1018,6 +1062,7 @@ public class FDataFrame implements DataFrame {
             stringBuilder.append('\n');
         }
         stringBuilder.append(s);
+        stringBuilder.append("from toString()\n");
         return s + stringBuilder;
     }
 

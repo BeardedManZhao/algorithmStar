@@ -127,6 +127,7 @@ public final class ASIO {
      * 将一个图片中的所有像素RGB值所构成的整形二维矩阵获取到！
      *
      * @param inputFile 需要被读取的图像文件路径
+     * @param v         读取图像文件，需要被规整为的尺寸，通过这个参数的设置，可以使用指定的尺寸读图像文件。
      * @return 读取成功之后返回的整形矩阵
      */
     public static int[][] parseImageGetArray(String inputFile, int... v) {
