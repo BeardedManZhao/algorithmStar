@@ -1,5 +1,6 @@
 package zhao.algorithmMagic;
 
+
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.core.ASDynamicLibrary;
 
