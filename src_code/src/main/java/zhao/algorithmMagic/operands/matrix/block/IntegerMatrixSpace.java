@@ -377,7 +377,11 @@ public class IntegerMatrixSpace extends MatrixSpace<IntegerMatrixSpace, Integer,
      * 对矩阵空间进行卷积计算，在卷积计算的时候会产生出一个更小的特征矩阵。
      *
      * @param width     矩阵进行卷积运算的时的子图像宽度，最好选择能够被矩阵的列数整除的数值。
+     *                  <p>
+     *                  When performing convolution operations on a matrix, it is best to choose a value that can be evenly divided by the number of columns in the matrix.
      * @param height    矩阵进行卷积运算时的子图像高度，最好选中能够被矩阵的行数整除的数值。
+     *                  <p>
+     *                  When performing convolution operations on a matrix, it is best to select a value that can be evenly divided by the number of rows in the matrix.
      * @param weightMat 在进行卷积计算时需要的卷积核矩阵对象，该对象的宽高应与卷积函数的形参一致。
      *                  <p>
      *                  The convolution kernel matrix object required for convolution computation, whose width and height should be consistent with the formal parameters of the convolution function.
@@ -421,6 +425,24 @@ public class IntegerMatrixSpace extends MatrixSpace<IntegerMatrixSpace, Integer,
         }
         // 返回结果三维矩阵
         return IntegerMatrixSpace.parse(result);
+    }
+
+    /**
+     * 对矩阵空间进行卷积计算，在卷积计算的时候会产生出一个更小的特征矩阵。
+     *
+     * @param width  矩阵进行卷积运算的时的子图像宽度，最好选择能够被矩阵的列数整除的数值。
+     *               <p>
+     *               When performing convolution operations on a matrix, it is best to choose a value that can be evenly divided by the number of columns in the matrix.
+     * @param height 矩阵进行卷积运算时的子图像高度，最好选中能够被矩阵的行数整除的数值。
+     *               <p>
+     *               When performing convolution operations on a matrix, it is best to select a value that can be evenly divided by the number of rows in the matrix.
+     * @param kernel 矩阵卷积操作进行时要使用的卷积核。
+     *               <p>
+     *               The convolution kernel to use when performing matrix convolution operations.
+     * @return 矩阵空间卷积结果特征图，保持三通道的格式返回。
+     */
+    public ColorMatrix foldingAndSumRGB(int width, int height, Kernel kernel) {
+        return this.foldingAndSumRGB(width, height, kernel.getKernel(false, this.getNumberOfDimensions(), width, height));
     }
 
     /**

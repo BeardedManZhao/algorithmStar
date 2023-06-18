@@ -57,6 +57,29 @@ public class DoubleMatrixSpace extends MatrixSpace<DoubleMatrixSpace, Double, do
     }
 
     /**
+     * 使用填充的方式生成一个矩阵空间对象，其能够非常方便的将矩阵中的数值统一填充。
+     *
+     * @param value   需要被用于填充给矩阵空间对象的数值。
+     * @param useCopy 在进行层叠加的时候是否使用深拷贝进行。
+     * @param size    [层数, 行数, 列数]。
+     * @return 填充好的新的矩阵空间对象。
+     */
+    public static DoubleMatrixSpace fill(double value, boolean useCopy, int... size) {
+        if (size.length == 3) {
+            final DoubleMatrix fill = DoubleMatrix.fill(value, size[1], size[2]);
+            DoubleMatrix[] doubleMatrices = new DoubleMatrix[size[0]];
+            doubleMatrices[0] = fill;
+            for (int i = 1; i < doubleMatrices.length; i++) {
+                doubleMatrices[i] = DoubleMatrix.parse(fill, useCopy);
+            }
+            return DoubleMatrixSpace.parse(doubleMatrices);
+        } else {
+            throw new OperatorOperationException("您需要在 fill 函数结尾处指定 size 参数，其分别是[层数, 行数, 列数]。\nYou need to specify the size parameter at the end of the fill function, which is [number of layers, rows, columns].\n" +
+                    "Example => DoubleMatrixSpace.fill(" + value + ", 3, 20, 30)");
+        }
+    }
+
+    /**
      * 提供子类类型数据，构造出当前子类的实例化对象，用于父类在不知道子类数据类型的情况下，创建子类矩阵。
      * <p>
      * Provide subclass type data, construct an instantiated object of the current subclass, and use it for the parent class to create a subclass matrix without knowing the subclass data type.

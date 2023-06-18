@@ -39,8 +39,11 @@ public class HashColorMatrix extends ColorMatrix {
      *                    <p>
      *                    the number of cols in the matrix
      * @param colors      该矩阵对象中的二维数组对象。
-     * @param isGrayscale 如果设置为true 代表此图像是灰度图像
      *                    <p>
+     *                    The two-dimensional array object in this matrix object.
+     * @param isGrayscale 如果设置为true 代表此图像是灰度图像。
+     *                    <p>
+     *                    If set to true, this image is Grayscale.
      */
     protected HashColorMatrix(int rowCount, int colCount, Color[][] colors, boolean isGrayscale) {
         super(rowCount, colCount, hashArr(colors), isGrayscale);

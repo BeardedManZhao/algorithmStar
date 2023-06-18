@@ -35,7 +35,6 @@ public class ImageMatrix extends ColorMatrix implements ImageObserver {
      *                    the number of cols in the matrix
      * @param colors      该矩阵对象中的二维数组对象。
      * @param isGrayscale 如果设置为true 代表此图像是灰度图像
-     *                    <p>
      */
     protected ImageMatrix(int rowCount, int colCount, Color[][] colors, boolean isGrayscale) {
         super(rowCount, colCount, colors, isGrayscale);
@@ -58,8 +57,14 @@ public class ImageMatrix extends ColorMatrix implements ImageObserver {
      *                    <p>
      *                    the number of cols in the matrix
      * @param colors      该矩阵对象中的二维数组对象。
-     * @param isGrayscale 如果设置为true 代表此图像是灰度图像
      *                    <p>
+     *                    The two-dimensional array object in this matrix object.
+     * @param image       当前矩阵对象中需要存储的 image 对象。
+     *                    <p>
+     *                    The image object that needs to be stored in the current matrix object.
+     * @param isGrayscale 如果设置为true 代表此图像是灰度图像。
+     *                    <p>
+     *                    If set to true, this image is Grayscale.
      */
     protected ImageMatrix(int rowCount, int colCount, Color[][] colors, BufferedImage image, boolean isGrayscale) {
         super(rowCount, colCount, colors, isGrayscale);

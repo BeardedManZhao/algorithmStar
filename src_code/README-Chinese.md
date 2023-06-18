@@ -8,7 +8,7 @@
 
 ### 更新日志
 
-* 框架版本：1.20 - 1.21
+* 框架版本：1.20 - 1.22
 * 修复1.20以及之前版本中的scala插件编译器依赖问题，在1.20以及1.20之前的版本中，scala类没有被正常包含，1.21以及此版本之后已修复。
 * 针对稀疏矩阵对象的创建函数实现进行了重写，使得其参数中的坐标能够不受限制，在正整数范围内将可以随意的设置区间的数值。
 
@@ -304,6 +304,37 @@ public class MAIN1 {
                 SingletonSeries.parse("id", "name", "age"), 1
         );
         dataFrame.desc().show();
+    }
+}
+```
+
+* 针对图像的卷积操作，其中需要的卷积核在 AS 库中有了内置的实现，卷积操作能够更加简洁方便。
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+import zhao.algorithmMagic.operands.matrix.HashColorMatrix;
+import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixSpace;
+import zhao.algorithmMagic.operands.matrix.block.Kernel;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+
+public class MAIN1 {
+    public static void main(String[] args) throws MalformedURLException {
+        // 准备被读取图像的 URL
+        final URL url = new URL("https://img-blog.csdnimg.cn/img_convert/e4d7330af33b768ccfad3fe821042a6a.png");
+        // 获取到图像
+        final ColorMatrix parse = HashColorMatrix.parse(url);
+        // 转换成为矩阵空间
+        final IntegerMatrixSpace integerMatrixSpace = parse.toIntRGBSpace(
+                ColorMatrix._R_, ColorMatrix._G_, ColorMatrix._B_
+        );
+        // 开始进行 3x3 的均值卷积 并查看卷积结果
+        integerMatrixSpace.foldingAndSumRGB(3, 3, Kernel.AVG).show("avg");
+        // 开始进行 3x3 的 SobelX 卷积 并查看卷积结果
+        integerMatrixSpace.foldingAndSumRGB(3, 3, Kernel.SobelX).show("SobelX");
     }
 }
 ```

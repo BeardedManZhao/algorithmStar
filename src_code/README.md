@@ -8,7 +8,7 @@
 
 ### Update log:
 
-* Framework version: 1.20 - 1.21
+* Framework version: 1.20 - 1.22
 * Fixed the dependency issue with the scala plugin compiler in versions 1.20 and earlier. In versions 1.20 and earlier,
   scala classes were not included properly, and have been fixed in versions 1.21 and later.
 * The creation function implementation of Sparse matrix object is rewritten, so that the coordinates in its parameters
@@ -314,6 +314,38 @@ public class MAIN1 {
                 SingletonSeries.parse("id", "name", "age"), 1
         );
         dataFrame.desc().show();
+    }
+}
+```
+
+* For image convolution operations, the required convolution kernel has been built-in in the AS library, making
+  convolution operations more concise and convenient.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+import zhao.algorithmMagic.operands.matrix.HashColorMatrix;
+import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixSpace;
+import zhao.algorithmMagic.operands.matrix.block.Kernel;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+
+public class MAIN1 {
+    public static void main(String[] args) throws MalformedURLException {
+        // 准备被读取图像的 URL
+        final URL url = new URL("https://img-blog.csdnimg.cn/img_convert/e4d7330af33b768ccfad3fe821042a6a.png");
+        // 获取到图像
+        final ColorMatrix parse = HashColorMatrix.parse(url);
+        // 转换成为矩阵空间
+        final IntegerMatrixSpace integerMatrixSpace = parse.toIntRGBSpace(
+                ColorMatrix._R_, ColorMatrix._G_, ColorMatrix._B_
+        );
+        // 开始进行 3x3 的均值卷积 并查看卷积结果
+        integerMatrixSpace.foldingAndSumRGB(3, 3, Kernel.AVG).show("avg");
+        // 开始进行 3x3 的 SobelX 卷积 并查看卷积结果
+        integerMatrixSpace.foldingAndSumRGB(3, 3, Kernel.SobelX).show("SobelX");
     }
 }
 ```

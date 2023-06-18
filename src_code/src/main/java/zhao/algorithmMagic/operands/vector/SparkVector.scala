@@ -54,6 +54,14 @@ final class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mll
   }
 
   /**
+   *
+   * @return 将本对象中存储的向量序列数组拷贝到一个新数组并将新数组返回，这里返回的是一个新数组，支持修改等操作。
+   *
+   *         Copy the vector sequence array stored in this object to a new array and return the new array. Here, a new array is returned, which supports modification and other operations.
+   */
+  override def copyToNewArray(): Array[Double] = vector.toArray
+
+  /**
    * 计算两个向量的内积，也称之为数量积，具体实现请参阅api说明
    * <p>
    * Calculate the inner product of two vectors, also known as the quantity product, please refer to the api node for the specific implementation
@@ -98,21 +106,6 @@ final class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mll
     }
     else throw new OperatorOperationException("'DoubleVector1 add DoubleVector2' 时，两个'DoubleVector'的向量所包含的数量不同，DoubleVector1=[" + numberOfDimensions1 + "]，DoubleVector2=[" + numberOfDimensions2 + "]\n" + "When 'DoubleVector1 add DoubleVector2', the two vectors of 'DoubleVector' contain different quantities, DoubleVector1=[" + numberOfDimensions1 + "], DoubleVector2=[" + numberOfDimensions2 + "]")
   }
-
-  /**
-   *
-   * @return 将本对象中存储的向量序列数组拷贝到一个新数组并将新数组返回，这里返回的是一个新数组，支持修改等操作。
-   *
-   *         Copy the vector sequence array stored in this object to a new array and return the new array. Here, a new array is returned, which supports modification and other operations.
-   */
-  override def copyToNewArray(): Array[Double] = vector.toArray
-
-  /**
-   * @return 向量中包含的维度数量
-   *         <p>
-   *         the number of dimensions contained in the vector
-   */
-  override def getNumberOfDimensions: Int = size
 
   /**
    * 在两个操作数之间做差的方法，具体用法请参阅API说明。
@@ -190,6 +183,13 @@ final class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mll
     }
     SparkVector.parse(sparkContext, doubles)
   }
+
+  /**
+   * @return 向量中包含的维度数量
+   *         <p>
+   *         the number of dimensions contained in the vector
+   */
+  override def getNumberOfDimensions: Int = size
 
   /**
    * 将当前对象转换成为其子类实现，其具有强大的类型拓展效果，能够实现父类到子类的转换操作。
