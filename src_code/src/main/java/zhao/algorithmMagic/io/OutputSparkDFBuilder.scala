@@ -1,9 +1,5 @@
 package zhao.algorithmMagic.io
 
-import org.apache.spark.sql.SparkSession
-import zhao.algorithmMagic.io.OutputSparkDFBuilder.{SPARK_SESSION, TABLE_NAME}
-import zhao.algorithmMagic.operands.table.FinalCell
-
 /**
  * spark DF 对象的数据输出类。
  */
