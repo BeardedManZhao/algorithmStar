@@ -1,7 +1,7 @@
 package zhao.algorithmMagic.io
 
-import org.apache.spark.sql.types.{DoubleType, StringType, StructField, StructType}
 import org.apache.spark.sql.{Row, SparkSession}
+import org.apache.spark.sql.types.{DoubleType, StringType, StructField, StructType}
 import zhao.algorithmMagic.exception.OperatorOperationException
 import zhao.algorithmMagic.operands.matrix.{ColorMatrix, ColumnDoubleMatrix, ColumnIntegerMatrix}
 import zhao.algorithmMagic.operands.table.DataFrame
