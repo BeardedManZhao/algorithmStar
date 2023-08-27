@@ -1,12 +1,13 @@
 package zhao.algorithmMagic.io
 
-import org.apache.spark.sql.types.{DoubleType, StringType, StructField, StructType}
 import org.apache.spark.sql.{Row, SparkSession}
+import org.apache.spark.sql.types.{DoubleType, StringType, StructField, StructType}
 import zhao.algorithmMagic.exception.OperatorOperationException
 import zhao.algorithmMagic.operands.matrix.{ColorMatrix, ColumnDoubleMatrix, ColumnIntegerMatrix}
 import zhao.algorithmMagic.operands.table.DataFrame
 
 import scala.collection.mutable
+import scala.jdk.CollectionConverters.{asScalaBufferConverter, iterableAsScalaIterableConverter}
 
 /**
  * 将 AS 的 DaraFrame 数据对象 转换成为 Spark DataFrame 对象的设备输出对象。
@@ -80,7 +81,6 @@ class OutputSparkDF(sparkSession: SparkSession, table: String) extends OutputCom
    * @param dataFrame 需要被输出的数据对象
    */
   override def writeDataFrame(dataFrame: DataFrame): Unit = {
-    import scala.collection.JavaConverters._
     val fields1 = dataFrame.getFields
     val fields2 = mutable.ListBuffer[StructField]()
     fields1.forEach(cell => fields2.append(StructField(

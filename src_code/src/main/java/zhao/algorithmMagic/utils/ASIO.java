@@ -154,11 +154,24 @@ public final class ASIO {
      * @return 读取成功之后返回的整形矩阵
      */
     public static Color[][] parseImageGetColorArray(String inputString, int... v) {
+        return parseImageGetColorArray(new File(inputString), v);
+    }
+
+    /**
+     * 将一个图片中的所有像素RGB值所构成的整形二维矩阵获取到！
+     *
+     * @param inputString 需要被读取的图像文件路径
+     * @param v           矩阵中的所有图像的尺寸参数。
+     *                    <p>
+     *                    The size parameters of all images in the matrix.
+     * @return 读取成功之后返回的整形矩阵
+     */
+    public static Color[][] parseImageGetColorArray(File inputString, int... v) {
         try {
             if (v.length == 2) {
-                return parseImageGetColorArray(new File(inputString), v[0], v[1]);
+                return parseImageGetColorArray(inputString, v[0], v[1]);
             } else {
-                return parseImageGetColorArray(new File(inputString));
+                return parseImageGetColorArray(inputString);
             }
         } catch (IOException e) {
             throw new OperatorOperationException("尝试获取您所给定路径图像的像素矩阵时发生了错误\nAn error occurred while trying to get the pixel matrix of the path image you gave\nERROR => " +
