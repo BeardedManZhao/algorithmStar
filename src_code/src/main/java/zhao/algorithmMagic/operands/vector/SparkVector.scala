@@ -1,5 +1,10 @@
 package zhao.algorithmMagic.operands.vector
 
+import org.apache.spark.SparkContext
+import org.apache.spark.rdd.RDD
+import zhao.algorithmMagic.exception.OperatorOperationException
+import zhao.algorithmMagic.utils.ASMath
+
 /**
  * Spark向量对象，通过该类可以将Spark的API接入到本框架中，能够很好的对接到分布式内存计算技术
  *

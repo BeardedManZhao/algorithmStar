@@ -480,7 +480,26 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      * The matrix object obtained from the image.
      */
     public static ColorMatrix parse(String inputString, int... v) {
-        return parse(ASIO.parseImageGetColorArray(inputString, v));
+        return parse(new File(inputString), v);
+    }
+
+    /**
+     * 根据图像文件获取到整形矩阵对象，在整形矩阵对象中会包含该图像的每一个像素点对应的整形数值。
+     * <p>
+     * The reshaping matrix object is obtained from the image file, and the reshaping value corresponding to each pixel of the image will be included in the reshaping matrix object.
+     *
+     * @param inputFile 要读取的目标图像文件路径。
+     *                  <p>
+     *                  The target image file path to read.
+     * @param v         矩阵中的所有图像的尺寸参数。
+     *                  <p>
+     *                  The size parameters of all images in the matrix.
+     * @return 根据图像获取到的矩阵对象。
+     * <p>
+     * The matrix object obtained from the image.
+     */
+    public static ColorMatrix parse(File inputFile, int... v) {
+        return parse(ASIO.parseImageGetColorArray(inputFile, v));
     }
 
     /**
@@ -491,13 +510,34 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      * @param inputString 要读取的目标图像文件路径。
      *                    <p>
      *                    The target image file path to read.
+     * @param v           矩阵中的所有图像的尺寸参数。
+     *                    <p>
+     *                    The size parameters of all images in the matrix.
      * @return 根据图像获取到的矩阵对象。
      * <p>
      * The matrix object obtained from the image.
      */
-    public static ColorMatrix parseGrayscale(String inputString) {
-        Color[][] colors = ASIO.parseImageGetColorArray(inputString);
-        return GrayscaleColors(colors);
+    public static ColorMatrix parseGrayscale(String inputString, int... v) {
+        return parseGrayscale(new File(inputString), v);
+    }
+
+    /**
+     * 根据图像文件获取到整形矩阵对象，在整形矩阵对象中会包含该图像的每一个像素点对应的灰度整形数值。
+     * <p>
+     * The reshaping matrix object is obtained from the image file, and the reshaping value corresponding to each pixel of the image will be included in the reshaping matrix object.
+     *
+     * @param inputFile 要读取的目标图像文件路径。
+     *                  <p>
+     *                  The target image file path to read.
+     * @param v         矩阵中的所有图像的尺寸参数。
+     *                  <p>
+     *                  The size parameters of all images in the matrix.
+     * @return 根据图像获取到的矩阵对象。
+     * <p>
+     * The matrix object obtained from the image.
+     */
+    public static ColorMatrix parseGrayscale(File inputFile, int... v) {
+        return GrayscaleColors(ASIO.parseImageGetColorArray(inputFile, v));
     }
 
     /**

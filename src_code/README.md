@@ -8,346 +8,80 @@
 
 ### Update log:
 
-* Framework version: 1.20 - 1.22
-* Fixed the dependency issue with the scala plugin compiler in versions 1.20 and earlier. In versions 1.20 and earlier,
-  scala classes were not included properly, and have been fixed in versions 1.21 and later.
-* The creation function implementation of Sparse matrix object is rewritten, so that the coordinates in its parameters
-  can be unrestricted, and interval values can be set at will within the range of positive integers.
+* Framework version: 1.22 - 1.23
+* The parse function for image processing libraries now supports parsing the File file object. There is no longer any
+  need to perform conversion through old versions of this feature.
 
 ```java
 package zhao.algorithmMagic;
 
-import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
-import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
-
-public class MAIN1 {
-
-    public static void main(String[] args) {
-
-        // 创建出矩阵对象
-        DoubleMatrix matrix1 = DoubleMatrix.sparse(
-                // 这里的每一个数组代表的就是一个元素 后面的两个元素代表的是坐标
-                new double[]{1, 0, 0},
-                new double[]{2, 1, 1},
-                new double[]{3, 5, 2}
-        );
-        IntegerMatrix matrix2 = IntegerMatrix.sparse(
-                new int[]{10, 0, 0},
-                new int[]{20, 1, 2},
-                new int[]{30, 3, 2}
-        );
-        // 打印出矩阵
-        System.out.println(matrix1);
-        System.out.println(matrix2);
-    }
-
-}
-```
-
-* Both integer and floating-point vector objects support the random generation of vectors.
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.operands.vector.DoubleVector;
-import zhao.algorithmMagic.operands.vector.IntegerVector;
-
-import java.util.Random;
-
-public class MAIN1 {
-    public static void main(String[] args) {
-        Random random = new Random();
-        // 随机创建 10 个元素的整形向量
-        IntegerVector random1 = IntegerVector.random(10, random);
-        DoubleVector random2 = DoubleVector.random(10, random);
-        // 打印出其中的数据
-        System.out.println(random1);
-        System.out.println(random2);
-    }
-}
-```
-
-* Fixed the sub matrix extraction operation for floating-point matrix data types, which encountered extraction
-  exceptions when the x-axis was 0 in previous versions. This issue was fixed in version 1.21.
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
-
-public class MAIN1 {
-    public static void main(String[] args) {
-        // 随机生成 9 行 5 列 的矩阵
-        DoubleMatrix random = DoubleMatrix.random(5, 9, 22);
-        System.out.println(random);
-        // 提取出其中从 (0, 1) 到 (4, 5) 的子矩阵对象
-        DoubleMatrix mat = random.extractMat(0, 1, 4, 5);
-        System.out.println(mat);
-    }
-}
-```
-
-* Implemented and supported inner product and product operations in matrix space objects in versions 1.21 and later.
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
-import zhao.algorithmMagic.operands.matrix.block.DoubleMatrixSpace;
-
-public class MAIN1 {
-    public static void main(String[] args) {
-        // 获取到矩阵对象
-        final DoubleMatrix matrix1 = DoubleMatrix.parse(
-                new double[]{1, 2, 3, 4},
-                new double[]{5, 6, 7, 8},
-                new double[]{9, 10, 11, 12}
-        );
-        final DoubleMatrix matrix2 = DoubleMatrix.parse(matrix1.toArrays().clone());
-        // 将矩阵对象叠加三次 封装成为矩阵空间对象
-        final DoubleMatrixSpace space1 = DoubleMatrixSpace.parse(matrix1, matrix1, matrix1);
-        final DoubleMatrixSpace space2 = DoubleMatrixSpace.parse(matrix2, matrix2, matrix2);
-        // 计算内积
-        final Double aDouble = space1.innerProduct(space2);
-        // 计算外积
-        final DoubleMatrixSpace multiply = space1.multiply(space2);
-        System.out.println(aDouble);
-        System.out.println(multiply);
-    }
-}
-```
-
-* Add an Image Matrix data object, which represents a matrix of an image and is a subclass implementation of Color
-  Matrix. This class has more calculation operations for image matrices and better performance.
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.operands.matrix.ImageMatrix;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-
-public class MAIN1 {
-    public static void main(String[] args) throws MalformedURLException {
-        URL url = new URL("https://img-blog.csdnimg.cn/img_convert/e4d7330af33b768ccfad3fe821042a6a.png");
-        // 使用 ImageMatrix 对象读取一张图
-        ImageMatrix parse1 = ImageMatrix.parseGrayscale(url);
-        parse1.show("image");
-        // 将此图像矩阵进行重设 TODO 在该类中独有的操作
-        ImageMatrix colors = parse1.reSize(100, 100);
-        // 查看图像
-        colors.show("缩放之后的图像");
-    }
-}
-```
-
-* For objects of the image matrix class, they can individually modify the pixels of the specified coordinates using the
-  Color object.
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.operands.matrix.ImageMatrix;
-
-import java.awt.*;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-public class MAIN1 {
-    public static void main(String[] args) throws MalformedURLException {
-        URL url = new URL("https://img-blog.csdnimg.cn/img_convert/e4d7330af33b768ccfad3fe821042a6a.png");
-        // 使用 ImageMatrix 对象读取一张图
-        ImageMatrix colors = ImageMatrix.parseGrayscale(url);
-        // 将缩放之后的图像中 (0, 15) .... (100, 150) 坐标处的像素更改为 粉色
-        for (int y = 0; y <= 100; y++) {
-            for (int x = 1; x <= 150; x++) {
-                // TODO 在这里调用了 set 函数修改像素
-                colors.set(x, y, Color.MAGENTA);
-            }
-        }
-        // 保存图像
-        colors.save("D:\\liming\\Project\\My_Book\\项目笔记\\TensorFlow\\res.jpg");
-    }
-}
-```
-
-* The Image matrix object supports conversion operations from matrix objects to Image classes, making it easier to
-  implement conversion operations.
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.operands.matrix.ImageMatrix;
-
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-public class MAIN1 {
-    public static void main(String[] args) throws MalformedURLException {
-        URL url = new URL("https://img-blog.csdnimg.cn/img_convert/e4d7330af33b768ccfad3fe821042a6a.png");
-        // 使用 ImageMatrix 对象读取一张图
-        ImageMatrix colors = ImageMatrix.parseGrayscale(url);
-        // 将缩放之后的 Image 对象直接提取出来
-        Image image = colors.toImage();
-        // 将缩放之后的 Image 对象拷贝提取出来
-        BufferedImage bufferedImage = colors.copyToNewImage();
-    }
-}
-```
-
-* We can use the HashColorMatrix object to create images that occupy too much memory, which can achieve storage and
-  reuse of the same pixel points and reduce memory usage.
-
-```java
-package zhao.algorithmMagic;
 
 import zhao.algorithmMagic.operands.matrix.ColorMatrix;
 import zhao.algorithmMagic.operands.matrix.HashColorMatrix;
+import zhao.algorithmMagic.operands.matrix.ImageMatrix;
+import zhao.algorithmMagic.utils.ASIO;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
-public class MAIN1 {
-    public static void main(String[] args) throws MalformedURLException {
-        URL url = new URL("https://img-blog.csdnimg.cn/img_convert/e4d7330af33b768ccfad3fe821042a6a.png");
-        // 在获取图像之前打印下缓冲区中的像素数量
-        System.out.println("加载图像之前的缓冲区像素数量 = " + HashColorMatrix.getHashColorLength());
-        // 使用 ImageMatrix 对象读取一张图
-        ColorMatrix colors = HashColorMatrix.parse(url);
-        // 打印图中的像素数量 以及 展示图
-        System.out.println("图像中包含的所有像素数量 = " + colors.getNumberOfDimensions());
-        colors.show("win");
-        // 在获取图像之后打印下缓冲区中的像素数量 这个数量就是加载一张图像使用到的像素数量
-        // 缓冲区中的元素将会被其它的图复用。
-        System.out.println("加载图像之后的缓冲区像素数量 = " + HashColorMatrix.getHashColorLength());
-    }
-}
-```
-
-* The column data update operation for DataFrame objects in the AS library supports specifying column names using
-  strings, which is more convenient.
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.operands.table.FDataFrame;
-import zhao.algorithmMagic.operands.table.SFDataFrame;
-import zhao.algorithmMagic.operands.table.SingletonCell;
-import zhao.algorithmMagic.operands.table.SingletonSeries;
-
-public class MAIN1 {
-    public static void main(String[] args) {
-        // 创建一个 DF 对象
-        FDataFrame dataFrame = SFDataFrame.select(
-                SingletonSeries.parse("id", "name", "age"), 1
-        );
-        // 插入多行数据
-        dataFrame
-                .insert("1", "zhao", "19")
-                .insert("2", "tang", "20");
-        // 查询出 zhao 与 tang 对应的行
-        System.out.println(dataFrame.selectRow("zhao", "tang"));
-        // 将当前行的 age 列 + 1 并查看更新后的 DF 表
-        dataFrame.updateCol(
-                // TODO 针对列数据的更新操作，支持字符串指定列名称了
-                "age",
-                v -> SingletonCell.$(v.getIntValue() + 1)
-        ).show();
-    }
-}
-```
-
-* For the viewing operation of DF objects, a display of the source is provided. After displaying the data content, not
-  only the table will be displayed, but also the source of the table data will be displayed.
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.operands.table.FDataFrame;
-import zhao.algorithmMagic.operands.table.SFDataFrame;
-import zhao.algorithmMagic.operands.table.SingletonSeries;
-
-import java.io.BufferedWriter;
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-
-public class MAIN1 {
-    public static void main(String[] args) throws IOException {
-        // 创建一个 DF 对象
-        FDataFrame dataFrame = SFDataFrame.select(
-                SingletonSeries.parse("id", "name", "age"), 1
-        );
-        // 插入多行数据
-        dataFrame
-                .insert("1", "zhao", "19")
-                .insert("2", "tang", "20");
-        // 使用 toString 打印出 df 对象的数值
-        System.out.print(dataFrame);
-        // 使用 show 函数打印出 df 对象的数值
-        dataFrame.show();
-        // 使用数据缓冲区对象打印出 df 对象的数值
-        BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(System.out));
-        dataFrame.show(bufferedWriter);
-        bufferedWriter.flush();
-        bufferedWriter.close();
-    }
-}
-```
-
-* For DF data objects without any data, their desc can be used normally in the new version, and for non-existent data, '
-  ---' will be used to fill in.
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.operands.table.DataFrame;
-import zhao.algorithmMagic.operands.table.SFDataFrame;
-import zhao.algorithmMagic.operands.table.SingletonSeries;
 
 public class MAIN1 {
     public static void main(String[] args) {
-        // 创建一个 DF 对象
-        DataFrame dataFrame = SFDataFrame.select(
-                SingletonSeries.parse("id", "name", "age"), 1
-        );
-        dataFrame.desc().show();
+        // 准备一个需要被读取的文件对象
+        final File file = new File("C:\\Users\\zhao\\Desktop\\wifi.bmp");
+
+        // TODO 旧版本中的操作
+        try {
+            // 首先通过 file 对象获取到图像数组
+            final Color[][] colors = ASIO.parseImageGetColorArray(file);
+            // 通过 AS 的基本图像处理库解析 File 对象
+            ColorMatrix.parse(colors).show("old_colorMat", 200, 100);
+            // 通过 AS 的哈希图像处理库解析 File 对象
+            HashColorMatrix.parse(colors).show("old_HashMat", 200, 100);
+            // 通过 AS 的图像矩阵处理库解析 File 对象
+            ImageMatrix.parse(colors).show("old_imageMat", 200, 100);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        // TODO 新版本中的操作 可以直接将 File 对象传递进来
+        // 通过 AS 的基本图像处理库解析 File 对象
+        ColorMatrix.parse(file).show("colorMat", 200, 100);
+        // 通过 AS 的哈希图像处理库解析 File 对象
+        HashColorMatrix.parse(file).show("HashMat", 200, 100);
+        // 通过 AS 的图像矩阵处理库解析 File 对象
+        ImageMatrix.parse(file).show("imageMat", 200, 100);
     }
 }
 ```
 
-* For image convolution operations, the required convolution kernel has been built-in in the AS library, making
-  convolution operations more concise and convenient.
+The grayscale image analysis function in the image processing library supports the setting of reading dimensions.
 
 ```java
 package zhao.algorithmMagic;
 
 import zhao.algorithmMagic.operands.matrix.ColorMatrix;
 import zhao.algorithmMagic.operands.matrix.HashColorMatrix;
-import zhao.algorithmMagic.operands.matrix.block.IntegerMatrixSpace;
-import zhao.algorithmMagic.operands.matrix.block.Kernel;
+import zhao.algorithmMagic.operands.matrix.ImageMatrix;
+import zhao.algorithmMagic.utils.ASIO;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
 public class MAIN1 {
-    public static void main(String[] args) throws MalformedURLException {
-        // 准备被读取图像的 URL
-        final URL url = new URL("https://img-blog.csdnimg.cn/img_convert/e4d7330af33b768ccfad3fe821042a6a.png");
-        // 获取到图像
-        final ColorMatrix parse = HashColorMatrix.parse(url);
-        // 转换成为矩阵空间
-        final IntegerMatrixSpace integerMatrixSpace = parse.toIntRGBSpace(
-                ColorMatrix._R_, ColorMatrix._G_, ColorMatrix._B_
-        );
-        // 开始进行 3x3 的均值卷积 并查看卷积结果
-        integerMatrixSpace.foldingAndSumRGB(3, 3, Kernel.AVG).show("avg");
-        // 开始进行 3x3 的 SobelX 卷积 并查看卷积结果
-        integerMatrixSpace.foldingAndSumRGB(3, 3, Kernel.SobelX).show("SobelX");
+    public static void main(String[] args) {
+        // Prepare a file object that needs to be read
+        final File file = new File("C:\\Users\\zhao\\Desktop\\wifi.bmp");
+        // Parse the File object through the basic image processing library of AS. TODO sets the size here and in all grayscale parsing functions later.
+        ColorMatrix.parseGrayscale(file, 200, 100).show("colorMat");
+        // parse the File object through the AS's hash image processing library
+        HashColorMatrix.parseGrayscale(file, 200, 100).show("HashMat");
+        // parse the File object through the image matrix processing library of the AS
+        ImageMatrix.parseGrayscale(file, 200, 100).show("imageMat");
     }
 }
 ```
 
-### Version update date : xx xx-xx-xx
+### Version update date : 2023-08-27
