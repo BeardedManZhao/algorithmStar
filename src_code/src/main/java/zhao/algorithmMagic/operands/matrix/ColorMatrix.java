@@ -2389,7 +2389,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         int rowCount = this.getRowCount();
         boolean needCorrection = colCount != width || rowCount != height;
         JFrame jFrame = new JFrame();
-        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        jFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         jFrame.setSize(width, height);
         jFrame.setVisible(true);
         jFrame.setTitle(title);
