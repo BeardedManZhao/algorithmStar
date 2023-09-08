@@ -122,7 +122,7 @@ public final class SpatialPlane {
             res[++count] = matrix.toArrays()[0];
         }
         // 返回新矩阵
-        return ComplexNumberMatrix.parse(res);
+        return ComplexNumberMatrix.create(res);
     };
 
     /**
@@ -137,7 +137,7 @@ public final class SpatialPlane {
             res[++count] = matrix.toArrays()[matrix.getRowCount() - 1];
         }
         // 返回新矩阵
-        return ComplexNumberMatrix.parse(res);
+        return ComplexNumberMatrix.create(res);
     };
 */
 

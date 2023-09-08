@@ -3,7 +3,6 @@ package zhao.algorithmMagic.operands.coordinateNet;
 import zhao.algorithmMagic.operands.Operands;
 import zhao.algorithmMagic.operands.coordinate.Coordinate;
 
-import javax.ws.rs.NotSupportedException;
 import java.io.Serializable;
 import java.util.HashSet;
 
@@ -22,7 +21,7 @@ import java.util.HashSet;
 public interface RouteNet<CoordinateType extends Coordinate<?>, RouteType extends zhao.algorithmMagic.operands.route.Route<RouteType, CoordinateType>>
         extends Operands<RouteNet<CoordinateType, RouteType>>, Serializable {
 
-    RuntimeException NOT_SUP = new NotSupportedException("针对线路网络操作数数据类型，不支持多功能计算操作。\nMultifunctional calculation operations are not supported for line network operand data types.");
+    RuntimeException NOT_SUP = new UnsupportedOperationException("针对线路网络操作数数据类型，不支持多功能计算操作。\nMultifunctional calculation operations are not supported for line network operand data types.");
 
     /**
      * 判断一条线路是否存在于线路网中。

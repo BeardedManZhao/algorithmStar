@@ -69,7 +69,7 @@ public class DecisionTree extends SchemeAlgorithm {
      *                  In the decision scheme list, each element is an event filter, which represents the filtering channel between nodes. In the flow chart, the return value of the filter toString will be used as the channel name!
      * @return 执行结果，是数据过滤的操作过程，其是一个Markdown流程图代码的字符串，您可以将其以 Markdown 语法解析出流程图！
      * <p>
-     * The execution result is the operation process of data filtering. It is a string of Markdown flowchart code. You can parse it out of the flowchart with Markdown syntax!
+     * The execution result is the operation process of data filtering. It is a string of Markdown flowchart code. You can create it out of the flowchart with Markdown syntax!
      */
     public static String executeGetString(int[][] ints, ArrayList<ArrayIntegerFiltering> arrayList) {
         return executeGetString(ints, arrayList, false, false);
@@ -95,7 +95,7 @@ public class DecisionTree extends SchemeAlgorithm {
      *                   The node display settings in the flowchart. If set to true, all data will be displayed at the node location. If set to false, the node will display overview information.
      * @return 执行结果，是数据过滤的操作过程，其是一个Markdown流程图代码的字符串，您可以将其以 Markdown 语法解析出流程图！
      * <p>
-     * The execution result is the operation process of data filtering. It is a string of Markdown flowchart code. You can parse it out of the flowchart with Markdown syntax!
+     * The execution result is the operation process of data filtering. It is a string of Markdown flowchart code. You can create it out of the flowchart with Markdown syntax!
      */
     public static String executeGetString(int[][] ints, ArrayList<ArrayIntegerFiltering> arrayList, boolean isLR, boolean isDetailed) {
         StringBuilder stringBuilder = new StringBuilder(Math.max(10 + (arrayList.size() << 4), 100));
@@ -211,7 +211,7 @@ public class DecisionTree extends SchemeAlgorithm {
      *                  In the decision scheme list, each element is an event filter, which represents the filtering channel between nodes. In the flow chart, the return value of the filter toString will be used as the channel name!
      * @return 执行结果，是数据过滤的操作过程，其是一个Markdown流程图代码的字符串，您可以将其以 Markdown 语法解析出流程图！
      * <p>
-     * The execution result is the operation process of data filtering. It is a string of Markdown flowchart code. You can parse it out of the flowchart with Markdown syntax!
+     * The execution result is the operation process of data filtering. It is a string of Markdown flowchart code. You can create it out of the flowchart with Markdown syntax!
      */
     public static String executeGetString(double[][] doubles, ArrayList<ArrayDoubleFiltering> arrayList) {
         return executeGetString(doubles, arrayList, false, false);
@@ -237,7 +237,7 @@ public class DecisionTree extends SchemeAlgorithm {
      *                   The node display settings in the flowchart. If set to true, all data will be displayed at the node location. If set to false, the node will display overview information.
      * @return 执行结果，是数据过滤的操作过程，其是一个Markdown流程图代码的字符串，您可以将其以 Markdown 语法解析出流程图！
      * <p>
-     * The execution result is the operation process of data filtering. It is a string of Markdown flowchart code. You can parse it out of the flowchart with Markdown syntax!
+     * The execution result is the operation process of data filtering. It is a string of Markdown flowchart code. You can create it out of the flowchart with Markdown syntax!
      */
     public static String executeGetString(double[][] doubles, ArrayList<ArrayDoubleFiltering> arrayList, boolean isLR, boolean isDetailed) {
         StringBuilder stringBuilder = new StringBuilder(Math.max(10 + (arrayList.size() << 4), 100));

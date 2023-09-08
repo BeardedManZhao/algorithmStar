@@ -8,7 +8,57 @@
 
 ### 更新日志
 
-* 框架版本：1.23 - 1.24
-* 紧急修复：针对 AS图像处理库 中的show 函数生成的窗口关闭之后会退出程序的问题进行了优化和处理，使得窗口点击关闭之后不会退出程序。
+* 框架版本：1.24 - 1.25
+* 更新版本号。
+* 移除 RouteNet 接口中“不支持操作异常”针对外部项目的依赖，避免出现下面所列出的异常信息，此版本中无需获取“javax.ws.rs”的第三方依赖。
 
-### Version update date : 2023-08-28
+```
+Exception in thread "main" java.lang.NoClassDefFoundError: javax/ws/rs/NotSupportedException
+	at zhao.algorithmMagic.MAIN1.main(MAIN1.java:38)
+Caused by: java.lang.ClassNotFoundException: javax.ws.rs.NotSupportedException
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:387)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:418)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:355)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:351)
+	... 1 more
+```
+
+* 新增 Graphx 类，能够在基于线路网络类的前提下通过节点与边表进行图的构造，后期将会对此类新增诸多的操作函数。
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.integrator.Route2DDrawingIntegrator;
+import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
+import zhao.algorithmMagic.operands.coordinateNet.Graph;
+import zhao.algorithmMagic.operands.table.SingletonCell;
+
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 首先创建出两个节点的坐标
+        final IntegerCoordinateTwo c1 = new IntegerCoordinateTwo(-10, 2);
+        final IntegerCoordinateTwo c2 = new IntegerCoordinateTwo(20, 20);
+        // 然后创建两个节点数据的表
+        final Graph.GraphNodeDF nodeDF = Graph.GraphNodeDF.create(
+                Graph.GraphNodeSeries.create(c1, SingletonCell.$("zhao"), SingletonCell.$("20")),
+                Graph.GraphNodeSeries.create(c2, SingletonCell.$("TY"), SingletonCell.$("22"))
+        );
+        // 然后创建出两个节点之间的边
+        final Graph.GraphEdgeDF edgeDF = Graph.GraphEdgeDF.create(
+                // C1 <- 前任 -> C2 代表 C1的前任是C2  C2的前任是C1
+                Graph.GraphEdgeSeries.create(c1, c2, SingletonCell.$("前任"))
+        );
+        // 最后创建图对象
+        final Graph parse = Graph.create(nodeDF, edgeDF);
+
+        // 开始绘制图 首先准备线路绘图器
+        final Route2DDrawingIntegrator draw = new Route2DDrawingIntegrator("draw", parse);
+        if (draw.setImageOutPath("C:\\Users\\zhao\\Desktop\\fsdownload\\res.jpg").run()) {
+            System.out.println("ok!!!");
+        }
+    }
+}
+```
+
+### Version update date : xx xx-xx-xx

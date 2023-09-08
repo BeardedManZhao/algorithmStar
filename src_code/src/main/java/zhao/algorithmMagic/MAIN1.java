@@ -14,5 +14,7 @@ public class MAIN1 {
         } else {
             System.out.println("感谢您的使用。");
         }
+
+        // 新版本 1.25 正在开发中....
     }
 }
