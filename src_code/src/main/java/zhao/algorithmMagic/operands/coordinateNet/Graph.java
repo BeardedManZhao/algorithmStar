@@ -75,8 +75,22 @@ public class Graph extends IntegerRoute2DNet {
         return new Graph(ASClass.transform(nodeIter), queue);
     }
 
-    public Collection<GraphNodeSeries> getNodes() {
-        return hashMap.values();
+    /**
+     * @return 当前图中已经包含的所有节点对象数据。
+     * <p>
+     * All node object data already included in the current graph.
+     */
+    public HashMap<String, GraphNodeSeries> getNodes() {
+        return ASClass.transform(hashMap.clone());
+    }
+
+    /**
+     * @return 当前图中已经包含的所有边对象数据，值得注意的是这里返回的集合中的每一个元素就是一个线路对象，其中的起始与终止坐标点就是代表的边的两个端点。
+     * <p>
+     * All edge object data already included in the current graph is worth noting that each element in the set returned here is a line object, where the starting and ending coordinate points represent the two endpoints of the edge.
+     */
+    public HashSet<IntegerConsanguinityRoute2D> getEdges() {
+        return super.getNetDataSet();
     }
 
     /**
@@ -89,8 +103,10 @@ public class Graph extends IntegerRoute2DNet {
 
         protected GraphNodeSeries(IntegerCoordinateTwo coordinateTwoCell, Cell<?>... cells) {
             super(
-                    new FinalCell<>(coordinateTwoCell),
-                    new FinalCell<>(cells)
+                    ASClass.mergeArray(
+                            new Cell[cells.length + 1],
+                            new FinalCell<>(coordinateTwoCell), cells
+                    )
             );
             this.coordinate_0 = coordinateTwoCell;
         }
@@ -117,9 +133,12 @@ public class Graph extends IntegerRoute2DNet {
 
         private GraphEdgeSeries(IntegerCoordinateTwo start, IntegerCoordinateTwo End, Cell<?>... cells) {
             super(
-                    new FinalCell<>(start),
-                    new FinalCell<>(End),
-                    new FinalCell<>(cells)
+                    ASClass.mergeArray(
+                            new Cell[cells.length + 2],
+                            new FinalCell[]{new FinalCell<>(start),
+                                    new FinalCell<>(End)},
+                            cells
+                    )
             );
             this.coordinate_0 = start;
             this.coordinate_1 = End;
@@ -147,6 +166,11 @@ public class Graph extends IntegerRoute2DNet {
                 "Coordinate", "Data(Series)"
         );
 
+        /**
+         * @param colNameRow   当前 DF 对象中的列名行。
+         * @param primaryIndex 当前 DF 对象中的主键索引数值。
+         * @param arrayList    当前 DF 对象中的数据行。
+         */
         protected GraphNodeDF(Series colNameRow, int primaryIndex, ArrayList<Series> arrayList) {
             super(colNameRow, primaryIndex, arrayList);
         }
@@ -170,10 +194,16 @@ public class Graph extends IntegerRoute2DNet {
      * 图中的边表数据对象
      */
     public final static class GraphEdgeDF extends GraphNodeDF {
+
         private final static SingletonSeries COL_2 = SingletonSeries.parse(
                 "Coordinate(Start)", "Coordinate(End)", "Data(Series)"
         );
 
+        /**
+         * @param colNameRow   当前 DF 对象中的列名行。
+         * @param primaryIndex 当前 DF 对象中的主键索引数值。
+         * @param arrayList    当前 DF 对象中的数据行。
+         */
         private GraphEdgeDF(Series colNameRow, int primaryIndex, ArrayList<Series> arrayList) {
             super(colNameRow, primaryIndex, arrayList);
         }
