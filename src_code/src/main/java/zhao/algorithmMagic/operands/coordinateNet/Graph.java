@@ -24,9 +24,11 @@ public class Graph extends IntegerRoute2DNet {
      * <p>
      * construct a network of lines
      *
-     * @param edge 这张网中的所有线路
-     *             <p>
-     *             All lines in this net
+     * @param nodeIter      这张网中所有的节点Series 组成的迭代器。
+     * @param edge          这张网中的所有线路
+     *                      <p>
+     *                      All lines in this net
+     * @param edges_hashMap 这张网中要保存的边数据映射表。
      */
     protected Graph(Iterator<GraphNodeSeries> nodeIter, Collection<IntegerConsanguinityRoute2D> edge, HashMap<String, GraphEdgeSeries> edges_hashMap) {
         super(edge);
@@ -114,6 +116,14 @@ public class Graph extends IntegerRoute2DNet {
     public static class GraphNodeSeries extends SingletonSeries {
         IntegerCoordinateTwo coordinate_0;
 
+        /**
+         * @param coordinateTwoCell 当前节点数据行中的坐标。
+         *                          <p>
+         *                          The coordinates in the current node data row.
+         * @param cells             当前节点数据行中的所有数据配置。
+         *                          <p>
+         *                          All data configurations in the current node data row.
+         */
         protected GraphNodeSeries(IntegerCoordinateTwo coordinateTwoCell, Cell<?>... cells) {
             super(
                     ASClass.mergeArray(
@@ -122,6 +132,26 @@ public class Graph extends IntegerRoute2DNet {
                     )
             );
             this.coordinate_0 = coordinateTwoCell;
+        }
+
+        /**
+         * @param cells 当前节点数据行中的所有数据配置。
+         *              <p>
+         *              All data configurations in the current node data row.
+         */
+        protected GraphNodeSeries(Cell<?>... cells) {
+            super(ASClass.check(cells, kv -> {
+                final Cell<?>[] key = kv.getKey();
+                final StringBuilder sb = kv.getValue();
+                if (key.length >= 1) {
+                    return true;
+                } else {
+                    sb.append("您提供的数据格式有错误，请按照如下格式来进行参数传递。\nThe data format you provided is incorrect. Please pass the parameters in the following format.\n" +
+                            "\tformat => [GraphEdgeSeries(IntegerCoordinateTwo, property1, property2, ......)]");
+                    return false;
+                }
+            }));
+            this.coordinate_0 = (IntegerCoordinateTwo) cells[0].getValue();
         }
 
         /**
@@ -134,6 +164,22 @@ public class Graph extends IntegerRoute2DNet {
         public static GraphNodeSeries create(IntegerCoordinateTwo coordinateTwoCell, Cell<?>... cells) {
             return new GraphNodeSeries(coordinateTwoCell, cells);
         }
+
+        /**
+         * 创建出一个节点数据行。
+         *
+         * @param coordinateTwoCell 当前节点在图中的坐标。
+         * @param cells             当前节点对应的其它属性数据。
+         * @return 一个节点对应的数据行 其中第一个单元格是节点的坐标。
+         */
+        public static GraphNodeSeries create(IntegerCoordinateTwo coordinateTwoCell, String... cells) {
+            final ArrayList<Cell<?>> objects = new ArrayList<>(cells.length + 2);
+            objects.add(SingletonCell.$(coordinateTwoCell));
+            for (String cell : cells) {
+                objects.add(SingletonCell.$_String(cell));
+            }
+            return new GraphNodeSeries(objects.toArray(new Cell<?>[0]));
+        }
     }
 
     /**
@@ -144,6 +190,17 @@ public class Graph extends IntegerRoute2DNet {
     public final static class GraphEdgeSeries extends SingletonSeries {
         IntegerCoordinateTwo coordinate_0, coordinate_1;
 
+        /**
+         * @param start 当前边中的起始端点对象。
+         *              <p>
+         *              The starting endpoint object in the current edge.
+         * @param End   当前边中的终止端点对象。
+         *              <p>
+         *              The terminating endpoint object in the current edge.
+         * @param cells 当前节点数据行中的所有数据配置。
+         *              <p>
+         *              All data configurations in the current node data row.
+         */
         private GraphEdgeSeries(IntegerCoordinateTwo start, IntegerCoordinateTwo End, Cell<?>... cells) {
             super(
                     ASClass.mergeArray(
@@ -158,6 +215,27 @@ public class Graph extends IntegerRoute2DNet {
         }
 
         /**
+         * @param cells 当前节点数据行中的所有数据配置。
+         *              <p>
+         *              All data configurations in the current node data row.
+         */
+        private GraphEdgeSeries(Cell<?>... cells) {
+            super(ASClass.check(cells, kv -> {
+                final Cell<?>[] key = kv.getKey();
+                final StringBuilder sb = kv.getValue();
+                if (key.length >= 2) {
+                    return true;
+                } else {
+                    sb.append("您提供的数据格式有错误，请按照如下格式来进行参数传递。\nThe data format you provided is incorrect. Please pass the parameters in the following format.\n" +
+                            "\tformat => [GraphEdgeSeries(start, end, property1, property2, ......)]");
+                    return false;
+                }
+            }));
+            this.coordinate_0 = (IntegerCoordinateTwo) cells[0].getValue();
+            this.coordinate_0 = (IntegerCoordinateTwo) cells[1].getValue();
+        }
+
+        /**
          * 创建出一个节点数据行。
          *
          * @param start 当前边起始端点在图中的坐标。
@@ -167,6 +245,24 @@ public class Graph extends IntegerRoute2DNet {
          */
         public static GraphEdgeSeries create(IntegerCoordinateTwo start, IntegerCoordinateTwo End, Cell<?>... cells) {
             return new GraphEdgeSeries(start, End, cells);
+        }
+
+        /**
+         * 创建出一个节点数据行。
+         *
+         * @param start 当前边起始端点在图中的坐标。
+         * @param End   当前边结束端点在图中的坐标。
+         * @param cells 当前节点对应的其它属性数据。
+         * @return 一个节点对应的数据行 其中第一个单元格是节点的坐标。
+         */
+        public static GraphEdgeSeries create(IntegerCoordinateTwo start, IntegerCoordinateTwo End, String... cells) {
+            final ArrayList<Cell<?>> objects = new ArrayList<>(cells.length + 4);
+            objects.add(SingletonCell.$(start));
+            objects.add(SingletonCell.$(End));
+            for (String cell : cells) {
+                objects.add(SingletonCell.$_String(cell));
+            }
+            return new GraphEdgeSeries(objects.toArray(new Cell<?>[0]));
         }
     }
 
@@ -195,9 +291,8 @@ public class Graph extends IntegerRoute2DNet {
          * @return 节点表数据对象
          */
         public static GraphNodeDF create(GraphNodeSeries... graphNodeSeries) {
-            final ArrayList<Series> objects = new ArrayList<>(Arrays.asList(graphNodeSeries));
             return new GraphNodeDF(
-                    COL_1, 0, objects
+                    COL_1, 0, new ArrayList<>(Arrays.asList(graphNodeSeries))
             );
         }
 
@@ -228,9 +323,8 @@ public class Graph extends IntegerRoute2DNet {
          * @return 边表数据对象
          */
         public static GraphEdgeDF create(GraphEdgeSeries... graphEdgeSeries) {
-            final ArrayList<Series> objects = new ArrayList<>(Arrays.asList(graphEdgeSeries));
             return new GraphEdgeDF(
-                    COL_2, 0, objects
+                    COL_2, 0, new ArrayList<>(Arrays.asList(graphEdgeSeries))
             );
         }
     }
