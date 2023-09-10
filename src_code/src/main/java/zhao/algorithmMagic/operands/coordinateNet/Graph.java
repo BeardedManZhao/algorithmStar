@@ -16,7 +16,8 @@ import java.util.*;
  */
 public class Graph extends IntegerRoute2DNet {
 
-    private final HashMap<String, GraphNodeSeries> hashMap = new HashMap<>();
+    private final HashMap<String, GraphNodeSeries> nodes_hashMap = new HashMap<>();
+    private final HashMap<String, GraphEdgeSeries> edges_hashMap;
 
     /**
      * 构造出来一张线路网
@@ -27,13 +28,14 @@ public class Graph extends IntegerRoute2DNet {
      *             <p>
      *             All lines in this net
      */
-    protected Graph(Iterator<GraphNodeSeries> nodeIter, Collection<IntegerConsanguinityRoute2D> edge) {
+    protected Graph(Iterator<GraphNodeSeries> nodeIter, Collection<IntegerConsanguinityRoute2D> edge, HashMap<String, GraphEdgeSeries> edges_hashMap) {
         super(edge);
         // 在这里迭代每一个节点数据并构建节点映射表
         while (nodeIter.hasNext()) {
             final GraphNodeSeries next = nodeIter.next();
-            hashMap.put(next.coordinate_0.toString(), next);
+            nodes_hashMap.put(next.coordinate_0.toString(), next);
         }
+        this.edges_hashMap = edges_hashMap;
     }
 
     /**
@@ -60,6 +62,7 @@ public class Graph extends IntegerRoute2DNet {
      */
     public static Graph create(Iterator<Series> nodeIter, Iterator<Series> edgeIter) {
         List<IntegerConsanguinityRoute2D> queue = new LinkedList<>();
+        HashMap<String, GraphEdgeSeries> edges_hashMap = new HashMap<>();
         // 在这里迭代每一个边数据并构建边容器
         while (edgeIter.hasNext()) {
             final Series next = edgeIter.next();
@@ -67,12 +70,13 @@ public class Graph extends IntegerRoute2DNet {
             final IntegerCoordinateTwo cell2;
             cell1 = (IntegerCoordinateTwo) next.getCell(0).getValue();
             cell2 = (IntegerCoordinateTwo) next.getCell(1).getValue();
-            queue.add(IntegerConsanguinityRoute2D.parse(
+            final IntegerConsanguinityRoute2D parse = IntegerConsanguinityRoute2D.parse(
                     cell1.toString() + " -> " + cell2.toString(),
-                    cell1, cell2)
-            );
+                    cell1, cell2);
+            queue.add(parse);
+            edges_hashMap.put(parse.toString(), (GraphEdgeSeries) next);
         }
-        return new Graph(ASClass.transform(nodeIter), queue);
+        return new Graph(ASClass.transform(nodeIter), queue, edges_hashMap);
     }
 
     /**
@@ -81,7 +85,16 @@ public class Graph extends IntegerRoute2DNet {
      * All node object data already included in the current graph.
      */
     public HashMap<String, GraphNodeSeries> getNodes() {
-        return ASClass.transform(hashMap.clone());
+        return ASClass.transform(this.nodes_hashMap.clone());
+    }
+
+    /**
+     * @return 当前图中已经包含的所有边对象数据。
+     * <p>
+     * All edge object data already included in the current graph.
+     */
+    public HashMap<String, GraphEdgeSeries> getEdges() {
+        return ASClass.transform(this.edges_hashMap.clone());
     }
 
     /**
@@ -89,7 +102,7 @@ public class Graph extends IntegerRoute2DNet {
      * <p>
      * All edge object data already included in the current graph is worth noting that each element in the set returned here is a line object, where the starting and ending coordinate points represent the two endpoints of the edge.
      */
-    public HashSet<IntegerConsanguinityRoute2D> getEdges() {
+    public Collection<IntegerConsanguinityRoute2D> getEdgesRoute() {
         return super.getNetDataSet();
     }
 
