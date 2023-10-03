@@ -88,7 +88,7 @@ public class RandomForest extends DecisionTree {
      *                   How many pieces of data do you want each decision tree to process.
      * @return 执行结果，是数据过滤的操作过程，其是一个Markdown流程图代码的字符串，您可以将其以 Markdown 语法解析出流程图！
      * <p>
-     * The execution result is the operation process of data filtering. It is a string of Markdown flowchart code. You can parse it out of the flowchart with Markdown syntax!
+     * The execution result is the operation process of data filtering. It is a string of Markdown flowchart code. You can create it out of the flowchart with Markdown syntax!
      */
     public static String executeGetString(int[][] ints, ArrayList<ArrayIntegerFiltering> arrayList, boolean isLR, boolean isDetailed, int seed, int layer, int rowOfLayer) {
         // 对每一个矩阵使用决策树计算，最终将所有的树合并到一个根节点
@@ -132,7 +132,7 @@ public class RandomForest extends DecisionTree {
      *                   How many pieces of data do you want each decision tree to process.
      * @return 执行结果，是数据过滤的操作过程，其是一个Markdown流程图代码的字符串，您可以将其以 Markdown 语法解析出流程图！
      * <p>
-     * The execution result is the operation process of data filtering. It is a string of Markdown flowchart code. You can parse it out of the flowchart with Markdown syntax!
+     * The execution result is the operation process of data filtering. It is a string of Markdown flowchart code. You can create it out of the flowchart with Markdown syntax!
      */
     public static String executeGetString(double[][] doubles, ArrayList<ArrayDoubleFiltering> arrayList, boolean isLR, boolean isDetailed, int seed, int layer, int rowOfLayer) {
         // 对每一个矩阵使用决策树计算，最终将所有的树合并到一个根节点

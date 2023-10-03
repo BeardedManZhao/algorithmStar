@@ -37,13 +37,13 @@ public class IntegerRoute2DNet implements RouteNet<IntegerCoordinateTwo, Integer
      *                          <p>
      *                          All lines in this net
      */
-    private IntegerRoute2DNet(Collection<IntegerConsanguinityRoute2D> route2DCollection) {
+    protected IntegerRoute2DNet(Collection<IntegerConsanguinityRoute2D> route2DCollection) {
         for (IntegerConsanguinityRoute2D integerConsanguinityRoute2D : route2DCollection) {
             addRoute(integerConsanguinityRoute2D);
         }
     }
 
-    private IntegerRoute2DNet(Map<String, IntegerConsanguinityRoute2D> map) {
+    protected IntegerRoute2DNet(Map<String, IntegerConsanguinityRoute2D> map) {
         this.integerConsanguinityRoute2DHashMap.putAll(map);
     }
 

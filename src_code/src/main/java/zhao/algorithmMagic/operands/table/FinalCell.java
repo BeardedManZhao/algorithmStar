@@ -1,5 +1,6 @@
 package zhao.algorithmMagic.operands.table;
 
+import zhao.algorithmMagic.SerialVersionUID;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.utils.ASStr;
 
@@ -18,6 +19,7 @@ import java.util.Date;
  */
 public class FinalCell<valueType> implements Cell<valueType> {
 
+    private static final long serialVersionUID = SerialVersionUID.FINAL_CELL.getNum(); // 自定义序列化版本号
     final valueType valueType;
     final boolean isNumber;
 

@@ -21,6 +21,15 @@ import java.util.List;
  */
 public interface DataFrame extends AggDataFrameData, Iterable<Series>, Serializable, Operands<DataFrame> {
 
+    /**
+     * 刷新字段数据索引hash表，索引重构操作会有一定的性能消耗，一般情况下，会自动更新索引，若非必要请勿调用。
+     * <p>
+     * Refreshing the field data index hash table will incur some performance consumption during index reconstruction operations. Generally, the index will be automatically updated. Do not call it unless necessary.
+     *
+     * @param rr 如果要刷新行索引则设置为 true
+     * @param rc 如果要刷新列索引则设置为 true
+     * @return 链式调用对象。
+     */
     FDataFrame refreshField(boolean rr, boolean rc);
 
     /**

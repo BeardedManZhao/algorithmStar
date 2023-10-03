@@ -1,5 +1,6 @@
 package zhao.algorithmMagic.operands.table;
 
+import zhao.algorithmMagic.SerialVersionUID;
 import zhao.algorithmMagic.utils.ASClass;
 
 import java.util.HashMap;
@@ -13,6 +14,8 @@ import java.util.HashMap;
  * 2023/4/12 17:50
  */
 public final class SingletonCell<valueType> extends FinalCell<valueType> {
+
+    private static final long serialVersionUID = SerialVersionUID.SINGLETON_CELL.getNum(); // 自定义序列化版本号
 
     /**
      * 单例哈希维护

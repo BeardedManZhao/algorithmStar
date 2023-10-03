@@ -1,5 +1,6 @@
 package zhao.algorithmMagic.operands.table;
 
+import zhao.algorithmMagic.SerialVersionUID;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.io.InputComponent;
 import zhao.algorithmMagic.utils.ASIO;
@@ -19,6 +20,9 @@ import java.util.HashMap;
  * 2023/4/12 18:40
  */
 public class SFDataFrame extends FDataFrame {
+
+    private static final long serialVersionUID = SerialVersionUID.SINGLETON_SERIES.getNum(); // 自定义序列化版本号
+
 
     public SFDataFrame(Series colNameRow, int primaryIndex, ArrayList<Series> arrayList, HashMap<String, Integer> rowHashMap, HashMap<String, Integer> colHashMap) {
         super(colNameRow, primaryIndex, arrayList, rowHashMap, colHashMap);

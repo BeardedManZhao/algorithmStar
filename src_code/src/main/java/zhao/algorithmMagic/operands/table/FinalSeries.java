@@ -1,5 +1,6 @@
 package zhao.algorithmMagic.operands.table;
 
+import zhao.algorithmMagic.SerialVersionUID;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.utils.ASClass;
 import zhao.algorithmMagic.utils.ASMath;
@@ -22,6 +23,9 @@ import java.util.stream.Stream;
  * 2023/3/7 22:01
  */
 public class FinalSeries implements Series {
+
+    private static final long serialVersionUID = SerialVersionUID.FINAL_SERIES.getNum(); // 自定义序列化版本号
+
     private final Cell<?>[] cells;
     private final Cell<Integer> length;
 

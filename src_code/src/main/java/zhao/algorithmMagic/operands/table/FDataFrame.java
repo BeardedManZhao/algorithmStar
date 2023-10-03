@@ -1,5 +1,6 @@
 package zhao.algorithmMagic.operands.table;
 
+import zhao.algorithmMagic.SerialVersionUID;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.io.InputComponent;
 import zhao.algorithmMagic.io.OutputComponent;
@@ -26,6 +27,8 @@ import java.util.*;
  * 2023/3/8 11:26
  */
 public class FDataFrame implements DataFrame {
+
+    private static final long serialVersionUID = SerialVersionUID.FINAL_DATA_FRAME.getNum(); // 自定义序列化版本号
 
     protected final List<Series> list;
     protected final Series colNameRow;

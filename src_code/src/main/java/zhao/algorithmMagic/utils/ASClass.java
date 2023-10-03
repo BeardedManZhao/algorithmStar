@@ -1,5 +1,6 @@
 package zhao.algorithmMagic.utils;
 
+import zhao.algorithmMagic.exception.CheckException;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
 import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateMany;
@@ -19,6 +20,7 @@ import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute;
 import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute2D;
 import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute;
 import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute2D;
+import zhao.algorithmMagic.utils.dataContainer.KeyValue;
 import zhao.algorithmMagic.utils.transformation.Transformation;
 
 import java.awt.*;
@@ -362,11 +364,25 @@ public final class ASClass {
      * 将两个数组合并到同一个数组中。
      *
      * @param res   结果数组容器
+     * @param arr1  需要被合并的第一个元素
+     * @param arr2  需要被合并的第二个数组
+     * @param <arr> 数组中所包含的元素数据类型，此处为自动类型推断。
+     */
+    public static <arr> arr[] mergeArray(arr[] res, arr arr1, arr[] arr2) {
+        res[0] = arr1;
+        System.arraycopy(arr2, 0, res, 1, arr2.length);
+        return res;
+    }
+
+    /**
+     * 将两个数组合并到同一个数组中。
+     *
+     * @param res   结果数组容器
      * @param arr1  需要被合并的第一个数组
      * @param arr2  需要被合并的第二个数组
      * @param <arr> 数组中所包含的元素数据类型，此处为自动类型推断。
      */
-    public static <arr> void mergeArray(arr[] res, arr[] arr1, arr[] arr2) {
+    public static <arr> arr[] mergeArray(arr[] res, arr[] arr1, arr[] arr2) {
         int length1 = arr1.length;
         int length2 = arr2.length;
         if (length1 == length2) {
@@ -375,7 +391,7 @@ public final class ASClass {
                 res[i1] = arr1[i1];
                 res[i2] = arr2[i2c++];
             }
-            return;
+            return res;
         }
         if (length1 < length2) {
             int i2 = length1, i2c = 0;
@@ -398,6 +414,7 @@ public final class ASClass {
                 res[i1] = arr1[i1++];
             }
         }
+        return res;
     }
 
     /**
@@ -746,6 +763,24 @@ public final class ASClass {
             }
         } else {
             Arrays.fill(res, w_lay);
+        }
+    }
+
+    /**
+     * 检查一个对象是否满足指定的逻辑，如果不满足将会直接抛出异常。
+     *
+     * @param value         需要被检查的数据对象。
+     * @param checkFunction 检查函数。
+     * @param <T>           被检查数据的数据类型。
+     * @return 如果检查无误在这里会返回被检查的 value 数据对象。
+     * @throws CheckException 当在检查中发现了错误的时候会抛出这个异常对象。
+     */
+    public static <T> T check(T value, Transformation<KeyValue<T, StringBuilder>, Boolean> checkFunction) {
+        final StringBuilder errorMsg = new StringBuilder();
+        if (!checkFunction.function(new KeyValue<>(value, errorMsg))) {
+            throw new CheckException(errorMsg.toString());
+        } else {
+            return value;
         }
     }
 }
