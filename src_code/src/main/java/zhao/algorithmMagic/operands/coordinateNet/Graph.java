@@ -1,5 +1,6 @@
 package zhao.algorithmMagic.operands.coordinateNet;
 
+import zhao.algorithmMagic.SerialVersionUID;
 import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
 import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute2D;
 import zhao.algorithmMagic.operands.table.*;
@@ -16,7 +17,16 @@ import java.util.*;
  */
 public class Graph extends IntegerRoute2DNet {
 
+    private static final long serialVersionUID = SerialVersionUID.GRAPH.getNum(); // 自定义序列化版本号
+
+    /**
+     * 节点映射表
+     */
     private final HashMap<String, GraphNodeSeries> nodes_hashMap = new HashMap<>();
+
+    /**
+     * 边数据映射表
+     */
     private final HashMap<String, GraphEdgeSeries> edges_hashMap;
 
     /**
@@ -114,6 +124,7 @@ public class Graph extends IntegerRoute2DNet {
      * Graph data objects, which contain data dedicated to graph object operations and are dedicated to graph object data storage functions
      */
     public static class GraphNodeSeries extends SingletonSeries {
+        private static final long serialVersionUID = SerialVersionUID.GRAPH_NODE_SERIES.getNum(); // 自定义序列化版本号
         IntegerCoordinateTwo coordinate_0;
 
         /**
@@ -188,6 +199,7 @@ public class Graph extends IntegerRoute2DNet {
      * Graph data objects, which contain data dedicated to graph object operations and are dedicated to graph object data storage functions
      */
     public final static class GraphEdgeSeries extends SingletonSeries {
+        private static final long serialVersionUID = SerialVersionUID.GRAPH_EDGE_SERIES.getNum(); // 自定义序列化版本号
         IntegerCoordinateTwo coordinate_0, coordinate_1;
 
         /**
@@ -270,6 +282,9 @@ public class Graph extends IntegerRoute2DNet {
      * 图中的节点表数据对象
      */
     public static class GraphNodeDF extends FDataFrame {
+
+        private static final long serialVersionUID = SerialVersionUID.SINGLETON_SERIES.getNum(); // 自定义序列化版本号
+
 
         private final static SingletonSeries COL_1 = SingletonSeries.parse(
                 "Coordinate", "Data(Series)"

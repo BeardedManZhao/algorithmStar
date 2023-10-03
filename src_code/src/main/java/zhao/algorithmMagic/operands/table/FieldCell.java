@@ -1,5 +1,7 @@
 package zhao.algorithmMagic.operands.table;
 
+import zhao.algorithmMagic.SerialVersionUID;
+
 import java.util.HashMap;
 
 /**
@@ -12,6 +14,7 @@ import java.util.HashMap;
 public class FieldCell extends FinalCell<String> {
 
     protected final static HashMap<String, FieldCell> ASName = new HashMap<>();
+    private static final long serialVersionUID = SerialVersionUID.FieldCell.getNum(); // 自定义序列化版本号
     private String AS;
 
     /**

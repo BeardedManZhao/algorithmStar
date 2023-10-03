@@ -168,4 +168,28 @@ public class MAIN1 {
 }
 ```
 
+* 针对 DataFrame 以及其有关的模块，在此次更新中，将使用统一的序列化版本号来实现序列化操作数对象在不同版本的AS库被重复解析和读取的能力，拓展灵活性。
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
+import zhao.algorithmMagic.operands.table.DataFrame;
+import zhao.algorithmMagic.operands.table.FDataFrame;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+
+public class MAIN1 {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+        System.out.println(OperationAlgorithmManager.VERSION);
+        final ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream("path"));
+        final DataFrame sfDataFrame = (FDataFrame) objectInputStream.readObject();
+        sfDataFrame.show();
+    }
+}
+```
+
 ### Version update date : xx xx-xx-xx
