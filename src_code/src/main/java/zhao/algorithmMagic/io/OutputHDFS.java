@@ -67,7 +67,7 @@ public final class OutputHDFS implements OutputComponent {
     }
 
     public static OutputBuilder builder() {
-        return new OutputHDFSBuidler();
+        return new OutputHDFSBuilder();
     }
 
     /**
@@ -113,7 +113,7 @@ public final class OutputHDFS implements OutputComponent {
      */
     @Override
     public void writeByteArray(byte[] data) {
-        LOGGER.info("writeByteArray(byte[] data)");
+        LOGGER.info("OutputHDFS.writeByteArray(byte[] data)");
         try {
             fsDataOutputStream.write(data);
         } catch (IOException e) {
@@ -190,7 +190,7 @@ public final class OutputHDFS implements OutputComponent {
      */
     @Override
     public void writeImage(ColorMatrix colorMatrix) {
-        LOGGER.info("writeImage(ColorMatrix colorMatrix)");
+        LOGGER.info("OutputHDFS.writeImage(ColorMatrix colorMatrix)");
         BufferedImage bufferedImage = ImageRenderingIntegrator.drawBufferedImage(
                 colorMatrix.toArrays(), colorMatrix.getColCount(), colorMatrix.getRowCount(), 1, false
         );
@@ -210,7 +210,7 @@ public final class OutputHDFS implements OutputComponent {
      */
     @Override
     public void writeDataFrame(DataFrame dataFrame) {
-        LOGGER.info("writeDataFrame(DataFrame dataFrame)");
+        LOGGER.info("OutputHDFS.writeDataFrame(DataFrame dataFrame)");
         try {
             bufferedWriter.write("rowNumber");
             for (Cell<?> cell : dataFrame.getFields()) {
@@ -245,7 +245,7 @@ public final class OutputHDFS implements OutputComponent {
      */
     @Override
     public void close() {
-        LOGGER.info("close()");
+        LOGGER.info("OutputHDFS.close()");
         ASIO.close(this.bufferedWriter);
         ASIO.close(this.fsDataOutputStream);
     }
