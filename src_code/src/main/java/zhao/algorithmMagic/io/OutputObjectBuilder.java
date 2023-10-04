@@ -3,7 +3,10 @@ package zhao.algorithmMagic.io;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.operands.table.Cell;
 import zhao.algorithmMagic.operands.table.FinalCell;
+import zhao.algorithmMagic.operands.table.SingletonCell;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 
@@ -39,6 +42,18 @@ public class OutputObjectBuilder extends HashMap<String, Cell<?>> implements Out
         return this;
     }
 
+
+    /**
+     * 设置操作的文件对应的路径
+     *
+     * @param path 文件的路径。
+     * @return 链式调用
+     */
+    public OutputBuilder setPath(String path) {
+        this.addOutputArg(OUT_STREAM, (FinalCell<?>) SingletonCell.$(path));
+        return this;
+    }
+
     /**
      * 将所需的对象构建出来并获取到对应的输入设备对象。
      *
@@ -49,6 +64,12 @@ public class OutputObjectBuilder extends HashMap<String, Cell<?>> implements Out
         final Object value = this.get(OUT_STREAM).getValue();
         if (value instanceof OutputStream) {
             return new OutputObject((OutputStream) value);
+        } else if (value instanceof String) {
+            try {
+                return new OutputObject(new FileOutputStream((String) value));
+            } catch (FileNotFoundException e) {
+                throw new UnsupportedOperationException(e);
+            }
         }
         throw new OperatorOperationException("您提供的 ‘OUT_STREAM’ 参数应为一个包装这 OutputStream 对象的单元格。");
     }

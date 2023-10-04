@@ -4,6 +4,7 @@ import zhao.algorithmMagic.SerialVersionUID;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.io.InputComponent;
 import zhao.algorithmMagic.io.OutputComponent;
+import zhao.algorithmMagic.io.OutputObject;
 import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
 import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
 import zhao.algorithmMagic.utils.ASClass;
@@ -760,6 +761,47 @@ public class FDataFrame implements DataFrame {
                 }
         );
         return this;
+    }
+
+    /**
+     * 将计算结果输出到指定的目录的文本文件中。
+     * <p>
+     * Output the calculation results to a text file in the specified directory.
+     *
+     * @param outPath   需要被输出的目录.
+     * @param useSerial 如果要以序列化字符串的形式输出此对象，则可以将此设置为 true。
+     * @return 输出之后会返回数据集本身，不会终止调用。
+     * <p>
+     * After output, the data set itself will be returned and the call will not be terminated.
+     */
+    @Override
+    public DataFrame into_outfile(String outPath, boolean useSerial) {
+        if (useSerial) {
+            return this.into_outComponent(OutputObject.builder().setPath(outPath).create());
+        } else {
+            return this.into_outfile(outPath);
+        }
+    }
+
+    /**
+     * 将计算结果输出到指定的目录的文本文件中。
+     * <p>
+     * Output the calculation results to a text file in the specified directory.
+     *
+     * @param outPath   需要被输出的目录.
+     * @param sep       在输出的时候需要使用的指定的文件单元格分隔符字符串。
+     * @param useSerial 如果要以序列化字符串的形式输出此对象，则可以将此设置为 true。
+     * @return 输出之后会返回数据集本身，不会终止调用。
+     * <p>
+     * After output, the data set itself will be returned and the call will not be terminated.
+     */
+    @Override
+    public DataFrame into_outfile(String outPath, String sep, boolean useSerial) {
+        if (useSerial) {
+            return this.into_outComponent(OutputObject.builder().setPath(outPath).create());
+        } else {
+            return this.into_outfile(outPath, sep);
+        }
     }
 
     /**

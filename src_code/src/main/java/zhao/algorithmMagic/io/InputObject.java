@@ -46,7 +46,7 @@ public class InputObject implements InputComponent {
         } catch (IOException e) {
             LOGGER.error("InputObject.open() error!!!", e);
         }
-        return false;
+        return this.isOpen();
     }
 
     /**

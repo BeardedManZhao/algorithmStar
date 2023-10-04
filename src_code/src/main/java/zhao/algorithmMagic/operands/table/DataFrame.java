@@ -340,6 +340,33 @@ public interface DataFrame extends AggDataFrameData, Iterable<Series>, Serializa
     DataFrame into_outfile(String outPath, String sep);
 
     /**
+     * 将计算结果输出到指定的目录的文本文件中。
+     * <p>
+     * Output the calculation results to a text file in the specified directory.
+     *
+     * @param outPath   需要被输出的目录.
+     * @param useSerial 如果要以序列化字符串的形式输出此对象，则可以将此设置为 true。
+     * @return 输出之后会返回数据集本身，不会终止调用。
+     * <p>
+     * After output, the data set itself will be returned and the call will not be terminated.
+     */
+    DataFrame into_outfile(String outPath, boolean useSerial);
+
+    /**
+     * 将计算结果输出到指定的目录的文本文件中。
+     * <p>
+     * Output the calculation results to a text file in the specified directory.
+     *
+     * @param outPath   需要被输出的目录.
+     * @param sep       在输出的时候需要使用的指定的文件单元格分隔符字符串。
+     * @param useSerial 如果要以序列化字符串的形式输出此对象，则可以将此设置为 true。
+     * @return 输出之后会返回数据集本身，不会终止调用。
+     * <p>
+     * After output, the data set itself will be returned and the call will not be terminated.
+     */
+    DataFrame into_outfile(String outPath, String sep, boolean useSerial);
+
+    /**
      * 将当前 DF 对象中的数据以 HTML 代表的方式写到指定的数据流对象中，实现有效的 DF 到 HTML 之间的转换操作。
      * <p>
      * Write the data in the current DF object in HTML representation to the specified data stream object, achieving effective conversion operations between DF and HTML.
