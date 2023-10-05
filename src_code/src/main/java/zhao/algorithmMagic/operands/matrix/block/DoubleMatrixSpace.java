@@ -1,5 +1,6 @@
 package zhao.algorithmMagic.operands.matrix.block;
 
+import zhao.algorithmMagic.SerialVersionUID;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
 import zhao.algorithmMagic.utils.ASClass;
@@ -21,6 +22,7 @@ public class DoubleMatrixSpace extends MatrixSpace<DoubleMatrixSpace, Double, do
     public final static Transformation<double[][], DoubleMatrix> CREATE_MAP_T = DoubleMatrix::parse;
     public final static Transformation<double[][][], DoubleMatrix[]> CREATE_MAP_INIT = ints -> new DoubleMatrix[ints.length];
 
+    private static final long serialVersionUID = SerialVersionUID.DoubleMatrixSpace.getNum();
 
     /**
      * 构造一个空的矩阵，指定其矩阵的行列数
@@ -249,6 +251,16 @@ public class DoubleMatrixSpace extends MatrixSpace<DoubleMatrixSpace, Double, do
     @Override
     public DoubleMatrixSpace shuffle(long seed) {
         return DoubleMatrixSpace.parse(ASMath.shuffle(toArrays(), seed, true));
+    }
+
+    /**
+     * @return 当前对象或类的序列化数值，相同类型的情况下该数值是相同的。
+     * <p>
+     * The serialized value of the current object or class, which is the same for the same type.
+     */
+    @Override
+    public long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
     /**

@@ -94,7 +94,118 @@ public enum SerialVersionUID {
             return -1010101010101010101L;
         }
     },
-    ;
+
+    // TODO 2023-10-05 从此开始后面的所有操作数的子类都需要创建一个序列化 ID 尽快完工！！！
+    DOUBLE_VECTOR {
+        /**
+         * @return 唯一的统一的序列号。
+         */
+        @Override
+        public long getNum() {
+            return 1010101010101010101L;
+        }
+    },
+    COLUMN_DOUBLE_VECTOR {
+        /**
+         * @return 唯一的统一的序列号。
+         */
+        @Override
+        public long getNum() {
+            return DOUBLE_VECTOR.getNum() + SUBCLASS_CAPACITY;
+        }
+    },
+    INTEGER_VECTOR {
+        /**
+         * @return 唯一的统一的序列号。
+         */
+        @Override
+        public long getNum() {
+            return 101010101010101010L;
+        }
+    },
+    COLUMN_INTEGER_VECTOR {
+        /**
+         * @return 唯一的统一的序列号。
+         */
+        @Override
+        public long getNum() {
+            return INTEGER_VECTOR.getNum() + SUBCLASS_CAPACITY;
+        }
+    },
+    SparkVector {
+        /**
+         * @return 唯一的统一的序列号。
+         */
+        @Override
+        public long getNum() {
+            return 7238943757834948593L;
+        }
+    }, ImageMatrix {
+        /**
+         * @return 唯一的统一的序列号。
+         */
+        @Override
+        public long getNum() {
+            return 202308060L;
+        }
+    }, IntegerMatrix {
+        /**
+         * @return 唯一的统一的序列号。
+         */
+        @Override
+        public long getNum() {
+            return 202308061L;
+        }
+    }, DoubleMatrix {
+        /**
+         * @return 唯一的统一的序列号。
+         */
+        @Override
+        public long getNum() {
+            return 202308062L;
+        }
+    }, ColorMatrix {
+        /**
+         * @return 唯一的统一的序列号。
+         */
+        @Override
+        public long getNum() {
+            return 202308063L;
+        }
+    }, ComplexNumberMatrix {
+        /**
+         * @return 唯一的统一的序列号。
+         */
+        @Override
+        public long getNum() {
+            return 202308064L;
+        }
+    },
+    IntegerMatrixSpace {
+        /**
+         * @return 唯一的统一的序列号。
+         */
+        @Override
+        public long getNum() {
+            return 202308065L;
+        }
+    }, DoubleMatrixSpace {
+        /**
+         * @return 唯一的统一的序列号。
+         */
+        @Override
+        public long getNum() {
+            return 202308066L;
+        }
+    }, ColorMatrixSpace {
+        /**
+         * @return 唯一的统一的序列号。
+         */
+        @Override
+        public long getNum() {
+            return 202308067L;
+        }
+    };
 
     /**
      * 每个子类会分配到指定此数量的名额，在序列号的规则中，

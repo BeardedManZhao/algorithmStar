@@ -1,5 +1,6 @@
 package zhao.algorithmMagic.operands.matrix;
 
+import zhao.algorithmMagic.SerialVersionUID;
 import zhao.algorithmMagic.core.ASDynamicLibrary;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.io.InputComponent;
@@ -22,6 +23,9 @@ import java.util.*;
  * @author zhao
  */
 public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], int[][]> {
+
+    private static final long serialVersionUID = SerialVersionUID.IntegerMatrix.getNum();
+
 
     /**
      * 构造一个空的矩阵，指定其矩阵的行列数
@@ -687,6 +691,16 @@ public class IntegerMatrix extends NumberMatrix<IntegerMatrix, Integer, int[], i
     @Override
     public IntegerMatrix shuffle(long seed) {
         return IntegerMatrix.parse(ASMath.shuffle(this.copyToNewArrays(), seed, false));
+    }
+
+    /**
+     * @return 当前对象或类的序列化数值，相同类型的情况下该数值是相同的。
+     * <p>
+     * The serialized value of the current object or class, which is the same for the same type.
+     */
+    @Override
+    public long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
     @Override

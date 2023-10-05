@@ -1,5 +1,6 @@
 package zhao.algorithmMagic.operands.matrix;
 
+import zhao.algorithmMagic.SerialVersionUID;
 import zhao.algorithmMagic.algorithm.distanceAlgorithm.DistanceAlgorithm;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.integrator.ImageRenderingIntegrator;
@@ -42,24 +43,20 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      * 红色通道编码，用于定位颜色通道的数值常量
      */
     public final static byte _R_ = 0b10000;
-
     /**
      * 绿色通道编码，用于定位颜色通道的数值常量
      */
     public final static byte _G_ = 0b1000;
-
     /**
      * 蓝色通道编码，用于定位颜色通道的数值常量
      */
     public final static byte _B_ = 0;
-
     /**
      * 黑白色RGB常量数值
      */
     public final static int WHITE_NUM = 0xffffff;
     public final static Color WHITE = new Color(WHITE_NUM);
     public final static short SINGLE_CHANNEL_MAXIMUM = 0xff;
-
     /**
      * 颜色数值求和计算方案，在该方案中的处理逻辑为如果数值超出范围，则取0或255，如果数值没有超过范围则取数值本身，实现颜色数值的高效限制的计算方案。
      * <p>
@@ -70,7 +67,6 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             ASMath.regularTricolor(inputType1.getGreen() + inputType2.getGreen()),
             ASMath.regularTricolor(inputType1.getBlue() + inputType2.getGreen())
     );
-
     /**
      * 颜色数值求和计算方案，在该方案中的处理逻辑为：如果x为求和后的越界数值，则取 x % 256 的结果作为颜色数值。
      * <p>
@@ -86,7 +82,6 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
                 blue - (blue >> _G_ << _G_)
         );
     };
-
     /**
      * 颜色数值求差计算方案，在该方案中的处理逻辑为如果数值超出范围，则取0或255，如果数值没有超过范围则取数值本身，实现颜色数值的高效限制的计算方案。
      * <p>
@@ -97,7 +92,6 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             ASMath.regularTricolor(inputType1.getGreen() - inputType2.getGreen()),
             ASMath.regularTricolor(inputType1.getBlue() - inputType2.getGreen())
     );
-
     /**
      * 颜色数值求差计算方案，在该方案中的处理逻辑为：如果x为求和后的越界数值，则取 x % 256 的结果作为颜色数值。
      * <p>
@@ -113,7 +107,6 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
                 blue - (blue >> _G_ << _G_)
         );
     };
-
     /**
      * 颜色数值求差计算方案，在该方案中的处理逻辑为如果数值超出范围，则取0或255，如果数值没有超过范围则取数值本身，实现颜色数值的高效限制的计算方案。
      * <p>
@@ -124,7 +117,6 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             ASMath.absoluteValue(inputType1.getGreen() - inputType2.getGreen()),
             ASMath.absoluteValue(inputType1.getBlue() - inputType2.getGreen())
     );
-
     /**
      * 颜色数值求积计算方案，在该方案中的处理逻辑为如果数值超出范围，则取0或255，如果数值没有超过范围则取数值本身，实现颜色数值的高效限制的计算方案。
      * <p>
@@ -135,7 +127,6 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             ASMath.regularTricolor(inputType1.getGreen() * inputType2.getGreen()),
             ASMath.regularTricolor(inputType1.getBlue() * inputType2.getGreen())
     );
-
     /**
      * 颜色数值求积计算方案，在该方案中的才处理逻辑为如果数值超出范围，则取当前数值 % 256 的结果数值作为当前颜色数值。
      * <p>
@@ -151,7 +142,6 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
                 blue - (blue >> _G_ << _G_)
         );
     };
-
     /**
      * 将矩阵中所有坐标点计算为： 当前坐标点 = 右坐标 - 左坐标
      */
@@ -168,7 +158,6 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             }
         }
     };
-
     /**
      * 将矩阵中所有坐标点计算为： 当前坐标点 = 下坐标 - 上坐标
      */
@@ -185,7 +174,6 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             next = colors[++i];
         }
     };
-
     /**
      * 将矩阵中所有坐标点计算为： 当前坐标点 = 右坐标 - 左坐标
      */
@@ -202,7 +190,6 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             }
         }
     };
-
     /**
      * 将矩阵中所有坐标点计算为： 当前坐标点 = 下坐标 - 上坐标
      */
@@ -219,7 +206,6 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             next = colors[++i];
         }
     };
-
     /**
      * 矩阵左右反转操作，其参数是可选的，如果您想要传递参数，请按照如下方式传递。
      * key = "isCopy"   value = boolean 数值   代表反转操作是否需要拷贝出新矩阵，如果不需要则在原矩阵中进行反转。
@@ -233,7 +219,6 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         }
         return colorMatrix.reverseLR(true);
     };
-
     /**
      * 矩阵左右反转操作，其参数是可选的，如果您想要传递参数，请按照如下方式传递。
      * key = "isCopy"   value = boolean 数值
@@ -247,7 +232,6 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         }
         return colorMatrix.reverseBT(true);
     };
-
     /**
      * 矩阵按照左右的方向进行拉伸操作，使得图像变宽，需要传递参数 times。
      */
@@ -274,7 +258,6 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         }
         return ColorMatrix.parse(res);
     };
-
     /**
      * 矩阵按照上下的方向进行拉伸操作，使得图像变宽，需要传递参数 times。
      */
@@ -297,7 +280,6 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         }
         return ColorMatrix.parse(res);
     };
-
     /**
      * 矩阵缩放计算实现，会将矩阵按照左右的方向进行缩小操作，使得图像变窄，需要传递参数 times。
      */
@@ -319,7 +301,6 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         }
         return ColorMatrix.parse(res);
     };
-
     /**
      * 矩阵缩放计算实现，会将矩阵按照上下的方向进行缩小操作，使得图像变扁，需要传递参数 times。
      */
@@ -338,14 +319,12 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         }
         return ColorMatrix.parse(res);
     };
-
     /**
      * 池化逻辑实现，将当前矩阵内的所有像素中 R G B 颜色数值的最大值逐个单独提取出来，并获取新颜色。
      * <p>
      * The pooling logic implementation extracts the maximum values of R, G, and B color values from all pixels in the current matrix individually, and obtains new colors.
      */
     public final static Transformation<ColorMatrix, Color> POOL_RGB_OBO_MAX = new PoolRgbOboMAX();
-
     /**
      * 池化逻辑实现，将当前矩阵内的所有像素中 RGB 颜色数值的最大值直接提取出来，成为新颜色。
      * <p>
@@ -365,7 +344,6 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         }
         return maxColor;
     };
-
     /**
      * 池化逻辑实现，将当前矩阵内的所有像素中 R G B 三个通道的颜色数值的均值逐个计算出来，并根据结果获取新颜色。
      * <p>
@@ -383,7 +361,6 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         int size = colorMatrix.getNumberOfDimensions();
         return new Color(mean_r / size, mean_g / size, mean_b / size);
     };
-
     /**
      * 池化逻辑实现，将当前矩阵内的所有像素中 RGB 颜色数值的均值逐个计算出来，并根据结果获取新颜色。
      * <p>
@@ -398,7 +375,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         }
         return new Color(mean / colorMatrix.getNumberOfDimensions());
     };
-
+    private static final long serialVersionUID = SerialVersionUID.ColorMatrix.getNum();
     private boolean isGrayscale;
 
     /**
@@ -1118,6 +1095,16 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         return ColorMatrix.parse(
                 ASMath.shuffle(this.copyToNewArrays(), seed, false)
         );
+    }
+
+    /**
+     * @return 当前对象或类的序列化数值，相同类型的情况下该数值是相同的。
+     * <p>
+     * The serialized value of the current object or class, which is the same for the same type.
+     */
+    @Override
+    public long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
     /**

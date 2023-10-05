@@ -1,5 +1,6 @@
 package zhao.algorithmMagic.operands.matrix;
 
+import zhao.algorithmMagic.SerialVersionUID;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.utils.ASIO;
 
@@ -20,7 +21,9 @@ import java.net.URL;
  * 2023/6/12 12:14
  */
 public class ImageMatrix extends ColorMatrix implements ImageObserver {
+    private static final long serialVersionUID = SerialVersionUID.ImageMatrix.getNum();
     private final BufferedImage image;
+
 
     /**
      * 构造一个指定行列数据的矩阵对象，其中的行指针最大值将会默认使用行数量。
@@ -426,5 +429,15 @@ public class ImageMatrix extends ColorMatrix implements ImageObserver {
     @Override
     public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) {
         return true;
+    }
+
+    /**
+     * @return 当前对象或类的序列化数值，相同类型的情况下该数值是相同的。
+     * <p>
+     * The serialized value of the current object or class, which is the same for the same type.
+     */
+    @Override
+    public long getSerialVersionUID() {
+        return serialVersionUID;
     }
 }
