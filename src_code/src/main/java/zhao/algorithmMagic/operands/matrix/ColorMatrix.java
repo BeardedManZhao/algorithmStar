@@ -1,5 +1,6 @@
 package zhao.algorithmMagic.operands.matrix;
 
+import zhao.algorithmMagic.SerialVersionUID;
 import zhao.algorithmMagic.algorithm.distanceAlgorithm.DistanceAlgorithm;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.integrator.ImageRenderingIntegrator;
@@ -42,24 +43,20 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      * 红色通道编码，用于定位颜色通道的数值常量
      */
     public final static byte _R_ = 0b10000;
-
     /**
      * 绿色通道编码，用于定位颜色通道的数值常量
      */
     public final static byte _G_ = 0b1000;
-
     /**
      * 蓝色通道编码，用于定位颜色通道的数值常量
      */
     public final static byte _B_ = 0;
-
     /**
      * 黑白色RGB常量数值
      */
     public final static int WHITE_NUM = 0xffffff;
     public final static Color WHITE = new Color(WHITE_NUM);
     public final static short SINGLE_CHANNEL_MAXIMUM = 0xff;
-
     /**
      * 颜色数值求和计算方案，在该方案中的处理逻辑为如果数值超出范围，则取0或255，如果数值没有超过范围则取数值本身，实现颜色数值的高效限制的计算方案。
      * <p>
@@ -70,7 +67,6 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             ASMath.regularTricolor(inputType1.getGreen() + inputType2.getGreen()),
             ASMath.regularTricolor(inputType1.getBlue() + inputType2.getGreen())
     );
-
     /**
      * 颜色数值求和计算方案，在该方案中的处理逻辑为：如果x为求和后的越界数值，则取 x % 256 的结果作为颜色数值。
      * <p>
@@ -86,7 +82,6 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
                 blue - (blue >> _G_ << _G_)
         );
     };
-
     /**
      * 颜色数值求差计算方案，在该方案中的处理逻辑为如果数值超出范围，则取0或255，如果数值没有超过范围则取数值本身，实现颜色数值的高效限制的计算方案。
      * <p>
@@ -97,7 +92,6 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             ASMath.regularTricolor(inputType1.getGreen() - inputType2.getGreen()),
             ASMath.regularTricolor(inputType1.getBlue() - inputType2.getGreen())
     );
-
     /**
      * 颜色数值求差计算方案，在该方案中的处理逻辑为：如果x为求和后的越界数值，则取 x % 256 的结果作为颜色数值。
      * <p>
@@ -113,7 +107,6 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
                 blue - (blue >> _G_ << _G_)
         );
     };
-
     /**
      * 颜色数值求差计算方案，在该方案中的处理逻辑为如果数值超出范围，则取0或255，如果数值没有超过范围则取数值本身，实现颜色数值的高效限制的计算方案。
      * <p>
@@ -124,7 +117,6 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             ASMath.absoluteValue(inputType1.getGreen() - inputType2.getGreen()),
             ASMath.absoluteValue(inputType1.getBlue() - inputType2.getGreen())
     );
-
     /**
      * 颜色数值求积计算方案，在该方案中的处理逻辑为如果数值超出范围，则取0或255，如果数值没有超过范围则取数值本身，实现颜色数值的高效限制的计算方案。
      * <p>
@@ -135,7 +127,6 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             ASMath.regularTricolor(inputType1.getGreen() * inputType2.getGreen()),
             ASMath.regularTricolor(inputType1.getBlue() * inputType2.getGreen())
     );
-
     /**
      * 颜色数值求积计算方案，在该方案中的才处理逻辑为如果数值超出范围，则取当前数值 % 256 的结果数值作为当前颜色数值。
      * <p>
@@ -151,7 +142,6 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
                 blue - (blue >> _G_ << _G_)
         );
     };
-
     /**
      * 将矩阵中所有坐标点计算为： 当前坐标点 = 右坐标 - 左坐标
      */
@@ -168,7 +158,6 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             }
         }
     };
-
     /**
      * 将矩阵中所有坐标点计算为： 当前坐标点 = 下坐标 - 上坐标
      */
@@ -185,7 +174,6 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             next = colors[++i];
         }
     };
-
     /**
      * 将矩阵中所有坐标点计算为： 当前坐标点 = 右坐标 - 左坐标
      */
@@ -202,7 +190,6 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             }
         }
     };
-
     /**
      * 将矩阵中所有坐标点计算为： 当前坐标点 = 下坐标 - 上坐标
      */
@@ -219,7 +206,6 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             next = colors[++i];
         }
     };
-
     /**
      * 矩阵左右反转操作，其参数是可选的，如果您想要传递参数，请按照如下方式传递。
      * key = "isCopy"   value = boolean 数值   代表反转操作是否需要拷贝出新矩阵，如果不需要则在原矩阵中进行反转。
@@ -233,7 +219,6 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         }
         return colorMatrix.reverseLR(true);
     };
-
     /**
      * 矩阵左右反转操作，其参数是可选的，如果您想要传递参数，请按照如下方式传递。
      * key = "isCopy"   value = boolean 数值
@@ -247,7 +232,6 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         }
         return colorMatrix.reverseBT(true);
     };
-
     /**
      * 矩阵按照左右的方向进行拉伸操作，使得图像变宽，需要传递参数 times。
      */
@@ -274,7 +258,6 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         }
         return ColorMatrix.parse(res);
     };
-
     /**
      * 矩阵按照上下的方向进行拉伸操作，使得图像变宽，需要传递参数 times。
      */
@@ -297,7 +280,6 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         }
         return ColorMatrix.parse(res);
     };
-
     /**
      * 矩阵缩放计算实现，会将矩阵按照左右的方向进行缩小操作，使得图像变窄，需要传递参数 times。
      */
@@ -319,7 +301,6 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         }
         return ColorMatrix.parse(res);
     };
-
     /**
      * 矩阵缩放计算实现，会将矩阵按照上下的方向进行缩小操作，使得图像变扁，需要传递参数 times。
      */
@@ -338,14 +319,12 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         }
         return ColorMatrix.parse(res);
     };
-
     /**
      * 池化逻辑实现，将当前矩阵内的所有像素中 R G B 颜色数值的最大值逐个单独提取出来，并获取新颜色。
      * <p>
      * The pooling logic implementation extracts the maximum values of R, G, and B color values from all pixels in the current matrix individually, and obtains new colors.
      */
     public final static Transformation<ColorMatrix, Color> POOL_RGB_OBO_MAX = new PoolRgbOboMAX();
-
     /**
      * 池化逻辑实现，将当前矩阵内的所有像素中 RGB 颜色数值的最大值直接提取出来，成为新颜色。
      * <p>
@@ -365,7 +344,6 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         }
         return maxColor;
     };
-
     /**
      * 池化逻辑实现，将当前矩阵内的所有像素中 R G B 三个通道的颜色数值的均值逐个计算出来，并根据结果获取新颜色。
      * <p>
@@ -383,7 +361,6 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         int size = colorMatrix.getNumberOfDimensions();
         return new Color(mean_r / size, mean_g / size, mean_b / size);
     };
-
     /**
      * 池化逻辑实现，将当前矩阵内的所有像素中 RGB 颜色数值的均值逐个计算出来，并根据结果获取新颜色。
      * <p>
@@ -399,6 +376,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         return new Color(mean / colorMatrix.getNumberOfDimensions());
     };
 
+    private static final long serialVersionUID = SerialVersionUID.ColorMatrix.getNum();
     private boolean isGrayscale;
 
     /**
@@ -1121,6 +1099,16 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
     }
 
     /**
+     * @return 当前对象或类的序列化数值，相同类型的情况下该数值是相同的。
+     * <p>
+     * The serialized value of the current object or class, which is the same for the same type.
+     */
+    @Override
+    public long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    /**
      * 该方法将会获取到矩阵中的二维数组，值得注意的是，在该函数中获取到的数组是一个新的数组，不会有任何的关系。
      * <p>
      * This method will obtain the two-dimensional array in the matrix. It is worth noting that the array obtained in this function is a new array and will not have any relationship.
@@ -1662,6 +1650,11 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      * An image matrix object extracted from the original image.
      */
     public ColorMatrix extractImage(int x1, int y1, int x2, int y2) {
+        // 将四个参数进行规整
+        x1 = ASMath.regularNumber(this.getColCount() - 1, 0, x1);
+        y1 = ASMath.regularNumber(this.getRowCount() - 1, 0, y1);
+        x2 = ASMath.regularNumber(this.getColCount() - 1, 0, x2);
+        y2 = ASMath.regularNumber(this.getRowCount() - 1, 0, y2);
         if (x1 >= x2 || y1 >= y2) {
             throw new OperatorOperationException("图像提取发生错误，您设置的提取坐标点有误!!!\nAn error occurred in image extraction. The extraction coordinate point you set is incorrect!!!\n" +
                     "ERROR => (" + x1 + ',' + y1 + ") >= (" + x2 + ',' + y2 + ')');
@@ -1672,9 +1665,12 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         }
         Color[][] colors = new Color[y2 - y1 + 1][x2 - x1 + 1];
         Color[][] srcImage = this.toArrays();
+        final int maxIndex = srcImage.length - 1;
         for (Color[] color : colors) {
-            Color[] row = srcImage[y1++];
-            System.arraycopy(row, x1, color, 0, Math.min(color.length, row.length));
+            final int y = ASMath.regularNumber(maxIndex, 0, y1++);
+            final int x = ASMath.regularNumber(color.length - 1, 0, x1);
+            Color[] row = srcImage[y];
+            System.arraycopy(row, x, color, 0, Math.min(color.length, row.length));
         }
         return ColorMatrix.parse(colors);
     }
@@ -2266,6 +2262,82 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             y1 += height;
         } while (y1 < rowCount);
         return parse(colors);
+    }
+
+    /**
+     * 替换图像矩阵颜色
+     *
+     * @param oldColor       旧的颜色
+     * @param transformation 替换函数，会将需要被替换的颜色 的周围矩阵传递进来，您只需要在这里将新 color 返回出来即可!
+     * @param subArea        子矩阵尺寸 假设是 n 则 子矩阵为 nxn
+     * @param errorValue     颜色数值的误差值 如果颜色数值与 oldColor 的 rgb 值 差距小于这个误差值 则也会被替换 这样面对一些渐变类的替换操作也是可以得心应手的
+     * @param start          开始进行替换的起始坐标点
+     * @param isCopy         如果设置为true 则代表在一个新的矩阵对象中进行腐蚀的操作计算，如果设置为false 则代表在原矩阵的基础上进行腐蚀不会出现新矩阵对象。
+     * @return 新的图像矩阵
+     */
+    public final ColorMatrix colorReplace(Color oldColor, Transformation<ColorMatrix, Color> transformation, int subArea, int errorValue, IntegerCoordinateTwo start, boolean isCopy) {
+        ColorMatrix colorMatrix = isCopy ? this.clone(this, true) : this;
+        final double rgbAvg = ASMath.avg(oldColor.getRed(), oldColor.getGreen(), oldColor.getBlue());
+        int r = Math.max(subArea >> 1, 4);
+        int x = 0, y = 0;
+        for (Color[] colors : colorMatrix) {
+            if (y < start.getY()) {
+                y += 1;
+                continue;
+            }
+            for (Color color : colors) {
+                if (x < start.getX()) {
+                    x += 1;
+                    continue;
+                }
+                if (ASMath.absoluteValue(ASMath.avg(color.getRed(), color.getGreen(), color.getBlue()) - rgbAvg) < errorValue) {
+                    colorMatrix.set(y, x, transformation.function(this.extractImage(x - r, y - r, x + r, y + r)));
+                }
+                x++;
+            }
+            y++;
+            x = 0;
+        }
+        return colorMatrix;
+    }
+
+    /**
+     * 替换图像矩阵颜色
+     *
+     * @param oldColor       旧的颜色
+     * @param transformation 替换函数，会将需要被替换的颜色 的周围矩阵传递进来，您只需要在这里将新 图像矩阵返回出来 矩阵会自动的被合并到原图
+     * @param subArea        子矩阵尺寸 假设是 n 则 子矩阵为 nxn
+     * @param errorValue     颜色数值的误差值 如果颜色数值与 oldColor 的 rgb 值 差距小于这个误差值 则也会被替换 这样面对一些渐变类的替换操作也是可以得心应手的
+     * @param start          开始进行替换的起始坐标点
+     * @param isCopy         如果设置为true 则代表在一个新的矩阵对象中进行腐蚀的操作计算，如果设置为false 则代表在原矩阵的基础上进行腐蚀不会出现新矩阵对象。
+     * @return 新的图像矩阵
+     */
+    public final ColorMatrix colorReplaceByBlock(Color oldColor, Transformation<ColorMatrix, ColorMatrix> transformation, int subArea, int errorValue, IntegerCoordinateTwo start, boolean isCopy) {
+        ColorMatrix colorMatrix = isCopy ? this.clone(this, true) : this;
+        final double rgbAvg = ASMath.avg(oldColor.getRed(), oldColor.getGreen(), oldColor.getBlue());
+        int r = Math.max(subArea >> 1, 4);
+        int x = 0, y = 0;
+        for (Color[] colors : colorMatrix) {
+            if (y < start.getY()) {
+                y += 1;
+                continue;
+            }
+            for (Color color : colors) {
+                if (x < start.getX()) {
+                    x += 1;
+                    continue;
+                }
+                if (ASMath.absoluteValue(ASMath.avg(color.getRed(), color.getGreen(), color.getBlue()) - rgbAvg) < errorValue) {
+                    final int x1 = x - r;
+                    final int y1 = y - r;
+                    colorMatrix.merge(transformation.function(this.extractImage(x1, y1, x + r, y + r)), Math.max(0, x1), Math.max(0, y1));
+                }
+                x++;
+            }
+            y++;
+            x = 0;
+        }
+        return colorMatrix;
     }
 
     /**

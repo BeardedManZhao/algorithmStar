@@ -1,6 +1,7 @@
 package zhao.algorithmMagic.operands.matrix.block;
 
 import org.jetbrains.annotations.NotNull;
+import zhao.algorithmMagic.SerialVersionUID;
 import zhao.algorithmMagic.exception.OperatorOperationException;
 import zhao.algorithmMagic.operands.matrix.ColorMatrix;
 import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
@@ -26,6 +27,9 @@ public class ColorMatrixSpace extends MatrixSpace<ColorMatrixSpace, Color, Color
 
     public final static Transformation<Color[][], ColorMatrix> CREATE_MAP_T = ColorMatrix::parse;
     public final static Transformation<Color[][][], ColorMatrix[]> CREATE_MAP_INIT = ints -> new ColorMatrix[ints.length];
+
+    private static final long serialVersionUID = SerialVersionUID.ColorMatrixSpace.getNum();
+
 
     /**
      * 构造一个空的矩阵，指定其矩阵的行列数
@@ -335,6 +339,16 @@ public class ColorMatrixSpace extends MatrixSpace<ColorMatrixSpace, Color, Color
             colorMatrices0[++index] = colorMatrix.shuffle(seed);
         }
         return parse(colorMatrices0);
+    }
+
+    /**
+     * @return 当前对象或类的序列化数值，相同类型的情况下该数值是相同的。
+     * <p>
+     * The serialized value of the current object or class, which is the same for the same type.
+     */
+    @Override
+    public long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
     /**

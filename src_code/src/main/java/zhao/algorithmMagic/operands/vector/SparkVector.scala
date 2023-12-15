@@ -2,6 +2,7 @@ package zhao.algorithmMagic.operands.vector
 
 import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
+import zhao.algorithmMagic.SerialVersionUID
 import zhao.algorithmMagic.exception.OperatorOperationException
 import zhao.algorithmMagic.utils.ASMath
 
@@ -18,6 +19,9 @@ final class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mll
     zhao.algorithmMagic.operands.vector.ThirdVector[SparkVector, Double, Array[Double], org.apache.spark.mllib.linalg.Vector] {
 
   private val size: Int = vector.size
+
+  private val serialVersionUID = SerialVersionUID.SparkVector.getNum
+
 
   /**
    * 计算该向量的模长，具体实现请参阅api说明
@@ -100,6 +104,21 @@ final class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mll
   }
 
   /**
+   * @return 向量中包含的维度数量
+   *         <p>
+   *         the number of dimensions contained in the vector
+   */
+  override def getNumberOfDimensions: Int = size
+
+  /**
+   *
+   * @return 将本对象中存储的向量序列数组拷贝到一个新数组并将新数组返回，这里返回的是一个新数组，支持修改等操作。
+   *
+   *         Copy the vector sequence array stored in this object to a new array and return the new array. Here, a new array is returned, which supports modification and other operations.
+   */
+  override def copyToNewArray(): Array[Double] = vector.toArray
+
+  /**
    * 在两个操作数之间做差的方法，具体用法请参阅API说明。
    * <p>
    * The method of making a difference between two operands, please refer to the API description for specific usage.
@@ -158,21 +177,6 @@ final class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mll
   }
 
   /**
-   *
-   * @return 将本对象中存储的向量序列数组拷贝到一个新数组并将新数组返回，这里返回的是一个新数组，支持修改等操作。
-   *
-   *         Copy the vector sequence array stored in this object to a new array and return the new array. Here, a new array is returned, which supports modification and other operations.
-   */
-  override def copyToNewArray(): Array[Double] = vector.toArray
-
-  /**
-   * @return 向量中包含的维度数量
-   *         <p>
-   *         the number of dimensions contained in the vector
-   */
-  override def getNumberOfDimensions: Int = size
-
-  /**
    * 在两个操作数之间做差的方法，具体用法请参阅API说明。
    * <p>
    * The method of making a difference between two operands, please refer to the API description for specific usage.
@@ -201,6 +205,13 @@ final class SparkVector(sparkContext: SparkContext, vector: org.apache.spark.mll
    *         The subclass corresponding to the current class implements objects of data type.
    */
   override def expand(): SparkVector = this
+
+  /**
+   * @return 当前对象或类的序列化数值，相同类型的情况下该数值是相同的。
+   *         <p>
+   *         The serialized value of the current object or class, which is the same for the same type.
+   */
+  override def getSerialVersionUID: Long = serialVersionUID
 }
 
 object SparkVector {

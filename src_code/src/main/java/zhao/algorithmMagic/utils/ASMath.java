@@ -2114,6 +2114,18 @@ public final class ASMath {
     }
 
     /**
+     * 规整一个数值，确保数值不会发生溢出。
+     *
+     * @param max    数值的最大值 数值不会超过该值
+     * @param min    数值的最小值 数值不会低于该值
+     * @param number 需要被规整的数值
+     * @return 规整之后的数值
+     */
+    public static int regularNumber(int max, int min, int number) {
+        return Math.max(min, Math.min(number, max));
+    }
+
+    /**
      * 将一个 Series 中所有符合条件的数据转移到list中。
      *
      * @param series    需要被判断的Series数据对象。

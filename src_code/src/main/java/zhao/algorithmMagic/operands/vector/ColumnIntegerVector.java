@@ -1,5 +1,6 @@
 package zhao.algorithmMagic.operands.vector;
 
+import zhao.algorithmMagic.SerialVersionUID;
 import zhao.algorithmMagic.utils.ASMath;
 
 import java.util.HashMap;
@@ -14,6 +15,7 @@ import java.util.Random;
  */
 public class ColumnIntegerVector extends IntegerVector {
 
+    private static final long serialVersionUID = SerialVersionUID.COLUMN_INTEGER_VECTOR.getNum();
     private final String[] Field;
     private final String vectorName;
 

@@ -95,6 +95,13 @@ public abstract class Vector<ImplementationType, ElementType, ArrayType> impleme
         return super.clone();
     }
 
+    /**
+     * @return 当前对象或类的序列化数值，相同类型的情况下该数值是相同的。
+     * <p>
+     * The serialized value of the current object or class, which is the same for the same type.
+     */
+    public abstract long getSerialVersionUID();
+
     @Override
     public String toString() {
         return "This is a vector";

@@ -16,7 +16,7 @@ import java.util.HashMap;
  * @author 赵凌宇
  * 2023/4/6 20:01
  */
-public class OutputHDFSBuidler extends HashMap<String, Cell<?>> implements OutputBuilder {
+public class OutputHDFSBuilder extends HashMap<String, Cell<?>> implements OutputBuilder {
 
     /**
      * HDFS文件系统对象

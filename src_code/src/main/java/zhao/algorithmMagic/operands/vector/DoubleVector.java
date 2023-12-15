@@ -1,5 +1,6 @@
 package zhao.algorithmMagic.operands.vector;
 
+import zhao.algorithmMagic.SerialVersionUID;
 import zhao.algorithmMagic.core.ASDynamicLibrary;
 import zhao.algorithmMagic.exception.AlgorithmMagicException;
 import zhao.algorithmMagic.exception.OperatorOperationException;
@@ -22,6 +23,7 @@ import java.util.Random;
  * @author zhao
  */
 public class DoubleVector extends ASVector<DoubleVector, Double, double[]> {
+    private static final long serialVersionUID = SerialVersionUID.DOUBLE_VECTOR.getNum();
     protected double[] VectorArrayPrimitive;
     private String vectorStr;
     private double moduleLength;
@@ -442,6 +444,16 @@ public class DoubleVector extends ASVector<DoubleVector, Double, double[]> {
     @Override
     public DoubleVector shuffle(long seed) {
         return DoubleVector.parse(ASMath.shuffle(this.toArray(), seed, true));
+    }
+
+    /**
+     * @return 当前对象或类的序列化数值，相同类型的情况下该数值是相同的。
+     * <p>
+     * The serialized value of the current object or class, which is the same for the same type.
+     */
+    @Override
+    public long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
     @Override

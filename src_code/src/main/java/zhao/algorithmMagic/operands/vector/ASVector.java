@@ -8,6 +8,7 @@ package zhao.algorithmMagic.operands.vector;
  * @author zhao
  */
 public abstract class ASVector<ImplementationType, ElementType, ArrayType> extends Vector<ImplementationType, ElementType, ArrayType> {
+
     /**
      * 刷新操作数对象的所有字段
      */
