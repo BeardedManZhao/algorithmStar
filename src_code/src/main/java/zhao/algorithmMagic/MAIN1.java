@@ -4,7 +4,6 @@ import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
 import zhao.algorithmMagic.operands.matrix.ColorMatrix;
 import zhao.algorithmMagic.operands.matrix.ImageMatrix;
 import zhao.algorithmMagic.utils.transformation.Transformation;
-
 import java.awt.*;
 import java.io.IOException;
 
