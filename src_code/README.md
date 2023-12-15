@@ -107,4 +107,50 @@ public class MAIN1 {
 }
 ```
 
-### Version update date : xx xx-xx-xx
+* Add a function to replace colors
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+import zhao.algorithmMagic.operands.matrix.ImageMatrix;
+import zhao.algorithmMagic.utils.transformation.Transformation;
+
+import java.awt.*;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        Color color = new Color(239, 216, 194);
+
+        // 实例化图片
+        ColorMatrix parse = ImageMatrix.parse("C:\\Users\\zhao\\Desktop\\Test\\无标题.jpg");
+        parse.show("原图");
+
+        // 进行颜色替换 将 标记的颜色做为被替换的颜色
+        parse = parse.colorReplace(
+                // 设置需要被替换的颜色
+                color,
+                // 设置替换操作进行时候的颜色转换逻辑 
+                (Transformation<ColorMatrix, Color>) colors -> {
+                    // 使用 RGB 的均值做为替换颜色
+                    return new Color(
+                            (int) colors.avg(ColorMatrix._R_),
+                            (int) colors.avg(ColorMatrix._G_),
+                            (int) colors.avg(ColorMatrix._B_)
+                    );
+                },
+                // 设置替换操作回调函数中接收到的范围
+                1024,
+                // 设置颜色阈值 与 color 颜色值的差小于此值代表需要替换 此值为 [0, 255]
+                32,
+                new IntegerCoordinateTwo(453, 195),
+                // 不使用拷贝，性能更好
+                false
+        );
+        parse.show("替换之后的结果");
+    }
+}
+```
+
+### Version update date : 2023-12-15

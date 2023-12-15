@@ -367,6 +367,7 @@ public final class ASClass {
      * @param arr1  需要被合并的第一个元素
      * @param arr2  需要被合并的第二个数组
      * @param <arr> 数组中所包含的元素数据类型，此处为自动类型推断。
+     * @return 合并之后的结果
      */
     public static <arr> arr[] mergeArray(arr[] res, arr arr1, arr[] arr2) {
         res[0] = arr1;
@@ -381,6 +382,7 @@ public final class ASClass {
      * @param arr1  需要被合并的第一个数组
      * @param arr2  需要被合并的第二个数组
      * @param <arr> 数组中所包含的元素数据类型，此处为自动类型推断。
+     * @return 合并之后的结果
      */
     public static <arr> arr[] mergeArray(arr[] res, arr[] arr1, arr[] arr2) {
         int length1 = arr1.length;

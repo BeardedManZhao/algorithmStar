@@ -375,6 +375,7 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         }
         return new Color(mean / colorMatrix.getNumberOfDimensions());
     };
+
     private static final long serialVersionUID = SerialVersionUID.ColorMatrix.getNum();
     private boolean isGrayscale;
 
@@ -1649,6 +1650,11 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
      * An image matrix object extracted from the original image.
      */
     public ColorMatrix extractImage(int x1, int y1, int x2, int y2) {
+        // 将四个参数进行规整
+        x1 = ASMath.regularNumber(this.getColCount() - 1, 0, x1);
+        y1 = ASMath.regularNumber(this.getRowCount() - 1, 0, y1);
+        x2 = ASMath.regularNumber(this.getColCount() - 1, 0, x2);
+        y2 = ASMath.regularNumber(this.getRowCount() - 1, 0, y2);
         if (x1 >= x2 || y1 >= y2) {
             throw new OperatorOperationException("图像提取发生错误，您设置的提取坐标点有误!!!\nAn error occurred in image extraction. The extraction coordinate point you set is incorrect!!!\n" +
                     "ERROR => (" + x1 + ',' + y1 + ") >= (" + x2 + ',' + y2 + ')');
@@ -1659,9 +1665,12 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         }
         Color[][] colors = new Color[y2 - y1 + 1][x2 - x1 + 1];
         Color[][] srcImage = this.toArrays();
+        final int maxIndex = srcImage.length - 1;
         for (Color[] color : colors) {
-            Color[] row = srcImage[y1++];
-            System.arraycopy(row, x1, color, 0, Math.min(color.length, row.length));
+            final int y = ASMath.regularNumber(maxIndex, 0, y1++);
+            final int x = ASMath.regularNumber(color.length - 1, 0, x1);
+            Color[] row = srcImage[y];
+            System.arraycopy(row, x, color, 0, Math.min(color.length, row.length));
         }
         return ColorMatrix.parse(colors);
     }
@@ -2253,6 +2262,82 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
             y1 += height;
         } while (y1 < rowCount);
         return parse(colors);
+    }
+
+    /**
+     * 替换图像矩阵颜色
+     *
+     * @param oldColor       旧的颜色
+     * @param transformation 替换函数，会将需要被替换的颜色 的周围矩阵传递进来，您只需要在这里将新 color 返回出来即可!
+     * @param subArea        子矩阵尺寸 假设是 n 则 子矩阵为 nxn
+     * @param errorValue     颜色数值的误差值 如果颜色数值与 oldColor 的 rgb 值 差距小于这个误差值 则也会被替换 这样面对一些渐变类的替换操作也是可以得心应手的
+     * @param start          开始进行替换的起始坐标点
+     * @param isCopy         如果设置为true 则代表在一个新的矩阵对象中进行腐蚀的操作计算，如果设置为false 则代表在原矩阵的基础上进行腐蚀不会出现新矩阵对象。
+     * @return 新的图像矩阵
+     */
+    public final ColorMatrix colorReplace(Color oldColor, Transformation<ColorMatrix, Color> transformation, int subArea, int errorValue, IntegerCoordinateTwo start, boolean isCopy) {
+        ColorMatrix colorMatrix = isCopy ? this.clone(this, true) : this;
+        final double rgbAvg = ASMath.avg(oldColor.getRed(), oldColor.getGreen(), oldColor.getBlue());
+        int r = Math.max(subArea >> 1, 4);
+        int x = 0, y = 0;
+        for (Color[] colors : colorMatrix) {
+            if (y < start.getY()) {
+                y += 1;
+                continue;
+            }
+            for (Color color : colors) {
+                if (x < start.getX()) {
+                    x += 1;
+                    continue;
+                }
+                if (ASMath.absoluteValue(ASMath.avg(color.getRed(), color.getGreen(), color.getBlue()) - rgbAvg) < errorValue) {
+                    colorMatrix.set(y, x, transformation.function(this.extractImage(x - r, y - r, x + r, y + r)));
+                }
+                x++;
+            }
+            y++;
+            x = 0;
+        }
+        return colorMatrix;
+    }
+
+    /**
+     * 替换图像矩阵颜色
+     *
+     * @param oldColor       旧的颜色
+     * @param transformation 替换函数，会将需要被替换的颜色 的周围矩阵传递进来，您只需要在这里将新 图像矩阵返回出来 矩阵会自动的被合并到原图
+     * @param subArea        子矩阵尺寸 假设是 n 则 子矩阵为 nxn
+     * @param errorValue     颜色数值的误差值 如果颜色数值与 oldColor 的 rgb 值 差距小于这个误差值 则也会被替换 这样面对一些渐变类的替换操作也是可以得心应手的
+     * @param start          开始进行替换的起始坐标点
+     * @param isCopy         如果设置为true 则代表在一个新的矩阵对象中进行腐蚀的操作计算，如果设置为false 则代表在原矩阵的基础上进行腐蚀不会出现新矩阵对象。
+     * @return 新的图像矩阵
+     */
+    public final ColorMatrix colorReplaceByBlock(Color oldColor, Transformation<ColorMatrix, ColorMatrix> transformation, int subArea, int errorValue, IntegerCoordinateTwo start, boolean isCopy) {
+        ColorMatrix colorMatrix = isCopy ? this.clone(this, true) : this;
+        final double rgbAvg = ASMath.avg(oldColor.getRed(), oldColor.getGreen(), oldColor.getBlue());
+        int r = Math.max(subArea >> 1, 4);
+        int x = 0, y = 0;
+        for (Color[] colors : colorMatrix) {
+            if (y < start.getY()) {
+                y += 1;
+                continue;
+            }
+            for (Color color : colors) {
+                if (x < start.getX()) {
+                    x += 1;
+                    continue;
+                }
+                if (ASMath.absoluteValue(ASMath.avg(color.getRed(), color.getGreen(), color.getBlue()) - rgbAvg) < errorValue) {
+                    final int x1 = x - r;
+                    final int y1 = y - r;
+                    colorMatrix.merge(transformation.function(this.extractImage(x1, y1, x + r, y + r)), Math.max(0, x1), Math.max(0, y1));
+                }
+                x++;
+            }
+            y++;
+            x = 0;
+        }
+        return colorMatrix;
     }
 
     /**
