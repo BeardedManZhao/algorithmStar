@@ -21,22 +21,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7477d7c5-ca5e-4751-9fa2-34246b9a09de" name="变更" comment="">
-      <change afterPath="$PROJECT_DIR$/../../src_code/update/1.20-1.22-Chinese.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../src_code/update/1.20-1.22.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../README-Chinese.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../README-Chinese.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/core/ComplexNumberFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/core/MatixFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/core/VectorFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../src_code/update/1.25_1.26-Chinese.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../src_code/update/1.25_1.26.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../src_code/README-Chinese.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../src_code/README-Chinese.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../src_code/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../src_code/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../src_code/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../src_code/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/MAIN1.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/MAIN1.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/algorithm/OperationAlgorithmManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/algorithm/OperationAlgorithmManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/io/OutputSparkDF.scala" beforeDir="false" afterPath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/io/OutputSparkDF.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/io/OutputSparkDFBuilder.scala" beforeDir="false" afterPath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/io/OutputSparkDFBuilder.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/core/AlgorithmStar.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/core/AlgorithmStar.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/operands/matrix/ColorMatrix.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/operands/matrix/ColorMatrix.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/operands/matrix/HashColorMatrix.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/operands/matrix/HashColorMatrix.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/operands/matrix/ImageMatrix.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/operands/matrix/ImageMatrix.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/operands/vector/SparkVector.scala" beforeDir="false" afterPath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/operands/vector/SparkVector.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/utils/ASIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/utils/ASIO.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,23 +61,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "last_opened_file_path": "G:/MyGithub/algorithmStar/AsLib/LibSrc",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "structure.view.defaults.are.configured": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;G:/MyGithub/algorithmStar/AsLib/LibSrc&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;structure.view.defaults.are.configured&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\MyGithub\algorithmStar\AsLib\LibSrc\ASHead" />
@@ -89,12 +86,12 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+    <configuration name="AsLib" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="AsLib" TARGET_NAME="AsLib" CONFIG_NAME="Debug">
       <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="AsLib" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="AsLib" TARGET_NAME="AsLib" CONFIG_NAME="Debug">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -134,6 +131,7 @@
       <workItem from="1679801835391" duration="10000" />
       <workItem from="1681020298756" duration="36000" />
       <workItem from="1693129744656" duration="56000" />
+      <workItem from="1704272783067" duration="119000" />
     </task>
     <servers />
   </component>

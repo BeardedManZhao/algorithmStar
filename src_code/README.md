@@ -8,149 +8,128 @@
 
 ### Update log:
 
-* Framework version: 1. 25-1. 26
-* For many serialization operations, serialization can be achieved through component methods. The IO component library
-  has already integrated components for serialization object IO, and the following is an example.
+* Framework version: 1. 26 - 1. 27
+* Starting from version 1.27, the AlgorithmStar portal class has also added support for creating operands, making some
+  creation operations simple and easy to use. You can use the portal class to achieve more convenient operand creation
+  operations.
+
+### 复数创建
 
 ```java
 package zhao.algorithmMagic;
 
-import zhao.algorithmMagic.io.*;
-import zhao.algorithmMagic.operands.table.FDataFrame;
-import zhao.algorithmMagic.operands.table.FinalCell;
-import zhao.algorithmMagic.operands.table.SFDataFrame;
-import zhao.algorithmMagic.operands.table.SingletonSeries;
-
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-
-public class MAIN1 {
-    public static void main(String[] args) throws IOException {
-//        System.out.println(OperationAlgorithmManager.VERSION);
-//        if (args.length > 0) {
-//            ASDynamicLibrary.addDllDir(new File(args[0]));
-//            System.out.println(OperationAlgorithmManager.getAlgorithmStarUrl());
-//        } else {
-//            System.out.println("感谢您的使用。");
-//        }
-
-
-        // 创建一个对象输出组件 TODO 首先需要创建对应的数据输出流
-        final OutputStream outputStream = new FileOutputStream("C:\\Users\\zhao\\Downloads\\test\\res");
-        // 然后开始构建组件
-        final OutputComponent outputComponent = OutputObject.builder()
-                // 在这里将数据流装载进去
-                .addOutputArg(OutputObjectBuilder.OUT_STREAM, new FinalCell<>(outputStream))
-                .create();
-        // 启动组件
-        if (outputComponent.open()) {
-            // 如果启动成功就创建一个 DF 对象
-            final FDataFrame select = SFDataFrame.select(
-                    SingletonSeries.parse("name", "age"), 1
-            );
-            select.insert("zhao", "20").insert("tang", "22")
-                    // 使用组件将 DF 对象输出
-                    .into_outComponent(outputComponent);
-        }
-        // 使用完毕就关闭组件
-        outputComponent.close();
-
-        // 当然，TODO 您也可以通过 InputObject 对象来实现反序列化。
-        //      如果您不习惯通过组件实现，也可以通过Java中的序列化方式来实现。
-        final InputComponent inputObject = InputObject.builder()
-                .addInputArg(InputObjectBuilder.IN_STREAM, new FinalCell<>(new FileInputStream("")))
-                .create();
-    }
-}
-
-```
-
-* Serializing through simple functions in DF objects_ In the file series of functions, some optimizations have been
-  made, which can receive a Boolean type parameter at the end to represent whether to use serialized output.
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.io.InputComponent;
-import zhao.algorithmMagic.io.InputObject;
-import zhao.algorithmMagic.io.InputObjectBuilder;
-import zhao.algorithmMagic.operands.table.DataFrame;
-import zhao.algorithmMagic.operands.table.FinalCell;
-import zhao.algorithmMagic.operands.table.SFDataFrame;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-
-public class MAIN1 {
-    public static void main(String[] args) throws IOException {
-        // 创建一个序列化数据输入组件
-        final InputComponent inputObject = InputObject.builder()
-                .addInputArg(InputObjectBuilder.IN_STREAM, new FinalCell<>(new FileInputStream("C:\\Users\\zhao\\Downloads\\test\\res")))
-                .create();
-        // 从其中获取到 DF 对象
-        final DataFrame dataFrame = SFDataFrame.builder(inputObject);
-        // 查看其中的数据 并通过最新的 简洁函数来实现序列化输出
-        dataFrame
-                // TODO into 函数的结尾参数为 true 代表二进制输出
-                .into_outfile("C:\\Users\\zhao\\Downloads\\test\\res1", true)
-                // 查看内容
-                .show();
-        // TODO 当然 into 函数的使用方式与之前一样，只是可以选择性的在结尾加上 true / false
-        //  如果最后不加布尔数值或者为 false 代表就是使用文本的方式来输出
-        dataFrame
-                .into_outfile("C:\\Users\\zhao\\Downloads\\test\\res2")
-                .into_outfile("C:\\Users\\zhao\\Downloads\\test\\res3", ",")
-                .into_outfile("C:\\Users\\zhao\\Downloads\\test\\res4", false);
-    }
-}
-```
-
-* Add a function to replace colors
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
-import zhao.algorithmMagic.operands.matrix.ColorMatrix;
-import zhao.algorithmMagic.operands.matrix.ImageMatrix;
-import zhao.algorithmMagic.utils.transformation.Transformation;
-
-import java.awt.*;
+import zhao.algorithmMagic.core.AlgorithmStar;
+import zhao.algorithmMagic.core.ComplexNumberFactory;
+import zhao.algorithmMagic.operands.ComplexNumber;
 
 public class MAIN1 {
     public static void main(String[] args) {
-        Color color = new Color(239, 216, 194);
+        // 使用 AS 门户类获取到复数工厂
+        final ComplexNumberFactory complexNumberFactory = AlgorithmStar.complexNumberFactory();
+        // 获取到第一个复数
+        final ComplexNumber parse1 = complexNumberFactory.parse("1 + 2i");
+        // 获取到第二个复数
+        final ComplexNumber parse2 = complexNumberFactory.parse(1, 2);
+        // 计算出两个的乘法
+        System.out.println(parse1.multiply(parse2));
+    }
+}
 
-        // 实例化图片
-        ColorMatrix parse = ImageMatrix.parse("C:\\Users\\zhao\\Desktop\\Test\\无标题.jpg");
-        parse.show("原图");
+```
 
-        // 进行颜色替换 将 标记的颜色做为被替换的颜色
-        parse = parse.colorReplace(
-                // 设置需要被替换的颜色
-                color,
-                // 设置替换操作进行时候的颜色转换逻辑 
-                (Transformation<ColorMatrix, Color>) colors -> {
-                    // 使用 RGB 的均值做为替换颜色
-                    return new Color(
-                            (int) colors.avg(ColorMatrix._R_),
-                            (int) colors.avg(ColorMatrix._G_),
-                            (int) colors.avg(ColorMatrix._B_)
-                    );
-                },
-                // 设置替换操作回调函数中接收到的范围
-                1024,
-                // 设置颜色阈值 与 color 颜色值的差小于此值代表需要替换 此值为 [0, 255]
-                32,
-                new IntegerCoordinateTwo(453, 195),
-                // 不使用拷贝，性能更好
-                false
+#### 向量创建
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.core.AlgorithmStar;
+import zhao.algorithmMagic.core.VectorFactory;
+import zhao.algorithmMagic.operands.vector.DoubleVector;
+import zhao.algorithmMagic.operands.vector.IntegerVector;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 使用 AS 门户类获取到向量工厂
+        final VectorFactory vectorFactory = AlgorithmStar.vectorFactory();
+        // 创建一个整形向量
+        final IntegerVector integerVector = vectorFactory.parseVector(
+                1, 2, 3, 4
         );
-        parse.show("替换之后的结果");
+        // 创建一个浮点向量
+        final DoubleVector doubleVector = vectorFactory.parseVector(
+                1.0, 2, 3, 4
+        );
+        System.out.println(integerVector);
+        System.out.println(doubleVector);
     }
 }
 ```
 
-### Version update date : 2023-12-15
+#### 矩阵创建
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.core.AlgorithmStar;
+import zhao.algorithmMagic.core.MatixFactory;
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
+import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 使用 AS 门户类获取到矩阵工厂
+        final MatixFactory matixFactory = AlgorithmStar.matixFactory();
+        // 创建一个整形矩阵
+        final IntegerMatrix integerMatrix = matixFactory.parseMatrix(
+                new int[]{1, 2, 3, 4},
+                new int[]{1, 2, 3, 4}
+        );
+        // 创建一个浮点矩阵
+        final DoubleMatrix doubleMatrix = matixFactory.parseMatrix(
+                new double[]{1, 2, 3, 4},
+                new double[]{1, 2, 3, 4}
+        );
+        System.out.println(integerMatrix);
+        System.out.println(doubleMatrix);
+    }
+}
+
+```
+
+#### ColorMatrix 构建
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.core.AlgorithmStar;
+import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+
+public class MAIN1 {
+    public static void main(String[] args) throws MalformedURLException {
+        // 准备一张图的 URL
+        final URL url = new URL("http://diskmirror.lingyuzhao.top/1/Binary/%E3%80%8AalgorithmStar%20%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%E7%9A%84%E5%B0%81%E9%9D%A2.jpg");
+        // 使用 AS 门户类将 URL 解析为 图片
+        final ColorMatrix colorMatrix = AlgorithmStar.matixFactory().parseImage(
+                // 设置图片矩阵的类型
+                ColorMatrix.class,
+                // 设置构造操作中需要使用的参数
+                new Object[]{
+                        // 第一个代表的是图片的URL 第二个代表的是图片的大小 在这里我们没有对图的大小进行设置
+                        // 就相当于是 ColorMatrix.parse(url) 或者 ColorMatrix.parse(url, new int[]{})
+                        // 不得不承认，在这里创建 比 使用 ColorMatrix 有些麻烦
+                        url, new int[]{}
+                },
+                // 设置构造操作中需要使用的每个参数的类型
+                new Class<?>[]{URL.class, int[].class},
+                false
+        );
+        colorMatrix.show("res");
+    }
+}
+
+```
+
+### Version update date : 2024-01-03
