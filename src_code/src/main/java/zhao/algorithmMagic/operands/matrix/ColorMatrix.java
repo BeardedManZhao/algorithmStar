@@ -605,15 +605,15 @@ public class ColorMatrix extends Matrix<ColorMatrix, Color, Color[], Color[], Co
         return parse(ASIO.parseURLGetColorArray(url, v));
     }
 
-
     /**
      * 将图像URL解析，并获取对应的图像矩阵
      *
      * @param url 需要被解析的URL对象
+     * @param v   矩阵中的图像的尺寸参数。
      * @return URL对象所对应的图像矩阵。
      */
-    public static ColorMatrix parseGrayscale(URL url) {
-        return GrayscaleColors(ASIO.parseURLGetColorArray(url));
+    public static ColorMatrix parseGrayscale(URL url, int... v) {
+        return GrayscaleColors(ASIO.parseURLGetColorArray(url, v));
     }
 
     /**
