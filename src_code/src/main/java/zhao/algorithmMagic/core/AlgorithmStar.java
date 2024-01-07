@@ -94,6 +94,18 @@ public final class AlgorithmStar<diffValue, featureReturn> {
     }
 
     /**
+     * 门户工厂类，在这里您可以创建出各种各样的数据对象，例如在这里创建向量等操作
+     * <p>
+     * Portal factory class, where you can create various data objects, such as creating vectors and other operations
+     *
+     * @return 分数工厂类
+     * @author 赵凌宇
+     */
+    public static FractionFactory fractionFactory() {
+        return new FractionFactory();
+    }
+
+    /**
      * 获取到算法之星门户类的单一对象，单一对象是惰性加载的方式，当您首次调用此函数的时候，算法之星门户类将会被创建。
      * <p>
      * Get a single object of the algorithm star portal class. The single object is a lazy loading method. When you first call this function, the algorithm star portal class will be created.
