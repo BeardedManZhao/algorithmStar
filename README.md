@@ -29,7 +29,7 @@ can add it to your maven project, or you can download it from Releases and manua
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>algorithmStar</artifactId>
-        <version>1.27</version>
+        <version>1.28</version>
     </dependency>
 </dependencies>
 ```
