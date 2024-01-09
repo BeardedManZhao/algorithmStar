@@ -5,7 +5,7 @@
 
     <groupId>io.github.BeardedManZhao</groupId>
     <artifactId>algorithmStar</artifactId>
-    <version>1.27</version>
+    <version>1.28</version>
     <packaging>jar</packaging>
     <name>algorithmStar</name>
     <description>algorithmStar-java</description>
@@ -33,6 +33,13 @@
 
 
     <dependencies>
+
+        <!-- 此依赖用来进行帮助信息的查阅 -->
+        <dependency>
+            <groupId>io.github.BeardedManZhao</groupId>
+            <artifactId>gravel-Grammar</artifactId>
+            <version>1.0.20230927</version>
+        </dependency>
 
         <!-- 使用 log4j2 的适配器进行绑定 -->
         <dependency>

@@ -7,126 +7,72 @@
   </a>
 
 ### 更新日志
-* 框架版本：1.26 - 1.27
-* 从 1.27 版本开始，AlgorithmStar 门户类中也添加了针对操作数的创建支持，让一些创建操作变的简单且易用，您可以搭配着门户类实现更方便的操作数创建操作。
 
-### 复数创建
+* 框架版本：1.27 - 1.28
+* 新增分数操作数计算组件，支持对于分数操作数的创建以及计算操作
 
 ```java
 package zhao.algorithmMagic;
 
 import zhao.algorithmMagic.core.AlgorithmStar;
-import zhao.algorithmMagic.core.ComplexNumberFactory;
-import zhao.algorithmMagic.operands.ComplexNumber;
+import zhao.algorithmMagic.core.FractionFactory;
+import zhao.algorithmMagic.operands.fraction.Fraction;
 
 public class MAIN1 {
     public static void main(String[] args) {
-        // 使用 AS 门户类获取到复数工厂
-        final ComplexNumberFactory complexNumberFactory = AlgorithmStar.complexNumberFactory();
-        // 获取到第一个复数
-        final ComplexNumber parse1 = complexNumberFactory.parse("1 + 2i");
-        // 获取到第二个复数
-        final ComplexNumber parse2 = complexNumberFactory.parse(1, 2);
-        // 计算出两个的乘法
+        // 获取分数操作数工厂
+        final FractionFactory fractionFactory = AlgorithmStar.fractionFactory();
+        // 准备三个操作数
+        final Fraction parse1 = fractionFactory.parse(1, 2);
+        final Fraction parse2 = fractionFactory.parse(2);
+        final Fraction parse3 = fractionFactory.parse("1 / 2");
+
+        System.out.println("打印三个分数");
+        System.out.println(parse1);
+        System.out.println(parse2);
+        System.out.println(parse3);
+
+        System.out.println("全部通分 分别将分母变为 10 5 1 在这里我们将第一个分数保存一下 稍后用于约分");
+        final Fraction cf1 = parse1.cf(10);
+        System.out.println(cf1);
+        System.out.println(parse2.cf(5));
+        System.out.println(parse3.cf(1));
+
+        System.out.println("将被通分的 cf1 进行约分 不出意外的话 这里打印的值为 1 / 2");
+        System.out.println(cf1.simplify());
+
+        System.out.println("在这里将 parse1 以及 parse2 进行加减乘除计算");
+        System.out.println(parse1.add(parse2));
+        System.out.println(parse1.diff(parse2));
         System.out.println(parse1.multiply(parse2));
+        System.out.println(parse1.divide(parse2));
+
+        System.out.println("在这里将 parse1 做为Java中的数值类型进行使用");
+        System.out.println(parse1.doubleValue());
     }
 }
-
 ```
 
-#### 向量创建
+* 新增帮助信息的获取，您可以直接通过下面的方式获取到帮助文档，其中有更全的API说明
 
 ```java
 package zhao.algorithmMagic;
 
 import zhao.algorithmMagic.core.AlgorithmStar;
-import zhao.algorithmMagic.core.VectorFactory;
-import zhao.algorithmMagic.operands.vector.DoubleVector;
-import zhao.algorithmMagic.operands.vector.IntegerVector;
+import zhao.algorithmMagic.core.HelpFactory;
 
 public class MAIN1 {
     public static void main(String[] args) {
-        // 使用 AS 门户类获取到向量工厂
-        final VectorFactory vectorFactory = AlgorithmStar.vectorFactory();
-        // 创建一个整形向量
-        final IntegerVector integerVector = vectorFactory.parseVector(
-                1, 2, 3, 4
+        // 获取帮助信息工厂类
+        final HelpFactory helpFactory = AlgorithmStar.helpFactory();
+        // 下载帮助文档 到 C:\Users\zhao\Desktop\fsdownload 目录中
+        final String path = helpFactory.saveHelpFile(
+                HelpFactory.ALL,
+                "C:\\Users\\zhao\\Desktop\\fsdownload"
         );
-        // 创建一个浮点向量
-        final DoubleVector doubleVector = vectorFactory.parseVector(
-                1.0, 2, 3, 4
-        );
-        System.out.println(integerVector);
-        System.out.println(doubleVector);
+        System.out.println("文件已保存到：" + path);
     }
 }
 ```
 
-#### 矩阵创建
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.core.AlgorithmStar;
-import zhao.algorithmMagic.core.MatixFactory;
-import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
-import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
-
-public class MAIN1 {
-    public static void main(String[] args) {
-        // 使用 AS 门户类获取到矩阵工厂
-        final MatixFactory matixFactory = AlgorithmStar.matixFactory();
-        // 创建一个整形矩阵
-        final IntegerMatrix integerMatrix = matixFactory.parseMatrix(
-                new int[]{1, 2, 3, 4},
-                new int[]{1, 2, 3, 4}
-        );
-        // 创建一个浮点矩阵
-        final DoubleMatrix doubleMatrix = matixFactory.parseMatrix(
-                new double[]{1, 2, 3, 4},
-                new double[]{1, 2, 3, 4}
-        );
-        System.out.println(integerMatrix);
-        System.out.println(doubleMatrix);
-    }
-}
-
-```
-
-#### ColorMatrix 构建
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.core.AlgorithmStar;
-import zhao.algorithmMagic.operands.matrix.ColorMatrix;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-
-public class MAIN1 {
-    public static void main(String[] args) throws MalformedURLException {
-        // 准备一张图的 URL
-        final URL url = new URL("http://diskmirror.lingyuzhao.top/1/Binary/%E3%80%8AalgorithmStar%20%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E3%80%8B%E7%9A%84%E5%B0%81%E9%9D%A2.jpg");
-        // 使用 AS 门户类将 URL 解析为 图片
-        final ColorMatrix colorMatrix = AlgorithmStar.matixFactory().parseImage(
-                // 设置图片矩阵的类型
-                ColorMatrix.class,
-                // 设置构造操作中需要使用的参数
-                new Object[]{
-                        // 第一个代表的是图片的URL 第二个代表的是图片的大小 在这里我们没有对图的大小进行设置
-                        // 就相当于是 ColorMatrix.parse(url) 或者 ColorMatrix.parse(url, new int[]{})
-                        // 不得不承认，在这里创建 比 使用 ColorMatrix 有些麻烦
-                        url, new int[]{}
-                },
-                // 设置构造操作中需要使用的每个参数的类型
-                new Class<?>[]{URL.class, int[].class},
-                false
-        );
-        colorMatrix.show("res");
-    }
-}
-
-```
-
-### Version update date : 2024-01-03
+### Version update date : 2024-01-09

@@ -23,7 +23,7 @@ AS库目录有多个版本，如果希望查询不同版本的更新日志以及
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>algorithmStar</artifactId>
-        <version>1.27</version>
+        <version>1.28</version>
     </dependency>
 </dependencies>
 ```
@@ -113,6 +113,26 @@ AS库在针对数据库，Spark等各种平台对接的时候，需要使用到�
 ```
 
 ## API使用示例
+
+### 下载所有帮助文档
+
+您可以在加载好 AS 库之后，使用下面的代码将所有帮助文档下载到本地，其中有一些示例代码，引导您进行使用，您可以根据自己的需求进行修改。
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.core.AlgorithmStar;
+import zhao.algorithmMagic.core.HelpFactory;
+
+public class MAIN1 {
+  public static void main(String[] args) {
+    // 获取帮助信息工厂类
+    final HelpFactory helpFactory = AlgorithmStar.helpFactory();
+    // 下载帮助文档 到 C:\Users\zhao\Desktop\fsdownload 目录中
+    helpFactory.saveHelpFile(HelpFactory.ALL, "C:\\Users\\zhao\\Desktop\\fsdownload");
+  }
+}
+```
 
 ### 特征计算算法组件
 

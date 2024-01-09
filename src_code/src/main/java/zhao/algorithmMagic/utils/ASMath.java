@@ -2315,4 +2315,19 @@ public final class ASMath {
         }
         return res;
     }
+
+    /**
+     * 计算两个数的最大公约数。
+     *
+     * @param a 被计算的数值1
+     * @param b 被计算的数值2
+     * @return 最大公约数
+     */
+    public static double gcd(double a, double b) {
+        if (b == 0) {
+            return a;
+        } else {
+            return gcd(b, a % b);
+        }
+    }
 }
