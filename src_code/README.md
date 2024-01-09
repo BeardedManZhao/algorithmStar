@@ -7,7 +7,6 @@
   </a>
 
 ### Update log:
-
 * Framework version: 1.27 - 1.28
 * New component for calculating fraction operands, supporting the creation and calculation of fraction operands
 
