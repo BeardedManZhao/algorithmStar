@@ -129,6 +129,26 @@ need to, you can refer to the following configuration.
 
 ## Use API examples
 
+### Download help documents
+
+After loading the AS library, you can use the following code to download all the help documents to your local computer. There are some sample codes to guide you in using them, and you can make modifications according to your own needs.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.core.AlgorithmStar;
+import zhao.algorithmMagic.core.HelpFactory;
+
+public class MAIN1 {
+  public static void main(String[] args) {
+    // 获取帮助信息工厂类
+    final HelpFactory helpFactory = AlgorithmStar.helpFactory();
+    // 下载帮助文档 到 C:\Users\zhao\Desktop\fsdownload 目录中
+    helpFactory.saveHelpFile(HelpFactory.ALL, "C:\\Users\\zhao\\Desktop\\fsdownload");
+  }
+}
+```
+
 ### Feature calculation algorithm component
 
 Feature computing components are often used in feature engineering, and are the main force of computing in machine

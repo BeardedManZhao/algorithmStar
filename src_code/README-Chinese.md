@@ -53,4 +53,26 @@ public class MAIN1 {
 }
 ```
 
-### Version update date : 2024-xx-xx
+* 新增帮助信息的获取，您可以直接通过下面的方式获取到帮助文档，其中有更全的API说明
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.core.AlgorithmStar;
+import zhao.algorithmMagic.core.HelpFactory;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        // 获取帮助信息工厂类
+        final HelpFactory helpFactory = AlgorithmStar.helpFactory();
+        // 下载帮助文档 到 C:\Users\zhao\Desktop\fsdownload 目录中
+        final String path = helpFactory.saveHelpFile(
+                HelpFactory.ALL,
+                "C:\\Users\\zhao\\Desktop\\fsdownload"
+        );
+        System.out.println("文件已保存到：" + path);
+    }
+}
+```
+
+### Version update date : 2024-01-09

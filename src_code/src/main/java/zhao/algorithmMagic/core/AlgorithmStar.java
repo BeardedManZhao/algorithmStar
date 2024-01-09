@@ -106,6 +106,15 @@ public final class AlgorithmStar<diffValue, featureReturn> {
     }
 
     /**
+     * 获取到库帮助类
+     *
+     * @return 库帮助类
+     */
+    public static HelpFactory helpFactory() {
+        return new HelpFactory();
+    }
+
+    /**
      * 获取到算法之星门户类的单一对象，单一对象是惰性加载的方式，当您首次调用此函数的时候，算法之星门户类将会被创建。
      * <p>
      * Get a single object of the algorithm star portal class. The single object is a lazy loading method. When you first call this function, the algorithm star portal class will be created.

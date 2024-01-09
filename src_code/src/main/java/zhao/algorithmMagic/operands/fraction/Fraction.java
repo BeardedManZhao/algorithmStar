@@ -255,9 +255,10 @@ public class Fraction extends Number implements Operands<Fraction> {
 
     /**
      * 反转分数 反转分数中的分子和分母
+     *
      * @return 反转成功的分子和分母
      */
-    public Fraction reversal(){
+    public Fraction reversal() {
         return Fraction.parse(this.getDenominator(), this.getMolecule());
     }
 
