@@ -31,4 +31,65 @@ public class MAIN {
 }
 ```
 
-### Version update date : 2024-01-09
+* For matrix factories, some creation methods have been added, allowing you to directly parse sparse matrices through
+  the factory class. Of course, this operation is also supported in versions before 1.29!!!
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.core.AlgorithmStar;
+import zhao.algorithmMagic.core.MatrixFactory;
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
+import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        final MatrixFactory matrixFactory = AlgorithmStar.matrixFactory();
+        // 通过 工厂类 以及稀疏矩阵的方式创建两个矩阵
+        final IntegerMatrix integerMatrix = matrixFactory.sparseMatrix(
+                // 在坐标 (2,3) 的位置创建一个元素 1
+                new int[]{1, 2, 3},
+                // 在坐标 (1,2) 的位置创建一个元素 2
+                new int[]{2, 1, 2}
+        );
+        final DoubleMatrix doubleMatrix = matrixFactory.sparseMatrix(
+                // 在坐标 (2,3) 的位置创建一个元素 1
+                new double[]{1, 2, 3},
+                // 在坐标 (1,2) 的位置创建一个元素 2
+                new double[]{2, 1, 2}
+        );
+        System.out.println(integerMatrix);
+        System.out.println(doubleMatrix);
+    }
+}
+```
+
+* You can also use a matrix factory to fill and randomly create a matrix.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.core.AlgorithmStar;
+import zhao.algorithmMagic.core.MatrixFactory;
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
+import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        final MatrixFactory matrixFactory = AlgorithmStar.matrixFactory();
+        // 通过 工厂类 以及稀疏矩阵的方式创建两个矩阵 4行5列 元素全是 2
+        final IntegerMatrix integerMatrix = matrixFactory.fill(2, 4, 5);
+        final DoubleMatrix doubleMatrix = matrixFactory.fill(2.0, 4, 5);
+        System.out.println(integerMatrix);
+        System.out.println(doubleMatrix);
+        // 使用随机的方式创建矩阵
+        final IntegerMatrix integerMatrix1 = matrixFactory.randomGetInt(4, 5, 100);
+        final DoubleMatrix doubleMatrix1 = matrixFactory.randomGetDouble(4, 5, 100);
+        System.out.println(integerMatrix1);
+        System.out.println(doubleMatrix1);
+    }
+}
+
+```
+
+### Version update date : 2024-01-13
