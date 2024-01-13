@@ -671,6 +671,7 @@ public class IntegerVector extends ASVector<IntegerVector, Integer, int[]> {
             return IntegerVector.parse(ASMath.arrayReverse(this.copyToNewArray()));
         } else {
             ASMath.arrayReverse(this.toArray());
+            reFresh();
             return this;
         }
     }

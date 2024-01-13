@@ -7,72 +7,88 @@
   </a>
 
 ### Update log:
-* Framework version: 1.27 - 1.28
-* New component for calculating fraction operands, supporting the creation and calculation of fraction operands
+* Framework version: 1.28 - 1.29
+* Fix the issue of incorrect printed data when performing non copy inversion operations in vectors. This is because the
+  data inside the vector is not automatically refreshed. Version 1.29 has resolved this issue!
 
 ```java
-package zhao.algorithmMagic;
+package com.zhao;
 
 import zhao.algorithmMagic.core.AlgorithmStar;
-import zhao.algorithmMagic.core.FractionFactory;
-import zhao.algorithmMagic.operands.fraction.Fraction;
+import zhao.algorithmMagic.core.VectorFactory;
+import zhao.algorithmMagic.operands.vector.IntegerVector;
 
-public class MAIN1 {
+public class MAIN {
     public static void main(String[] args) {
-        // 获取分数操作数工厂
-        final FractionFactory fractionFactory = AlgorithmStar.fractionFactory();
-        // 准备三个操作数
-        final Fraction parse1 = fractionFactory.parse(1, 2);
-        final Fraction parse2 = fractionFactory.parse(2);
-        final Fraction parse3 = fractionFactory.parse("1 / 2");
-
-        System.out.println("打印三个分数");
-        System.out.println(parse1);
-        System.out.println(parse2);
-        System.out.println(parse3);
-
-        System.out.println("全部通分 分别将分母变为 10 5 1 在这里我们将第一个分数保存一下 稍后用于约分");
-        final Fraction cf1 = parse1.cf(10);
-        System.out.println(cf1);
-        System.out.println(parse2.cf(5));
-        System.out.println(parse3.cf(1));
-
-        System.out.println("将被通分的 cf1 进行约分 不出意外的话 这里打印的值为 1 / 2");
-        System.out.println(cf1.simplify());
-
-        System.out.println("在这里将 parse1 以及 parse2 进行加减乘除计算");
-        System.out.println(parse1.add(parse2));
-        System.out.println(parse1.diff(parse2));
-        System.out.println(parse1.multiply(parse2));
-        System.out.println(parse1.divide(parse2));
-
-        System.out.println("在这里将 parse1 做为Java中的数值类型进行使用");
-        System.out.println(parse1.doubleValue());
+        // 创建向量对象
+        final VectorFactory vectorFactory = AlgorithmStar.vectorFactory();
+        final IntegerVector integerVector = vectorFactory.parseVector(1, 2, 43, 4);
+        // 向量整体反转 这里的参数代表的就是是否需要在拷贝的新向量中进行转换 1.28 以及 1.28 之前的版本
+        // 打印出的字符串不太正确 1.29版本中会修复此问题
+        System.out.println(integerVector.reverseLR(false));
     }
 }
 ```
 
-* To obtain new help information, you can directly obtain the help document through the following methods, which
-  includes more comprehensive API instructions
+* For matrix factories, some creation methods have been added, allowing you to directly parse sparse matrices through
+  the factory class. Of course, this operation is also supported in versions before 1.29!!!
 
 ```java
 package zhao.algorithmMagic;
 
 import zhao.algorithmMagic.core.AlgorithmStar;
-import zhao.algorithmMagic.core.HelpFactory;
+import zhao.algorithmMagic.core.MatrixFactory;
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
+import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
 
 public class MAIN1 {
     public static void main(String[] args) {
-        // 获取帮助信息工厂类
-        final HelpFactory helpFactory = AlgorithmStar.helpFactory();
-        // 下载帮助文档 到 C:\Users\zhao\Desktop\fsdownload 目录中
-        final String path = helpFactory.saveHelpFile(
-                HelpFactory.ALL,
-                "C:\\Users\\zhao\\Desktop\\fsdownload"
+        final MatrixFactory matrixFactory = AlgorithmStar.matrixFactory();
+        // 通过 工厂类 以及稀疏矩阵的方式创建两个矩阵
+        final IntegerMatrix integerMatrix = matrixFactory.sparseMatrix(
+                // 在坐标 (2,3) 的位置创建一个元素 1
+                new int[]{1, 2, 3},
+                // 在坐标 (1,2) 的位置创建一个元素 2
+                new int[]{2, 1, 2}
         );
-        System.out.println("文件已保存到：" + path);
+        final DoubleMatrix doubleMatrix = matrixFactory.sparseMatrix(
+                // 在坐标 (2,3) 的位置创建一个元素 1
+                new double[]{1, 2, 3},
+                // 在坐标 (1,2) 的位置创建一个元素 2
+                new double[]{2, 1, 2}
+        );
+        System.out.println(integerMatrix);
+        System.out.println(doubleMatrix);
     }
 }
 ```
 
-### Version update date : 2024-01-09
+* You can also use a matrix factory to fill and randomly create a matrix.
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.core.AlgorithmStar;
+import zhao.algorithmMagic.core.MatrixFactory;
+import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
+import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
+
+public class MAIN1 {
+    public static void main(String[] args) {
+        final MatrixFactory matrixFactory = AlgorithmStar.matrixFactory();
+        // 通过 工厂类 以及稀疏矩阵的方式创建两个矩阵 4行5列 元素全是 2
+        final IntegerMatrix integerMatrix = matrixFactory.fill(2, 4, 5);
+        final DoubleMatrix doubleMatrix = matrixFactory.fill(2.0, 4, 5);
+        System.out.println(integerMatrix);
+        System.out.println(doubleMatrix);
+        // 使用随机的方式创建矩阵
+        final IntegerMatrix integerMatrix1 = matrixFactory.randomGetInt(4, 5, 100);
+        final DoubleMatrix doubleMatrix1 = matrixFactory.randomGetDouble(4, 5, 100);
+        System.out.println(integerMatrix1);
+        System.out.println(doubleMatrix1);
+    }
+}
+
+```
+
+### Version update date : 2024-01-13

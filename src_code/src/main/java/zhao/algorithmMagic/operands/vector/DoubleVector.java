@@ -713,6 +713,7 @@ public class DoubleVector extends ASVector<DoubleVector, Double, double[]> {
             return DoubleVector.parse(ASMath.arrayReverse(this.copyToNewArray()));
         } else {
             ASMath.arrayReverse(this.toArray());
+            reFresh();
             return this;
         }
     }

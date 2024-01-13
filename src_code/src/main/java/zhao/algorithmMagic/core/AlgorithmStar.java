@@ -77,8 +77,8 @@ public final class AlgorithmStar<diffValue, featureReturn> {
      * @return 矩阵工厂类
      * @author 赵凌宇
      */
-    public static MatixFactory matixFactory() {
-        return new MatixFactory();
+    public static MatrixFactory matrixFactory() {
+        return new MatrixFactory();
     }
 
     /**

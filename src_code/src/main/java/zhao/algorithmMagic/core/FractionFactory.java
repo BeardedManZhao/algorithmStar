@@ -14,12 +14,12 @@ public class FractionFactory {
      * <p>
      * You can parse out a fraction object without passing the denominator, where the denominator will be set to 1
      *
-     * @param molecule 分子的数值
-     *                 <p>
-     *                 Numeric values of molecules
-     * @param denominator  分母的数值
-     *                     <p>
-     *                     Numeric values of denominators
+     * @param molecule    分子的数值
+     *                    <p>
+     *                    Numeric values of molecules
+     * @param denominator 分母的数值
+     *                    <p>
+     *                    Numeric values of denominators
      * @return 解析出来的分数对象
      * <p>
      * Parse out a score object
