@@ -7,7 +7,6 @@
   </a>
 
 ### Update log:
-
 * Framework version: 1.28 - 1.29
 * Fix the issue of incorrect printed data when performing non copy inversion operations in vectors. This is because the
   data inside the vector is not automatically refreshed. Version 1.29 has resolved this issue!
