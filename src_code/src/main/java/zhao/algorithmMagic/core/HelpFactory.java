@@ -23,8 +23,17 @@ public class HelpFactory {
 
     /**
      * 获取到所有有关 AS 机器学习库的信息
+     * <p>
+     * Obtain all information about the AS machine learning library
      */
     public static final String ALL = "http://diskmirror.lingyuzhao.top/23/Binary/algorithmStar-Document" + OperationAlgorithmManager.VERSION + ".pdf";
+
+    /**
+     * 备用的 AS 机器学习库信息获取，与 ALL 一样 但是做为一个备选，当 ALL 无法使用的情况下可以调用
+     * <p>
+     * Backup AS machine learning library information acquisition, similar to ALL, but as an alternative, can be called when ALL is unavailable
+     */
+    public static final String ALL_BACK = "https://github.com/BeardedManZhao/algorithmStar/releases/download/" + OperationAlgorithmManager.VERSION + "/algorithmStar-Document" + OperationAlgorithmManager.VERSION + ".pdf";
 
     // 构造语法树
     private static final CommandCallback help;
@@ -71,11 +80,19 @@ public class HelpFactory {
     public String saveHelpFile(String type, String outDir) {
         try {
             final String path = outDir + "/algorithmStar-Document" + OperationAlgorithmManager.VERSION + ".pdf";
-            IOUtils.copy(
-                    (InputStream) help.run("AlgorithmStar", "type", type),
-                    new FileOutputStream(path),
-                    true
-            );
+            try {
+                IOUtils.copy(
+                        (InputStream) help.run("AlgorithmStar", "type", type),
+                        new FileOutputStream(path),
+                        true
+                );
+            } catch (UnsupportedOperationException e) {
+                IOUtils.copy(
+                        (InputStream) help.run("AlgorithmStar", "type", ALL_BACK),
+                        new FileOutputStream(path),
+                        true
+                );
+            }
             return path;
         } catch (IOException e) {
             throw new UnsupportedOperationException("帮助信息获取失败!", e);
