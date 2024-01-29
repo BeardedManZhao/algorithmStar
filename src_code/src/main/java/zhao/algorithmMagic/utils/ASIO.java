@@ -36,7 +36,7 @@ public final class ASIO {
      */
     public static boolean outImage(BufferedImage image, String outPath) {
         try {
-            ImageIO.write(image, "JPEG", new File(outPath));
+            ImageIO.write(image, outPath.substring(outPath.lastIndexOf(".") + 1).toUpperCase(), new File(outPath));
             return true;
         } catch (IOException e) {
             LOGGER.error("ERROR", e);

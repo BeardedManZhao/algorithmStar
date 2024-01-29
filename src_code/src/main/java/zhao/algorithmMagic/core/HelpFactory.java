@@ -26,7 +26,7 @@ public class HelpFactory {
      * <p>
      * Obtain all information about the AS machine learning library
      */
-    public static final String ALL = "http://diskmirror.lingyuzhao.top/23/Binary/algorithmStar-Document" + OperationAlgorithmManager.VERSION + ".pdf";
+    public static final String ALL = "http://diskmirror.lingyuzhao.top/23/Binary/algorithmStar_doc/algorithmStar-Document" + OperationAlgorithmManager.VERSION + ".pdf";
 
     /**
      * 备用的 AS 机器学习库信息获取，与 ALL 一样 但是做为一个备选，当 ALL 无法使用的情况下可以调用

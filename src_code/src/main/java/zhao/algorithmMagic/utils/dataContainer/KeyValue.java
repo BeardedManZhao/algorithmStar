@@ -22,4 +22,12 @@ public final class KeyValue<k, v> implements Serializable {
     public v getValue() {
         return value;
     }
+
+    @Override
+    public String toString() {
+        return '{' +
+                "key:\"" + key +
+                "\", value:\"" + value +
+                "\"}";
+    }
 }

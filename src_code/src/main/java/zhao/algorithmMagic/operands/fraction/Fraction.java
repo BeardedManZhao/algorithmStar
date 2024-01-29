@@ -8,6 +8,8 @@ import java.util.Arrays;
 
 /**
  * 分数 操作数类型 在这里支持分母与分子之间的计算操作
+ * <p>
+ * The fraction operand type supports calculation operations between denominators and numerators here
  *
  * @author zhao
  */
