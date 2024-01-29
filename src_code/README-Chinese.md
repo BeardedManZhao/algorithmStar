@@ -145,4 +145,14 @@ public class MAIN1 {
 
 ```
 
+* 内置的单位数值类
+
+| 类路径                                           | 名称      | 加入版本  | 支持计算 |
+|-----------------------------------------------|---------|-------|------|
+| zhao.algorithmMagic.operands.unit.BaseValue   | 基础单位数值类 | v1.30 | yes  |
+| zhao.algorithmMagic.operands.unit.DataValue   | 数据单位数值类 | v1.30 | yes  |
+| zhao.algorithmMagic.operands.unit.VolumeValue | 容量单位数值类 | v1.30 | yes  |
+| zhao.algorithmMagic.operands.unit.WeightValue | 重量单位数值类 | v1.30 | yes  |
+
+
 ### Version update date : 2024-01-30

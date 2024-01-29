@@ -61,7 +61,7 @@ public class HelpFactory {
                                         } catch (FileNotFoundException e) {
                                             throw new UnsupportedOperationException("帮助文档的链接似乎失效了！您可以给 liming7887@qq.com 发送邮件进行咨询!", e);
                                         } catch (IOException e) {
-                                            throw new UnsupportedOperationException(e);
+                                            throw new UnsupportedOperationException(orDefault.toString(), e);
                                         }
                                     }
                                 })
