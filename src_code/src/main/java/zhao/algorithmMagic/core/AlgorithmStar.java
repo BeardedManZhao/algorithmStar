@@ -29,6 +29,7 @@ import zhao.algorithmMagic.operands.table.DataFrame;
 import zhao.algorithmMagic.operands.table.DataFrameBuilder;
 import zhao.algorithmMagic.operands.table.FDataFrame;
 import zhao.algorithmMagic.operands.table.SFDataFrame;
+import zhao.algorithmMagic.operands.unit.BaseValue;
 import zhao.algorithmMagic.operands.vector.*;
 import zhao.algorithmMagic.utils.filter.ArrayDoubleFiltering;
 import zhao.algorithmMagic.utils.filter.ArrayIntegerFiltering;
@@ -103,6 +104,22 @@ public final class AlgorithmStar<diffValue, featureReturn> {
      */
     public static FractionFactory fractionFactory() {
         return new FractionFactory();
+    }
+
+    /**
+     * 获取到单位数值对象的工厂类对象
+     * <p>
+     * Obtain the factory class object of the unit value object
+     *
+     * @param baseValueClass 工厂要建造的单位数值类型，例如：BaseValue.class
+     *                       <p>
+     *                       The numerical type of unit to be constructed by the factory, for example: BaseValue. class
+     * @return 单位数值工厂类，您可以直接通过此工厂获取到数值
+     * <p>
+     * Unit value factory class, you can directly obtain values through this factory
+     */
+    public static BaseValueFactory baseValueFactory(Class<? extends BaseValue> baseValueClass) {
+        return new BaseValueFactory(baseValueClass);
     }
 
     /**

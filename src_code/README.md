@@ -7,88 +7,153 @@
   </a>
 
 ### Update log:
-* Framework version: 1.28 - 1.29
-* Fix the issue of incorrect printed data when performing non copy inversion operations in vectors. This is because the
-  data inside the vector is not automatically refreshed. Version 1.29 has resolved this issue!
 
-```java
-package com.zhao;
-
-import zhao.algorithmMagic.core.AlgorithmStar;
-import zhao.algorithmMagic.core.VectorFactory;
-import zhao.algorithmMagic.operands.vector.IntegerVector;
-
-public class MAIN {
-    public static void main(String[] args) {
-        // 创建向量对象
-        final VectorFactory vectorFactory = AlgorithmStar.vectorFactory();
-        final IntegerVector integerVector = vectorFactory.parseVector(1, 2, 43, 4);
-        // 向量整体反转 这里的参数代表的就是是否需要在拷贝的新向量中进行转换 1.28 以及 1.28 之前的版本
-        // 打印出的字符串不太正确 1.29版本中会修复此问题
-        System.out.println(integerVector.reverseLR(false));
-    }
-}
-```
-
-* For matrix factories, some creation methods have been added, allowing you to directly parse sparse matrices through
-  the factory class. Of course, this operation is also supported in versions before 1.29!!!
+* Framework version: 1.29 - 1.30
+* Add unit value operands, which can achieve basic calculations and also achieve calculation effects with units. They also have unit conversion operations and allow custom units!!!
+  * Built in BaseValue class, it can implement addition, subtraction, multiplication, and division operations, and also supports conversion of unit values, which can be directly used
 
 ```java
 package zhao.algorithmMagic;
 
 import zhao.algorithmMagic.core.AlgorithmStar;
-import zhao.algorithmMagic.core.MatrixFactory;
-import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
-import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
+import zhao.algorithmMagic.core.BaseValueFactory;
+import zhao.algorithmMagic.operands.unit.BaseValue;
+
+import java.net.MalformedURLException;
 
 public class MAIN1 {
     public static void main(String[] args) {
-        final MatrixFactory matrixFactory = AlgorithmStar.matrixFactory();
-        // 通过 工厂类 以及稀疏矩阵的方式创建两个矩阵
-        final IntegerMatrix integerMatrix = matrixFactory.sparseMatrix(
-                // 在坐标 (2,3) 的位置创建一个元素 1
-                new int[]{1, 2, 3},
-                // 在坐标 (1,2) 的位置创建一个元素 2
-                new int[]{2, 1, 2}
-        );
-        final DoubleMatrix doubleMatrix = matrixFactory.sparseMatrix(
-                // 在坐标 (2,3) 的位置创建一个元素 1
-                new double[]{1, 2, 3},
-                // 在坐标 (1,2) 的位置创建一个元素 2
-                new double[]{2, 1, 2}
-        );
-        System.out.println(integerMatrix);
-        System.out.println(doubleMatrix);
+        // 构建一个用来创建 BaseValue.class 的工厂类 TODO 这里的类型可以是其它的 但是要确保是 BaseValue 的子类
+        final BaseValueFactory baseValueFactory = AlgorithmStar.baseValueFactory(BaseValue.class);
+        // 获取到数值
+        final BaseValue number_1 = baseValueFactory.parse(200);
+        System.out.println("number_1 = " + number_1);
+        final BaseValue number_2 = baseValueFactory.parse(1024);
+        System.out.println("number_2 = " + number_2);
+
+        // 基本的运算演示
+        System.out.println("============");
+        System.out.println(number_2 + " + " + number_1 + " = " + number_1.add(number_2));
+        System.out.println(number_2 + " + " + 2 + number_2.getNowBase().getValue() + " = " + number_2.add(2));
+
+        System.out.println("============");
+        System.out.println(number_2 + " - " + number_1 + " = " + number_1.diff(number_2));
+        System.out.println(number_2 + " - " + 2 + number_2.getNowBase().getValue() + " = " + number_2.diff(2));
+
+        System.out.println("============");
+        System.out.println(number_2 + " * " + number_1 + " = " + number_1.multiply(number_2));
+        System.out.println(number_2 + " * " + 2 + number_2.getNowBase().getValue() + " = " + number_2.multiply(2));
+
+        System.out.println("============");
+        System.out.println(number_2 + " / " + number_1 + " = " + number_1.divide(number_2));
+        System.out.println(number_2 + " / " + 2 + number_2.getNowBase().getValue() + " = " + number_2.divide(2));
+
+        // 将 1.024千 转换为 10.24百 和 0.1024 万
+        System.out.println("============");
+        System.out.println(number_2.switchUnits("百"));
+        System.out.println(number_2.switchUnits("万"));
     }
 }
+
 ```
 
-* You can also use a matrix factory to fill and randomly create a matrix.
+* If you need to customize the unit, you can directly inherit the BaseValue class and annotate it with BaseUnit annotation. Below is a basic instance (the following class has also been added to the AS library)
+  * Inherit BaseValue and rewrite the static parse function
+  * Annotate BaseUnit to set units and base values in it
+
+```java
+package zhao.algorithmMagic.operands.unit;
+
+import zhao.algorithmMagic.utils.dataContainer.KeyValue;
+
+/**
+ * 重量单位数值，在这里可以直接使用重量相关的单位！
+ *
+ * Weight unit value, weight related units can be directly used here!
+ * @author zhao
+ */
+@BaseUnit(value = {
+        "t（吨）", "kg（千克）", "g（克）", "mg（毫克）", "ug（微克）", "ng（纳克）", "pg（皮克）", "fg（飞克）"
+}, baseValue = 1000)
+public class WeightValue extends BaseValue {
+
+    protected WeightValue(double valueNumber, Class<? extends BaseValue> c, KeyValue<Integer, String> baseNameKeyValue) {
+        super(valueNumber, c, baseNameKeyValue);
+    }
+
+    /**
+     * @param valueNumber 需要被解析的数值
+     *                    <p>
+     *                    Value that needs to be parsed
+     * @return 解析之后的单位数值对象
+     * <p>
+     * Parsed Unit Value Object
+     */
+    public static BaseValue parse(double valueNumber) {
+        return parse(valueNumber, null);
+    }
+
+    /**
+     * @param valueNumber      需要被解析的数值
+     *                         <p>
+     *                         Value that needs to be parsed
+     * @param baseNameKeyValue 单位的键值对，如果您需要指定数值的单位，您可以在这里进行指定，如果您不需要可以直接设置为 null，请注意 如果您不设置为null 此操作将不会对数值进行任何化简.
+     *                         <p>
+     *                         The key value pairs of units. If you need to specify the unit of a numerical value, you can specify it here. If you don't need it, you can directly set it to null. Please note that if you don't set it to null, this operation will not simplify the numerical value in any way.
+     * @return 解析之后的单位数值对象
+     * <p>
+     * Parsed Unit Value Object
+     */
+    protected static BaseValue parse(double valueNumber, KeyValue<Integer, String> baseNameKeyValue) {
+        return new BaseValue(valueNumber, WeightValue.class, baseNameKeyValue);
+    }
+}
+
+```
+
+Then you can start using it
 
 ```java
 package zhao.algorithmMagic;
 
 import zhao.algorithmMagic.core.AlgorithmStar;
-import zhao.algorithmMagic.core.MatrixFactory;
-import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
-import zhao.algorithmMagic.operands.matrix.IntegerMatrix;
+import zhao.algorithmMagic.core.BaseValueFactory;
+import zhao.algorithmMagic.operands.unit.BaseValue;
+import zhao.algorithmMagic.operands.unit.WeightValue;
+
+import java.net.MalformedURLException;
 
 public class MAIN1 {
     public static void main(String[] args) {
-        final MatrixFactory matrixFactory = AlgorithmStar.matrixFactory();
-        // 通过 工厂类 以及稀疏矩阵的方式创建两个矩阵 4行5列 元素全是 2
-        final IntegerMatrix integerMatrix = matrixFactory.fill(2, 4, 5);
-        final DoubleMatrix doubleMatrix = matrixFactory.fill(2.0, 4, 5);
-        System.out.println(integerMatrix);
-        System.out.println(doubleMatrix);
-        // 使用随机的方式创建矩阵
-        final IntegerMatrix integerMatrix1 = matrixFactory.randomGetInt(4, 5, 100);
-        final DoubleMatrix doubleMatrix1 = matrixFactory.randomGetDouble(4, 5, 100);
-        System.out.println(integerMatrix1);
-        System.out.println(doubleMatrix1);
+        // 构建一个用来创建 WeightValue.class 的工厂类 TODO 这里的类型可以是其它的 但是要确保是 BaseValue 的子类
+        final BaseValueFactory baseValueFactory = AlgorithmStar.baseValueFactory(WeightValue.class);
+        // 获取到数值
+        final BaseValue number_1 = baseValueFactory.parse(200);
+        System.out.println("number_1 = " + number_1);
+        // 将第一个的单位转换为 克
+        number_1.switchUnitsNotChange("g（克）");
+        System.out.println("number_1 = " + number_1);
+        // 获取到第二个数值
+        final BaseValue number_2 = baseValueFactory.parse(102.4);
+        // 将第二个转换为 毫克
+        number_2.switchUnitsNotChange("mg（毫克）");
+        System.out.println("number_2 = " + number_2);
+        // 进行一个计算
+        System.out.println("number_1 + number_2 = " + number_1.add(number_2));
     }
 }
 
 ```
 
-### Version update date : 2024-01-13
+* Built in unit value class.
+
+| 类路径                                           | 名称      | 加入版本  | 支持计算 |
+|-----------------------------------------------|---------|-------|------|
+| zhao.algorithmMagic.operands.unit.BaseValue   | 基础单位数值类 | v1.30 | yes  |
+| zhao.algorithmMagic.operands.unit.DataValue   | 数据单位数值类 | v1.30 | yes  |
+| zhao.algorithmMagic.operands.unit.VolumeValue | 容量单位数值类 | v1.30 | yes  |
+| zhao.algorithmMagic.operands.unit.WeightValue | 重量单位数值类 | v1.30 | yes  |
+| zhao.algorithmMagic.operands.unit.DateValue   | 时间单位数值类 | v1.30 | yes  |
+
+
+### Version update date : 2024-01-30
