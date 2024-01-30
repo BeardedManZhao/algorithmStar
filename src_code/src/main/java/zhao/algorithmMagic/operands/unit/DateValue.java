@@ -3,16 +3,16 @@ package zhao.algorithmMagic.operands.unit;
 import zhao.algorithmMagic.utils.dataContainer.KeyValue;
 
 /**
- * 数据进制单位，可以实现数据单位相关的计算
+ * 时间单位数值类，支持时分秒的运算
  *
- * Data unit, which can achieve calculations related to data units
- * @author zhao
+ * Time unit numerical class, supporting operations of hours, minutes, and seconds
  */
 @BaseUnit(value = {
-        "YB" ,"ZB" ,"EB" ,"TB", "GB", "MB", "KB", "B"
-}, baseValue = 1024)
-public class DataValue extends BaseValue{
-    public DataValue(double valueNumber, Class<? extends BaseValue> c, KeyValue<Integer, String> baseNameKeyValue) {
+        "时", "分", "秒"
+}, baseValue = 60)
+public class DateValue extends BaseValue{
+
+    public DateValue(double valueNumber, Class<? extends BaseValue> c, KeyValue<Integer, String> baseNameKeyValue) {
         super(valueNumber, c, baseNameKeyValue);
     }
 
@@ -40,6 +40,6 @@ public class DataValue extends BaseValue{
      * Parsed Unit Value Object
      */
     protected static BaseValue parse(double valueNumber, KeyValue<Integer, String> baseNameKeyValue) {
-        return new BaseValue(valueNumber, DataValue.class, baseNameKeyValue);
+        return new BaseValue(valueNumber, DateValue.class, baseNameKeyValue);
     }
 }

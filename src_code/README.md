@@ -153,6 +153,7 @@ public class MAIN1 {
 | zhao.algorithmMagic.operands.unit.DataValue   | 数据单位数值类 | v1.30 | yes  |
 | zhao.algorithmMagic.operands.unit.VolumeValue | 容量单位数值类 | v1.30 | yes  |
 | zhao.algorithmMagic.operands.unit.WeightValue | 重量单位数值类 | v1.30 | yes  |
+| zhao.algorithmMagic.operands.unit.DateValue   | 时间单位数值类 | v1.30 | yes  |
 
 
 ### Version update date : 2024-01-30

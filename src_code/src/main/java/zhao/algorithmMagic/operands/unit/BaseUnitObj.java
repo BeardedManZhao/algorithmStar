@@ -14,7 +14,7 @@ public interface BaseUnitObj {
     /**
      * 单位对象缓冲池，实现单例设计需要
      */
-    HashMap<String[], TempBaseData> TEMP_BASE_DATA_HASH_MAP = new HashMap<>();
+    HashMap<BaseUnit, TempBaseData> TEMP_BASE_DATA_HASH_MAP = new HashMap<>();
 
     /**
      * 根据单位注解创建出一个单位对象。
@@ -30,7 +30,7 @@ public interface BaseUnitObj {
      */
     static TempBaseData parse(BaseUnit baseUnit) {
         final String[] value = baseUnit.value();
-        final TempBaseData tempBaseData = TEMP_BASE_DATA_HASH_MAP.get(value);
+        final TempBaseData tempBaseData = TEMP_BASE_DATA_HASH_MAP.get(baseUnit);
         if (tempBaseData != null) {
             return tempBaseData;
         }
@@ -46,7 +46,9 @@ public interface BaseUnitObj {
             doubles[length] = number *= base;
             hashMap.put(value[length], length);
         }
-        return new TempBaseData(base, doubles, value, hashMap);
+        final TempBaseData tempBaseData1 = new TempBaseData(base, doubles, value, hashMap);
+        TEMP_BASE_DATA_HASH_MAP.put(baseUnit, tempBaseData1);
+        return tempBaseData1;
     }
 
     /**

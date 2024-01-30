@@ -21,19 +21,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7477d7c5-ca5e-4751-9fa2-34246b9a09de" name="变更" comment="">
-      <change afterPath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/core/ComplexNumberFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/core/MatixFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/core/VectorFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../src_code/update/1.25_1.26-Chinese.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../src_code/update/1.25_1.26.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/operands/unit/DateValue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../README-Chinese.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../README-Chinese.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../src_code/README-Chinese.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../src_code/README-Chinese.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../src_code/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../src_code/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../src_code/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../src_code/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/MAIN1.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/MAIN1.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/algorithm/OperationAlgorithmManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/algorithm/OperationAlgorithmManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/core/AlgorithmStar.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/core/AlgorithmStar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/operands/matrix/ColorMatrix.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/operands/matrix/ColorMatrix.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/operands/vector/SparkVector.scala" beforeDir="false" afterPath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/operands/vector/SparkVector.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/operands/unit/BaseUnit.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/operands/unit/BaseUnit.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/operands/unit/BaseUnitObj.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/operands/unit/BaseUnitObj.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/operands/unit/DataValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../src_code/src/main/java/zhao/algorithmMagic/operands/unit/DataValue.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,11 +86,6 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -132,6 +122,8 @@
       <workItem from="1681020298756" duration="36000" />
       <workItem from="1693129744656" duration="56000" />
       <workItem from="1704272783067" duration="119000" />
+      <workItem from="1706618896781" duration="28000" />
+      <workItem from="1706618928214" duration="36000" />
     </task>
     <servers />
   </component>
