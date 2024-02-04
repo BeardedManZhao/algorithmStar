@@ -3,6 +3,7 @@ package zhao.algorithmMagic.operands.unit;
 import zhao.algorithmMagic.utils.ASMath;
 import zhao.algorithmMagic.utils.dataContainer.KeyValue;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -14,9 +15,9 @@ import java.util.HashMap;
  */
 public class MatchBaseUnit implements BaseUnitObj {
 
-    private final static HashMap<Class<?>, BaseUnitObj> CLASS_BASE_UNIT_OBJ_HASH_MAP = new HashMap<>();
+    protected final static HashMap<Class<?>, BaseUnitObj> CLASS_BASE_UNIT_OBJ_HASH_MAP = new HashMap<>();
 
-    private final BaseUnitObj.TempBaseData tempBaseData;
+    protected final BaseUnitObj.TempBaseData tempBaseData;
 
     protected MatchBaseUnit(TempBaseData tempBaseData) {
         this.tempBaseData = tempBaseData;
@@ -41,7 +42,15 @@ public class MatchBaseUnit implements BaseUnitObj {
         }
         final BaseUnit annotation = c.getAnnotation(BaseUnit.class);
         if (annotation != null) {
-            final MatchBaseUnit matchBaseUnit = new MatchBaseUnit(BaseUnitObj.parse(annotation));
+            final double[] doubles = annotation.baseValue();
+            if (doubles.length == 0) {
+                throw new UnsupportedOperationException("You must set the baseValue attribute in @BaseUnit, which can be 1 element or multiple elements, but should not be 0 elements!!!");
+            }
+            final boolean b = doubles.length != 1;
+            if (b) {
+                doubles[doubles.length - 1] = 1;
+            }
+            final MatchBaseUnit matchBaseUnit = b ? new MatchBaseGroupUnit(MatchBaseGroupUnit.parse(annotation), doubles) : new MatchBaseUnit(BaseUnitObj.parse(annotation));
             CLASS_BASE_UNIT_OBJ_HASH_MAP.put(c, matchBaseUnit);
             return matchBaseUnit;
         }
@@ -102,6 +111,45 @@ public class MatchBaseUnit implements BaseUnitObj {
     }
 
     /**
+     * @return 当前单位对象中的每个子单位的进制差，位权按照从大到小的顺序迭代。
+     * <p>
+     * The bit weight of each subunit in the current unit object. Bit weight is iterated in ascending order.
+     * 例如：["h","m","s","ms"] 中 进制差为 [60, 60, 1000, 0] 代表的就是下一个单位举例当前单位的倍数
+     */
+    @Override
+    public double[] getBaseDiff() {
+        final double[] doubles = new double[this.tempBaseData.getBaseNames().length];
+        Arrays.fill(doubles, this.getBaseValue());
+        doubles[doubles.length - 1] = 1;
+        return doubles;
+    }
+
+    /**
+     * 如果需要设置为 true；Set to true if necessary
+     *
+     * @return 在数学中，乘法运算需要注意两个方面：数字和单位。
+     * <p>
+     * 当数字相乘时，可以直接进行乘法运算。例如，2升乘以2升，数字部分是2乘以2，结果是4。
+     * <p>
+     * 当单位相乘时，需要先统一单位，然后再进行乘法运算。例如，2米乘以2米，单位是米，可以直接相乘得到4平方米。但如果单位不同，比如2米乘以2厘米，需要先统一单位，把2厘米转换为米（即0.01米），然后再相乘得到0.04平方米。
+     * <p>
+     * 因此，在进行乘法运算时，需要先判断数字和单位是否一致，如果单位不一致需要先统一单位再进行计算。
+     * <p>
+     * <p>
+     * In mathematics, multiplication operations require attention to two aspects: numbers and units.
+     * <p>
+     * When multiplying numbers, multiplication can be performed directly. For example, multiplying 2 liters by 2 liters, the numerical part is 2 times 2, and the result is 4.
+     * <p>
+     * When multiplying units, it is necessary to first unify the units before performing multiplication operations. For example, multiplying 2 meters by 2 meters in meters can directly yield 4 square meters. But if the units are different, such as multiplying 2 meters by 2 centimeters, it is necessary to first unify the units, convert 2 centimeters to meters (i.e. 0.01 meters), and then multiply them to obtain 0.04 square meters.
+     * <p>
+     * Therefore, when performing multiplication operations, it is necessary to first check whether the numbers and units are consistent. If the units are not consistent, it is necessary to first unify the units before calculating.
+     */
+    @Override
+    public boolean isNeedUnifiedUnit() {
+        return this.tempBaseData.isNeedUnifiedUnit();
+    }
+
+    /**
      * 将一个具有指定单位的数值转换为另一个具有指定单位的数值
      * <p>
      * Convert a numerical value with a specified unit to another numerical value with a specified unit
@@ -140,7 +188,7 @@ public class MatchBaseUnit implements BaseUnitObj {
             value /= Math.pow(target, i2);
         }
 
-        return new BaseValue(value, baseValue.baseUnitObj, targetUnit);
+        return new BaseValue(value, baseValue.getBaseValueFactoryClass(), baseValue.baseUnitObj, targetUnit);
     }
 
     /**

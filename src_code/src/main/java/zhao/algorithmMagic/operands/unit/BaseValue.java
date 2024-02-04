@@ -1,5 +1,6 @@
 package zhao.algorithmMagic.operands.unit;
 
+import zhao.algorithmMagic.core.BaseValueFactory;
 import zhao.algorithmMagic.operands.Operands;
 import zhao.algorithmMagic.utils.dataContainer.KeyValue;
 
@@ -12,27 +13,36 @@ import zhao.algorithmMagic.utils.dataContainer.KeyValue;
  */
 @BaseUnit(value = {
         "亿", "千万", "百万", "十万", "万", "千", "百", "十", "个"
-})
+}, needUnifiedUnit = false)
 public class BaseValue extends Number implements Operands<BaseValue> {
 
     private final static Class<? extends BaseValue> BaseValueClass = BaseValue.class;
-    protected final double valueNumber;
+    protected final double valueNumber, srcValue;
+    protected final BaseValueFactory baseValueFactoryClass;
     protected final BaseUnitObj baseUnitObj;
     protected KeyValue<Integer, String> baseNameKeyValue;
 
-    public BaseValue(double valueNumber, Class<? extends BaseValue> c, KeyValue<Integer, String> baseNameKeyValue) {
-        this(valueNumber, MatchBaseUnit.parse(c), baseNameKeyValue);
+    public BaseValue(double valueNumber, Class<? extends BaseValue> c, KeyValue<Integer, String> baseNameKeyValue, BaseValueFactory baseValueFactoryClass) {
+        this(valueNumber, baseValueFactoryClass, MatchBaseUnit.parse(c), baseNameKeyValue);
     }
 
-    protected BaseValue(double valueNumber, BaseUnitObj baseUnitObj, KeyValue<Integer, String> baseNameKeyValue) {
+    protected BaseValue(double valueNumber, BaseValueFactory baseValueFactoryClass, BaseUnitObj baseUnitObj, KeyValue<Integer, String> baseNameKeyValue) {
+        this.baseValueFactoryClass = baseValueFactoryClass;
         final boolean b = baseNameKeyValue == null;
+        srcValue = valueNumber;
         this.baseNameKeyValue = b ? baseUnitObj.getBaseNameByValue(valueNumber) : baseNameKeyValue;
-        final double baseValue = baseUnitObj.getBaseValue();
-        int index = baseUnitObj.getBaseWeight().length;
+        final double[] baseValue = baseUnitObj.getBaseDiff();
+        final double[] baseWeight = baseUnitObj.getBaseWeight();
+        final double baseValue1 = baseUnitObj.getBaseValue();
         if (b) {
-            // 对数值进行化简
-            while (valueNumber >= baseValue && --index > this.baseNameKeyValue.getKey()) {
-                valueNumber /= baseValue;
+            int index = 0;
+            for (double v : baseValue) {
+                if (valueNumber >= baseWeight[index++]) {
+                    valueNumber /= v;
+                }
+                if (baseValue1 > valueNumber) {
+                    break;
+                }
             }
         }
         this.valueNumber = valueNumber;
@@ -40,30 +50,36 @@ public class BaseValue extends Number implements Operands<BaseValue> {
     }
 
     /**
-     * @param valueNumber 需要被解析的数值
-     *                    <p>
-     *                    Value that needs to be parsed
+     * @param valueNumber           需要被解析的数值
+     *                              <p>
+     *                              Value that needs to be parsed
+     * @param baseValueFactoryClass 单位数值构造工厂类
+     *                              <p>
+     *                              Unit Value Construction Factory Class
      * @return 解析之后的单位数值对象
      * <p>
      * Parsed Unit Value Object
      */
-    public static BaseValue parse(double valueNumber) {
-        return parse(valueNumber, null);
+    public static BaseValue parse(double valueNumber, BaseValueFactory baseValueFactoryClass) {
+        return parse(valueNumber, null, baseValueFactoryClass);
     }
 
     /**
-     * @param valueNumber      需要被解析的数值
-     *                         <p>
-     *                         Value that needs to be parsed
-     * @param baseNameKeyValue 单位的键值对，如果您需要指定数值的单位，您可以在这里进行指定，如果您不需要可以直接设置为 null，请注意 如果您不设置为null 此操作将不会对数值进行任何化简.
-     *                         <p>
-     *                         The key value pairs of units. If you need to specify the unit of a numerical value, you can specify it here. If you don't need it, you can directly set it to null. Please note that if you don't set it to null, this operation will not simplify the numerical value in any way.
+     * @param valueNumber           需要被解析的数值
+     *                              <p>
+     *                              Value that needs to be parsed
+     * @param baseNameKeyValue      单位的键值对，如果您需要指定数值的单位，您可以在这里进行指定，如果您不需要可以直接设置为 null，请注意 如果您不设置为null 此操作将不会对数值进行任何化简.
+     *                              <p>
+     *                              The key value pairs of units. If you need to specify the unit of a numerical value, you can specify it here. If you don't need it, you can directly set it to null. Please note that if you don't set it to null, this operation will not simplify the numerical value in any way.
+     * @param baseValueFactoryClass 单位数值构造工厂类
+     *                              <p>
+     *                              Unit Value Construction Factory Class
      * @return 解析之后的单位数值对象
      * <p>
      * Parsed Unit Value Object
      */
-    protected static BaseValue parse(double valueNumber, KeyValue<Integer, String> baseNameKeyValue) {
-        return new BaseValue(valueNumber, BaseValueClass, baseNameKeyValue);
+    protected static BaseValue parse(double valueNumber, KeyValue<Integer, String> baseNameKeyValue, BaseValueFactory baseValueFactoryClass) {
+        return new BaseValue(valueNumber, BaseValueClass, baseNameKeyValue, baseValueFactoryClass);
     }
 
     public BaseUnitObj getBaseUnitObj() {
@@ -94,7 +110,7 @@ public class BaseValue extends Number implements Operands<BaseValue> {
         // 切换被操作数的权值 新值
         final BaseValue nowBase1 = value.switchUnits(this.getNowBase());
         // 直接使用自己和被操作数计算 使用新值的单位
-        return new BaseValue(nowBase1.doubleValue() + this.doubleValue(), nowBase1.baseUnitObj, nowBase1.getNowBase());
+        return new BaseValue(this.doubleValue() + nowBase1.doubleValue(), baseValueFactoryClass, nowBase1.baseUnitObj, nowBase1.getNowBase());
     }
 
     /**
@@ -111,7 +127,7 @@ public class BaseValue extends Number implements Operands<BaseValue> {
         // 切换被操作数的权值 新值
         final BaseValue nowBase1 = value.switchUnits(this.getNowBase());
         // 直接使用自己和被操作数计算 使用新值的单位
-        return new BaseValue(nowBase1.doubleValue() - this.doubleValue(), nowBase1.baseUnitObj, nowBase1.getNowBase());
+        return new BaseValue(this.doubleValue() - nowBase1.doubleValue(), baseValueFactoryClass, nowBase1.baseUnitObj, nowBase1.getNowBase());
     }
 
     /**
@@ -127,7 +143,7 @@ public class BaseValue extends Number implements Operands<BaseValue> {
     @Override
     public BaseValue add(Number value) {
         // 直接使用自己和被操作数计算 使用新值的单位
-        return new BaseValue(this.doubleValue() + value.doubleValue(), this.getBaseUnitObj(), this.getNowBase());
+        return new BaseValue(this.doubleValue() + value.doubleValue(), baseValueFactoryClass, this.getBaseUnitObj(), this.getNowBase());
     }
 
     /**
@@ -142,7 +158,7 @@ public class BaseValue extends Number implements Operands<BaseValue> {
     @Override
     public BaseValue diff(Number value) {
         // 直接使用自己和被操作数计算 使用新值的单位
-        return new BaseValue(this.doubleValue() - value.doubleValue(), this.getBaseUnitObj(), this.getNowBase());
+        return new BaseValue(this.doubleValue() - value.doubleValue(), baseValueFactoryClass, this.getBaseUnitObj(), this.getNowBase());
     }
 
     /**
@@ -158,10 +174,15 @@ public class BaseValue extends Number implements Operands<BaseValue> {
      * The calculation result will return a new unit value object.
      */
     public BaseValue multiply(BaseValue value) {
-        // 切换被操作数的权值 新值
-        final BaseValue nowBase1 = value.switchUnits(this.getNowBase());
+        if (!this.baseUnitObj.isNeedUnifiedUnit()) {
+            // 切换被操作数的权值 新值
+            final String[] baseName = this.baseUnitObj.getBaseName();
+            final BaseValue nowBase1 = value.switchUnits(baseName[baseName.length - 1]);
+            // 直接使用自己和被操作数计算 使用新值的单位
+            return new BaseValue(this.doubleValue() * nowBase1.doubleValue(), baseValueFactoryClass, this.baseUnitObj, this.getNowBase());
+        }
         // 直接使用自己和被操作数计算 使用新值的单位
-        return new BaseValue(nowBase1.doubleValue() * this.doubleValue(), nowBase1.baseUnitObj, nowBase1.getNowBase());
+        return this.baseValueFactoryClass.parse(this.getSrcValue() * value.getSrcValue());
     }
 
     /**
@@ -177,10 +198,24 @@ public class BaseValue extends Number implements Operands<BaseValue> {
      * The calculation result will return a new unit value object.
      */
     public BaseValue divide(BaseValue value) {
-        // 切换被操作数的权值 新值
-        final BaseValue nowBase1 = value.switchUnits(this.getNowBase());
+        if (!this.baseUnitObj.isNeedUnifiedUnit()) {
+            // 切换被操作数的权值 新值
+            final String[] baseName = this.baseUnitObj.getBaseName();
+            final BaseValue nowBase1 = value.switchUnits(baseName[baseName.length - 1]);
+            // 直接使用自己和被操作数计算 使用新值的单位
+            return new BaseValue(this.doubleValue() / nowBase1.doubleValue(), baseValueFactoryClass, this.baseUnitObj, this.getNowBase());
+        }
         // 直接使用自己和被操作数计算 使用新值的单位
-        return new BaseValue(nowBase1.doubleValue() / this.doubleValue(), nowBase1.baseUnitObj, nowBase1.getNowBase());
+        return this.baseValueFactoryClass.parse(this.getSrcValue() / value.getSrcValue());
+    }
+
+    /**
+     * @return 获取到最低位权单位对应的数值，也是原本的数值，没有经过化简的数值。
+     * <p>
+     * The value corresponding to the lowest weighted unit obtained is also the original value, which has not been simplified.
+     */
+    public double getSrcValue() {
+        return srcValue;
     }
 
     /**
@@ -196,7 +231,7 @@ public class BaseValue extends Number implements Operands<BaseValue> {
      * The calculation result will return a new unit value object.
      */
     public BaseValue multiply(Number value) {
-        return new BaseValue(this.doubleValue() * value.doubleValue(), this.getBaseUnitObj(), this.getNowBase());
+        return new BaseValue(this.doubleValue() * value.doubleValue(), baseValueFactoryClass, this.getBaseUnitObj(), this.getNowBase());
     }
 
     /**
@@ -212,7 +247,7 @@ public class BaseValue extends Number implements Operands<BaseValue> {
      * The calculation result will return a new unit value object.
      */
     public BaseValue divide(Number value) {
-        return new BaseValue(this.doubleValue() / value.doubleValue(), this.getBaseUnitObj(), this.getNowBase());
+        return new BaseValue(this.doubleValue() / value.doubleValue(), baseValueFactoryClass, this.getBaseUnitObj(), this.getNowBase());
     }
 
     /**
@@ -240,8 +275,21 @@ public class BaseValue extends Number implements Operands<BaseValue> {
      *                   <p>
      *                   The target unit that needs to be switched to
      */
+    public void switchUnitsNotChange(KeyValue<Integer, String> targetUnit) {
+        this.baseNameKeyValue = targetUnit;
+    }
+
+    /**
+     * 不改变数值的方式，只改变单位度量。
+     * <p>
+     * Do not change the numerical value, only change the unit measurement.
+     *
+     * @param targetUnit 需要被切换到的目标单位
+     *                   <p>
+     *                   The target unit that needs to be switched to
+     */
     public void switchUnitsNotChange(String targetUnit) {
-        this.baseNameKeyValue = new KeyValue<>(this.getBaseUnitObj().getIndexByBaseName(targetUnit), targetUnit);
+        this.switchUnitsNotChange(new KeyValue<>(this.getBaseUnitObj().getIndexByBaseName(targetUnit), targetUnit));
     }
 
     /**
@@ -271,7 +319,7 @@ public class BaseValue extends Number implements Operands<BaseValue> {
      */
     @Override
     public BaseValue expand() {
-        return null;
+        return this;
     }
 
     /**
@@ -328,5 +376,14 @@ public class BaseValue extends Number implements Operands<BaseValue> {
     @Override
     public String toString() {
         return this.doubleValue() + this.getNowBase().getValue();
+    }
+
+    /**
+     * @return 本单位数值对象对应的工厂类
+     * <p>
+     * The factory class corresponding to the numerical object of this unit
+     */
+    public BaseValueFactory getBaseValueFactoryClass() {
+        return baseValueFactoryClass;
     }
 }

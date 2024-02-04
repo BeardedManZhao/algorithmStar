@@ -8,9 +8,13 @@
 
 ### 更新日志
 
-* 框架版本：1.29 - 1.30
-* 新增单位数值类操作数，此操作数可以实现基本计算，同时还可以实现带有单位的计算效果，其还具有单位转换操作，且允许自定义单位!!!
-    * 内置了 BaseValue 类，其可以实现加减乘除运算，同时还支持单位数值的转换，可以直接使用
+* 框架版本：1.30 - 1.31
+* 针对单位数值中的减法进行修复，被减数与减数之间的位置进行的矫正
+* 针对单位数值中的乘除算法进行升级，您在自定义单位数值的时候可以通过在 `@BaseUnit` 中指定了 `needUnifiedUnit`
+  属性，来决定计算乘除的时候是否需要进行单位统一，这有利于区分数值计算和物理计算，物理计算需要保持单位一致
+* 针对内置的单位数值进行矫正和升级，对于物理单位和数学单位能够实现各自的计算
+* 针对内置单位数值 `DateValue` 进行升级，其可以接收更多的时间单位
+* 针对单位数值注解 `@BaseUnit` 进行升级，其可以实现自定义单位的进制，也可以像原来一样指定一个通用进制，通用进制会形成一种等比效应。
 
 ```java
 package zhao.algorithmMagic;
@@ -18,142 +22,41 @@ package zhao.algorithmMagic;
 import zhao.algorithmMagic.core.AlgorithmStar;
 import zhao.algorithmMagic.core.BaseValueFactory;
 import zhao.algorithmMagic.operands.unit.BaseValue;
-
-import java.net.MalformedURLException;
+import zhao.algorithmMagic.operands.unit.DateValue;
 
 public class MAIN1 {
+
     public static void main(String[] args) {
-        // 构建一个用来创建 BaseValue.class 的工厂类 TODO 这里的类型可以是其它的 但是要确保是 BaseValue 的子类
+        // 在这里我们获取到的就是单位数值的工厂类 在这里的函数参数是工厂要构造的单位数值的类型
+        // 请确保您在这里提供的单位数值类具有 @BaseUnit 注解和 parse 函数
         final BaseValueFactory baseValueFactory = AlgorithmStar.baseValueFactory(BaseValue.class);
-        // 获取到数值
-        final BaseValue number_1 = baseValueFactory.parse(200);
-        System.out.println("number_1 = " + number_1);
-        final BaseValue number_2 = baseValueFactory.parse(1024);
-        System.out.println("number_2 = " + number_2);
+        // 使用工厂类 将 1024 转换成为一个单位数值
+        final BaseValue parse1 = baseValueFactory.parse(2);
+        // 使用工厂类 将 1024000 转换成为一个单位数值
+        final BaseValue parse2 = baseValueFactory.parse(1024);
+        // 计算加减乘除结果
+        System.out.println(parse2.add(parse1));
+        System.out.println(parse2.diff(parse1));
+        System.out.println(parse2.multiply(parse1));
+        System.out.println(parse2.divide(parse1));
 
-        // 基本的运算演示
-        System.out.println("============");
-        System.out.println(number_2 + " + " + number_1 + " = " + number_1.add(number_2));
-        System.out.println(number_2 + " + " + 2 + number_2.getNowBase().getValue() + " = " + number_2.add(2));
+        System.out.println("==============");
 
-        System.out.println("============");
-        System.out.println(number_2 + " - " + number_1 + " = " + number_1.diff(number_2));
-        System.out.println(number_2 + " - " + 2 + number_2.getNowBase().getValue() + " = " + number_2.diff(2));
+        final BaseValueFactory baseValueFactory1 = AlgorithmStar.baseValueFactory(DateValue.class);
+        final BaseValue parse11 = baseValueFactory1.parse(100);
+        final BaseValue parse12 = baseValueFactory1.parse(10000);
+        final BaseValue parse23 = baseValueFactory1.parse(1000 * 60);
+        System.out.println(parse11);
+        System.out.println(parse12);
+        System.out.println(parse23);
+        System.out.println(parse12.add(parse11));
+        System.out.println(parse12.diff(parse11));
+        System.out.println(parse12.multiply(parse11));
+        System.out.println(parse12.divide(parse11));
 
-        System.out.println("============");
-        System.out.println(number_2 + " * " + number_1 + " = " + number_1.multiply(number_2));
-        System.out.println(number_2 + " * " + 2 + number_2.getNowBase().getValue() + " = " + number_2.multiply(2));
-
-        System.out.println("============");
-        System.out.println(number_2 + " / " + number_1 + " = " + number_1.divide(number_2));
-        System.out.println(number_2 + " / " + 2 + number_2.getNowBase().getValue() + " = " + number_2.divide(2));
-
-        // 将 1.024千 转换为 10.24百 和 0.1024 万
-        System.out.println("============");
-        System.out.println(number_2.switchUnits("百"));
-        System.out.println(number_2.switchUnits("万"));
+        System.out.println(parse23.divide(parse12));
     }
 }
-
 ```
 
-* 如果需要自定义单位，可以直接继承 BaseValue 类，然后标注 BaseUnit 注解即可，下面是一个基本的实例（下面的类也已经加入到了AS库）
-    * 继承 BaseValue 并重写静态的 parse 函数
-    * 标注 BaseUnit 注解 在其中设置单位 与 进制值
-
-```java
-package zhao.algorithmMagic.operands.unit;
-
-import zhao.algorithmMagic.utils.dataContainer.KeyValue;
-
-/**
- * 重量单位数值，在这里可以直接使用重量相关的单位！
- *
- * Weight unit value, weight related units can be directly used here!
- * @author zhao
- */
-@BaseUnit(value = {
-        "t（吨）", "kg（千克）", "g（克）", "mg（毫克）", "ug（微克）", "ng（纳克）", "pg（皮克）", "fg（飞克）"
-}, baseValue = 1000)
-public class WeightValue extends BaseValue {
-
-    protected WeightValue(double valueNumber, Class<? extends BaseValue> c, KeyValue<Integer, String> baseNameKeyValue) {
-        super(valueNumber, c, baseNameKeyValue);
-    }
-
-    /**
-     * @param valueNumber 需要被解析的数值
-     *                    <p>
-     *                    Value that needs to be parsed
-     * @return 解析之后的单位数值对象
-     * <p>
-     * Parsed Unit Value Object
-     */
-    public static BaseValue parse(double valueNumber) {
-        return parse(valueNumber, null);
-    }
-
-    /**
-     * @param valueNumber      需要被解析的数值
-     *                         <p>
-     *                         Value that needs to be parsed
-     * @param baseNameKeyValue 单位的键值对，如果您需要指定数值的单位，您可以在这里进行指定，如果您不需要可以直接设置为 null，请注意 如果您不设置为null 此操作将不会对数值进行任何化简.
-     *                         <p>
-     *                         The key value pairs of units. If you need to specify the unit of a numerical value, you can specify it here. If you don't need it, you can directly set it to null. Please note that if you don't set it to null, this operation will not simplify the numerical value in any way.
-     * @return 解析之后的单位数值对象
-     * <p>
-     * Parsed Unit Value Object
-     */
-    protected static BaseValue parse(double valueNumber, KeyValue<Integer, String> baseNameKeyValue) {
-        return new BaseValue(valueNumber, WeightValue.class, baseNameKeyValue);
-    }
-}
-
-```
-
-然后就可以进行使用啦
-
-```java
-package zhao.algorithmMagic;
-
-import zhao.algorithmMagic.core.AlgorithmStar;
-import zhao.algorithmMagic.core.BaseValueFactory;
-import zhao.algorithmMagic.operands.unit.BaseValue;
-import zhao.algorithmMagic.operands.unit.WeightValue;
-
-import java.net.MalformedURLException;
-
-public class MAIN1 {
-    public static void main(String[] args) {
-        // 构建一个用来创建 WeightValue.class 的工厂类 TODO 这里的类型可以是其它的 但是要确保是 BaseValue 的子类
-        final BaseValueFactory baseValueFactory = AlgorithmStar.baseValueFactory(WeightValue.class);
-        // 获取到数值
-        final BaseValue number_1 = baseValueFactory.parse(200);
-        System.out.println("number_1 = " + number_1);
-        // 将第一个的单位转换为 克
-        number_1.switchUnitsNotChange("g（克）");
-        System.out.println("number_1 = " + number_1);
-        // 获取到第二个数值
-        final BaseValue number_2 = baseValueFactory.parse(102.4);
-        // 将第二个转换为 毫克
-        number_2.switchUnitsNotChange("mg（毫克）");
-        System.out.println("number_2 = " + number_2);
-        // 进行一个计算
-        System.out.println("number_1 + number_2 = " + number_1.add(number_2));
-    }
-}
-
-```
-
-* 内置的单位数值类
-
-| 类路径                                           | 名称      | 加入版本  | 支持计算 |
-|-----------------------------------------------|---------|-------|------|
-| zhao.algorithmMagic.operands.unit.BaseValue   | 基础单位数值类 | v1.30 | yes  |
-| zhao.algorithmMagic.operands.unit.DataValue   | 数据单位数值类 | v1.30 | yes  |
-| zhao.algorithmMagic.operands.unit.VolumeValue | 容量单位数值类 | v1.30 | yes  |
-| zhao.algorithmMagic.operands.unit.WeightValue | 重量单位数值类 | v1.30 | yes  |
-| zhao.algorithmMagic.operands.unit.DateValue   | 时间单位数值类 | v1.30 | yes  |
-
-
-### Version update date : 2024-01-30
+### Version update date : 2024-02-05

@@ -35,7 +35,7 @@ public interface BaseUnitObj {
             return tempBaseData;
         }
         final double[] doubles = new double[value.length];
-        double number = 1, base = baseUnit.baseValue();
+        double number = 1, base = baseUnit.baseValue()[0];
         HashMap<String, Integer> hashMap = new HashMap<>();
         // 构建位权
         int length = value.length - 1;
@@ -46,7 +46,7 @@ public interface BaseUnitObj {
             doubles[length] = number *= base;
             hashMap.put(value[length], length);
         }
-        final TempBaseData tempBaseData1 = new TempBaseData(base, doubles, value, hashMap);
+        final TempBaseData tempBaseData1 = new TempBaseData(base, doubles, value, hashMap, baseUnit.needUnifiedUnit());
         TEMP_BASE_DATA_HASH_MAP.put(baseUnit, tempBaseData1);
         return tempBaseData1;
     }
@@ -136,10 +136,41 @@ public interface BaseUnitObj {
     double[] getBaseWeight();
 
     /**
+     * @return 当前单位对象中的每个子单位的进制差，位权按照从大到小的顺序迭代。
+     * <p>
+     * The bit weight of each subunit in the current unit object. Bit weight is iterated in ascending order.
+     * 例如：["h","m","s","ms"] 中 进制差为 [60, 60, 1000, 0] 代表的就是下一个单位举例当前单位的倍数
+     */
+    double[] getBaseDiff();
+
+    /**
+     * 如果需要设置为 true；Set to true if necessary
+     *
+     * @return 在数学中，乘法运算需要注意两个方面：数字和单位。
+     * <p>
+     * 当数字相乘时，可以直接进行乘法运算。例如，2升乘以2升，数字部分是2乘以2，结果是4。
+     * <p>
+     * 当单位相乘时，需要先统一单位，然后再进行乘法运算。例如，2米乘以2米，单位是米，可以直接相乘得到4平方米。但如果单位不同，比如2米乘以2厘米，需要先统一单位，把2厘米转换为米（即0.01米），然后再相乘得到0.04平方米。
+     * <p>
+     * 因此，在进行乘法运算时，需要先判断数字和单位是否一致，如果单位不一致需要先统一单位再进行计算。
+     * <p>
+     * <p>
+     * In mathematics, multiplication operations require attention to two aspects: numbers and units.
+     * <p>
+     * When multiplying numbers, multiplication can be performed directly. For example, multiplying 2 liters by 2 liters, the numerical part is 2 times 2, and the result is 4.
+     * <p>
+     * When multiplying units, it is necessary to first unify the units before performing multiplication operations. For example, multiplying 2 meters by 2 meters in meters can directly yield 4 square meters. But if the units are different, such as multiplying 2 meters by 2 centimeters, it is necessary to first unify the units, convert 2 centimeters to meters (i.e. 0.01 meters), and then multiply them to obtain 0.04 square meters.
+     * <p>
+     * Therefore, when performing multiplication operations, it is necessary to first check whether the numbers and units are consistent. If the units are not consistent, it is necessary to first unify the units before calculating.
+     */
+    boolean isNeedUnifiedUnit();
+
+    /**
      * 位权单位元数据存储类
      */
     final class TempBaseData {
         private final HashMap<String, Integer> hashMap;
+        private final boolean needUnifiedUnit;
         private final double baseValue;
         private final double[] baseWeights;
         private final String[] baseNames;
@@ -147,16 +178,18 @@ public interface BaseUnitObj {
         /**
          * 构造函数
          *
-         * @param baseValue   进制数值
-         * @param baseWeights 位权数组
-         * @param baseNames   子单位名称
-         * @param hashMap     子单位哈希索引
+         * @param baseValue       进制数值
+         * @param baseWeights     位权数组
+         * @param baseNames       子单位名称
+         * @param hashMap         子单位哈希索引
+         * @param needUnifiedUnit 计算乘除的时候是否需要将单位统一
          */
-        public TempBaseData(double baseValue, double[] baseWeights, String[] baseNames, HashMap<String, Integer> hashMap) {
+        public TempBaseData(double baseValue, double[] baseWeights, String[] baseNames, HashMap<String, Integer> hashMap, boolean needUnifiedUnit) {
             this.baseValue = baseValue;
             this.baseWeights = baseWeights;
             this.baseNames = baseNames;
             this.hashMap = hashMap;
+            this.needUnifiedUnit = needUnifiedUnit;
         }
 
         public HashMap<String, Integer> getHashMap() {
@@ -173,6 +206,10 @@ public interface BaseUnitObj {
 
         public String[] getBaseNames() {
             return baseNames;
+        }
+
+        public boolean isNeedUnifiedUnit() {
+            return needUnifiedUnit;
         }
     }
 
