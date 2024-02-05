@@ -17,9 +17,10 @@ import zhao.algorithmMagic.utils.dataContainer.KeyValue;
 public class BaseValue extends Number implements Operands<BaseValue> {
 
     private final static Class<? extends BaseValue> BaseValueClass = BaseValue.class;
-    protected final double valueNumber, srcValue;
+    protected final double valueNumber;
     protected final BaseValueFactory baseValueFactoryClass;
     protected final BaseUnitObj baseUnitObj;
+    protected double srcValue;
     protected KeyValue<Integer, String> baseNameKeyValue;
 
     public BaseValue(double valueNumber, Class<? extends BaseValue> c, KeyValue<Integer, String> baseNameKeyValue, BaseValueFactory baseValueFactoryClass) {

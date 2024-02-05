@@ -44,7 +44,7 @@ public class MatchBaseUnit implements BaseUnitObj {
         if (annotation != null) {
             final double[] doubles = annotation.baseValue();
             if (doubles.length == 0) {
-                throw new UnsupportedOperationException("You must set the baseValue attribute in @BaseUnit, which can be 1 element or multiple elements, but should not be 0 elements!!!");
+                throw new UnsupportedOperationException("You must set the baseValue attribute in @BaseUnit, which can be 1 element or >=2 elements, but should not be 0 elements!!!");
             }
             final boolean b = doubles.length != 1;
             if (b) {
@@ -134,7 +134,6 @@ public class MatchBaseUnit implements BaseUnitObj {
      * 当单位相乘时，需要先统一单位，然后再进行乘法运算。例如，2米乘以2米，单位是米，可以直接相乘得到4平方米。但如果单位不同，比如2米乘以2厘米，需要先统一单位，把2厘米转换为米（即0.01米），然后再相乘得到0.04平方米。
      * <p>
      * 因此，在进行乘法运算时，需要先判断数字和单位是否一致，如果单位不一致需要先统一单位再进行计算。
-     * <p>
      * <p>
      * In mathematics, multiplication operations require attention to two aspects: numbers and units.
      * <p>

@@ -14,6 +14,41 @@
   属性，来决定计算乘除的时候是否需要进行单位统一，这有利于区分数值计算和物理计算，物理计算需要保持单位一致
 * 针对内置的单位数值进行矫正和升级，对于物理单位和数学单位能够实现各自的计算
 * 针对内置单位数值 `DateValue` 进行升级，其可以接收更多的时间单位
+
+```java
+package zhao.algorithmMagic;
+
+import zhao.algorithmMagic.core.AlgorithmStar;
+import zhao.algorithmMagic.core.BaseValueFactory;
+import zhao.algorithmMagic.operands.unit.BaseValue;
+import zhao.algorithmMagic.operands.unit.DateValue;
+
+public class MAIN1 {
+
+    public static void main(String[] args) {
+        // 在这里我们获取到的就是单位数值的工厂类 在这里的函数参数是工厂要构造的单位数值的类型
+        // 请确保您在这里提供的单位数值类具有 @BaseUnit 注解和 parse 函数
+        // 内置的单位数值类都是有 @BaseUnit 注解和 parse 函数的，如果您有自定义单位数值的需求需要注意
+        final BaseValueFactory baseValueFactory = AlgorithmStar.baseValueFactory(DateValue.class);
+        final BaseValue parse1 = baseValueFactory.parse(2000);
+        // 使用工厂类 准备一个时间对象 这里的单位是毫秒开始的 所以这个数值是 1.024 秒
+        final BaseValue parse2 = baseValueFactory.parse(1024);
+        // 在这里我们再构建一个 1 天
+        final BaseValue parse3 = baseValueFactory.parse(24 * 60 * 60 * 1000);
+        System.out.println(parse3);
+
+        // 打印结果
+        System.out.println(parse2);
+        // 计算 1.024 秒 / 2
+        System.out.println(parse2.divide(2));
+        // 计算 1.024 秒 / 2000 毫秒
+        System.out.println(parse2.divide(parse1));
+        // 计算 1天 * 2
+        System.out.println(parse3.multiply(2));
+    }
+}
+```
+
 * 针对单位数值注解 `@BaseUnit` 进行升级，其可以实现自定义单位的进制，也可以像原来一样指定一个通用进制，通用进制会形成一种等比效应。
 
 ```java
