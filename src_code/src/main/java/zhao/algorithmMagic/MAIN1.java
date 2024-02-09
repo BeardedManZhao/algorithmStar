@@ -1,13 +1,10 @@
 package zhao.algorithmMagic;
 
-import zhao.algorithmMagic.core.AlgorithmStar;
-import zhao.algorithmMagic.core.HelpFactory;
+import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 
 public class MAIN1 {
+
     public static void main(String[] args) {
-        // 获取帮助信息工厂类
-        final HelpFactory helpFactory = AlgorithmStar.helpFactory();
-        // 下载帮助文档
-        System.out.println("帮助文档保存到：" + helpFactory.saveHelpFile(HelpFactory.ALL, "D:/"));
+        System.out.println(OperationAlgorithmManager.VERSION);
     }
 }

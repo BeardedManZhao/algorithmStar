@@ -16,9 +16,9 @@ public class BaseValueFactory {
 
     public BaseValueFactory(Class<? extends BaseValue> baseValueClass) {
         try {
-            this.parseM1 = baseValueClass.getMethod("parse", double.class);
+            this.parseM1 = baseValueClass.getMethod("parse", double.class, BaseValueFactory.class);
         } catch (NoSuchMethodException e) {
-            throw new UnsupportedOperationException("请在 " + baseValueClass.getTypeName() + " 中实现一个 public static BaseValue parse(double valueNumber) 函数!!!");
+            throw new UnsupportedOperationException("请在 " + baseValueClass.getTypeName() + " 中实现一个 public static BaseValue parse(double valueNumber, BaseValueFactory baseValueFactoryClass) 函数!!!");
         }
     }
 
@@ -32,7 +32,7 @@ public class BaseValueFactory {
      */
     public BaseValue parse(double number) {
         try {
-            return (BaseValue) parseM1.invoke(null, number);
+            return (BaseValue) parseM1.invoke(null, number, this);
         } catch (IllegalAccessException | InvocationTargetException e) {
             throw new UnsupportedOperationException(e);
         }
