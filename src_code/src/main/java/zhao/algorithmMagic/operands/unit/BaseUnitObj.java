@@ -154,7 +154,6 @@ public interface BaseUnitObj {
      * <p>
      * 因此，在进行乘法运算时，需要先判断数字和单位是否一致，如果单位不一致需要先统一单位再进行计算。
      * <p>
-     * <p>
      * In mathematics, multiplication operations require attention to two aspects: numbers and units.
      * <p>
      * When multiplying numbers, multiplication can be performed directly. For example, multiplying 2 liters by 2 liters, the numerical part is 2 times 2, and the result is 4.

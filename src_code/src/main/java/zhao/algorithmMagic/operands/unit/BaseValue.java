@@ -372,6 +372,15 @@ public class BaseValue extends Number implements Operands<BaseValue> {
     }
 
     /**
+     * @return 是否需要统一单位
+     * <p>
+     * Whether to unify units
+     */
+    public boolean isNeedUnifiedUnit() {
+        return this.baseUnitObj.isNeedUnifiedUnit();
+    }
+
+    /**
      * @return The string representation of the object.
      */
     @Override
