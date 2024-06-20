@@ -1,7 +1,5 @@
 package zhao.algorithmMagic.algorithm.distanceAlgorithm;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
@@ -39,17 +37,14 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class ManhattanDistance<I extends IntegerCoordinates<I> & Coordinate<I>, D extends FloatingPointCoordinates<?>> implements DistanceAlgorithm, RangeDistance {
 
-    protected final Logger logger;
     protected final String AlgorithmName;
 
     protected ManhattanDistance() {
         this.AlgorithmName = "ManhattanDistance";
-        this.logger = LoggerFactory.getLogger("ManhattanDistance");
     }
 
     protected ManhattanDistance(String algorithmName) {
         this.AlgorithmName = algorithmName;
-        this.logger = LoggerFactory.getLogger(algorithmName);
     }
 
     /**
@@ -92,9 +87,6 @@ public class ManhattanDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
      * Manhattan distances from the coordinate point to the origin
      */
     public double getTrueDistance(FloatingPointCoordinates<D> iFloatingPointCoordinates) {
-        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
-            logger.info("ⁿ∑₁ (|COORDINATE(n) - 0|)");
-        }
         double res = 0;
         for (double v : iFloatingPointCoordinates.toArray()) {
             res += ASMath.absoluteValue(v);
@@ -115,9 +107,6 @@ public class ManhattanDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
      * Manhattan distances from the coordinate point to the origin
      */
     public double getTrueDistance(IntegerCoordinates<I> integerCoordinates) {
-        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
-            logger.info("ⁿ∑₁ (|COORDINATE(n) - 0|)");
-        }
         double res = 0;
         for (double v : integerCoordinates.toArray()) {
             res += ASMath.absoluteValue(v);
@@ -142,9 +131,6 @@ public class ManhattanDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
      */
     public double getTrueDistance(FloatingPointCoordinates<D> floatingPointCoordinate1, FloatingPointCoordinates<D> floatingPointCoordinate2) {
         double res = 0;
-        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
-            logger.info("ⁿ∑₁( " + floatingPointCoordinate1 + " - " + floatingPointCoordinate2 + ").map(d -> |d|)");
-        }
         for (double d : floatingPointCoordinate1.diff(floatingPointCoordinate2.extend()).toArray()) {
             res += ASMath.absoluteValue(d);
         }
@@ -168,9 +154,6 @@ public class ManhattanDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
      */
     public double getTrueDistance(IntegerCoordinates<I> integerCoordinate1, IntegerCoordinates<I> integerCoordinate2) {
         int res = 0;
-        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
-            logger.info("ⁿ∑₁( " + integerCoordinate1 + " - " + integerCoordinate2 + ").map(d -> |d|)");
-        }
         for (int d : (integerCoordinate1.extend().diff(integerCoordinate2.extend())).toArray()) {
             res += ASMath.absoluteValue(d);
         }
@@ -254,9 +237,6 @@ public class ManhattanDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
     @Override
     public double getTrueDistance(double[] doubles1, double[] doubles2) {
         double[] doubles = new DoubleCoordinateMany(doubles1).diff(new DoubleCoordinateMany(doubles2)).toArray();
-        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
-            logger.info("ⁿ∑₁|(Xn - Yn)|");
-        }
         double res = 0;
         for (double aDouble : doubles) {
             res += ASMath.absoluteValue(aDouble);
@@ -276,9 +256,6 @@ public class ManhattanDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
     @Override
     public double getTrueDistance(int[] ints1, int[] ints2) {
         int[] ints = new IntegerCoordinateMany(ints1).diff(new IntegerCoordinateMany(ints2)).toArray();
-        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
-            logger.info("ⁿ∑₁|(Xn - Yn)|");
-        }
         int res = 0;
         for (int anInt : ints) {
             res += ASMath.absoluteValue(anInt);

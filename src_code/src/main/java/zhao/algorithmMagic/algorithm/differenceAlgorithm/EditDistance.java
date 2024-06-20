@@ -1,7 +1,5 @@
 package zhao.algorithmMagic.algorithm.differenceAlgorithm;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
@@ -19,17 +17,14 @@ import zhao.algorithmMagic.utils.ASClass;
 public class EditDistance implements DifferenceAlgorithm<String> {
 
 
-    protected final Logger logger;
     protected final String AlgorithmName;
 
     protected EditDistance() {
         this.AlgorithmName = "EditDistance";
-        this.logger = LoggerFactory.getLogger("EditDistance");
     }
 
     protected EditDistance(String algorithmName) {
         this.AlgorithmName = algorithmName;
-        this.logger = LoggerFactory.getLogger(algorithmName);
     }
 
     /**

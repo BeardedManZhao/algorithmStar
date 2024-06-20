@@ -21,7 +21,7 @@ public final class OperationAlgorithmManager implements OperationAlgorithm {
     /**
      * AS  version
      */
-    public final static float VERSION = 1.31f;
+    public final static float VERSION = 1.32f;
 
     /**
      * 计算组件的日志打印开关，当此处值为false的时候，计算组件中的日志将不会被打印，logger也不会被调用，一般来说，这里为了减少冗余的字符串实例化操作，会设置为false，当需要调试的时候才需要打开此处的数值。

@@ -1,7 +1,5 @@
 package zhao.algorithmMagic.algorithm.differenceAlgorithm;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.exception.OperatorOperationException;
@@ -23,17 +21,13 @@ import zhao.algorithmMagic.utils.ASMath;
  * @author zhao
  */
 public class BrayCurtisDistance<I extends IntegerCoordinates<I> & Coordinate<I>, D extends FloatingPointCoordinates<?>> implements DifferenceAlgorithm<D> {
-
-    protected final Logger logger;
     protected final String AlgorithmName;
 
     protected BrayCurtisDistance() {
         this.AlgorithmName = "BrayCurtisDistance";
-        this.logger = LoggerFactory.getLogger("BrayCurtisDistance");
     }
 
     protected BrayCurtisDistance(String AlgorithmName) {
-        this.logger = LoggerFactory.getLogger(AlgorithmName);
         this.AlgorithmName = AlgorithmName;
     }
 
@@ -119,9 +113,6 @@ public class BrayCurtisDistance<I extends IntegerCoordinates<I> & Coordinate<I>,
         int numberOfDimensions1 = value1.getNumberOfDimensions();
         int numberOfDimensions2 = value2.getNumberOfDimensions();
         if (numberOfDimensions1 == numberOfDimensions2) {
-            if (OperationAlgorithmManager.PrintCalculationComponentLog) {
-                logger.info("ⁿ∑₁ |(DV1(n) - DV2(n))| / ⁿ∑₁ DV1(n) + ⁿ∑₁ DV2(n)");
-            }
             return getDifferenceRatio(value1.toArray(), value2.toArray());
         } else {
             throw new OperatorOperationException("BrayCurtisDistance算法运算出现错误，在进行两个坐标之间差异系数运算的时候，发现坐标的维度不同。\n" +
@@ -149,9 +140,6 @@ public class BrayCurtisDistance<I extends IntegerCoordinates<I> & Coordinate<I>,
         int numberOfDimensions1 = value1.getNumberOfDimensions();
         int numberOfDimensions2 = value2.getNumberOfDimensions();
         if (numberOfDimensions1 == numberOfDimensions2) {
-            if (OperationAlgorithmManager.PrintCalculationComponentLog) {
-                logger.info("ⁿ∑₁ |(IV1(n) - IV2(n))| / ⁿ∑₁ IV1(n) + ⁿ∑₁ IV2(n)");
-            }
             return getDifferenceRatio(value1.toArray(), value2.toArray());
         } else {
             throw new OperatorOperationException("BrayCurtisDistance算法运算出现错误，在进行两个坐标之间差异系数运算的时候，发现坐标的维度不同。\n" +
@@ -182,9 +170,6 @@ public class BrayCurtisDistance<I extends IntegerCoordinates<I> & Coordinate<I>,
             molecule += ASMath.absoluteValue(v1 - v2);
             denominator += v1 + v2;
         }
-        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
-            logger.info("(ⁿ∑₁ |(V1(n) - V2(n))| / ⁿ∑₁ V1(n) + ⁿ∑₁ V2(n)) = (" + molecule + " / " + denominator + ")");
-        }
         return molecule >= denominator ? 1 : molecule / denominator;
     }
 
@@ -205,9 +190,6 @@ public class BrayCurtisDistance<I extends IntegerCoordinates<I> & Coordinate<I>,
             int v2 = ints2[i];
             molecule += ASMath.absoluteValue(v1 - v2);
             denominator += v1 + v2;
-        }
-        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
-            logger.info("(ⁿ∑₁ |(V1(n) - V2(n))| / ⁿ∑₁ V1(n) + ⁿ∑₁ V2(n)) = (" + molecule + " / " + denominator + ")");
         }
         return molecule >= denominator ? 1 : molecule / (double) denominator;
     }

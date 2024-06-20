@@ -62,9 +62,6 @@ public class StandardizedEuclideanDistance extends EuclideanMetric<IntegerCoordi
     public double getTrueDistance(FloatingPointCoordinates<DoubleCoordinateMany> iFloatingPointCoordinates) {
         double[] doubles1 = iFloatingPointCoordinates.toArray();
         double[] doublesZ = Z_ScoreNormalization.StandardizedSequence(doubles1);
-        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
-            logger.info("√ ⁿ∑₁( (iFloatingPointCoordinates(n) / StandardSequence(n))² )");
-        }
         return super.getTrueDistance(new DoubleCoordinateMany(DivideByNormalization(doubles1, doublesZ)));
     }
 
@@ -112,9 +109,6 @@ public class StandardizedEuclideanDistance extends EuclideanMetric<IntegerCoordi
     public double getTrueDistance(IntegerCoordinates<IntegerCoordinateMany> integerCoordinates) {
         int[] doubles1 = integerCoordinates.toArray();
         int[] doublesZ = Z_ScoreNormalization.StandardizedSequence(doubles1);
-        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
-            logger.info("√ ⁿ∑₁( (integerCoordinates(n) / StandardSequence(n))² )");
-        }
         return super.getTrueDistance(new IntegerCoordinateMany(DivideByNormalization(doubles1, doublesZ)));
     }
 
@@ -130,9 +124,6 @@ public class StandardizedEuclideanDistance extends EuclideanMetric<IntegerCoordi
      */
     @Override
     public double getTrueDistance(IntegerCoordinates<IntegerCoordinateMany> integerCoordinateMany1, IntegerCoordinates<IntegerCoordinateMany> integerCoordinateMany2) {
-        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
-            logger.info("√ ⁿ∑₁( " + integerCoordinateMany1 + " - " + integerCoordinateMany2 + ").map(i -> (i / StandardSequence)²)");
-        }
         int[] doubles1 = integerCoordinateMany1.extend().diff(integerCoordinateMany2.extend()).toArray();
         int[] doublesZ = Z_ScoreNormalization.StandardizedSequence(doubles1);
         return super.getTrueDistance(new IntegerCoordinateMany(DivideByNormalization(doubles1, doublesZ)));
@@ -149,23 +140,9 @@ public class StandardizedEuclideanDistance extends EuclideanMetric<IntegerCoordi
      */
     @Override
     public double getTrueDistance(FloatingPointCoordinates<DoubleCoordinateMany> doubleCoordinateMany1, FloatingPointCoordinates<DoubleCoordinateMany> doubleCoordinateMany2) {
-        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
-            logger.info("√ ⁿ∑₁( " + doubleCoordinateMany1 + " - " + doubleCoordinateMany2 + ").map(d -> (d / StandardSequence)²)");
-        }
         double[] doubles1 = doubleCoordinateMany1.diff(doubleCoordinateMany2.extend()).toArray();
         double[] doublesZ = Z_ScoreNormalization.StandardizedSequence(doubles1);
         return super.getTrueDistance(new DoubleCoordinateMany(DivideByNormalization(doubles1, doublesZ)));
-    }
-
-
-    /**
-     * @return 该算法组件的名称，也是一个识别码，在获取算法的时候您可以通过该名称获取到算法对象
-     * <p>
-     * The name of the algorithm component is also an identification code. You can obtain the algorithm object through this name when obtaining the algorithm.
-     */
-    @Override
-    public String getAlgorithmName() {
-        return this.AlgorithmName;
     }
 
     /**
