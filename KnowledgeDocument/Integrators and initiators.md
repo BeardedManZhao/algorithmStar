@@ -35,10 +35,10 @@ integrator
 - Implemented the name of the initiator interface algorithm to get to the integrator and execute
 
 ```java
-import zhao.algorithmMagic.Integrator.Route2DDrawingIntegrator;
-import zhao.algorithmMagic.algorithm.generatingAlgorithm.ZhaoCoordinateNet2D;
-import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo;
-import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute2D;
+import io.github.beardedManZhao.algorithmStar.Integrator.Route2DDrawingIntegrator;
+import io.github.beardedManZhao.algorithmStar.algorithm.generatingAlgorithm.ZhaoCoordinateNet2D;
+import io.github.beardedManZhao.algorithmStar.operands.coordinate.DoubleCoordinateTwo;
+import io.github.beardedManZhao.algorithmStar.operands.route.DoubleConsanguinityRoute2D;
 
 /**
  * 示例代码文件
@@ -70,10 +70,10 @@ public class MAIN1 {
 - The object that implements the starter interface is passed as parameter to get to the integrator and execute it
 
 ```java
-import zhao.algorithmMagic.Integrator.Route2DDrawingIntegrator;
-import zhao.algorithmMagic.Integrator.launcher.Route2DDrawingLauncher;
-import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo;
-import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute2D;
+import io.github.beardedManZhao.algorithmStar.Integrator.Route2DDrawingIntegrator;
+import io.github.beardedManZhao.algorithmStar.Integrator.launcher.Route2DDrawingLauncher;
+import io.github.beardedManZhao.algorithmStar.operands.coordinate.DoubleCoordinateTwo;
+import io.github.beardedManZhao.algorithmStar.operands.route.DoubleConsanguinityRoute2D;
 
 import java.util.HashMap;
 

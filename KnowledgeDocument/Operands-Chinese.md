@@ -23,9 +23,9 @@
 ```java
 // Java api
 
-import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateMany;
-import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateThree;
-import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo;
+import io.github.beardedManZhao.algorithmStar.operands.coordinate.DoubleCoordinateMany;
+import io.github.beardedManZhao.algorithmStar.operands.coordinate.DoubleCoordinateThree;
+import io.github.beardedManZhao.algorithmStar.operands.coordinate.DoubleCoordinateTwo;
 
 public class MAIN1 {
     public static void main(String[] args) {
@@ -84,9 +84,9 @@ public class MAIN1 {
 ```scala
 // scala api
 
-//import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo TODO 从1.12版本之后，包结构变更，请使用下方的导包
+//import io.github.beardedManZhao.algorithmStar.operands.coordinate.DoubleCoordinateTwo TODO 从1.12版本之后，包结构变更，请使用下方的导包
 
-import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo
+import io.github.beardedManZhao.algorithmStar.operands.coordinate.DoubleCoordinateTwo
 
 object MAIN {
   def main(args: Array[String]): Unit = {
@@ -111,9 +111,9 @@ object MAIN {
 ```java
 // Java api
 
-import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateMany;
-import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateThree;
-import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
+import io.github.beardedManZhao.algorithmStar.operands.coordinate.IntegerCoordinateMany;
+import io.github.beardedManZhao.algorithmStar.operands.coordinate.IntegerCoordinateThree;
+import io.github.beardedManZhao.algorithmStar.operands.coordinate.IntegerCoordinateTwo;
 
 public class MAIN1 {
     public static void main(String[] args) {
@@ -184,8 +184,8 @@ public class MAIN1 {
 ```java
 // Java api
 
-import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
-import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute2D;
+import io.github.beardedManZhao.algorithmStar.operands.coordinate.IntegerCoordinateTwo;
+import io.github.beardedManZhao.algorithmStar.operands.route.IntegerConsanguinityRoute2D;
 
 public class Test {
 
@@ -225,9 +225,9 @@ public class Test {
 ```java
 // Java api
 
-import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
-import zhao.algorithmMagic.operands.coordinateNet.IntegerRoute2DNet;
-import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute2D;
+import io.github.beardedManZhao.algorithmStar.operands.coordinate.IntegerCoordinateTwo;
+import io.github.beardedManZhao.algorithmStar.operands.coordinateNet.IntegerRoute2DNet;
+import io.github.beardedManZhao.algorithmStar.operands.route.IntegerConsanguinityRoute2D;
 
 public class Test {
 
@@ -255,8 +255,8 @@ public class Test {
 ```java
 // Java api
 
-import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateThree;
-import zhao.algorithmMagic.operands.vector.DoubleVector;
+import io.github.beardedManZhao.algorithmStar.operands.coordinate.DoubleCoordinateThree;
+import io.github.beardedManZhao.algorithmStar.operands.vector.DoubleVector;
 
 public class MAIN1 {
     public static void main(String[] args) {
@@ -287,9 +287,9 @@ public class MAIN1 {
 ```java
 // Java api
 
-import zhao.algorithmMagic.operands.ComplexNumber;
-import zhao.algorithmMagic.operands.matrix.ComplexNumberMatrix;
-import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
+import io.github.beardedManZhao.algorithmStar.operands.ComplexNumber;
+import io.github.beardedManZhao.algorithmStar.operands.matrix.ComplexNumberMatrix;
+import io.github.beardedManZhao.algorithmStar.operands.matrix.DoubleMatrix;
 
 public class MAIN1 {
     public static void main(String[] args) {
@@ -340,9 +340,9 @@ public class MAIN1 {
 // Java api
 package core;
 
-import zhao.algorithmMagic.lntegrator.ImageRenderingIntegrator;
-import zhao.algorithmMagic.lntegrator.launcher.ImageRenderingMarLauncher;
-import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+import io.github.beardedManZhao.algorithmStar.lntegrator.ImageRenderingIntegrator;
+import io.github.beardedManZhao.algorithmStar.lntegrator.launcher.ImageRenderingMarLauncher;
+import io.github.beardedManZhao.algorithmStar.operands.matrix.ColorMatrix;
 
 import java.awt.Color;
 
@@ -385,7 +385,7 @@ public class MAIN {
 ```java
 // Java api
 
-import zhao.algorithmMagic.operands.ComplexNumber;
+import io.github.beardedManZhao.algorithmStar.operands.ComplexNumber;
 
 public class MAIN1 {
     public static void main(String[] args) {
@@ -425,9 +425,9 @@ DataFrame 简称 "DF" 在数据的处理阶段，诸多函数采用SQL风格设�
     - 需要注意的是，在读取数据库的时候请在项目中导入 JDBC 的驱动类。
 
 ```java
-package zhao.algorithmMagic;
+package io.github.beardedManZhao.algorithmStar;
 
-import zhao.algorithmMagic.operands.table.*;
+import io.github.beardedManZhao.algorithmStar.operands.table.*;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -453,10 +453,10 @@ public class MAIN1 {
 - 读取文件系统 针对文件系统的读取，FDataFrame 是可以轻松做到本地文件系统读取的，不需要依赖任何的第三方库就可以实现文件系统的读取，接下来就实现一下具体的步骤！
 
 ```java
-package zhao.algorithmMagic;
+package io.github.beardedManZhao.algorithmStar;
 
-import zhao.algorithmMagic.operands.table.DataFrame;
-import zhao.algorithmMagic.operands.table.FDataFrame;
+import io.github.beardedManZhao.algorithmStar.operands.table.DataFrame;
+import io.github.beardedManZhao.algorithmStar.operands.table.FDataFrame;
 
 import java.io.File;
 import java.sql.SQLException;
@@ -487,9 +487,9 @@ public class MAIN1 {
 #### 综合案例
 
 ```java
-package zhao.algorithmMagic;
+package io.github.beardedManZhao.algorithmStar;
 
-import zhao.algorithmMagic.operands.table.*;
+import io.github.beardedManZhao.algorithmStar.operands.table.*;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

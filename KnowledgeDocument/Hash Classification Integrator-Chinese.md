@@ -27,11 +27,11 @@
 - 单类别模式中，在启动器里配置的待匹配数据集的每一个元素，只会属于一个类别，纵使其有多个符合的类别特征，也只会符合一个。
 
 ```java
-package zhao.algorithmMagic;
+package io.github.beardedManZhao.algorithmStar;
 
-import zhao.algorithmMagic.lntegrator.HashClassificationIntegrator;
-import zhao.algorithmMagic.lntegrator.launcher.HashClassificationLauncher;
-import zhao.algorithmMagic.utils.dataContainer.SetAndValue;
+import io.github.beardedManZhao.algorithmStar.lntegrator.HashClassificationIntegrator;
+import io.github.beardedManZhao.algorithmStar.lntegrator.launcher.HashClassificationLauncher;
+import io.github.beardedManZhao.algorithmStar.utils.dataContainer.SetAndValue;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -104,11 +104,11 @@ public class MAIN1 {
 - 多类别模式中，如果一个数据A的特征集合，包含AK与AS两种类别的特征集合，那么A数据属于AK同时也属于AS。
 
 ```java
-package zhao.algorithmMagic;
+package io.github.beardedManZhao.algorithmStar;
 
-import zhao.algorithmMagic.lntegrator.HashClassificationIntegrator;
-import zhao.algorithmMagic.lntegrator.launcher.HashClassificationLauncher;
-import zhao.algorithmMagic.utils.dataContainer.SetAndValue;
+import io.github.beardedManZhao.algorithmStar.lntegrator.HashClassificationIntegrator;
+import io.github.beardedManZhao.algorithmStar.lntegrator.launcher.HashClassificationLauncher;
+import io.github.beardedManZhao.algorithmStar.utils.dataContainer.SetAndValue;
 
 import java.util.Arrays;
 import java.util.HashMap;

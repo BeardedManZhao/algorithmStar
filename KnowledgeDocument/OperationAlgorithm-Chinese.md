@@ -20,21 +20,21 @@
 
 - 距离计算组件列表
 
-| 计算组件类型                                                                        | 支持版本 | 功能          |
-|-------------------------------------------------------------------------------|------|-------------|
-| zhao.algorithmMagic.algorithm.distanceAlgorithm.EuclideanMetric               | v1.0 | 计算欧几里得距离    |
-| zhao.algorithmMagic.algorithm.distanceAlgorithm.CanberraDistance              | v1.0 | 计算堪培拉距离     |
-| zhao.algorithmMagic.algorithm.distanceAlgorithm.ChebyshevDistance             | v1.0 | 计算切比雪夫距离    |
-| zhao.algorithmMagic.algorithm.distanceAlgorithm.CosineDistance                | v1.0 | 计算向量余弦度量    |
-| zhao.algorithmMagic.algorithm.distanceAlgorithm.HausdorffDistance             | v1.0 | 计算豪斯多夫距离    |
-| zhao.algorithmMagic.algorithm.distanceAlgorithm.ManhattanDistance             | v1.0 | 计算曼哈顿距离     |
-| zhao.algorithmMagic.algorithm.distanceAlgorithm.MinkowskiDistance             | v1.0 | 计算闵可夫斯基距离   |
-| zhao.algorithmMagic.algorithm.distanceAlgorithm.StandardizedEuclideanDistance | v1.0 | 计算标准化欧几里得度量 |
+| 计算组件类型                                                                                           | 支持版本 | 功能          |
+|--------------------------------------------------------------------------------------------------|------|-------------|
+| io.github.beardedManZhao.algorithmStar.algorithm.distanceAlgorithm.EuclideanMetric               | v1.0 | 计算欧几里得距离    |
+| io.github.beardedManZhao.algorithmStar.algorithm.distanceAlgorithm.CanberraDistance              | v1.0 | 计算堪培拉距离     |
+| io.github.beardedManZhao.algorithmStar.algorithm.distanceAlgorithm.ChebyshevDistance             | v1.0 | 计算切比雪夫距离    |
+| io.github.beardedManZhao.algorithmStar.algorithm.distanceAlgorithm.CosineDistance                | v1.0 | 计算向量余弦度量    |
+| io.github.beardedManZhao.algorithmStar.algorithm.distanceAlgorithm.HausdorffDistance             | v1.0 | 计算豪斯多夫距离    |
+| io.github.beardedManZhao.algorithmStar.algorithm.distanceAlgorithm.ManhattanDistance             | v1.0 | 计算曼哈顿距离     |
+| io.github.beardedManZhao.algorithmStar.algorithm.distanceAlgorithm.MinkowskiDistance             | v1.0 | 计算闵可夫斯基距离   |
+| io.github.beardedManZhao.algorithmStar.algorithm.distanceAlgorithm.StandardizedEuclideanDistance | v1.0 | 计算标准化欧几里得度量 |
 
 ```java
-import zhao.algorithmMagic.algorithm.EuclideanMetric;
-import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo;
-import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
+import io.github.beardedManZhao.algorithmStar.algorithm.EuclideanMetric;
+import io.github.beardedManZhao.algorithmStar.operands.coordinate.DoubleCoordinateTwo;
+import io.github.beardedManZhao.algorithmStar.operands.coordinate.IntegerCoordinateTwo;
 
 /**
  * 示例代码文件
@@ -58,18 +58,18 @@ public class MAIN1 {
 
 - 差异计算组件列表
 
-| 计算组件类型                                                                         | 支持版本 | 功能                   |
-|--------------------------------------------------------------------------------|------|----------------------|
-| zhao.algorithmMagic.algorithm.differenceAlgorithm.BrayCurtisDistance           | v1.0 | 计算两个数据样本之间的布雷柯蒂斯差异系数 |
-| zhao.algorithmMagic.algorithm.differenceAlgorithm.DiceCoefficient              | v1.0 | 计算两个数据样本之间的Dice差异系数  |
-| zhao.algorithmMagic.algorithm.differenceAlgorithm.EditDistance                 | v1.0 | 计算两个数据样本之间的最小编辑次数    |
-| zhao.algorithmMagic.algorithm.differenceAlgorithm.HammingDistance              | v1.0 | 计算两个数据样本之间的汉明差异系数    |
-| zhao.algorithmMagic.algorithm.differenceAlgorithm.JaccardSimilarityCoefficient | v1.0 | 计算两个数据样本之间的杰卡德相似系数   |
+| 计算组件类型                                                                                            | 支持版本 | 功能                   |
+|---------------------------------------------------------------------------------------------------|------|----------------------|
+| io.github.beardedManZhao.algorithmStar.algorithm.differenceAlgorithm.BrayCurtisDistance           | v1.0 | 计算两个数据样本之间的布雷柯蒂斯差异系数 |
+| io.github.beardedManZhao.algorithmStar.algorithm.differenceAlgorithm.DiceCoefficient              | v1.0 | 计算两个数据样本之间的Dice差异系数  |
+| io.github.beardedManZhao.algorithmStar.algorithm.differenceAlgorithm.EditDistance                 | v1.0 | 计算两个数据样本之间的最小编辑次数    |
+| io.github.beardedManZhao.algorithmStar.algorithm.differenceAlgorithm.HammingDistance              | v1.0 | 计算两个数据样本之间的汉明差异系数    |
+| io.github.beardedManZhao.algorithmStar.algorithm.differenceAlgorithm.JaccardSimilarityCoefficient | v1.0 | 计算两个数据样本之间的杰卡德相似系数   |
 
 ```java
-import zhao.algorithmMagic.algorithm.HammingDistance;
-import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo;
-import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
+import io.github.beardedManZhao.algorithmStar.algorithm.HammingDistance;
+import io.github.beardedManZhao.algorithmStar.operands.coordinate.DoubleCoordinateTwo;
+import io.github.beardedManZhao.algorithmStar.operands.coordinate.IntegerCoordinateTwo;
 
 /**
  * 示例代码文件
@@ -90,14 +90,14 @@ public class MAIN1 {
 
 - 预处理计算组件列表
 
-| 计算组件类型                                                           | 支持版本 | 功能                    |
-|------------------------------------------------------------------|------|-----------------------|
-| zhao.algorithmMagic.algorithm.normalization.LinearNormalization  | v1.0 | 将一个向量数据样本进行线性归一化      |
-| zhao.algorithmMagic.algorithm.normalization.Z_ScoreNormalization | v1.0 | 将一个向量数据样本进行正负均匀分配的标准化 |
+| 计算组件类型                                                                              | 支持版本 | 功能                    |
+|-------------------------------------------------------------------------------------|------|-----------------------|
+| io.github.beardedManZhao.algorithmStar.algorithm.normalization.LinearNormalization  | v1.0 | 将一个向量数据样本进行线性归一化      |
+| io.github.beardedManZhao.algorithmStar.algorithm.normalization.Z_ScoreNormalization | v1.0 | 将一个向量数据样本进行正负均匀分配的标准化 |
 
 ```java
-import zhao.algorithmMagic.algorithm.normalization.LinearNormalization;
-import zhao.algorithmMagic.operands.vector.DoubleVector;
+import io.github.beardedManZhao.algorithmStar.algorithm.normalization.LinearNormalization;
+import io.github.beardedManZhao.algorithmStar.operands.vector.DoubleVector;
 
 /**
  * 示例代码文件
@@ -122,18 +122,18 @@ public class MAIN1 {
 
 - 路径推导算法列表
 
-| 计算组件类型                                                                  | 支持版本 | 功能                           |
-|-------------------------------------------------------------------------|------|------------------------------|
-| zhao.algorithmMagic.algorithm.generatingAlgorithm.Dijkstra              | v1.0 | 计算一个路线网站中的最小距离               |
-| zhao.algorithmMagic.algorithm.generatingAlgorithm.Dijkstra2D            | v1.0 | 计算一个路线网站中的最小距离               |
-| zhao.algorithmMagic.algorithm.generatingAlgorithm.DirectionalDijkstra2D | v1.0 | 计算一个路线网站中的最小距离               |
-| zhao.algorithmMagic.algorithm.generatingAlgorithm.ZhaoCoordinateNet     | v1.0 | 计算一个路线网站潜在联系，并生成对应的路线对象到路线网中 |
-| zhao.algorithmMagic.algorithm.generatingAlgorithm.ZhaoCoordinateNet2D   | v1.0 | 计算一个路线网站潜在联系，并生成对应的路线对象到路线网中 |
+| 计算组件类型                                                                                     | 支持版本 | 功能                           |
+|--------------------------------------------------------------------------------------------|------|------------------------------|
+| io.github.beardedManZhao.algorithmStar.algorithm.generatingAlgorithm.Dijkstra              | v1.0 | 计算一个路线网站中的最小距离               |
+| io.github.beardedManZhao.algorithmStar.algorithm.generatingAlgorithm.Dijkstra2D            | v1.0 | 计算一个路线网站中的最小距离               |
+| io.github.beardedManZhao.algorithmStar.algorithm.generatingAlgorithm.DirectionalDijkstra2D | v1.0 | 计算一个路线网站中的最小距离               |
+| io.github.beardedManZhao.algorithmStar.algorithm.generatingAlgorithm.ZhaoCoordinateNet     | v1.0 | 计算一个路线网站潜在联系，并生成对应的路线对象到路线网中 |
+| io.github.beardedManZhao.algorithmStar.algorithm.generatingAlgorithm.ZhaoCoordinateNet2D   | v1.0 | 计算一个路线网站潜在联系，并生成对应的路线对象到路线网中 |
 
 ```java
-import zhao.algorithmMagic.algorithm.generatingAlgorithm.ZhaoCoordinateNet2D;
-import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo;
-import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute2D;
+import io.github.beardedManZhao.algorithmStar.algorithm.generatingAlgorithm.ZhaoCoordinateNet2D;
+import io.github.beardedManZhao.algorithmStar.operands.coordinate.DoubleCoordinateTwo;
+import io.github.beardedManZhao.algorithmStar.operands.route.DoubleConsanguinityRoute2D;
 
 /**
  * 示例代码文件
@@ -169,19 +169,19 @@ public class MAIN1 {
 
 - 聚合计算组件列表
 
-| 计算组件类型                                                                 | 支持版本  | 功能                 |
-|------------------------------------------------------------------------|-------|--------------------|
-| zhao.algorithmMagic.algorithm.aggregationAlgorithm.ExtremumAggregation | v1.14 | 计算一些数值的极值          |
-| zhao.algorithmMagic.algorithm.aggregationAlgorithm.WeightedAverage     | v1.14 | 计算一些数值的加权平均数       |
-| zhao.algorithmMagic.algorithm.aggregationAlgorithm.ModularOperation    | v1.14 | 计算一个序列或多个序列聚合之后的模长 |
+| 计算组件类型                                                                                    | 支持版本  | 功能                 |
+|-------------------------------------------------------------------------------------------|-------|--------------------|
+| io.github.beardedManZhao.algorithmStar.algorithm.aggregationAlgorithm.ExtremumAggregation | v1.14 | 计算一些数值的极值          |
+| io.github.beardedManZhao.algorithmStar.algorithm.aggregationAlgorithm.WeightedAverage     | v1.14 | 计算一些数值的加权平均数       |
+| io.github.beardedManZhao.algorithmStar.algorithm.aggregationAlgorithm.ModularOperation    | v1.14 | 计算一个序列或多个序列聚合之后的模长 |
 
 本次以数值的极值计算为例，展示聚合组件的功能
 
 ```java
-package zhao.algorithmMagic;
+package io.github.beardedManZhao.algorithmStar;
 
-import zhao.algorithmMagic.algorithm.aggregationAlgorithm.ExtremumAggregation;
-import zhao.algorithmMagic.operands.vector.DoubleVector;
+import io.github.beardedManZhao.algorithmStar.algorithm.aggregationAlgorithm.ExtremumAggregation;
+import io.github.beardedManZhao.algorithmStar.operands.vector.DoubleVector;
 
 public class MAIN1 {
     public static void main(String[] args) {
@@ -213,17 +213,17 @@ public class MAIN1 {
 
 - 特征提取组件列表
 
-| 计算组件类型                                                                | 支持版本  | 功能                 |
-|-----------------------------------------------------------------------|-------|--------------------|
-| zhao.algorithmMagic.algorithm.featureExtraction.DictFeatureExtraction | v1.14 | 对一些字符串数据进行子典特征提取   |
-| zhao.algorithmMagic.algorithm.featureExtraction.WordFrequency         | v1.14 | 对一些字符串数据进行词频向量特征提取 |
+| 计算组件类型                                                                                   | 支持版本  | 功能                 |
+|------------------------------------------------------------------------------------------|-------|--------------------|
+| io.github.beardedManZhao.algorithmStar.algorithm.featureExtraction.DictFeatureExtraction | v1.14 | 对一些字符串数据进行子典特征提取   |
+| io.github.beardedManZhao.algorithmStar.algorithm.featureExtraction.WordFrequency         | v1.14 | 对一些字符串数据进行词频向量特征提取 |
 
 ```java
-package zhao.algorithmMagic;
+package io.github.beardedManZhao.algorithmStar;
 
-import zhao.algorithmMagic.algorithm.featureExtraction.DictFeatureExtraction;
-import zhao.algorithmMagic.algorithm.featureExtraction.WordFrequency;
-import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
+import io.github.beardedManZhao.algorithmStar.algorithm.featureExtraction.DictFeatureExtraction;
+import io.github.beardedManZhao.algorithmStar.algorithm.featureExtraction.WordFrequency;
+import io.github.beardedManZhao.algorithmStar.operands.matrix.ColumnIntegerMatrix;
 
 public class MAIN1 {
     public static void main(String[] args) {
@@ -263,19 +263,19 @@ public class MAIN1 {
 
 - 特征分类组件列表
 
-| 计算组件类型                                                                          | 支持版本  | 功能                           |
-|---------------------------------------------------------------------------------|-------|------------------------------|
-| zhao.algorithmMagic.algorithm.classificationAlgorithm.UDFDistanceClassification | v1.14 | 利用手动传入类别样本的方式，进行距离计算并分类      |
-| zhao.algorithmMagic.algorithm.classificationAlgorithm.KnnClassification         | v1.14 | 利用K 近邻算法将最近的K个特征进行距离计算，进行分类。 |
-| zhao.algorithmMagic.algorithm.classificationAlgorithm.KMeans                    | v1.15 | 采用K 均值算法进行无监督计算，进行无监督分类。     |
+| 计算组件类型                                                                                             | 支持版本  | 功能                           |
+|----------------------------------------------------------------------------------------------------|-------|------------------------------|
+| io.github.beardedManZhao.algorithmStar.algorithm.classificationAlgorithm.UDFDistanceClassification | v1.14 | 利用手动传入类别样本的方式，进行距离计算并分类      |
+| io.github.beardedManZhao.algorithmStar.algorithm.classificationAlgorithm.KnnClassification         | v1.14 | 利用K 近邻算法将最近的K个特征进行距离计算，进行分类。 |
+| io.github.beardedManZhao.algorithmStar.algorithm.classificationAlgorithm.KMeans                    | v1.15 | 采用K 均值算法进行无监督计算，进行无监督分类。     |
 
 ```java
-package zhao.algorithmMagic;
+package io.github.beardedManZhao.algorithmStar;
 
-import zhao.algorithmMagic.algorithm.classificationAlgorithm.KnnClassification;
-import zhao.algorithmMagic.algorithm.classificationAlgorithm.UDFDistanceClassification;
-import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
-import zhao.algorithmMagic.operands.vector.IntegerVector;
+import io.github.beardedManZhao.algorithmStar.algorithm.classificationAlgorithm.KnnClassification;
+import io.github.beardedManZhao.algorithmStar.algorithm.classificationAlgorithm.UDFDistanceClassification;
+import io.github.beardedManZhao.algorithmStar.operands.matrix.ColumnIntegerMatrix;
+import io.github.beardedManZhao.algorithmStar.operands.vector.IntegerVector;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -356,16 +356,16 @@ public final class MAIN1 {
 
 - 概率计算组件列表
 
-| 计算组件类型                                                          | 支持版本  | 功能                             |
-|-----------------------------------------------------------------|-------|--------------------------------|
-| zhao.algorithmMagic.algorithm.probabilisticAlgorithm.NaiveBayes | v1.14 | 通过较小的计算量计算出形如”P(A\B)“事件发生的概率数值 |
+| 计算组件类型                                                                             | 支持版本  | 功能                             |
+|------------------------------------------------------------------------------------|-------|--------------------------------|
+| io.github.beardedManZhao.algorithmStar.algorithm.probabilisticAlgorithm.NaiveBayes | v1.14 | 通过较小的计算量计算出形如”P(A\B)“事件发生的概率数值 |
 
 ```java
-package zhao.algorithmMagic;
+package io.github.beardedManZhao.algorithmStar;
 
-import zhao.algorithmMagic.algorithm.probabilisticAlgorithm.NaiveBayes;
-import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
-import zhao.algorithmMagic.utils.filter.ArrayIntegerFiltering;
+import io.github.beardedManZhao.algorithmStar.algorithm.probabilisticAlgorithm.NaiveBayes;
+import io.github.beardedManZhao.algorithmStar.operands.matrix.ColumnIntegerMatrix;
+import io.github.beardedManZhao.algorithmStar.utils.filter.ArrayIntegerFiltering;
 
 public final class MAIN1 {
     public static void main(String[] args) {
@@ -445,17 +445,17 @@ public final class MAIN1 {
 
 - 决策计算组件列表
 
-| 计算组件类型                                                     | 支持版本  | 功能                                         |
-|------------------------------------------------------------|-------|--------------------------------------------|
-| zhao.algorithmMagic.algorithm.schemeAlgorithm.DecisionTree | v1.14 | 决策树计算组件，计算出最有效率的筛选路径，并按照路径将传递进来的事件处理函数进行排列 |
-| zhao.algorithmMagic.algorithm.schemeAlgorithm.RandomForest | v1.15 | 随机森林计算组件，随机分布样本自动选择最优秀解                    |
+| 计算组件类型                                                                        | 支持版本  | 功能                                         |
+|-------------------------------------------------------------------------------|-------|--------------------------------------------|
+| io.github.beardedManZhao.algorithmStar.algorithm.schemeAlgorithm.DecisionTree | v1.14 | 决策树计算组件，计算出最有效率的筛选路径，并按照路径将传递进来的事件处理函数进行排列 |
+| io.github.beardedManZhao.algorithmStar.algorithm.schemeAlgorithm.RandomForest | v1.15 | 随机森林计算组件，随机分布样本自动选择最优秀解                    |
 
 ```java
-package zhao.algorithmMagic;
+package io.github.beardedManZhao.algorithmStar;
 
-import zhao.algorithmMagic.algorithm.schemeAlgorithm.DecisionTree;
-import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
-import zhao.algorithmMagic.utils.filter.ArrayIntegerFiltering;
+import io.github.beardedManZhao.algorithmStar.algorithm.schemeAlgorithm.DecisionTree;
+import io.github.beardedManZhao.algorithmStar.operands.matrix.ColumnIntegerMatrix;
+import io.github.beardedManZhao.algorithmStar.utils.filter.ArrayIntegerFiltering;
 
 import java.util.ArrayList;
 
@@ -502,12 +502,12 @@ public class MAIN1 {
 
 ```mermaid
 graph TB
-AllData -- zhao.algorithmMagic.MAIN1$$Lambda$3/668386784-7b23ec81=true --> TrueData1[Int True Node No.1<br>Remaining quantity = 4<br>Remaining percentage = 50.0%<br>]
-AllData -. zhao.algorithmMagic.MAIN1$$Lambda$3/668386784-7b23ec81=false .-> FalseData1[Int False Node No.1<br>Removal quantity = 4<br>Removal percentage = 50.0%<br>]
-TrueData1 -- zhao.algorithmMagic.MAIN1$$Lambda$1/1607521710-4f3f5b24=true --> TrueData2[Int True Node No.2<br>Remaining quantity = 2<br>Remaining percentage = 50.0%<br>]
-TrueData1 -. zhao.algorithmMagic.MAIN1$$Lambda$1/1607521710-4f3f5b24=false .-> FalseData2[Int False Node No.2<br>Removal quantity = 2<br>Removal percentage = 50.0%<br>]
-TrueData2 -- zhao.algorithmMagic.MAIN1$$Lambda$2/2129789493-15aeb7ab=true --> TrueData3[Int True Node No.3<br>Remaining quantity = 1<br>Remaining percentage = 50.0%<br>]
-TrueData2 -. zhao.algorithmMagic.MAIN1$$Lambda$2/2129789493-15aeb7ab=false .-> FalseData3[Int False Node No.3<br>Removal quantity = 1<br>Removal percentage = 50.0%<br>]
+  AllData -- io . github . beardedManZhao . algorithmStar . MAIN1$$Lambda$3/668386784 - 7b23ec81 = true --> TrueData1[Int True Node No.1<br>Remaining quantity = 4<br>Remaining percentage = 50.0%<br>]
+  AllData -. io . github . beardedManZhao . algorithmStar . MAIN1$$Lambda$3/668386784 - 7b23ec81 = false .-> FalseData1[Int False Node No.1<br>Removal quantity = 4<br>Removal percentage = 50.0%<br>]
+  TrueData1 -- io . github . beardedManZhao . algorithmStar . MAIN1$$Lambda$1/1607521710 - 4f3f5b24 = true --> TrueData2[Int True Node No.2<br>Remaining quantity = 2<br>Remaining percentage = 50.0%<br>]
+  TrueData1 -. io . github . beardedManZhao . algorithmStar . MAIN1$$Lambda$1/1607521710 - 4f3f5b24 = false .-> FalseData2[Int False Node No.2<br>Removal quantity = 2<br>Removal percentage = 50.0%<br>]
+  TrueData2 -- io . github . beardedManZhao . algorithmStar . MAIN1$$Lambda$2/2129789493 - 15aeb7ab = true --> TrueData3[Int True Node No.3<br>Remaining quantity = 1<br>Remaining percentage = 50.0%<br>]
+  TrueData2 -. io . github . beardedManZhao . algorithmStar . MAIN1$$Lambda$2/2129789493 - 15aeb7ab = false .-> FalseData3[Int False Node No.3<br>Removal quantity = 1<br>Removal percentage = 50.0%<br>]
 ```
 
 ### 模型计算组件
@@ -516,16 +516,16 @@ TrueData2 -. zhao.algorithmMagic.MAIN1$$Lambda$2/2129789493-15aeb7ab=false .-> F
 
 - 模型计算组件列表
 
-| 计算组件类型                                                                 | 支持版本   | 功能                   |
-|------------------------------------------------------------------------|--------|----------------------|
-| zhao.algorithmMagic.algorithm.modelAlgorithm.LinearRegression          | v1.15  | 该计算组件能够实现快速的一元线性回归计算 |
-| zhao.algorithmMagic.algorithm.modelAlgorithm.MultipleLinearRegression  | v1.15  | 该计算组件能够进行线性数据的多元线性回归 |
+| 计算组件类型                                                                                   | 支持版本  | 功能                   |
+|------------------------------------------------------------------------------------------|-------|----------------------|
+| io.github.beardedManZhao.algorithmStar.algorithm.modelAlgorithm.LinearRegression         | v1.15 | 该计算组件能够实现快速的一元线性回归计算 |
+| io.github.beardedManZhao.algorithmStar.algorithm.modelAlgorithm.MultipleLinearRegression | v1.15 | 该计算组件能够进行线性数据的多元线性回归 |
 
 ```java
-package zhao.algorithmMagic;
+package io.github.beardedManZhao.algorithmStar;
 
-import zhao.algorithmMagic.algorithm.modelAlgorithm.LinearRegression;
-import zhao.algorithmMagic.operands.matrix.ColumnDoubleMatrix;
+import io.github.beardedManZhao.algorithmStar.algorithm.modelAlgorithm.LinearRegression;
+import io.github.beardedManZhao.algorithmStar.operands.matrix.ColumnDoubleMatrix;
 
 public class MAIN1 {
     public static void main(String[] args) {

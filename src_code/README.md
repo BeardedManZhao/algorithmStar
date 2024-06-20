@@ -8,10 +8,7 @@
 
 ### Update log:
 
-* Framework version: 1.31-1.32
-* The removal of the measurement calculation component and the log printing module in the difference calculation
-  component will effectively enhance the performance of the framework.
-* Removing the log configuration file will effectively prevent the issue of accidental overwriting of the log
-  configuration file.
+* Framework version: 1.32 - 1.40
+* Refactoring software package names to avoid confusion and conflicts
 
-### Version update date : 2024-06-13
+### Version update date : 2024-06-20

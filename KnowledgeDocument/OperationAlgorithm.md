@@ -26,21 +26,21 @@ example. The use of the distance algorithm is as follows
 
 - List of distance calculation components
 
-| Calculation component type                                                    | Supported versions | function                                   |
-|-------------------------------------------------------------------------------|--------------------|--------------------------------------------|
-| zhao.algorithmMagic.algorithm.distanceAlgorithm.EuclideanMetric               | v1.0               | Calculate Euclidean distance               |
-| zhao.algorithmMagic.algorithm.distanceAlgorithm.CanberraDistance              | v1.0               | Calculate Canberra distance                |
-| zhao.algorithmMagic.algorithm.distanceAlgorithm.ChebyshevDistance             | v1.0               | Calculate Chebyshev distance               |
-| zhao.algorithmMagic.algorithm.distanceAlgorithm.CosineDistance                | v1.0               | Calculate vector cosine measure            |
-| zhao.algorithmMagic.algorithm.distanceAlgorithm.HausdorffDistance             | v1.0               | Calculate Hausdorff distance               |
-| zhao.algorithmMagic.algorithm.distanceAlgorithm.ManhattanDistance             | v1.0               | Calculate Manhattan distance               |
-| zhao.algorithmMagic.algorithm.distanceAlgorithm.MinkowskiDistance             | v1.0               | Calculate Minkowski distance               |
-| zhao.algorithmMagic.algorithm.distanceAlgorithm.StandardizedEuclideanDistance | v1.0               | Calculate standardized Euclidean measures  |
+| Calculation component type                                                                       | Supported versions | function                                  |
+|--------------------------------------------------------------------------------------------------|--------------------|-------------------------------------------|
+| io.github.beardedManZhao.algorithmStar.algorithm.distanceAlgorithm.EuclideanMetric               | v1.0               | Calculate Euclidean distance              |
+| io.github.beardedManZhao.algorithmStar.algorithm.distanceAlgorithm.CanberraDistance              | v1.0               | Calculate Canberra distance               |
+| io.github.beardedManZhao.algorithmStar.algorithm.distanceAlgorithm.ChebyshevDistance             | v1.0               | Calculate Chebyshev distance              |
+| io.github.beardedManZhao.algorithmStar.algorithm.distanceAlgorithm.CosineDistance                | v1.0               | Calculate vector cosine measure           |
+| io.github.beardedManZhao.algorithmStar.algorithm.distanceAlgorithm.HausdorffDistance             | v1.0               | Calculate Hausdorff distance              |
+| io.github.beardedManZhao.algorithmStar.algorithm.distanceAlgorithm.ManhattanDistance             | v1.0               | Calculate Manhattan distance              |
+| io.github.beardedManZhao.algorithmStar.algorithm.distanceAlgorithm.MinkowskiDistance             | v1.0               | Calculate Minkowski distance              |
+| io.github.beardedManZhao.algorithmStar.algorithm.distanceAlgorithm.StandardizedEuclideanDistance | v1.0               | Calculate standardized Euclidean measures |
 
 ```java
-import zhao.algorithmMagic.algorithm.EuclideanMetric;
-import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo;
-import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
+import io.github.beardedManZhao.algorithmStar.algorithm.EuclideanMetric;
+import io.github.beardedManZhao.algorithmStar.operands.coordinate.DoubleCoordinateTwo;
+import io.github.beardedManZhao.algorithmStar.operands.coordinate.IntegerCoordinateTwo;
 
 /**
  * 示例代码文件
@@ -66,18 +66,18 @@ differences!
 
 - List of variance calculation components
 
-| Calculation component type                                                      | Supported versions | function                                                                    |
-|---------------------------------------------------------------------------------|--------------------|-----------------------------------------------------------------------------|
-| zhao.algorithmMagic.algorithm.differenceAlgorithm.BrayCurtisDistance            | v1.0               | Calculate the Brecurtis coefficient of difference between two data samples  |
-| zhao.algorithmMagic.algorithm.differenceAlgorithm.DiceCoefficient               | v1.0               | Calculate the Dice difference coefficient between two data samples          |
-| zhao.algorithmMagic.algorithm.differenceAlgorithm.EditDistance                  | v1.0               | Calculate the minimum number of edits between two data samples              |
-| zhao.algorithmMagic.algorithm.differenceAlgorithm.HammingDistance               | v1.0               | Calculate the Hamming difference coefficient between two data samples       |
-| zhao.algorithmMagic.algorithm.differenceAlgorithm.JacquardSimilarityCoefficient | v1.0               | Calculate the Jakad similarity coefficient between two data samples         |
+| Calculation component type                                                                         | Supported versions | function                                                                   |
+|----------------------------------------------------------------------------------------------------|--------------------|----------------------------------------------------------------------------|
+| io.github.beardedManZhao.algorithmStar.algorithm.differenceAlgorithm.BrayCurtisDistance            | v1.0               | Calculate the Brecurtis coefficient of difference between two data samples |
+| io.github.beardedManZhao.algorithmStar.algorithm.differenceAlgorithm.DiceCoefficient               | v1.0               | Calculate the Dice difference coefficient between two data samples         |
+| io.github.beardedManZhao.algorithmStar.algorithm.differenceAlgorithm.EditDistance                  | v1.0               | Calculate the minimum number of edits between two data samples             |
+| io.github.beardedManZhao.algorithmStar.algorithm.differenceAlgorithm.HammingDistance               | v1.0               | Calculate the Hamming difference coefficient between two data samples      |
+| io.github.beardedManZhao.algorithmStar.algorithm.differenceAlgorithm.JacquardSimilarityCoefficient | v1.0               | Calculate the Jakad similarity coefficient between two data samples        |
 
 ```java
-import zhao.algorithmMagic.algorithm.HammingDistance;
-import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo;
-import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
+import io.github.beardedManZhao.algorithmStar.algorithm.HammingDistance;
+import io.github.beardedManZhao.algorithmStar.operands.coordinate.DoubleCoordinateTwo;
+import io.github.beardedManZhao.algorithmStar.operands.coordinate.IntegerCoordinateTwo;
 
 /**
  * 示例代码文件
@@ -101,14 +101,14 @@ dimensions.
 
 - Standardized calculation component list
 
-| Calculation component type                                       | Supported versions | function                                                                            |
-|------------------------------------------------------------------|--------------------|-------------------------------------------------------------------------------------|
-| zhao.algorithmMagic.algorithm.normalization.LinearNormalization  | v1.0               | Linear normalization of a vector data sample                                        |
-| zhao.algorithmMagic.algorithm.normalization.Z_ScoreNormalization | v1.0               | Standardize the positive and negative uniform distribution of a vector data sample  |
+| Calculation component type                                                          | Supported versions | function                                                                           |
+|-------------------------------------------------------------------------------------|--------------------|------------------------------------------------------------------------------------|
+| io.github.beardedManZhao.algorithmStar.algorithm.normalization.LinearNormalization  | v1.0               | Linear normalization of a vector data sample                                       |
+| io.github.beardedManZhao.algorithmStar.algorithm.normalization.Z_ScoreNormalization | v1.0               | Standardize the positive and negative uniform distribution of a vector data sample |
 
 ```java
-import zhao.algorithmMagic.algorithm.normalization.LinearNormalization;
-import zhao.algorithmMagic.operands.vector.DoubleVector;
+import io.github.beardedManZhao.algorithmStar.algorithm.normalization.LinearNormalization;
+import io.github.beardedManZhao.algorithmStar.operands.vector.DoubleVector;
 
 /**
  * 示例代码文件
@@ -135,18 +135,18 @@ in the homepage to conduct a personal and Relationship between people inferred!
 
 - 路径推导算法列表
 
-| Calculation component type                                              | Supported versions | function                                                                                                               |
-|-------------------------------------------------------------------------|--------------------|------------------------------------------------------------------------------------------------------------------------|
-| zhao.algorithmMagic.algorithm.generatingAlgorithm.Dijkstra              | v1.0               | Calculate the minimum distance in a route website                                                                      |
-| zhao.algorithmMagic.algorithm.generatingAlgorithm.Dijkstra2D            | v1.0               | Calculate the minimum distance in a route website                                                                      |
-| zhao.algorithmMagic.algorithm.generatingAlgorithm.DirectionalDijkstra2D | v1.0               | Calculate the minimum distance in a route website                                                                      |
-| zhao.algorithmMagic.algorithm.generatingAlgorithm.ZhaoCoordinateNet     | v1.0               | Calculate the potential contact of a route website and generate the corresponding route object into the route network  |
-| zhao.algorithmMagic.algorithm.generatingAlgorithm.ZhaoCoordinateNet2D   | v1.0               | Calculate the potential contact of a route website and generate the corresponding route object into the route network  |
+| Calculation component type                                                                 | Supported versions | function                                                                                                              |
+|--------------------------------------------------------------------------------------------|--------------------|-----------------------------------------------------------------------------------------------------------------------|
+| io.github.beardedManZhao.algorithmStar.algorithm.generatingAlgorithm.Dijkstra              | v1.0               | Calculate the minimum distance in a route website                                                                     |
+| io.github.beardedManZhao.algorithmStar.algorithm.generatingAlgorithm.Dijkstra2D            | v1.0               | Calculate the minimum distance in a route website                                                                     |
+| io.github.beardedManZhao.algorithmStar.algorithm.generatingAlgorithm.DirectionalDijkstra2D | v1.0               | Calculate the minimum distance in a route website                                                                     |
+| io.github.beardedManZhao.algorithmStar.algorithm.generatingAlgorithm.ZhaoCoordinateNet     | v1.0               | Calculate the potential contact of a route website and generate the corresponding route object into the route network |
+| io.github.beardedManZhao.algorithmStar.algorithm.generatingAlgorithm.ZhaoCoordinateNet2D   | v1.0               | Calculate the potential contact of a route website and generate the corresponding route object into the route network |
 
 ```java
-import zhao.algorithmMagic.algorithm.generatingAlgorithm.ZhaoCoordinateNet2D;
-import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo;
-import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute2D;
+import io.github.beardedManZhao.algorithmStar.algorithm.generatingAlgorithm.ZhaoCoordinateNet2D;
+import io.github.beardedManZhao.algorithmStar.operands.coordinate.DoubleCoordinateTwo;
+import io.github.beardedManZhao.algorithmStar.operands.route.DoubleConsanguinityRoute2D;
 
 /**
  * 示例代码文件
@@ -184,20 +184,20 @@ Various aggregation calculation components are described in the following table!
 
 - Aggregate Calculation Component List
 
-| Calculation component type                                             | Supported versions | function                                                                |
-|------------------------------------------------------------------------|--------------------|-------------------------------------------------------------------------|
-| zhao.algorithmMagic.algorithm.aggregationAlgorithm.ExtremumAggregation | v1.14              | Calculate the extreme value of some values                              |
-| zhao.algorithmMagic.algorithm.aggregationAlgorithm.WeightedAverage     | v1.14              | Calculate the weighted average of some values                           |
-| zhao.algorithmMagic.algorithm.aggregationAlgorithm.ModularOperation    | v1.14              | Calculate the module length after aggregation of one or more sequences  |
+| Calculation component type                                                                | Supported versions | function                                                               |
+|-------------------------------------------------------------------------------------------|--------------------|------------------------------------------------------------------------|
+| io.github.beardedManZhao.algorithmStar.algorithm.aggregationAlgorithm.ExtremumAggregation | v1.14              | Calculate the extreme value of some values                             |
+| io.github.beardedManZhao.algorithmStar.algorithm.aggregationAlgorithm.WeightedAverage     | v1.14              | Calculate the weighted average of some values                          |
+| io.github.beardedManZhao.algorithmStar.algorithm.aggregationAlgorithm.ModularOperation    | v1.14              | Calculate the module length after aggregation of one or more sequences |
 
 This time, the extreme value calculation of numerical value is taken as an example to show the functions of aggregation
 components
 
 ```java
-package zhao.algorithmMagic;
+package io.github.beardedManZhao.algorithmStar;
 
-import zhao.algorithmMagic.algorithm.aggregationAlgorithm.ExtremumAggregation;
-import zhao.algorithmMagic.operands.vector.DoubleVector;
+import io.github.beardedManZhao.algorithmStar.algorithm.aggregationAlgorithm.ExtremumAggregation;
+import io.github.beardedManZhao.algorithmStar.operands.vector.DoubleVector;
 
 public class MAIN1 {
     public static void main(String[] args) {
@@ -230,17 +230,17 @@ data into data that can be processed by computers, such as vectors.
 
 - Feature extraction component list
 
-| Calculation component type                                            | Supported versions | function                                                            |
-|-----------------------------------------------------------------------|--------------------|---------------------------------------------------------------------|
-| zhao.algorithmMagic.algorithm.featureExtraction.DictFeatureExtraction | v1.14              | Extract the sub-dictionary features of some string data             |
-| zhao.algorithmMagic.algorithm.featureExtraction.WordFrequency         | v1.14              | Extract the feature of word frequency vector from some string data  |
+| Calculation component type                                                               | Supported versions | function                                                           |
+|------------------------------------------------------------------------------------------|--------------------|--------------------------------------------------------------------|
+| io.github.beardedManZhao.algorithmStar.algorithm.featureExtraction.DictFeatureExtraction | v1.14              | Extract the sub-dictionary features of some string data            |
+| io.github.beardedManZhao.algorithmStar.algorithm.featureExtraction.WordFrequency         | v1.14              | Extract the feature of word frequency vector from some string data |
 
 ```java
-package zhao.algorithmMagic;
+package io.github.beardedManZhao.algorithmStar;
 
-import zhao.algorithmMagic.algorithm.featureExtraction.DictFeatureExtraction;
-import zhao.algorithmMagic.algorithm.featureExtraction.WordFrequency;
-import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
+import io.github.beardedManZhao.algorithmStar.algorithm.featureExtraction.DictFeatureExtraction;
+import io.github.beardedManZhao.algorithmStar.algorithm.featureExtraction.WordFrequency;
+import io.github.beardedManZhao.algorithmStar.operands.matrix.ColumnIntegerMatrix;
 
 public class MAIN1 {
     public static void main(String[] args) {
@@ -282,19 +282,19 @@ specific classification components, see the following example.
 
 - Feature classification component list
 
-| Calculation component type                                                      | Supported versions | function                                                                                                    |
-|---------------------------------------------------------------------------------|--------------------|-------------------------------------------------------------------------------------------------------------|
-| zhao.algorithmMagic.algorithm.classificationAlgorithm.UDFDistanceClassification | v1.14              | Calculate and classify the distance by manually passing in the category sample                              |
-| zhao.algorithmMagic.algorithm.classificationAlgorithm.KnnClassification         | v1.14              | K-nearest neighbor algorithm is used to calculate the distance of the nearest K features and classify them. |
-| zhao.algorithmMagic.algorithm.classificationAlgorithm.KMeans                    | v1.15              | K-means algorithm is used for unsupervised calculation and unsupervised classification.                     |
+| Calculation component type                                                                         | Supported versions | function                                                                                                    |
+|----------------------------------------------------------------------------------------------------|--------------------|-------------------------------------------------------------------------------------------------------------|
+| io.github.beardedManZhao.algorithmStar.algorithm.classificationAlgorithm.UDFDistanceClassification | v1.14              | Calculate and classify the distance by manually passing in the category sample                              |
+| io.github.beardedManZhao.algorithmStar.algorithm.classificationAlgorithm.KnnClassification         | v1.14              | K-nearest neighbor algorithm is used to calculate the distance of the nearest K features and classify them. |
+| io.github.beardedManZhao.algorithmStar.algorithm.classificationAlgorithm.KMeans                    | v1.15              | K-means algorithm is used for unsupervised calculation and unsupervised classification.                     |
 
 ```java
-package zhao.algorithmMagic;
+package io.github.beardedManZhao.algorithmStar;
 
-import zhao.algorithmMagic.algorithm.classificationAlgorithm.KnnClassification;
-import zhao.algorithmMagic.algorithm.classificationAlgorithm.UDFDistanceClassification;
-import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
-import zhao.algorithmMagic.operands.vector.IntegerVector;
+import io.github.beardedManZhao.algorithmStar.algorithm.classificationAlgorithm.KnnClassification;
+import io.github.beardedManZhao.algorithmStar.algorithm.classificationAlgorithm.UDFDistanceClassification;
+import io.github.beardedManZhao.algorithmStar.operands.matrix.ColumnIntegerMatrix;
+import io.github.beardedManZhao.algorithmStar.operands.vector.IntegerVector;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -378,16 +378,16 @@ of B event.
 
 - List of probability calculation components
 
-| Calculation component type                                      | Supported versions | function                                                                                        |
-|-----------------------------------------------------------------|--------------------|-------------------------------------------------------------------------------------------------|
-| zhao.algorithmMagic.algorithm.probabilisticAlgorithm.NaiveBayes | v1.14              | Calculate the probability value of the event like "P (A B)" with a small amount of calculation  |
+| Calculation component type                                                         | Supported versions | function                                                                                       |
+|------------------------------------------------------------------------------------|--------------------|------------------------------------------------------------------------------------------------|
+| io.github.beardedManZhao.algorithmStar.algorithm.probabilisticAlgorithm.NaiveBayes | v1.14              | Calculate the probability value of the event like "P (A B)" with a small amount of calculation |
 
 ```java
-package zhao.algorithmMagic;
+package io.github.beardedManZhao.algorithmStar;
 
-import zhao.algorithmMagic.algorithm.probabilisticAlgorithm.NaiveBayes;
-import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
-import zhao.algorithmMagic.utils.filter.ArrayIntegerFiltering;
+import io.github.beardedManZhao.algorithmStar.algorithm.probabilisticAlgorithm.NaiveBayes;
+import io.github.beardedManZhao.algorithmStar.operands.matrix.ColumnIntegerMatrix;
+import io.github.beardedManZhao.algorithmStar.utils.filter.ArrayIntegerFiltering;
 
 public final class MAIN1 {
     public static void main(String[] args) {
@@ -469,17 +469,17 @@ Next is the usage of decision trees.
 
 - Decision calculation component list
 
-| Calculation component type                                 | Supported versions | function                                                                                                                                                         |
-|------------------------------------------------------------|--------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| zhao.algorithmMagic.algorithm.schemeAlgorithm.DecisionTree | v1.14              | The decision tree calculation component calculates the most efficient filtering path and arranges the event processing functions passed in according to the path |
-| zhao.algorithmMagic.algorithm.schemeAlgorithm.RandomForest | v1.15              | Random forest computing component, randomly distributed samples automatically select the best solution                                                           |
+| Calculation component type                                                    | Supported versions | function                                                                                                                                                         |
+|-------------------------------------------------------------------------------|--------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| io.github.beardedManZhao.algorithmStar.algorithm.schemeAlgorithm.DecisionTree | v1.14              | The decision tree calculation component calculates the most efficient filtering path and arranges the event processing functions passed in according to the path |
+| io.github.beardedManZhao.algorithmStar.algorithm.schemeAlgorithm.RandomForest | v1.15              | Random forest computing component, randomly distributed samples automatically select the best solution                                                           |
 
 ```java
-package zhao.algorithmMagic;
+package io.github.beardedManZhao.algorithmStar;
 
-import zhao.algorithmMagic.algorithm.schemeAlgorithm.DecisionTree;
-import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
-import zhao.algorithmMagic.utils.filter.ArrayIntegerFiltering;
+import io.github.beardedManZhao.algorithmStar.algorithm.schemeAlgorithm.DecisionTree;
+import io.github.beardedManZhao.algorithmStar.operands.matrix.ColumnIntegerMatrix;
+import io.github.beardedManZhao.algorithmStar.utils.filter.ArrayIntegerFiltering;
 
 import java.util.ArrayList;
 
@@ -526,12 +526,12 @@ public class MAIN1 {
 
 ```mermaid
 graph TB
-AllData -- zhao.algorithmMagic.MAIN1$$Lambda$3/668386784-7b23ec81=true --> TrueData1[Int True Node No.1<br>Remaining quantity = 4<br>Remaining percentage = 50.0%<br>]
-AllData -. zhao.algorithmMagic.MAIN1$$Lambda$3/668386784-7b23ec81=false .-> FalseData1[Int False Node No.1<br>Removal quantity = 4<br>Removal percentage = 50.0%<br>]
-TrueData1 -- zhao.algorithmMagic.MAIN1$$Lambda$1/1607521710-4f3f5b24=true --> TrueData2[Int True Node No.2<br>Remaining quantity = 2<br>Remaining percentage = 50.0%<br>]
-TrueData1 -. zhao.algorithmMagic.MAIN1$$Lambda$1/1607521710-4f3f5b24=false .-> FalseData2[Int False Node No.2<br>Removal quantity = 2<br>Removal percentage = 50.0%<br>]
-TrueData2 -- zhao.algorithmMagic.MAIN1$$Lambda$2/2129789493-15aeb7ab=true --> TrueData3[Int True Node No.3<br>Remaining quantity = 1<br>Remaining percentage = 50.0%<br>]
-TrueData2 -. zhao.algorithmMagic.MAIN1$$Lambda$2/2129789493-15aeb7ab=false .-> FalseData3[Int False Node No.3<br>Removal quantity = 1<br>Removal percentage = 50.0%<br>]
+    AllData -- io . github . beardedManZhao . algorithmStar . MAIN1$$Lambda$3/668386784 - 7b23ec81 = true --> TrueData1[Int True Node No.1<br>Remaining quantity = 4<br>Remaining percentage = 50.0%<br>]
+    AllData -. io . github . beardedManZhao . algorithmStar . MAIN1$$Lambda$3/668386784 - 7b23ec81 = false .-> FalseData1[Int False Node No.1<br>Removal quantity = 4<br>Removal percentage = 50.0%<br>]
+    TrueData1 -- io . github . beardedManZhao . algorithmStar . MAIN1$$Lambda$1/1607521710 - 4f3f5b24 = true --> TrueData2[Int True Node No.2<br>Remaining quantity = 2<br>Remaining percentage = 50.0%<br>]
+    TrueData1 -. io . github . beardedManZhao . algorithmStar . MAIN1$$Lambda$1/1607521710 - 4f3f5b24 = false .-> FalseData2[Int False Node No.2<br>Removal quantity = 2<br>Removal percentage = 50.0%<br>]
+    TrueData2 -- io . github . beardedManZhao . algorithmStar . MAIN1$$Lambda$2/2129789493 - 15aeb7ab = true --> TrueData3[Int True Node No.3<br>Remaining quantity = 1<br>Remaining percentage = 50.0%<br>]
+    TrueData2 -. io . github . beardedManZhao . algorithmStar . MAIN1$$Lambda$2/2129789493 - 15aeb7ab = false .-> FalseData3[Int False Node No.3<br>Removal quantity = 1<br>Removal percentage = 50.0%<br>]
 ```
 
 ### Model calculation component
@@ -542,16 +542,16 @@ is used for an API demonstration example.
 
 - Model calculation component list
 
-| Calculation component type                                            | Supported versions | function                                                                         |
-|-----------------------------------------------------------------------|--------------------|----------------------------------------------------------------------------------|
-| zhao.algorithmMagic.algorithm.modelAlgorithm.LinearRegression         | v1.15              | The calculation component can realize fast linear regression calculation         |
-| zhao.algorithmMagic.algorithm.modelAlgorithm.MultipleLinearRegression | v1.15              | The calculation component can perform multiple linear regression of linear data  |
+| Calculation component type                                                               | Supported versions | function                                                                        |
+|------------------------------------------------------------------------------------------|--------------------|---------------------------------------------------------------------------------|
+| io.github.beardedManZhao.algorithmStar.algorithm.modelAlgorithm.LinearRegression         | v1.15              | The calculation component can realize fast linear regression calculation        |
+| io.github.beardedManZhao.algorithmStar.algorithm.modelAlgorithm.MultipleLinearRegression | v1.15              | The calculation component can perform multiple linear regression of linear data |
 
 ```java
-package zhao.algorithmMagic;
+package io.github.beardedManZhao.algorithmStar;
 
-import zhao.algorithmMagic.algorithm.modelAlgorithm.LinearRegression;
-import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
+import io.github.beardedManZhao.algorithmStar.algorithm.modelAlgorithm.LinearRegression;
+import io.github.beardedManZhao.algorithmStar.operands.matrix.ColumnIntegerMatrix;
 
 public class MAIN1 {
     public static void main(String[] args) {

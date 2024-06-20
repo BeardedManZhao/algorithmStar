@@ -18,7 +18,19 @@ A [test dataset](https://github.com/BeardedManZhao/algorithmStar/blob/master/sou
 warehouse, which contains various data files such as images. You can pull these test data into a local program through a
 URL for calculation.
 
-### Maven dependency
+## Notification
+
+> ⚠️ 【 Important 】 The content of versions 1.32 and 1.40 is almost identical, with the main difference being the changes
+> to the package module. Please note that we will refactor the package name
+> to ` io. github. beardedManZhao. algorithmStar ` in versions 1.40 and all subsequent versions to avoid conflicting
+> package names in many Java dependencies~
+>
+>To avoid any compatibility issues caused by package updates, we have provided version 1.32. You can continue to use the
+> old package name, but we strongly recommend using the new version, as the new package name has been updated to 'io.
+> github. beardedManZhao. algorithmStar'. If you have any questions or suggestions about changing the package name or
+> updating, please contact us in a timely manner!!
+
+## Maven dependency
 
 You can integrate Arithmetic Star into your project through maven, and the configuration of Maven is shown below. You
 can add it to your maven project, or you can download it from Releases and manually integrate it into your project.
@@ -29,7 +41,7 @@ can add it to your maven project, or you can download it from Releases and manua
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>algorithmStar</artifactId>
-        <version>1.32</version>
+        <version>1.40</version>
     </dependency>
 </dependencies>
 ```
@@ -134,17 +146,36 @@ need to, you can refer to the following configuration.
 After loading the AS library, you can use the following code to download all the help documents to your local computer. There are some sample codes to guide you in using them, and you can make modifications according to your own needs.
 
 ```java
-package zhao.algorithmMagic;
+package io.github.beardedManZhao.algorithmStar;
 
-import zhao.algorithmMagic.core.AlgorithmStar;
-import zhao.algorithmMagic.core.HelpFactory;
+import io.github.beardedManZhao.algorithmStar.algorithm.distanceAlgorithm.EuclideanMetric;
+import io.github.beardedManZhao.algorithmStar.algorithm.distanceAlgorithm.ManhattanDistance;
+import io.github.beardedManZhao.algorithmStar.algorithm.featureExtraction.WordFrequency;
+import io.github.beardedManZhao.algorithmStar.core.AlgorithmStar;
+import io.github.beardedManZhao.algorithmStar.operands.matrix.ColumnIntegerMatrix;
 
-public class MAIN1 {
+public final class MAIN1 {
   public static void main(String[] args) {
-    // 获取帮助信息工厂类
-    final HelpFactory helpFactory = AlgorithmStar.helpFactory();
-    // 下载帮助文档 到 C:\Users\zhao\Desktop\fsdownload 目录中
-    helpFactory.saveHelpFile(HelpFactory.ALL, "C:\\Users\\zhao\\Desktop\\fsdownload");
+    // 准备两个文本组成的数组，其中是两个需要被处理成为特征向量的字符串语句。
+    String[] data = {
+            "Good evening, dear, don't forget the agreement between us. It's 9:00 tomorrow morning.",
+            "Good morning, dear, don't forget the agreement between us, at 9:00 in the morning."
+    };
+    AlgorithmStar<Object, ColumnIntegerMatrix> algorithmStar = AlgorithmStar.getInstance();
+    // 开始进行特征提取，生成词频向量 提取成功之后会返回一个矩阵
+    ColumnIntegerMatrix word = algorithmStar.extract(WordFrequency.getInstance("word"), data);
+    // 打印生成的向量矩阵
+    System.out.println(word);
+    // 开始将矩阵中的两句话对应的向量获取到
+    int[] arrayByColIndex1 = word.getArrayByColIndex(0);
+    int[] arrayByRowIndex2 = word.getArrayByColIndex(1);
+    // 开始计算两个向量之间的德式距离
+    double res = algorithmStar.getTrueDistance(EuclideanMetric.getInstance("e"), arrayByColIndex1, arrayByRowIndex2);
+    System.out.println(res);
+    // 开始计算两个向量之间的曼哈顿距离
+    double res1 = algorithmStar.getTrueDistance(ManhattanDistance.getInstance("man"), arrayByColIndex1, arrayByRowIndex2);
+    System.out.println(res1);
+    AlgorithmStar.clear();
   }
 }
 ```
@@ -159,37 +190,47 @@ objects and call component functions, or use Arithmetic Star's portal class for 
 Next is a simple example of feature engineering calculation using algorithmic star portal class
 
 ```java
-package zhao.algorithmMagic;
+import io.github.beardedManZhao.algorithmStar.integrator.Route2DDrawingIntegrator;
+import io.github.beardedManZhao.algorithmStar.algorithm.generatingAlgorithm.ZhaoCoordinateNet2D;
+import io.github.beardedManZhao.algorithmStar.operands.coordinate.DoubleCoordinateTwo;
+import io.github.beardedManZhao.algorithmStar.operands.route.DoubleConsanguinityRoute2D;
 
-import zhao.algorithmMagic.algorithm.distanceAlgorithm.EuclideanMetric;
-import zhao.algorithmMagic.algorithm.distanceAlgorithm.ManhattanDistance;
-import zhao.algorithmMagic.algorithm.featureExtraction.WordFrequency;
-import zhao.algorithmMagic.core.AlgorithmStar;
-import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
+/**
+ * 示例代码文件
+ */
+public class MAIN1 {
+  public static void main(String[] args) {
+    // 构建人员坐标(二维)
+    DoubleCoordinateTwo A = new DoubleCoordinateTwo(10, 10);
+    DoubleCoordinateTwo B = new DoubleCoordinateTwo(-10, 4);
+    DoubleCoordinateTwo C = new DoubleCoordinateTwo(1, 0);
+    DoubleCoordinateTwo E = new DoubleCoordinateTwo(6, 1);
+    DoubleCoordinateTwo Z = new DoubleCoordinateTwo(1, 21);
 
-public final class MAIN1 {
-    public static void main(String[] args) {
-        // Prepare an array of two texts, including two string statements that need to be processed into feature vectors.
-        String[] data = {
-                "Good evening, dear, don't forget the agreement between us. It's 9:00 tomorrow morning.",
-                "Good morning, dear, don't forget the agreement between us, at 9:00 in the morning."
-        };
-        AlgorithmStar<Object, ColumnIntegerMatrix> algorithmStar = AlgorithmStar.getInstance();
-        // Start feature extraction, and a matrix will be returned after the word frequency vector is successfully extracted
-        ColumnIntegerMatrix word = algorithmStar.extract(WordFrequency.getInstance("word"), data);
-        // Print the generated vector matrix
-        System.out.println(word);
-        // Start to obtain the vector corresponding to the two sentences in the matrix
-        int[] arrayByColIndex1 = word.getArrayByColIndex(0);
-        int[] arrayByRowIndex2 = word.getArrayByColIndex(1);
-        // Start to calculate the German distance between two vectors
-        double res = algorithmStar.getTrueDistance(EuclideanMetric.getInstance("e"), arrayByColIndex1, arrayByRowIndex2);
-        System.out.println(res);
-        // Start to calculate the Manhattan distance between two vectors
-        double res1 = algorithmStar.getTrueDistance(ManhattanDistance.getInstance("man"), arrayByColIndex1, arrayByRowIndex2);
-        System.out.println(res1);
-        AlgorithmStar.clear();
-    }
+    // 获取关系网络,该算法是我实现出来,用于推断人员关系网的,这里的名称您可以自定义,需要注意的是下面集成器的实例化需要您将该名称传进去
+    ZhaoCoordinateNet2D zhaoCoordinateNet = ZhaoCoordinateNet2D.getInstance("Z");
+    zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute2D.parse("A -> B", A, B)); // Representing A takes the initiative to know B
+    zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute2D.parse("A -> C", A, C));
+    zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute2D.parse("E -> Z", E, Z));
+    zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute2D.parse("A -> Z", A, Z));
+    zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute2D.parse("B -> Z", B, Z));
+
+    // 使用2维路线绘制集成器,输出上面所有人员之间的关系网络图片
+    Route2DDrawingIntegrator a = new Route2DDrawingIntegrator("A", "Z");
+    // 设置图片输出路径
+    a.setImageOutPath("D:\\out\\image.jpg")
+            // 设置图片宽度
+            .setImageWidth(1000)
+            // 设置图片高度
+            .setImageHeight(1000)
+            // 设置离散阈值,用来放大微小的变化
+            .setDiscreteThreshold(4)
+            // 运行集成器!
+            .run();
+
+    // 清理关系网络中的数据
+    zhaoCoordinateNet.clear();
+  }
 }
 ```
 

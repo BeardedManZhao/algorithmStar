@@ -14,10 +14,10 @@
 集成器的使用需要一个名为"IncrementalLearningLauncher"启动器，该启动器是一个接口，在其中主要做的就是设置初始模型的逻辑，通过该逻辑进行结果数值的相似度检查，最终获取到最合适的θ数值，构建出来最合适的模型。
 
 ```java
-import zhao.algorithmMagic.integrator.IncrementalLearning;
-import zhao.algorithmMagic.integrator.iauncher.IncrementalLearningLauncher;
-import zhao.algorithmMagic.integrator.iauncher.Launcher;
-import zhao.algorithmMagic.operands.vector.DoubleVector;
+import io.github.beardedManZhao.algorithmStar.integrator.IncrementalLearning;
+import io.github.beardedManZhao.algorithmStar.integrator.iauncher.IncrementalLearningLauncher;
+import io.github.beardedManZhao.algorithmStar.integrator.iauncher.Launcher;
+import io.github.beardedManZhao.algorithmStar.operands.vector.DoubleVector;
 
 public class MAIN1 {
     public static void main(String[] args) {

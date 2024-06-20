@@ -36,11 +36,11 @@ integrator.
   one category. Even if it has multiple matching category characteristics, it will only match one.
 
 ```java
-package zhao.algorithmMagic;
+package io.github.beardedManZhao.algorithmStar;
 
-import zhao.algorithmMagic.lntegrator.HashClassificationIntegrator;
-import zhao.algorithmMagic.lntegrator.launcher.HashClassificationLauncher;
-import zhao.algorithmMagic.utils.dataContainer.SetAndValue;
+import io.github.beardedManZhao.algorithmStar.lntegrator.HashClassificationIntegrator;
+import io.github.beardedManZhao.algorithmStar.lntegrator.launcher.HashClassificationLauncher;
+import io.github.beardedManZhao.algorithmStar.utils.dataContainer.SetAndValue;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -114,11 +114,11 @@ The implementation of multiCategory initiators and the use example of hash class
   AK and AS.
 
 ```java
-package zhao.algorithmMagic;
+package io.github.beardedManZhao.algorithmStar;
 
-import zhao.algorithmMagic.lntegrator.HashClassificationIntegrator;
-import zhao.algorithmMagic.lntegrator.launcher.HashClassificationLauncher;
-import zhao.algorithmMagic.utils.dataContainer.SetAndValue;
+import io.github.beardedManZhao.algorithmStar.lntegrator.HashClassificationIntegrator;
+import io.github.beardedManZhao.algorithmStar.lntegrator.launcher.HashClassificationLauncher;
+import io.github.beardedManZhao.algorithmStar.utils.dataContainer.SetAndValue;
 
 import java.util.Arrays;
 import java.util.HashMap;

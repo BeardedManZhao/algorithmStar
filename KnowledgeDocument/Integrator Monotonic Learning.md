@@ -23,10 +23,10 @@ main task is to set the logic of the initial model, through which to check the s
 finally obtain the most appropriate θ Numerical value, to build the most appropriate model.
 
 ```java
-import zhao.algorithmMagic.integrator.IncrementalLearning;
-import zhao.algorithmMagic.integrator.iauncher.IncrementalLearningLauncher;
-import zhao.algorithmMagic.integrator.iauncher.Launcher;
-import zhao.algorithmMagic.operands.vector.DoubleVector;
+import io.github.beardedManZhao.algorithmStar.integrator.IncrementalLearning;
+import io.github.beardedManZhao.algorithmStar.integrator.iauncher.IncrementalLearningLauncher;
+import io.github.beardedManZhao.algorithmStar.integrator.iauncher.Launcher;
+import io.github.beardedManZhao.algorithmStar.operands.vector.DoubleVector;
 
 public class MAIN1 {
     public static void main(String[] args) {

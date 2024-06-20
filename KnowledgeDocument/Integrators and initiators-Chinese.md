@@ -23,10 +23,10 @@
 - 实现了启动器接口算法的名称来获取到集成器并执行
 
 ```java
-import zhao.algorithmMagic.Integrator.Route2DDrawingIntegrator;
-import zhao.algorithmMagic.algorithm.generatingAlgorithm.ZhaoCoordinateNet2D;
-import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo;
-import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute2D;
+import io.github.beardedManZhao.algorithmStar.Integrator.Route2DDrawingIntegrator;
+import io.github.beardedManZhao.algorithmStar.algorithm.generatingAlgorithm.ZhaoCoordinateNet2D;
+import io.github.beardedManZhao.algorithmStar.operands.coordinate.DoubleCoordinateTwo;
+import io.github.beardedManZhao.algorithmStar.operands.route.DoubleConsanguinityRoute2D;
 
 /**
  * 示例代码文件
@@ -58,10 +58,10 @@ public class MAIN1 {
 - 实现了启动器接口的对象传参来获取到集成器并执行
 
 ```java
-import zhao.algorithmMagic.Integrator.Route2DDrawingIntegrator;
-import zhao.algorithmMagic.Integrator.launcher.Route2DDrawingLauncher;
-import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo;
-import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute2D;
+import io.github.beardedManZhao.algorithmStar.Integrator.Route2DDrawingIntegrator;
+import io.github.beardedManZhao.algorithmStar.Integrator.launcher.Route2DDrawingLauncher;
+import io.github.beardedManZhao.algorithmStar.operands.coordinate.DoubleCoordinateTwo;
+import io.github.beardedManZhao.algorithmStar.operands.route.DoubleConsanguinityRoute2D;
 
 import java.util.HashMap;
 

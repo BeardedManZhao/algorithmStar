@@ -14,13 +14,13 @@
 操作算法管理者本身就是一个全局唯一的类，您可以通过单例的方式获取到这个类，在您获取到这个类的时候，就可以通过算法管理者获取到您的目标算法对象了！
 
 ```java
-package zhao.algorithmMagic;
+package io.github.beardedManZhao.algorithmStar;
 
-import zhao.algorithmMagic.algorithm.distanceAlgorithm.EuclideanMetric;
-import zhao.algorithmMagic.algorithm.OperationAlgorithm;
-import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
-import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo;
-import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
+import io.github.beardedManZhao.algorithmStar.algorithm.distanceAlgorithm.EuclideanMetric;
+import io.github.beardedManZhao.algorithmStar.algorithm.OperationAlgorithm;
+import io.github.beardedManZhao.algorithmStar.algorithm.OperationAlgorithmManager;
+import io.github.beardedManZhao.algorithmStar.operands.coordinate.DoubleCoordinateTwo;
+import io.github.beardedManZhao.algorithmStar.operands.coordinate.IntegerCoordinateTwo;
 
 /**
  * 示例代码文件

@@ -29,9 +29,9 @@ coordinate axis component values, and the calculation of the same type of coordi
 ```java
 // Java api
 
-import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateMany;
-import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateThree;
-import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo;
+import io.github.beardedManZhao.algorithmStar.operands.coordinate.DoubleCoordinateMany;
+import io.github.beardedManZhao.algorithmStar.operands.coordinate.DoubleCoordinateThree;
+import io.github.beardedManZhao.algorithmStar.operands.coordinate.DoubleCoordinateTwo;
 
 public class MAIN1 {
     public static void main(String[] args) {
@@ -92,7 +92,7 @@ public class MAIN1 {
 ```scala
 // scala api
 
-import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo
+import io.github.beardedManZhao.algorithmStar.operands.coordinate.DoubleCoordinateTwo
 
 object MAIN {
   def main(args: Array[String]): Unit = {
@@ -118,9 +118,9 @@ coordinates and have a common parent class, and only the name of the coordinate 
 ```java
 // Java api
 
-import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateMany;
-import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateThree;
-import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
+import io.github.beardedManZhao.algorithmStar.operands.coordinate.IntegerCoordinateMany;
+import io.github.beardedManZhao.algorithmStar.operands.coordinate.IntegerCoordinateThree;
+import io.github.beardedManZhao.algorithmStar.operands.coordinate.IntegerCoordinateTwo;
 
 public class MAIN1 {
     public static void main(String[] args) {
@@ -193,8 +193,8 @@ general functions of coordinate lines.
 ```java
 // Java api
 
-import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
-import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute2D;
+import io.github.beardedManZhao.algorithmStar.operands.coordinate.IntegerCoordinateTwo;
+import io.github.beardedManZhao.algorithmStar.operands.route.IntegerConsanguinityRoute2D;
 
 public class Test {
 
@@ -234,9 +234,9 @@ public class Test {
 ```java
 // Java api
 
-import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
-import zhao.algorithmMagic.operands.coordinateNet.IntegerRoute2DNet;
-import zhao.algorithmMagic.operands.route.IntegerConsanguinityRoute2D;
+import io.github.beardedManZhao.algorithmStar.operands.coordinate.IntegerCoordinateTwo;
+import io.github.beardedManZhao.algorithmStar.operands.coordinateNet.IntegerRoute2DNet;
+import io.github.beardedManZhao.algorithmStar.operands.route.IntegerConsanguinityRoute2D;
 
 public class Test {
 
@@ -266,8 +266,8 @@ roughly as follows.
 ```java
 // Java api
 
-import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateThree;
-import zhao.algorithmMagic.operands.vector.DoubleVector;
+import io.github.beardedManZhao.algorithmStar.operands.coordinate.DoubleCoordinateThree;
+import io.github.beardedManZhao.algorithmStar.operands.vector.DoubleVector;
 
 public class MAIN1 {
     public static void main(String[] args) {
@@ -303,9 +303,9 @@ different use opportunities in different scenarios.
 ```java
 // Java api
 
-import zhao.algorithmMagic.operands.ComplexNumber;
-import zhao.algorithmMagic.operands.matrix.ComplexNumberMatrix;
-import zhao.algorithmMagic.operands.matrix.DoubleMatrix;
+import io.github.beardedManZhao.algorithmStar.operands.ComplexNumber;
+import io.github.beardedManZhao.algorithmStar.operands.matrix.ComplexNumberMatrix;
+import io.github.beardedManZhao.algorithmStar.operands.matrix.DoubleMatrix;
 
 public class MAIN1 {
     public static void main(String[] args) {
@@ -358,9 +358,9 @@ each pixel in the image through the toArrays function.
 // Java api
 package core;
 
-import zhao.algorithmMagic.lntegrator.ImageRenderingIntegrator;
-import zhao.algorithmMagic.lntegrator.launcher.ImageRenderingMarLauncher;
-import zhao.algorithmMagic.operands.matrix.ColorMatrix;
+import io.github.beardedManZhao.algorithmStar.lntegrator.ImageRenderingIntegrator;
+import io.github.beardedManZhao.algorithmStar.lntegrator.launcher.ImageRenderingMarLauncher;
+import io.github.beardedManZhao.algorithmStar.operands.matrix.ColorMatrix;
 
 import java.awt.Color;
 
@@ -406,7 +406,7 @@ as addition and subtraction are performed, and the following is a specific examp
 ```java
 // Java api
 
-import zhao.algorithmMagic.operands.ComplexNumber;
+import io.github.beardedManZhao.algorithmStar.operands.ComplexNumber;
 
 public class MAIN1 {
     public static void main(String[] args) {
@@ -450,9 +450,9 @@ Next is the code example about database data loading. -It should be noted that w
 the JDBC driver class in the project.
 
 ```java
-package zhao.algorithmMagic;
+package io.github.beardedManZhao.algorithmStar;
 
-import zhao.algorithmMagic.operands.table.*;
+import io.github.beardedManZhao.algorithmStar.operands.table.*;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -479,10 +479,10 @@ public class MAIN1 {
 on any third-party library. Next, we will implement the specific steps!
 
 ```java
-package zhao.algorithmMagic;
+package io.github.beardedManZhao.algorithmStar;
 
-import zhao.algorithmMagic.operands.table.DataFrame;
-import zhao.algorithmMagic.operands.table.FDataFrame;
+import io.github.beardedManZhao.algorithmStar.operands.table.DataFrame;
+import io.github.beardedManZhao.algorithmStar.operands.table.FDataFrame;
 
 import java.io.File;
 import java.sql.SQLException;
@@ -513,9 +513,9 @@ public class MAIN1 {
 #### Comprehensive case
 
 ```java
-package zhao.algorithmMagic;
+package io.github.beardedManZhao.algorithmStar;
 
-import zhao.algorithmMagic.operands.table.*;
+import io.github.beardedManZhao.algorithmStar.operands.table.*;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

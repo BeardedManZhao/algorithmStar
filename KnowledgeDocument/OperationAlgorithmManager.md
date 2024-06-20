@@ -20,13 +20,13 @@ The operation algorithm manager itself is a globally unique class. You can obtai
 you obtain this class, you can obtain your target algorithm object through the algorithm manager!
 
 ```java
-package zhao.algorithmMagic;
+package io.github.beardedManZhao.algorithmStar;
 
-import zhao.algorithmMagic.algorithm.distanceAlgorithm.EuclideanMetric;
-import zhao.algorithmMagic.algorithm.OperationAlgorithm;
-import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
-import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo;
-import zhao.algorithmMagic.operands.coordinate.IntegerCoordinateTwo;
+import io.github.beardedManZhao.algorithmStar.algorithm.distanceAlgorithm.EuclideanMetric;
+import io.github.beardedManZhao.algorithmStar.algorithm.OperationAlgorithm;
+import io.github.beardedManZhao.algorithmStar.algorithm.OperationAlgorithmManager;
+import io.github.beardedManZhao.algorithmStar.operands.coordinate.DoubleCoordinateTwo;
+import io.github.beardedManZhao.algorithmStar.operands.coordinate.IntegerCoordinateTwo;
 
 /**
  * 示例代码文件

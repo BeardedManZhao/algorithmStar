@@ -13,6 +13,15 @@ AS库目录有多个版本，如果希望查询不同版本的更新日志以及
 
 在本仓库中提供了一个[测试数据集](https://github.com/BeardedManZhao/algorithmStar/blob/master/sourceMaterial.md)，在数据集中包含各种图像等数据文件，您可以通过URL将这些测试数据拉取到本地程序中进行计算。
 
+## 通知
+
+> ⚠️【重要】 1.32 版本和 1.40 版本的内容几乎一致，主要的区别就是包模块的变更， 请注意，我们将在 1.40 版本以及之后的所有版本中
+> 重构包名为 `io.github.beardedManZhao.algorithmStar` 这是为了避免在 Java 的诸多依赖中，包名出现冲突的情况~
+>
+> 为了避免小伙伴们担心由于包更新导致的兼容性问题，因此我们提供了 1.32
+> 版本，您可以继续使用旧包名，但是我们强烈建议您使用新版本，因为新版本的包名已经更新为 `io.github.beardedManZhao.algorithmStar`
+> ，若您对于修改包名称和更新有什么问题或建议，请及时联系我们！！
+
 ## Maven 依赖
 
 您可以通过maven将算术之星（AS-MB）集成到您的项目中，maven的配置如下所示。您可以将其添加到maven项目中，也可以从Releases下载并手动将其集成到项目中。
@@ -23,7 +32,7 @@ AS库目录有多个版本，如果希望查询不同版本的更新日志以及
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>algorithmStar</artifactId>
-        <version>1.32</version>
+        <version>1.40</version>
     </dependency>
 </dependencies>
 ```
@@ -119,10 +128,10 @@ AS库在针对数据库，Spark等各种平台对接的时候，需要使用到�
 您可以在加载好 AS 库之后，使用下面的代码将所有帮助文档下载到本地，其中有一些示例代码，引导您进行使用，您可以根据自己的需求进行修改。
 
 ```java
-package zhao.algorithmMagic;
+package io.github.beardedManZhao.algorithmStar;
 
-import zhao.algorithmMagic.core.AlgorithmStar;
-import zhao.algorithmMagic.core.HelpFactory;
+import io.github.beardedManZhao.algorithmStar.core.AlgorithmStar;
+import io.github.beardedManZhao.algorithmStar.core.HelpFactory;
 
 public class MAIN1 {
   public static void main(String[] args) {
@@ -141,13 +150,13 @@ public class MAIN1 {
 接下来就是展示的使用算法之星门户类进行特征工程计算的简单示例.
 
 ```java
-package zhao.algorithmMagic;
+package io.github.beardedManZhao.algorithmStar;
 
-import zhao.algorithmMagic.algorithm.distanceAlgorithm.EuclideanMetric;
-import zhao.algorithmMagic.algorithm.distanceAlgorithm.ManhattanDistance;
-import zhao.algorithmMagic.algorithm.featureExtraction.WordFrequency;
-import zhao.algorithmMagic.core.AlgorithmStar;
-import zhao.algorithmMagic.operands.matrix.ColumnIntegerMatrix;
+import io.github.beardedManZhao.algorithmStar.algorithm.distanceAlgorithm.EuclideanMetric;
+import io.github.beardedManZhao.algorithmStar.algorithm.distanceAlgorithm.ManhattanDistance;
+import io.github.beardedManZhao.algorithmStar.algorithm.featureExtraction.WordFrequency;
+import io.github.beardedManZhao.algorithmStar.core.AlgorithmStar;
+import io.github.beardedManZhao.algorithmStar.operands.matrix.ColumnIntegerMatrix;
 
 public final class MAIN1 {
     public static void main(String[] args) {
@@ -212,49 +221,48 @@ Good evening, dear, don't forget the agreement between us. It's 9:00 tomorrow mo
 这里是"ZhaoCoordinateNet2D"的使用示例,展示的是人与人之间的关系分析与预测,在"ZhaoCoordinateNet"算法中, 人的关系网络被分析了出来, 同时还可以进行该网络分析绘图的操作。
 
 ```java
-package zhao.algorithmMagic;
 
-import zhao.algorithmMagic.lntegrator.Route2DDrawingIntegrator;
-import zhao.algorithmMagic.algorithm.generatingAlgorithm.ZhaoCoordinateNet2D;
-import zhao.algorithmMagic.operands.coordinate.DoubleCoordinateTwo;
-import zhao.algorithmMagic.operands.route.DoubleConsanguinityRoute2D;
+import io.github.beardedManZhao.algorithmStar.integrator.Route2DDrawingIntegrator;
+import io.github.beardedManZhao.algorithmStar.algorithm.generatingAlgorithm.ZhaoCoordinateNet2D;
+import io.github.beardedManZhao.algorithmStar.operands.coordinate.DoubleCoordinateTwo;
+import io.github.beardedManZhao.algorithmStar.operands.route.DoubleConsanguinityRoute2D;
 
 /**
  * 示例代码文件
  */
 public class MAIN1 {
-    public static void main(String[] args) {
-        // 构建人员坐标(二维)
-        DoubleCoordinateTwo A = new DoubleCoordinateTwo(10, 10);
-        DoubleCoordinateTwo B = new DoubleCoordinateTwo(-10, 4);
-        DoubleCoordinateTwo C = new DoubleCoordinateTwo(1, 0);
-        DoubleCoordinateTwo E = new DoubleCoordinateTwo(6, 1);
-        DoubleCoordinateTwo Z = new DoubleCoordinateTwo(1, 21);
+  public static void main(String[] args) {
+    // 构建人员坐标(二维)
+    DoubleCoordinateTwo A = new DoubleCoordinateTwo(10, 10);
+    DoubleCoordinateTwo B = new DoubleCoordinateTwo(-10, 4);
+    DoubleCoordinateTwo C = new DoubleCoordinateTwo(1, 0);
+    DoubleCoordinateTwo E = new DoubleCoordinateTwo(6, 1);
+    DoubleCoordinateTwo Z = new DoubleCoordinateTwo(1, 21);
 
-        // 获取关系网络,该算法是我实现出来,用于推断人员关系网的,这里的名称您可以自定义,需要注意的是下面集成器的实例化需要您将该名称传进去
-        ZhaoCoordinateNet2D zhaoCoordinateNet = ZhaoCoordinateNet2D.getInstance("Z");
-        zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute2D.parse("A -> B", A, B)); // Representing A takes the initiative to know B
-        zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute2D.parse("A -> C", A, C));
-        zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute2D.parse("E -> Z", E, Z));
-        zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute2D.parse("A -> Z", A, Z));
-        zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute2D.parse("B -> Z", B, Z));
+    // 获取关系网络,该算法是我实现出来,用于推断人员关系网的,这里的名称您可以自定义,需要注意的是下面集成器的实例化需要您将该名称传进去
+    ZhaoCoordinateNet2D zhaoCoordinateNet = ZhaoCoordinateNet2D.getInstance("Z");
+    zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute2D.parse("A -> B", A, B)); // Representing A takes the initiative to know B
+    zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute2D.parse("A -> C", A, C));
+    zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute2D.parse("E -> Z", E, Z));
+    zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute2D.parse("A -> Z", A, Z));
+    zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute2D.parse("B -> Z", B, Z));
 
-        // 使用2维路线绘制集成器,输出上面所有人员之间的关系网络图片
-        Route2DDrawingIntegrator a = new Route2DDrawingIntegrator("A", "Z");
-        // 设置图片输出路径
-        a.setImageOutPath("D:\\out\\image.jpg")
-                // 设置图片宽度
-                .setImageWidth(1000)
-                // 设置图片高度
-                .setImageHeight(1000)
-                // 设置离散阈值,用来放大微小的变化
-                .setDiscreteThreshold(4)
-                // 运行集成器!
-                .run();
+    // 使用2维路线绘制集成器,输出上面所有人员之间的关系网络图片
+    Route2DDrawingIntegrator a = new Route2DDrawingIntegrator("A", "Z");
+    // 设置图片输出路径
+    a.setImageOutPath("D:\\out\\image.jpg")
+            // 设置图片宽度
+            .setImageWidth(1000)
+            // 设置图片高度
+            .setImageHeight(1000)
+            // 设置离散阈值,用来放大微小的变化
+            .setDiscreteThreshold(4)
+            // 运行集成器!
+            .run();
 
-        // 清理关系网络中的数据
-        zhaoCoordinateNet.clear();
-    }
+    // 清理关系网络中的数据
+    zhaoCoordinateNet.clear();
+  }
 }
 ```
 

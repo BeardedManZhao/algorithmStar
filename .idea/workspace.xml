@@ -1,0 +1,1137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="8f99a40c-0dfd-483d-b68e-37cc5ba9f219" name="更改" comment="">
+      <change afterPath="$PROJECT_DIR$/src_code/update/1.32_1.40-Chinese.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/algorithmStar.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/algorithmStar.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AsLib/libBeardedManZhao.dll" beforeDir="false" afterPath="$PROJECT_DIR$/AsLib/libBeardedManZhao.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/KnowledgeDocument/Hash Classification Integrator-Chinese.md" beforeDir="false" afterPath="$PROJECT_DIR$/KnowledgeDocument/Hash Classification Integrator-Chinese.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/KnowledgeDocument/Hash Classification Integrator.md" beforeDir="false" afterPath="$PROJECT_DIR$/KnowledgeDocument/Hash Classification Integrator.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/KnowledgeDocument/Integrator Monotonic Learning-Chinese.md" beforeDir="false" afterPath="$PROJECT_DIR$/KnowledgeDocument/Integrator Monotonic Learning-Chinese.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/KnowledgeDocument/Integrator Monotonic Learning.md" beforeDir="false" afterPath="$PROJECT_DIR$/KnowledgeDocument/Integrator Monotonic Learning.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/KnowledgeDocument/Integrators and initiators-Chinese.md" beforeDir="false" afterPath="$PROJECT_DIR$/KnowledgeDocument/Integrators and initiators-Chinese.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/KnowledgeDocument/Integrators and initiators.md" beforeDir="false" afterPath="$PROJECT_DIR$/KnowledgeDocument/Integrators and initiators.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/KnowledgeDocument/Operands-Chinese.md" beforeDir="false" afterPath="$PROJECT_DIR$/KnowledgeDocument/Operands-Chinese.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/KnowledgeDocument/Operands.md" beforeDir="false" afterPath="$PROJECT_DIR$/KnowledgeDocument/Operands.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/KnowledgeDocument/OperationAlgorithm-Chinese.md" beforeDir="false" afterPath="$PROJECT_DIR$/KnowledgeDocument/OperationAlgorithm-Chinese.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/KnowledgeDocument/OperationAlgorithm.md" beforeDir="false" afterPath="$PROJECT_DIR$/KnowledgeDocument/OperationAlgorithm.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/KnowledgeDocument/OperationAlgorithmManager-Chinese.md" beforeDir="false" afterPath="$PROJECT_DIR$/KnowledgeDocument/OperationAlgorithmManager-Chinese.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/KnowledgeDocument/OperationAlgorithmManager.md" beforeDir="false" afterPath="$PROJECT_DIR$/KnowledgeDocument/OperationAlgorithmManager.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README-Chinese.md" beforeDir="false" afterPath="$PROJECT_DIR$/README-Chinese.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/.idea/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/.idea/jarRepositories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/.idea/scala_compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/.idea/scala_compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/.idea/uiDesigner.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/.idea/uiDesigner.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/Case.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/Case.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/README-Chinese.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/README-Chinese.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/META-INF/MANIFEST.MF" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/MAIN1.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/SerialVersionUID.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/OperationAlgorithm.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/OperationAlgorithmManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/aggregationAlgorithm/AggregationAlgorithm.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/aggregationAlgorithm/BatchAggregation.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/aggregationAlgorithm/ExtremumAggregation.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/aggregationAlgorithm/ModularOperation.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/aggregationAlgorithm/RangeAggregation.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/aggregationAlgorithm/WeightAggregation.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/aggregationAlgorithm/WeightBatchAggregation.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/aggregationAlgorithm/WeightedAverage.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/classificationAlgorithm/ClassificationAlgorithm.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/classificationAlgorithm/DistanceClassification.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/classificationAlgorithm/KMeans.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/classificationAlgorithm/KnnClassification.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/classificationAlgorithm/NoSampleClassification.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/classificationAlgorithm/SampleClassification.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/classificationAlgorithm/UDFDistanceClassification.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/differenceAlgorithm/BrayCurtisDistance.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/differenceAlgorithm/DiceCoefficient.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/differenceAlgorithm/DifferenceAlgorithm.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/differenceAlgorithm/EditDistance.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/differenceAlgorithm/HammingDistance.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/differenceAlgorithm/JaccardSimilarityCoefficient.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/distanceAlgorithm/CanberraDistance.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/distanceAlgorithm/ChebyshevDistance.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/distanceAlgorithm/CosineDistance.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/distanceAlgorithm/DistanceAlgorithm.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/distanceAlgorithm/EuclideanMetric.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/distanceAlgorithm/HausdorffDistance.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/distanceAlgorithm/ManhattanDistance.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/distanceAlgorithm/MinkowskiDistance.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/distanceAlgorithm/RangeDistance.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/distanceAlgorithm/StandardizedEuclideanDistance.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/featureExtraction/DictFeatureExtraction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/featureExtraction/FeatureExtractionAlgorithm.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/featureExtraction/StringArrayFeature.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/featureExtraction/WordFrequency.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/generatingAlgorithm/Dijkstra.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/generatingAlgorithm/Dijkstra2D.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/generatingAlgorithm/DirectionalDijkstra2D.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/generatingAlgorithm/GeneratingAlgorithm.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/generatingAlgorithm/GeneratingAlgorithm2D.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/generatingAlgorithm/GeneratingAlgorithmMany.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/generatingAlgorithm/ZhaoCoordinateNet.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/generatingAlgorithm/ZhaoCoordinateNet2D.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/modelAlgorithm/LinearRegression.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/modelAlgorithm/ModelAlgorithm.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/modelAlgorithm/MultipleLinearRegression.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/normalization/DataStandardization.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/normalization/LinearNormalization.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/normalization/RangeDataStandardization.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/normalization/Z_ScoreNormalization.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/probabilisticAlgorithm/NaiveBayes.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/probabilisticAlgorithm/ProbabilisticAlgorithm.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/schemeAlgorithm/DecisionTree.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/schemeAlgorithm/RandomForest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/algorithm/schemeAlgorithm/SchemeAlgorithm.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/core/ASDynamicLibrary.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/core/AlgorithmStar.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/core/BaseValueFactory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/core/ComplexNumberFactory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/core/FractionFactory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/core/HelpFactory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/core/MatixFactory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/core/MatrixFactory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/core/VectorFactory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/core/model/ASModel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/core/model/ActivationFunction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/core/model/ClassificationModel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/core/model/LNeuralNetwork.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/core/model/LSNeuralNetwork.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/core/model/ListNeuralNetworkLayer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/core/model/LossFunction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/core/model/NeuralNetwork.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/core/model/NeuralNetworkLayer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/core/model/NumberModel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/core/model/Perceptron.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/core/model/PoolBinaryTfTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/core/model/SingleLayerCNNModel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/core/model/SingleTargetContour.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/core/model/TarImageClassification.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/core/model/VoidTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/core/model/dataSet/ASDataSet.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/core/model/dataSet/ASDataSetGenerate.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/core/model/dataSet/ImageDirLoad.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/core/model/dataSet/LetterGenerate.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/core/model/dataSet/LetterLoad.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/core/model/dataSet/Share.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/exception/AlgorithmMagicException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/exception/CheckException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/exception/ConversionException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/exception/OperationAlgorithmManagementException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/exception/OperationAlgorithmNotFound.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/exception/OperatorOperationException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/exception/TargetNotRealizedException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/integrator/AlgorithmIntegrator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/integrator/HashClassificationIntegrator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/integrator/ImageRenderingIntegrator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/integrator/IncrementalLearning.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/integrator/Route2DDrawingIntegrator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/integrator/launcher/HashClassificationLauncher.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/integrator/launcher/ImageRenderingLauncher.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/integrator/launcher/ImageRenderingMarLauncher.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/integrator/launcher/IncrementalLearningLauncher.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/integrator/launcher/Launcher.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/integrator/launcher/Route2DDrawingLauncher.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/integrator/launcher/Route2DDrawingLauncher2.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/io/InputBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/io/InputByStream.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/io/InputByStreamBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/io/InputCamera.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/io/InputCameraBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/io/InputComponent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/io/InputHDFS.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/io/InputHDFSBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/io/InputObject.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/io/InputObjectBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/io/OutputBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/io/OutputComponent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/io/OutputHDFS.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/io/OutputHDFSBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/io/OutputObject.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/io/OutputObjectBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/io/OutputSparkDF.scala" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/io/OutputSparkDFBuilder.scala" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/io/PrintServiceOutput.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/io/PrintServiceOutputBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/ComplexNumber.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/Operands.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/RCNOperands.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/coordinate/Coordinate.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/coordinate/Coordinate2D.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/coordinate/Coordinate3D.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/coordinate/DoubleCoordinateMany.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/coordinate/DoubleCoordinateThree.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/coordinate/DoubleCoordinateTwo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/coordinate/FloatingPointCoordinates.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/coordinate/IntegerCoordinateMany.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/coordinate/IntegerCoordinateThree.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/coordinate/IntegerCoordinateTwo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/coordinate/IntegerCoordinates.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/coordinateNet/DoubleRoute2DNet.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/coordinateNet/DoubleRouteNet.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/coordinateNet/Graph.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/coordinateNet/IntegerRoute2DNet.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/coordinateNet/IntegerRouteNet.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/coordinateNet/RouteNet.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/fraction/Fraction.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/matrix/ColorMatrix.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/matrix/ColumnDoubleMatrix.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/matrix/ColumnIntegerMatrix.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/matrix/ComplexNumberMatrix.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/matrix/DoubleMatrix.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/matrix/HashColorMatrix.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/matrix/ImageMatrix.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/matrix/IntegerMatrix.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/matrix/Matrix.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/matrix/NumberMatrix.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/matrix/RectangleMatrix.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/matrix/SaveMatrix.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/matrix/block/ColorMatrixSpace.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/matrix/block/DoubleMatrixSpace.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/matrix/block/IntegerMatrixSpace.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/matrix/block/Kernel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/matrix/block/MatrixSpace.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/matrix/block/SpaceTransformation.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/matrix/block/SpatialPlane.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/route/DoubleConsanguinityRoute.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/route/DoubleConsanguinityRoute2D.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/route/IntegerConsanguinityRoute.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/route/IntegerConsanguinityRoute2D.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/route/NameRoute.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/route/Route.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/route/Route2D.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/table/AggDataFrameData.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/table/AggSeriesData.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/table/Cell.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/table/Condition.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/table/DataFrame.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/table/DataFrameBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/table/FDataFrame.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/table/FDataFrameBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/table/FieldCell.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/table/FinalCell.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/table/FinalGroupTable.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/table/FinalSeries.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/table/GroupDataFrameData.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/table/Mode.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/table/MultivaluedTableData.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/table/SFDataFrame.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/table/SFDataFrameBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/table/Series.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/table/SingletonCell.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/table/SingletonSeries.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/unit/BaseUnit.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/unit/BaseUnitObj.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/unit/BaseValue.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/unit/DataValue.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/unit/DateValue.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/unit/MatchBaseGroupUnit.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/unit/MatchBaseUnit.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/unit/VolumeValue.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/unit/WeightValue.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/vector/ASVector.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/vector/ColumnDoubleVector.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/vector/ColumnIntegerVector.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/vector/DoubleVector.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/vector/FastRangeDoubleVector.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/vector/FastRangeIntegerVector.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/vector/IntegerVector.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/vector/RangeVector.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/vector/SparkVector.scala" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/vector/ThirdVector.scala" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/operands/vector/Vector.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/utils/ASClass.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/utils/ASIO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/utils/ASMath.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/utils/ASStr.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/utils/DependentAlgorithmNameLibrary.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/utils/Event.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/utils/dataContainer/IntegerAndDoubles.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/utils/dataContainer/IntegerAndInts.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/utils/dataContainer/KeyValue.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/utils/dataContainer/NameAndValue.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/utils/dataContainer/SetAndValue.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/utils/dataContainer/TwoNameAndValue.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/utils/filter/ArrayDoubleEvent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/utils/filter/ArrayDoubleFiltering.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/utils/filter/ArrayIntegerEvent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/utils/filter/ArrayIntegerFiltering.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/utils/filter/DoubleEvent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/utils/filter/DoubleFiltering.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/utils/filter/IntFiltering.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/utils/filter/NumericalFiltering.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/utils/filter/NumericalFilteringAndMAXorMIN.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/utils/transformation/ManyTrans.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/utils/transformation/PoolRgbOboMAX.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/utils/transformation/ProTransForm.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/zhao/algorithmMagic/utils/transformation/Transformation.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/resources/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/src/main/resources/META-INF/MANIFEST.MF" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/resources/Test.html" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/src/main/resources/Test.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/resources/log4j2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/algorithmStar-1.32-javadoc.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/algorithmStar-1.32-javadoc.jar.asc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/algorithmStar-1.32-sources.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/algorithmStar-1.32-sources.jar.asc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/algorithmStar-1.32.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/algorithmStar-1.32.jar.asc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/algorithmStar-1.32.pom" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/algorithmStar-1.32.pom.asc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/allclasses-frame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/allclasses-noframe.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/constant-values.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/deprecated-list.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/help-doc.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/index-all.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/overview-frame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/overview-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/overview-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/package-list" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/script.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/serialized-form.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/stylesheet.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/MAIN1.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/SerialVersionUID.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/OperationAlgorithm.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/OperationAlgorithmManager.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/aggregationAlgorithm/AggregationAlgorithm.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/aggregationAlgorithm/BatchAggregation.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/aggregationAlgorithm/ExtremumAggregation.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/aggregationAlgorithm/ModularOperation.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/aggregationAlgorithm/RangeAggregation.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/aggregationAlgorithm/WeightAggregation.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/aggregationAlgorithm/WeightBatchAggregation.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/aggregationAlgorithm/WeightedAverage.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/aggregationAlgorithm/class-use/AggregationAlgorithm.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/aggregationAlgorithm/class-use/BatchAggregation.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/aggregationAlgorithm/class-use/ExtremumAggregation.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/aggregationAlgorithm/class-use/ModularOperation.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/aggregationAlgorithm/class-use/RangeAggregation.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/aggregationAlgorithm/class-use/WeightAggregation.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/aggregationAlgorithm/class-use/WeightBatchAggregation.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/aggregationAlgorithm/class-use/WeightedAverage.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/aggregationAlgorithm/package-frame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/aggregationAlgorithm/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/aggregationAlgorithm/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/aggregationAlgorithm/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/class-use/OperationAlgorithm.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/class-use/OperationAlgorithmManager.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/classificationAlgorithm/ClassificationAlgorithm.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/classificationAlgorithm/DistanceClassification.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/classificationAlgorithm/KMeans.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/classificationAlgorithm/KnnClassification.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/classificationAlgorithm/NoSampleClassification.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/classificationAlgorithm/SampleClassification.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/classificationAlgorithm/UDFDistanceClassification.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/classificationAlgorithm/class-use/ClassificationAlgorithm.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/classificationAlgorithm/class-use/DistanceClassification.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/classificationAlgorithm/class-use/KMeans.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/classificationAlgorithm/class-use/KnnClassification.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/classificationAlgorithm/class-use/NoSampleClassification.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/classificationAlgorithm/class-use/SampleClassification.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/classificationAlgorithm/class-use/UDFDistanceClassification.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/classificationAlgorithm/package-frame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/classificationAlgorithm/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/classificationAlgorithm/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/classificationAlgorithm/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/differenceAlgorithm/BrayCurtisDistance.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/differenceAlgorithm/DiceCoefficient.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/differenceAlgorithm/DifferenceAlgorithm.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/differenceAlgorithm/EditDistance.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/differenceAlgorithm/HammingDistance.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/differenceAlgorithm/JaccardSimilarityCoefficient.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/differenceAlgorithm/class-use/BrayCurtisDistance.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/differenceAlgorithm/class-use/DiceCoefficient.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/differenceAlgorithm/class-use/DifferenceAlgorithm.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/differenceAlgorithm/class-use/EditDistance.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/differenceAlgorithm/class-use/HammingDistance.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/differenceAlgorithm/class-use/JaccardSimilarityCoefficient.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/differenceAlgorithm/package-frame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/differenceAlgorithm/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/differenceAlgorithm/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/differenceAlgorithm/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/distanceAlgorithm/CanberraDistance.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/distanceAlgorithm/ChebyshevDistance.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/distanceAlgorithm/CosineDistance.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/distanceAlgorithm/DistanceAlgorithm.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/distanceAlgorithm/EuclideanMetric.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/distanceAlgorithm/HausdorffDistance.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/distanceAlgorithm/ManhattanDistance.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/distanceAlgorithm/MinkowskiDistance.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/distanceAlgorithm/RangeDistance.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/distanceAlgorithm/StandardizedEuclideanDistance.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/distanceAlgorithm/class-use/CanberraDistance.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/distanceAlgorithm/class-use/ChebyshevDistance.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/distanceAlgorithm/class-use/CosineDistance.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/distanceAlgorithm/class-use/DistanceAlgorithm.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/distanceAlgorithm/class-use/EuclideanMetric.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/distanceAlgorithm/class-use/HausdorffDistance.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/distanceAlgorithm/class-use/ManhattanDistance.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/distanceAlgorithm/class-use/MinkowskiDistance.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/distanceAlgorithm/class-use/RangeDistance.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/distanceAlgorithm/class-use/StandardizedEuclideanDistance.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/distanceAlgorithm/package-frame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/distanceAlgorithm/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/distanceAlgorithm/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/distanceAlgorithm/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/featureExtraction/DictFeatureExtraction.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/featureExtraction/FeatureExtractionAlgorithm.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/featureExtraction/StringArrayFeature.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/featureExtraction/WordFrequency.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/featureExtraction/class-use/DictFeatureExtraction.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/featureExtraction/class-use/FeatureExtractionAlgorithm.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/featureExtraction/class-use/StringArrayFeature.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/featureExtraction/class-use/WordFrequency.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/featureExtraction/package-frame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/featureExtraction/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/featureExtraction/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/featureExtraction/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/generatingAlgorithm/Dijkstra.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/generatingAlgorithm/Dijkstra2D.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/generatingAlgorithm/DirectionalDijkstra2D.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/generatingAlgorithm/GeneratingAlgorithm.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/generatingAlgorithm/GeneratingAlgorithm2D.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/generatingAlgorithm/GeneratingAlgorithmMany.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/generatingAlgorithm/ZhaoCoordinateNet.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/generatingAlgorithm/ZhaoCoordinateNet2D.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/generatingAlgorithm/class-use/Dijkstra.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/generatingAlgorithm/class-use/Dijkstra2D.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/generatingAlgorithm/class-use/DirectionalDijkstra2D.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/generatingAlgorithm/class-use/GeneratingAlgorithm.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/generatingAlgorithm/class-use/GeneratingAlgorithm2D.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/generatingAlgorithm/class-use/GeneratingAlgorithmMany.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/generatingAlgorithm/class-use/ZhaoCoordinateNet.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/generatingAlgorithm/class-use/ZhaoCoordinateNet2D.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/generatingAlgorithm/package-frame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/generatingAlgorithm/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/generatingAlgorithm/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/generatingAlgorithm/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/modelAlgorithm/LinearRegression.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/modelAlgorithm/ModelAlgorithm.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/modelAlgorithm/MultipleLinearRegression.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/modelAlgorithm/class-use/LinearRegression.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/modelAlgorithm/class-use/ModelAlgorithm.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/modelAlgorithm/class-use/MultipleLinearRegression.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/modelAlgorithm/package-frame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/modelAlgorithm/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/modelAlgorithm/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/modelAlgorithm/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/normalization/DataStandardization.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/normalization/LinearNormalization.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/normalization/RangeDataStandardization.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/normalization/Z_ScoreNormalization.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/normalization/class-use/DataStandardization.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/normalization/class-use/LinearNormalization.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/normalization/class-use/RangeDataStandardization.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/normalization/class-use/Z_ScoreNormalization.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/normalization/package-frame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/normalization/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/normalization/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/normalization/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/package-frame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/probabilisticAlgorithm/NaiveBayes.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/probabilisticAlgorithm/ProbabilisticAlgorithm.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/probabilisticAlgorithm/class-use/NaiveBayes.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/probabilisticAlgorithm/class-use/ProbabilisticAlgorithm.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/probabilisticAlgorithm/package-frame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/probabilisticAlgorithm/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/probabilisticAlgorithm/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/probabilisticAlgorithm/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/schemeAlgorithm/DecisionTree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/schemeAlgorithm/RandomForest.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/schemeAlgorithm/SchemeAlgorithm.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/schemeAlgorithm/class-use/DecisionTree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/schemeAlgorithm/class-use/RandomForest.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/schemeAlgorithm/class-use/SchemeAlgorithm.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/schemeAlgorithm/package-frame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/schemeAlgorithm/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/schemeAlgorithm/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/algorithm/schemeAlgorithm/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/class-use/MAIN1.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/class-use/SerialVersionUID.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/ASDynamicLibrary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/AlgorithmStar.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/BaseValueFactory.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/ComplexNumberFactory.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/FractionFactory.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/HelpFactory.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/MatixFactory.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/MatrixFactory.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/VectorFactory.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/class-use/ASDynamicLibrary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/class-use/AlgorithmStar.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/class-use/BaseValueFactory.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/class-use/ComplexNumberFactory.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/class-use/FractionFactory.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/class-use/HelpFactory.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/class-use/MatixFactory.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/class-use/MatrixFactory.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/class-use/VectorFactory.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/ASModel.Utils.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/ASModel.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/ActivationFunction.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/ClassificationModel.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/LNeuralNetwork.TaskConsumer.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/LNeuralNetwork.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/LSNeuralNetwork.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/ListNeuralNetworkLayer.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/LossFunction.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/NeuralNetwork.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/NeuralNetworkLayer.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/NumberModel.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/Perceptron.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/PoolBinaryTfTask.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/SingleLayerCNNModel.TaskConsumer.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/SingleLayerCNNModel.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/SingleTargetContour.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/TarImageClassification.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/VoidTask.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/class-use/ASModel.Utils.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/class-use/ASModel.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/class-use/ActivationFunction.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/class-use/ClassificationModel.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/class-use/LNeuralNetwork.TaskConsumer.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/class-use/LNeuralNetwork.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/class-use/LSNeuralNetwork.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/class-use/ListNeuralNetworkLayer.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/class-use/LossFunction.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/class-use/NeuralNetwork.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/class-use/NeuralNetworkLayer.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/class-use/NumberModel.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/class-use/Perceptron.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/class-use/PoolBinaryTfTask.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/class-use/SingleLayerCNNModel.TaskConsumer.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/class-use/SingleLayerCNNModel.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/class-use/SingleTargetContour.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/class-use/TarImageClassification.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/class-use/VoidTask.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/dataSet/ASDataSet.Generate.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/dataSet/ASDataSet.Load.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/dataSet/ASDataSet.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/dataSet/ASDataSetGenerate.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/dataSet/ImageDirLoad.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/dataSet/LetterGenerate.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/dataSet/LetterLoad.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/dataSet/Share.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/dataSet/class-use/ASDataSet.Generate.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/dataSet/class-use/ASDataSet.Load.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/dataSet/class-use/ASDataSet.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/dataSet/class-use/ASDataSetGenerate.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/dataSet/class-use/ImageDirLoad.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/dataSet/class-use/LetterGenerate.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/dataSet/class-use/LetterLoad.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/dataSet/class-use/Share.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/dataSet/package-frame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/dataSet/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/dataSet/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/dataSet/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/package-frame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/model/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/package-frame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/core/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/exception/AlgorithmMagicException.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/exception/CheckException.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/exception/ConversionException.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/exception/OperationAlgorithmManagementException.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/exception/OperationAlgorithmNotFound.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/exception/OperatorOperationException.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/exception/TargetNotRealizedException.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/exception/class-use/AlgorithmMagicException.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/exception/class-use/CheckException.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/exception/class-use/ConversionException.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/exception/class-use/OperationAlgorithmManagementException.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/exception/class-use/OperationAlgorithmNotFound.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/exception/class-use/OperatorOperationException.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/exception/class-use/TargetNotRealizedException.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/exception/package-frame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/exception/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/exception/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/exception/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/integrator/AlgorithmIntegrator.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/integrator/HashClassificationIntegrator.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/integrator/ImageRenderingIntegrator.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/integrator/IncrementalLearning.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/integrator/Route2DDrawingIntegrator.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/integrator/class-use/AlgorithmIntegrator.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/integrator/class-use/HashClassificationIntegrator.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/integrator/class-use/ImageRenderingIntegrator.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/integrator/class-use/IncrementalLearning.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/integrator/class-use/Route2DDrawingIntegrator.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/integrator/launcher/HashClassificationLauncher.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/integrator/launcher/ImageRenderingLauncher.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/integrator/launcher/ImageRenderingMarLauncher.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/integrator/launcher/IncrementalLearningLauncher.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/integrator/launcher/Launcher.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/integrator/launcher/Route2DDrawingLauncher.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/integrator/launcher/Route2DDrawingLauncher2.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/integrator/launcher/class-use/HashClassificationLauncher.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/integrator/launcher/class-use/ImageRenderingLauncher.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/integrator/launcher/class-use/ImageRenderingMarLauncher.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/integrator/launcher/class-use/IncrementalLearningLauncher.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/integrator/launcher/class-use/Launcher.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/integrator/launcher/class-use/Route2DDrawingLauncher.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/integrator/launcher/class-use/Route2DDrawingLauncher2.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/integrator/launcher/package-frame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/integrator/launcher/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/integrator/launcher/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/integrator/launcher/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/integrator/package-frame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/integrator/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/integrator/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/integrator/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/io/InputBuilder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/io/InputByStream.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/io/InputByStreamBuilder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/io/InputCamera.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/io/InputCameraBuilder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/io/InputComponent.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/io/InputHDFS.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/io/InputHDFSBuilder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/io/InputObject.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/io/InputObjectBuilder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/io/OutputBuilder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/io/OutputComponent.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/io/OutputHDFS.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/io/OutputHDFSBuilder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/io/OutputObject.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/io/OutputObjectBuilder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/io/PrintServiceOutput.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/io/PrintServiceOutputBuilder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/io/class-use/InputBuilder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/io/class-use/InputByStream.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/io/class-use/InputByStreamBuilder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/io/class-use/InputCamera.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/io/class-use/InputCameraBuilder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/io/class-use/InputComponent.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/io/class-use/InputHDFS.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/io/class-use/InputHDFSBuilder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/io/class-use/InputObject.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/io/class-use/InputObjectBuilder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/io/class-use/OutputBuilder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/io/class-use/OutputComponent.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/io/class-use/OutputHDFS.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/io/class-use/OutputHDFSBuilder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/io/class-use/OutputObject.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/io/class-use/OutputObjectBuilder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/io/class-use/PrintServiceOutput.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/io/class-use/PrintServiceOutputBuilder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/io/package-frame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/io/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/io/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/io/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/ComplexNumber.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/Operands.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/RCNOperands.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/class-use/ComplexNumber.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/class-use/Operands.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/class-use/RCNOperands.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinate/Coordinate.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinate/Coordinate2D.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinate/Coordinate3D.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinate/DoubleCoordinateMany.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinate/DoubleCoordinateThree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinate/DoubleCoordinateTwo.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinate/FloatingPointCoordinates.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinate/IntegerCoordinateMany.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinate/IntegerCoordinateThree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinate/IntegerCoordinateTwo.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinate/IntegerCoordinates.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinate/class-use/Coordinate.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinate/class-use/Coordinate2D.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinate/class-use/Coordinate3D.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinate/class-use/DoubleCoordinateMany.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinate/class-use/DoubleCoordinateThree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinate/class-use/DoubleCoordinateTwo.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinate/class-use/FloatingPointCoordinates.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinate/class-use/IntegerCoordinateMany.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinate/class-use/IntegerCoordinateThree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinate/class-use/IntegerCoordinateTwo.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinate/class-use/IntegerCoordinates.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinate/package-frame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinate/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinate/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinate/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinateNet/DoubleRoute2DNet.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinateNet/DoubleRouteNet.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinateNet/Graph.GraphEdgeDF.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinateNet/Graph.GraphEdgeSeries.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinateNet/Graph.GraphNodeDF.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinateNet/Graph.GraphNodeSeries.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinateNet/Graph.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinateNet/IntegerRoute2DNet.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinateNet/IntegerRouteNet.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinateNet/RouteNet.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinateNet/class-use/DoubleRoute2DNet.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinateNet/class-use/DoubleRouteNet.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinateNet/class-use/Graph.GraphEdgeDF.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinateNet/class-use/Graph.GraphEdgeSeries.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinateNet/class-use/Graph.GraphNodeDF.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinateNet/class-use/Graph.GraphNodeSeries.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinateNet/class-use/Graph.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinateNet/class-use/IntegerRoute2DNet.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinateNet/class-use/IntegerRouteNet.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinateNet/class-use/RouteNet.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinateNet/package-frame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinateNet/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinateNet/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/coordinateNet/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/fraction/Fraction.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/fraction/class-use/Fraction.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/fraction/package-frame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/fraction/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/fraction/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/fraction/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/ColorMatrix.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/ColumnDoubleMatrix.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/ColumnIntegerMatrix.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/ComplexNumberMatrix.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/DoubleMatrix.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/HashColorMatrix.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/ImageMatrix.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/IntegerMatrix.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/Matrix.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/NumberMatrix.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/RectangleMatrix.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/SaveMatrix.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/block/ColorMatrixSpace.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/block/DoubleMatrixSpace.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/block/IntegerMatrixSpace.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/block/Kernel.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/block/MatrixSpace.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/block/SpatialPlane.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/block/class-use/ColorMatrixSpace.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/block/class-use/DoubleMatrixSpace.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/block/class-use/IntegerMatrixSpace.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/block/class-use/Kernel.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/block/class-use/MatrixSpace.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/block/class-use/SpatialPlane.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/block/package-frame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/block/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/block/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/block/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/class-use/ColorMatrix.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/class-use/ColumnDoubleMatrix.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/class-use/ColumnIntegerMatrix.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/class-use/ComplexNumberMatrix.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/class-use/DoubleMatrix.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/class-use/HashColorMatrix.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/class-use/ImageMatrix.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/class-use/IntegerMatrix.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/class-use/Matrix.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/class-use/NumberMatrix.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/class-use/RectangleMatrix.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/class-use/SaveMatrix.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/package-frame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/matrix/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/package-frame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/route/DoubleConsanguinityRoute.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/route/DoubleConsanguinityRoute2D.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/route/IntegerConsanguinityRoute.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/route/IntegerConsanguinityRoute2D.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/route/NameRoute.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/route/Route.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/route/Route2D.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/route/class-use/DoubleConsanguinityRoute.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/route/class-use/DoubleConsanguinityRoute2D.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/route/class-use/IntegerConsanguinityRoute.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/route/class-use/IntegerConsanguinityRoute2D.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/route/class-use/NameRoute.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/route/class-use/Route.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/route/class-use/Route2D.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/route/package-frame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/route/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/route/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/route/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/AggDataFrameData.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/AggSeriesData.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/Cell.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/Condition.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/DataFrame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/DataFrameBuilder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/FDataFrame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/FDataFrameBuilder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/FieldCell.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/FinalCell.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/FinalGroupTable.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/FinalSeries.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/GroupDataFrameData.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/Mode.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/MultivaluedTableData.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/SFDataFrame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/SFDataFrameBuilder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/Series.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/SingletonCell.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/SingletonSeries.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/class-use/AggDataFrameData.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/class-use/AggSeriesData.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/class-use/Cell.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/class-use/Condition.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/class-use/DataFrame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/class-use/DataFrameBuilder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/class-use/FDataFrame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/class-use/FDataFrameBuilder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/class-use/FieldCell.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/class-use/FinalCell.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/class-use/FinalGroupTable.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/class-use/FinalSeries.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/class-use/GroupDataFrameData.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/class-use/Mode.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/class-use/MultivaluedTableData.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/class-use/SFDataFrame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/class-use/SFDataFrameBuilder.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/class-use/Series.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/class-use/SingletonCell.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/class-use/SingletonSeries.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/package-frame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/table/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/unit/BaseUnit.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/unit/BaseUnitObj.TempBaseData.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/unit/BaseUnitObj.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/unit/BaseValue.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/unit/DataValue.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/unit/DateValue.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/unit/MatchBaseGroupUnit.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/unit/MatchBaseUnit.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/unit/VolumeValue.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/unit/WeightValue.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/unit/class-use/BaseUnit.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/unit/class-use/BaseUnitObj.TempBaseData.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/unit/class-use/BaseUnitObj.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/unit/class-use/BaseValue.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/unit/class-use/DataValue.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/unit/class-use/DateValue.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/unit/class-use/MatchBaseGroupUnit.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/unit/class-use/MatchBaseUnit.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/unit/class-use/VolumeValue.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/unit/class-use/WeightValue.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/unit/package-frame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/unit/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/unit/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/unit/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/vector/ASVector.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/vector/ColumnDoubleVector.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/vector/ColumnIntegerVector.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/vector/DoubleVector.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/vector/FastRangeDoubleVector.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/vector/FastRangeIntegerVector.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/vector/IntegerVector.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/vector/RangeVector.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/vector/Vector.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/vector/class-use/ASVector.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/vector/class-use/ColumnDoubleVector.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/vector/class-use/ColumnIntegerVector.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/vector/class-use/DoubleVector.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/vector/class-use/FastRangeDoubleVector.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/vector/class-use/FastRangeIntegerVector.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/vector/class-use/IntegerVector.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/vector/class-use/RangeVector.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/vector/class-use/Vector.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/vector/package-frame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/vector/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/vector/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/operands/vector/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/package-frame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/ASClass.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/ASIO.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/ASMath.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/ASStr.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/DependentAlgorithmNameLibrary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/Event.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/class-use/ASClass.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/class-use/ASIO.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/class-use/ASMath.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/class-use/ASStr.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/class-use/DependentAlgorithmNameLibrary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/class-use/Event.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/dataContainer/IntegerAndDoubles.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/dataContainer/IntegerAndInts.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/dataContainer/KeyValue.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/dataContainer/NameAndValue.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/dataContainer/SetAndValue.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/dataContainer/TwoNameAndValue.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/dataContainer/class-use/IntegerAndDoubles.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/dataContainer/class-use/IntegerAndInts.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/dataContainer/class-use/KeyValue.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/dataContainer/class-use/NameAndValue.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/dataContainer/class-use/SetAndValue.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/dataContainer/class-use/TwoNameAndValue.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/dataContainer/package-frame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/dataContainer/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/dataContainer/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/dataContainer/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/filter/ArrayDoubleEvent.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/filter/ArrayDoubleFiltering.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/filter/ArrayIntegerEvent.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/filter/ArrayIntegerFiltering.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/filter/DoubleEvent.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/filter/DoubleFiltering.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/filter/IntFiltering.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/filter/NumericalFiltering.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/filter/NumericalFilteringAndMAXorMIN.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/filter/class-use/ArrayDoubleEvent.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/filter/class-use/ArrayDoubleFiltering.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/filter/class-use/ArrayIntegerEvent.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/filter/class-use/ArrayIntegerFiltering.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/filter/class-use/DoubleEvent.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/filter/class-use/DoubleFiltering.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/filter/class-use/IntFiltering.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/filter/class-use/NumericalFiltering.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/filter/class-use/NumericalFilteringAndMAXorMIN.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/filter/package-frame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/filter/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/filter/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/filter/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/package-frame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/transformation/ManyTrans.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/transformation/PoolRgbOboMAX.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/transformation/ProTransForm.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/transformation/Transformation.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/transformation/class-use/ManyTrans.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/transformation/class-use/PoolRgbOboMAX.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/transformation/class-use/ProTransForm.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/transformation/class-use/Transformation.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/transformation/package-frame.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/transformation/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/transformation/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/apidocs/zhao/algorithmMagic/utils/transformation/package-use.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/classes.983874424.timestamp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/classes/META-INF/MANIFEST.MF" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/classes/Test.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/classes/log4j2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/javadoc-bundle-options/javadoc-options-javadoc-resources.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/javadoc-bundle-options/package-list" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/maven-archiver/pom.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/nexus-staging/staging/183647b8187619.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/nexus-staging/staging/183647b8187619/.index" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/nexus-staging/staging/183647b8187619/io/github/BeardedManZhao/algorithmStar/1.32/algorithmStar-1.32-javadoc.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/nexus-staging/staging/183647b8187619/io/github/BeardedManZhao/algorithmStar/1.32/algorithmStar-1.32-javadoc.jar.asc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/nexus-staging/staging/183647b8187619/io/github/BeardedManZhao/algorithmStar/1.32/algorithmStar-1.32-sources.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/nexus-staging/staging/183647b8187619/io/github/BeardedManZhao/algorithmStar/1.32/algorithmStar-1.32-sources.jar.asc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/nexus-staging/staging/183647b8187619/io/github/BeardedManZhao/algorithmStar/1.32/algorithmStar-1.32.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/nexus-staging/staging/183647b8187619/io/github/BeardedManZhao/algorithmStar/1.32/algorithmStar-1.32.jar.asc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/nexus-staging/staging/183647b8187619/io/github/BeardedManZhao/algorithmStar/1.32/algorithmStar-1.32.pom" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/nexus-staging/staging/183647b8187619/io/github/BeardedManZhao/algorithmStar/1.32/algorithmStar-1.32.pom.asc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/target/nexus-staging/staging/183647b8187619/io/github/BeardedManZhao/algorithmStar/maven-metadata-nexus.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.0_1.1-Chinese.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.0_1.1-Chinese.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.0_1.1.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.0_1.1.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.12_1.13-Chinese.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.12_1.13-Chinese.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.12_1.13.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.12_1.13.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.13_1.14-Chinese.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.13_1.14-Chinese.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.13_1.14.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.13_1.14.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.14_1.15-Chinese.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.14_1.15-Chinese.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.14_1.15.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.14_1.15.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.15_1.16-Chinese.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.15_1.16-Chinese.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.15_1.16.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.15_1.16.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.16_1.17-Chinese.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.16_1.17-Chinese.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.16_1.17.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.16_1.17.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.17-1.18-Chinese.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.17-1.18-Chinese.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.17-1.18.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.17-1.18.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.18_1.19-Chinese.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.18_1.19-Chinese.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.18_1.19.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.18_1.19.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.19_1.20-Chinese.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.19_1.20-Chinese.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.19_1.20.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.19_1.20.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.1_1.12-Chinese.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.1_1.12-Chinese.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.1_1.12.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.1_1.12.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.20-1.22-Chinese.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.20-1.22-Chinese.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.20-1.22.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.20-1.22.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.22-1.23-Chinese.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.22-1.23-Chinese.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.22-1.23.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.22-1.23.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.23-1.24-Chinese.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.23-1.24-Chinese.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.23-1.24.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.23-1.24.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.24-1.25-Chinese.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.24-1.25-Chinese.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.24-1.25.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.24-1.25.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.25_1.26-Chinese.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.25_1.26-Chinese.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.25_1.26.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.25_1.26.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.26_1.27-Chinese.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.26_1.27-Chinese.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.26_1.27.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.26_1.27.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.27_1.28-Chinese.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.27_1.28-Chinese.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.27_1.28.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.27_1.28.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.28_1.29-Chinese.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.28_1.29-Chinese.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.28_1.29.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.28_1.29.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.29-1.30-Chinese.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.29-1.30-Chinese.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.29-1.30.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.29-1.30.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.30_1.31-Chinese.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.30_1.31-Chinese.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.30_1.31.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.30_1.31.md" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MacroExpansionManager">
+    <option name="directoryName" value="vvfp7n8n" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="localRepository" value="G:\RunTime\MAVEN\MAVEN_BASE" />
+        <option name="mavenHome" value="E:/RunTime/MAVEN/apache-maven-3.6.3" />
+        <option name="userSettingsFile" value="E:\RunTime\MAVEN\apache-maven-3.6.3\conf\settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="vmOptionsForImporter" value="-Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true" />
+        <option name="workspaceImportForciblyTurnedOn" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="MavenRunner">
+    <option name="vmOptions" value="-Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true" />
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="2" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="2i7xxsglzWcmHyXpzUApn3ChXO3" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Maven.algorithmStar [deploy].executor": "Run",
+    "Maven.algorithmStar [org.apache.maven.plugins:maven-clean-plugin:2.5:clean].executor": "Run",
+    "Maven.algorithmStar [org.apache.maven.plugins:maven-deploy-plugin:2.7:deploy].executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "G:/MyGithub/algorithmStar/AsLib",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "项目",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "MavenSettings",
+    "vue.rearranger.settings.migration": "true",
+    "应用程序.MAIN1.executor": "Run",
+    "应用程序.java.MAIN1.executor": "Run"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="G:\MyGithub\algorithmStar\AsLib" />
+      <recent name="G:\MyGithub\algorithmStar\src_code\update" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="G:\MyGithub\algorithmStar\src_code\update" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="" />
+    </key>
+  </component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="mvn deploy" />
+    </option>
+  </component>
+  <component name="RunManager" selected="应用程序.MAIN1">
+    <configuration name="MAIN1" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="MAIN1" />
+      <module name="algorithmStar" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="java.MAIN1" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="java.MAIN1" />
+      <module name="algorithmStar" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="java.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="应用程序.MAIN1" />
+        <item itemvalue="应用程序.java.MAIN1" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-1.8.0_402-corretto-1.8.0_402-4caba194b151-ae57be32" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="默认任务">
+      <changelist id="8f99a40c-0dfd-483d-b68e-37cc5ba9f219" name="更改" comment="" />
+      <created>1718855666815</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1718855666815</updated>
+      <workItem from="1718855667874" duration="1333000" />
+      <workItem from="1718857075532" duration="631000" />
+      <workItem from="1718857741042" duration="3213000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>
