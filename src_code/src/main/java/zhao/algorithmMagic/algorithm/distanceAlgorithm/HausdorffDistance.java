@@ -1,7 +1,5 @@
 package zhao.algorithmMagic.algorithm.distanceAlgorithm;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.exception.OperatorOperationException;
@@ -34,17 +32,13 @@ import java.util.HashMap;
  */
 public class HausdorffDistance<I extends IntegerCoordinates<I> & Coordinate<I>, D extends FloatingPointCoordinates<?>> implements DistanceAlgorithm {
 
-
-    protected final Logger logger;
     protected final String AlgorithmName;
 
     protected HausdorffDistance() {
         this.AlgorithmName = "HausdorffDistance";
-        this.logger = LoggerFactory.getLogger("HausdorffDistance");
     }
 
     protected HausdorffDistance(String AlgorithmName) {
-        this.logger = LoggerFactory.getLogger(AlgorithmName);
         this.AlgorithmName = AlgorithmName;
     }
 

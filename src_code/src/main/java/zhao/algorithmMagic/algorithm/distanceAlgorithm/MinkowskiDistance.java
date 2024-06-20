@@ -1,7 +1,5 @@
 package zhao.algorithmMagic.algorithm.distanceAlgorithm;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
@@ -35,18 +33,15 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class MinkowskiDistance<I extends IntegerCoordinates<I> & Coordinate<I>, D extends FloatingPointCoordinates<?>> implements DistanceAlgorithm, RangeDistance {
 
-    protected final Logger logger;
     protected final String AlgorithmName;
     protected int $P;
 
     protected MinkowskiDistance() {
         this.AlgorithmName = "MinkowskiDistance";
-        this.logger = LoggerFactory.getLogger("MinkowskiDistance");
     }
 
     protected MinkowskiDistance(String algorithmName) {
         this.AlgorithmName = algorithmName;
-        this.logger = LoggerFactory.getLogger(algorithmName);
     }
 
     /**
@@ -110,9 +105,6 @@ public class MinkowskiDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
      */
     public double getTrueDistance(FloatingPointCoordinates<D> iFloatingPointCoordinates) {
         double res = 0;
-        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
-            logger.info("ⁿ∑₁( coordinate^" + $P + " )^" + "1/" + $P);
-        }
         for (double d : iFloatingPointCoordinates.toArray()) {
             res += Math.pow(d, $P);
         }
@@ -131,11 +123,8 @@ public class MinkowskiDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
      */
     public double getTrueDistance(IntegerCoordinates<I> integerCoordinates) {
         int res = 0;
-        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
-            logger.info("ⁿ∑₁( coordinate^" + $P + " )^" + "1/" + $P);
-        }
         for (int d : integerCoordinates.toArray()) {
-            res += Math.pow(d, $P);
+            res += (int) Math.pow(d, $P);
         }
         return ParameterCombination(res);
     }
@@ -151,12 +140,9 @@ public class MinkowskiDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
      * @return True Euclidean distance between two points
      */
     public double getTrueDistance(IntegerCoordinates<I> integerCoordinateMany1, IntegerCoordinates<I> integerCoordinateMany2) {
-        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
-            logger.info("(ⁿ∑₁( " + integerCoordinateMany1 + " - " + integerCoordinateMany2 + ").map(d -> d²)) ^ 1/" + $P);
-        }
         int res = 0;
         for (int i : integerCoordinateMany1.extend().diff(integerCoordinateMany2.extend()).toArray()) {
-            res += Math.pow(i, $P);
+            res += (int) Math.pow(i, $P);
         }
         return ParameterCombination(res);
     }
@@ -171,12 +157,9 @@ public class MinkowskiDistance<I extends IntegerCoordinates<I> & Coordinate<I>, 
      * @return True Euclidean distance between two points
      */
     public double getTrueDistance(FloatingPointCoordinates<D> floatingPointCoordinate1, FloatingPointCoordinates<D> floatingPointCoordinate2) {
-        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
-            logger.info("(ⁿ∑₁( " + floatingPointCoordinate1 + " - " + floatingPointCoordinate2 + ").map(d -> d²)) ^ 1/" + $P);
-        }
         int res = 0;
         for (double i : floatingPointCoordinate1.diff(floatingPointCoordinate2.extend()).toArray()) {
-            res += Math.pow(i, $P);
+            res += (int) Math.pow(i, $P);
         }
         return ParameterCombination(res);
     }

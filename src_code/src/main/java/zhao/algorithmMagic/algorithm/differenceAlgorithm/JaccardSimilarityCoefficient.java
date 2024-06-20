@@ -1,7 +1,5 @@
 package zhao.algorithmMagic.algorithm.differenceAlgorithm;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
@@ -21,16 +19,13 @@ import java.util.Set;
  */
 public class JaccardSimilarityCoefficient<ElementType> implements DifferenceAlgorithm<Set<ElementType>> {
 
-    protected final Logger logger;
     protected final String AlgorithmName;
 
     protected JaccardSimilarityCoefficient() {
         this.AlgorithmName = "JaccardSimilarityCoefficient";
-        this.logger = LoggerFactory.getLogger("JaccardSimilarityCoefficient");
     }
 
     protected JaccardSimilarityCoefficient(String AlgorithmName) {
-        this.logger = LoggerFactory.getLogger(AlgorithmName);
         this.AlgorithmName = AlgorithmName;
     }
 
@@ -110,9 +105,6 @@ public class JaccardSimilarityCoefficient<ElementType> implements DifferenceAlgo
         // 计算出两个集合中的交并集集合长度
         int intersectionSetSize = ASMath.intersection(value1, value2, union).size();
         int unionSetSize = union.size();
-        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
-            logger.info("|value1 ∩ value2| / |value1 ∪ value2| = " + intersectionSetSize + " / " + unionSetSize);
-        }
         // 计算两个集合之间的交并集合差异系数
         return intersectionSetSize / (double) unionSetSize;
     }

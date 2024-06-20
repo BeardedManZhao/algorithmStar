@@ -1,7 +1,5 @@
 package zhao.algorithmMagic.algorithm.distanceAlgorithm;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import zhao.algorithmMagic.algorithm.OperationAlgorithm;
 import zhao.algorithmMagic.algorithm.OperationAlgorithmManager;
 import zhao.algorithmMagic.exception.TargetNotRealizedException;
@@ -32,16 +30,13 @@ import zhao.algorithmMagic.utils.ASClass;
  * @author zhao
  */
 public class CosineDistance<V extends Vector<?, ?, ?>> implements DistanceAlgorithm {
-    protected final Logger logger;
     protected final String AlgorithmName;
 
     protected CosineDistance() {
         this.AlgorithmName = "CosineDistance";
-        this.logger = LoggerFactory.getLogger("CosineDistance");
     }
 
     protected CosineDistance(String AlgorithmName) {
-        this.logger = LoggerFactory.getLogger(AlgorithmName);
         this.AlgorithmName = AlgorithmName;
     }
 
@@ -93,11 +88,7 @@ public class CosineDistance<V extends Vector<?, ?, ?>> implements DistanceAlgori
      * Cosine of the included angle, double type.
      */
     public double getCos(Vector<V, Double, double[]> vector1, Vector<V, Double, double[]> vector2) {
-        Double aDouble = vector1.innerProduct(vector2.expand());
-        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
-            logger.info(aDouble + " / ( " + vector1 + " * " + vector2 + " )");
-        }
-        return aDouble / (vector1.moduleLength() * vector2.moduleLength());
+        return vector1.innerProduct(vector2.expand()) / (vector1.moduleLength() * vector2.moduleLength());
     }
 
     /**
@@ -112,11 +103,7 @@ public class CosineDistance<V extends Vector<?, ?, ?>> implements DistanceAlgori
      * Cosine of the included angle, double type.
      */
     public double getCosineFunctionVariable(Vector<V, Double, double[]> vector1, Vector<V, Double, double[]> vector2) {
-        double cos = getCos(vector1, vector2);
-        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
-            logger.info("ArcCos(Cos(" + cos + "))");
-        }
-        return Math.acos(cos);
+        return Math.acos(getCos(vector1, vector2));
     }
 
     /**
@@ -207,11 +194,7 @@ public class CosineDistance<V extends Vector<?, ?, ?>> implements DistanceAlgori
      * @return 两个向量之间的余弦距离系数
      */
     public double getTrueDistance(DoubleVector doubleVector1, DoubleVector doubleVector2) {
-        double aDouble = doubleVector1.innerProduct(doubleVector2);
-        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
-            logger.info(aDouble + " / ( " + doubleVector1 + " * " + doubleVector2 + " )");
-        }
-        return aDouble / (doubleVector1.moduleLength() * doubleVector2.moduleLength());
+        return doubleVector1.innerProduct(doubleVector2) / (doubleVector1.moduleLength() * doubleVector2.moduleLength());
     }
 
     /**
@@ -224,11 +207,7 @@ public class CosineDistance<V extends Vector<?, ?, ?>> implements DistanceAlgori
      * @return 两个向量之间的余弦距离系数
      */
     public double getTrueDistance(IntegerVector integerVector1, IntegerVector integerVector2) {
-        double aDouble = integerVector1.innerProduct(integerVector2);
-        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
-            logger.info(aDouble + " / ( " + integerVector1 + " * " + integerVector2 + " )");
-        }
-        return aDouble / (integerVector1.moduleLength() * integerVector2.moduleLength());
+        return (double) integerVector1.innerProduct(integerVector2) / (integerVector1.moduleLength() * integerVector2.moduleLength());
     }
 
     /**
