@@ -111,7 +111,10 @@ public class DictFeatureExtraction extends StringArrayFeature<ColumnIntegerMatri
         // 首先按照提供的字端将编号准备好
         HashMap<String, Integer> hashMap = new HashMap<>(initSize);
         for (int length = data.length - 1; length >= 0; length--) {
-            hashMap.put(data[length], length);
+            final String datum = data[length];
+            if (!hashMap.containsKey(datum)) {
+                hashMap.put(datum, hashMap.size());
+            }
         }
         return hashMap;
     }

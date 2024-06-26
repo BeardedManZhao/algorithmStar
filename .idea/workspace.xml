@@ -5,7 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8f99a40c-0dfd-483d-b68e-37cc5ba9f219" name="更改" comment="">
+      <change afterPath="$PROJECT_DIR$/src_code/update/1.40_1.41-Chinese.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/io/github/beardedManZhao/algorithmStar/algorithm/OperationAlgorithmManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/src/main/java/io/github/beardedManZhao/algorithmStar/algorithm/OperationAlgorithmManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/io/github/beardedManZhao/algorithmStar/algorithm/featureExtraction/DictFeatureExtraction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/src/main/java/io/github/beardedManZhao/algorithmStar/algorithm/featureExtraction/DictFeatureExtraction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/src/test/java/MAIN1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/src/test/java/MAIN1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src_code/update/1.32_1.40-Chinese.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.31_1.32or1.40-Chinese.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,7 +70,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;G:/MyGithub/algorithmStar/AsLib&quot;,
+    &quot;last_opened_file_path&quot;: &quot;G:/MyGithub/algorithmStar/src_code/update&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
@@ -79,8 +85,8 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="G:\MyGithub\algorithmStar\AsLib" />
       <recent name="G:\MyGithub\algorithmStar\src_code\update" />
+      <recent name="G:\MyGithub\algorithmStar\AsLib" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="G:\MyGithub\algorithmStar\src_code\update" />
@@ -141,6 +147,9 @@
       <workItem from="1718857075532" duration="631000" />
       <workItem from="1718857741042" duration="3569000" />
       <workItem from="1718861976815" duration="4000" />
+      <workItem from="1719238344991" duration="879000" />
+      <workItem from="1719239260687" duration="25000" />
+      <workItem from="1719390671449" duration="290000" />
     </task>
     <servers />
   </component>

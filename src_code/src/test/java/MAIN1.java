@@ -1,43 +1,27 @@
-
-import io.github.beardedManZhao.algorithmStar.integrator.Route2DDrawingIntegrator;
-import io.github.beardedManZhao.algorithmStar.algorithm.generatingAlgorithm.ZhaoCoordinateNet2D;
-import io.github.beardedManZhao.algorithmStar.operands.coordinate.DoubleCoordinateTwo;
-import io.github.beardedManZhao.algorithmStar.operands.route.DoubleConsanguinityRoute2D;
+import io.github.beardedManZhao.algorithmStar.algorithm.featureExtraction.DictFeatureExtraction;
+import io.github.beardedManZhao.algorithmStar.core.AlgorithmStar;
+import io.github.beardedManZhao.algorithmStar.operands.matrix.ColumnIntegerMatrix;
 
 /**
  * 示例代码文件
  */
 public class MAIN1 {
     public static void main(String[] args) {
-        // 构建人员坐标(二维)
-        DoubleCoordinateTwo A = new DoubleCoordinateTwo(10, 10);
-        DoubleCoordinateTwo B = new DoubleCoordinateTwo(-10, 4);
-        DoubleCoordinateTwo C = new DoubleCoordinateTwo(1, 0);
-        DoubleCoordinateTwo E = new DoubleCoordinateTwo(6, 1);
-        DoubleCoordinateTwo Z = new DoubleCoordinateTwo(1, 21);
+        // 准备几个所谓的类别
+        final String[] sentences = new String[]{
+                "zhao", "zhao", "asdasd", "zhao1", "zhao123", "zhao4"
+        };
 
-        // 获取关系网络,该算法是我实现出来,用于推断人员关系网的,这里的名称您可以自定义,需要注意的是下面集成器的实例化需要您将该名称传进去
-        ZhaoCoordinateNet2D zhaoCoordinateNet = ZhaoCoordinateNet2D.getInstance("Z");
-        zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute2D.parse("A -> B", A, B)); // Representing A takes the initiative to know B
-        zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute2D.parse("A -> C", A, C));
-        zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute2D.parse("E -> Z", E, Z));
-        zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute2D.parse("A -> Z", A, Z));
-        zhaoCoordinateNet.addRoute(DoubleConsanguinityRoute2D.parse("B -> Z", B, Z));
+        // 获取到特征处理计算组件 这里使用的是 词频向量特征提取组件
+        final DictFeatureExtraction dictFeatureExtraction = DictFeatureExtraction.getInstance("DictFeatureExtraction");
 
-        // 使用2维路线绘制集成器,输出上面所有人员之间的关系网络图片
-        Route2DDrawingIntegrator a = new Route2DDrawingIntegrator("A", "Z");
-        // 设置图片输出路径
-        a.setImageOutPath("D:\\out\\image.jpg")
-                // 设置图片宽度
-                .setImageWidth(1000)
-                // 设置图片高度
-                .setImageHeight(1000)
-                // 设置离散阈值,用来放大微小的变化
-                .setDiscreteThreshold(4)
-                // 运行集成器!
-                .run();
+        // 构建一个 AS 库计算对象
+        // TODO 需要注意是 在这里我们需要设置一下第二个泛型的类型
+        //  第二个泛型代表的就是 词频处理之后返回的操作数的类型 ColumnIntegerMatrix 是 dictFeatureExtraction 对应的类型
+        final AlgorithmStar<?, ColumnIntegerMatrix> instance = AlgorithmStar.getInstance();
+        // 将组件和需要被处理的数据提供给计算对象 TODO 这里获取到的类型就是 ColumnIntegerMatrix
+        final ColumnIntegerMatrix extract = instance.extract(dictFeatureExtraction, sentences);
 
-        // 清理关系网络中的数据
-        zhaoCoordinateNet.clear();
+        System.out.println(extract);
     }
 }
