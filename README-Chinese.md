@@ -32,7 +32,7 @@ AS库目录有多个版本，如果希望查询不同版本的更新日志以及
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>algorithmStar</artifactId>
-        <version>1.40</version>
+        <version>1.41</version>
     </dependency>
 </dependencies>
 ```
