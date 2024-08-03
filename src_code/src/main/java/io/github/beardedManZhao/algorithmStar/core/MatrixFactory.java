@@ -8,14 +8,15 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 
 /**
- * 矩阵工厂类
+ * 矩阵工厂类，您可以在这里直接构造一些您需要使用的矩阵对象！
  *
- * @author zhao
+ * @author 赵凌宇
  */
+@SuppressWarnings("unused")
 public final class MatrixFactory {
 
     /**
-     * 构造一个矩阵，矩阵的列数量以矩阵的第一行为准！
+     * 构造一个复数矩阵，矩阵的列数量以矩阵的第一行为准！
      * <p>
      * Construct a matrix, the number of columns of the matrix is based on the first row of the matrix!
      *
@@ -29,7 +30,7 @@ public final class MatrixFactory {
     }
 
     /**
-     * 构造一个矩阵，矩阵的列数量以矩阵的第一行为准！
+     * 构造一个复数矩阵，矩阵的列数量以矩阵的第一行为准！
      * <p>
      * Construct a matrix, the number of columns of the matrix is based on the first row of the matrix!
      *

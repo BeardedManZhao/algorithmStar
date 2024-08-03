@@ -5,13 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8f99a40c-0dfd-483d-b68e-37cc5ba9f219" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/src_code/update/1.40_1.41-Chinese.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src_code/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/io/github/beardedManZhao/algorithmStar/algorithm/OperationAlgorithmManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/src/main/java/io/github/beardedManZhao/algorithmStar/algorithm/OperationAlgorithmManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src_code/src/main/java/io/github/beardedManZhao/algorithmStar/algorithm/featureExtraction/DictFeatureExtraction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/src/main/java/io/github/beardedManZhao/algorithmStar/algorithm/featureExtraction/DictFeatureExtraction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src_code/src/test/java/MAIN1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/src/test/java/MAIN1.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src_code/update/1.32_1.40-Chinese.md" beforeDir="false" afterPath="$PROJECT_DIR$/src_code/update/1.31_1.32or1.40-Chinese.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,9 +28,7 @@
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
-        <option name="customMavenHome" value="E:/RunTime/MAVEN/apache-maven-3.6.3" />
         <option name="localRepository" value="G:\RunTime\MAVEN\MAVEN_BASE" />
-        <option name="mavenHomeTypeForPersistence" value="CUSTOM" />
         <option name="userSettingsFile" value="E:\RunTime\MAVEN\apache-maven-3.6.3\conf\settings.xml" />
       </MavenGeneralSettings>
     </option>
@@ -72,10 +64,11 @@
     "git-widget-placeholder": "master",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/MyGithub/algorithmStar",
+    "last_opened_file_path": "F:/MyGithub/algorithmStar",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "org.rust.cargo.project.model.impl.CargoExternalSystemProjectAware.subscribe.first.balloon": "",
     "project.structure.last.edited": "项目",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
@@ -133,8 +126,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.18034.62" />
-        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.18034.62" />
+        <option value="jdk-1.8.0_402-corretto-1.8.0_402-4caba194b151-ae57be32" />
       </set>
     </attachedChunks>
   </component>
@@ -154,6 +146,7 @@
       <workItem from="1719239260687" duration="25000" />
       <workItem from="1719390671449" duration="290000" />
       <workItem from="1722687372456" duration="14000" />
+      <workItem from="1722689125517" duration="11000" />
     </task>
     <servers />
   </component>
