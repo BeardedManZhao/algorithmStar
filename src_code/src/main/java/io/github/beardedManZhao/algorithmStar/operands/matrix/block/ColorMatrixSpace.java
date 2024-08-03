@@ -1,19 +1,19 @@
 package io.github.beardedManZhao.algorithmStar.operands.matrix.block;
 
-import org.jetbrains.annotations.NotNull;
 import io.github.beardedManZhao.algorithmStar.SerialVersionUID;
 import io.github.beardedManZhao.algorithmStar.exception.OperatorOperationException;
 import io.github.beardedManZhao.algorithmStar.operands.matrix.ColorMatrix;
 import io.github.beardedManZhao.algorithmStar.operands.matrix.IntegerMatrix;
 import io.github.beardedManZhao.algorithmStar.utils.ASClass;
 import io.github.beardedManZhao.algorithmStar.utils.transformation.Transformation;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.Iterator;
 
-import static io.github.beardedManZhao.algorithmStar    .operands.matrix.ColorMatrix.WHITE;
+import static io.github.beardedManZhao.algorithmStar.operands.matrix.ColorMatrix.WHITE;
 
 /**
  * 图像矩阵空间类，在该类中存储的是三层图像矩阵对象，其能够进行强大的多颜色通道的提取以及多图像矩阵并行处理操作。

@@ -1,13 +1,13 @@
 package io.github.beardedManZhao.algorithmStar.integrator;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import io.github.beardedManZhao.algorithmStar.algorithm.OperationAlgorithm;
 import io.github.beardedManZhao.algorithmStar.algorithm.OperationAlgorithmManager;
 import io.github.beardedManZhao.algorithmStar.exception.TargetNotRealizedException;
 import io.github.beardedManZhao.algorithmStar.integrator.launcher.HashClassificationLauncher;
 import io.github.beardedManZhao.algorithmStar.utils.ASClass;
 import io.github.beardedManZhao.algorithmStar.utils.dataContainer.SetAndValue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,6 +1,5 @@
 package io.github.beardedManZhao.algorithmStar.utils;
 
-import org.jetbrains.annotations.NotNull;
 import io.github.beardedManZhao.algorithmStar.core.ASDynamicLibrary;
 import io.github.beardedManZhao.algorithmStar.exception.OperatorOperationException;
 import io.github.beardedManZhao.algorithmStar.operands.ComplexNumber;
@@ -15,6 +14,7 @@ import io.github.beardedManZhao.algorithmStar.operands.table.Series;
 import io.github.beardedManZhao.algorithmStar.utils.filter.ArrayDoubleFiltering;
 import io.github.beardedManZhao.algorithmStar.utils.filter.ArrayIntegerFiltering;
 import io.github.beardedManZhao.algorithmStar.utils.filter.NumericalFiltering;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.*;

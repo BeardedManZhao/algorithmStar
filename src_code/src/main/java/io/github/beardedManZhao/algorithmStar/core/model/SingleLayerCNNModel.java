@@ -1,6 +1,5 @@
 package io.github.beardedManZhao.algorithmStar.core.model;
 
-import org.jetbrains.annotations.NotNull;
 import io.github.beardedManZhao.algorithmStar.exception.OperatorOperationException;
 import io.github.beardedManZhao.algorithmStar.operands.matrix.ColorMatrix;
 import io.github.beardedManZhao.algorithmStar.operands.matrix.block.DoubleMatrixSpace;
@@ -10,6 +9,7 @@ import io.github.beardedManZhao.algorithmStar.operands.vector.DoubleVector;
 import io.github.beardedManZhao.algorithmStar.utils.ASClass;
 import io.github.beardedManZhao.algorithmStar.utils.dataContainer.KeyValue;
 import io.github.beardedManZhao.algorithmStar.utils.transformation.Transformation;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.util.ArrayList;

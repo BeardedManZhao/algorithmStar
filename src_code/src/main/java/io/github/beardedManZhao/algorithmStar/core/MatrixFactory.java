@@ -1,5 +1,6 @@
 package io.github.beardedManZhao.algorithmStar.core;
 
+import io.github.beardedManZhao.algorithmStar.operands.ComplexNumber;
 import io.github.beardedManZhao.algorithmStar.operands.matrix.*;
 
 import java.lang.reflect.InvocationTargetException;
@@ -12,6 +13,35 @@ import java.util.Arrays;
  * @author zhao
  */
 public final class MatrixFactory {
+
+    /**
+     * 构造一个矩阵，矩阵的列数量以矩阵的第一行为准！
+     * <p>
+     * Construct a matrix, the number of columns of the matrix is based on the first row of the matrix!
+     *
+     * @param matrixArray 用于构造矩阵的二维数组
+     *                    <p>
+     *                    2D array for constructing the matrix
+     * @return matrix object
+     */
+    public ComplexNumberMatrix parseMatrix(ComplexNumber[]... matrixArray) {
+        return ComplexNumberMatrix.parse(matrixArray);
+    }
+
+    /**
+     * 构造一个矩阵，矩阵的列数量以矩阵的第一行为准！
+     * <p>
+     * Construct a matrix, the number of columns of the matrix is based on the first row of the matrix!
+     *
+     * @param matrixArray 用于构造矩阵的二维数组
+     *                    <p>
+     *                    2D array for constructing the matrix
+     * @return matrix object
+     */
+    public ComplexNumberMatrix parseComplexNumberMatrix(String[]... matrixArray) {
+        return ComplexNumberMatrix.parse(matrixArray);
+    }
+
 
     /**
      * 构造一个矩阵，矩阵的列数量以矩阵的第一行为准！

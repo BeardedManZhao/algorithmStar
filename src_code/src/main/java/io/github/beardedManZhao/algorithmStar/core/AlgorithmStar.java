@@ -54,6 +54,7 @@ import java.util.Map;
  *                        The data type returned by the feature extraction function after the extraction operation
  * @author 赵凌宇
  */
+@SuppressWarnings("unused")
 public final class AlgorithmStar<diffValue, featureReturn> {
 
     private static AlgorithmStar<?, ?> algorithmStar;

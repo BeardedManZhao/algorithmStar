@@ -1,12 +1,12 @@
 package io.github.beardedManZhao.algorithmStar.algorithm.generatingAlgorithm;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import io.github.beardedManZhao.algorithmStar.algorithm.OperationAlgorithm;
 import io.github.beardedManZhao.algorithmStar.algorithm.OperationAlgorithmManager;
 import io.github.beardedManZhao.algorithmStar.exception.TargetNotRealizedException;
 import io.github.beardedManZhao.algorithmStar.operands.route.DoubleConsanguinityRoute;
 import io.github.beardedManZhao.algorithmStar.utils.ASClass;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;

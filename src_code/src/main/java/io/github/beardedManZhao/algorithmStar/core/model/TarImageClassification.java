@@ -1,11 +1,11 @@
 package io.github.beardedManZhao.algorithmStar.core.model;
 
-import org.jetbrains.annotations.NotNull;
 import io.github.beardedManZhao.algorithmStar.exception.OperatorOperationException;
 import io.github.beardedManZhao.algorithmStar.operands.coordinate.IntegerCoordinateTwo;
 import io.github.beardedManZhao.algorithmStar.operands.matrix.ColorMatrix;
 import io.github.beardedManZhao.algorithmStar.operands.table.*;
 import io.github.beardedManZhao.algorithmStar.utils.dataContainer.KeyValue;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;

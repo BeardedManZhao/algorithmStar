@@ -1,10 +1,10 @@
 package io.github.beardedManZhao.algorithmStar.algorithm.classificationAlgorithm;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import io.github.beardedManZhao.algorithmStar.algorithm.OperationAlgorithmManager;
 import io.github.beardedManZhao.algorithmStar.algorithm.distanceAlgorithm.DistanceAlgorithm;
 import io.github.beardedManZhao.algorithmStar.utils.DependentAlgorithmNameLibrary;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 通过距离算法实现分类的算法抽象，实现于该类将能够支持通过距离进行分类的方式。

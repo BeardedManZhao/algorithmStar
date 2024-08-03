@@ -1,7 +1,5 @@
 package io.github.beardedManZhao.algorithmStar.algorithm.normalization;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import io.github.beardedManZhao.algorithmStar.algorithm.OperationAlgorithm;
 import io.github.beardedManZhao.algorithmStar.algorithm.OperationAlgorithmManager;
 import io.github.beardedManZhao.algorithmStar.operands.coordinate.DoubleCoordinateMany;
@@ -12,6 +10,8 @@ import io.github.beardedManZhao.algorithmStar.operands.matrix.DoubleMatrix;
 import io.github.beardedManZhao.algorithmStar.operands.matrix.IntegerMatrix;
 import io.github.beardedManZhao.algorithmStar.operands.vector.DoubleVector;
 import io.github.beardedManZhao.algorithmStar.operands.vector.IntegerVector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Java类于 2022/10/13 12:26:22 创建

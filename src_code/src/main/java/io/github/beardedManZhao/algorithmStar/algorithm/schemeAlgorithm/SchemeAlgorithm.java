@@ -1,13 +1,13 @@
 package io.github.beardedManZhao.algorithmStar.algorithm.schemeAlgorithm;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import io.github.beardedManZhao.algorithmStar.algorithm.OperationAlgorithm;
 import io.github.beardedManZhao.algorithmStar.algorithm.OperationAlgorithmManager;
 import io.github.beardedManZhao.algorithmStar.operands.matrix.DoubleMatrix;
 import io.github.beardedManZhao.algorithmStar.operands.matrix.IntegerMatrix;
 import io.github.beardedManZhao.algorithmStar.utils.filter.ArrayDoubleFiltering;
 import io.github.beardedManZhao.algorithmStar.utils.filter.ArrayIntegerFiltering;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;

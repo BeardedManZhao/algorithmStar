@@ -1,10 +1,10 @@
 package io.github.beardedManZhao.algorithmStar.utils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import io.github.beardedManZhao.algorithmStar.exception.OperatorOperationException;
 import io.github.beardedManZhao.algorithmStar.operands.matrix.ColorMatrix;
 import io.github.beardedManZhao.algorithmStar.operands.matrix.IntegerMatrix;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

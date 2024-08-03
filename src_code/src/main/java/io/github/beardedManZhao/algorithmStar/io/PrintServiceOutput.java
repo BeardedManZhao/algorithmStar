@@ -1,7 +1,5 @@
 package io.github.beardedManZhao.algorithmStar.io;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import io.github.beardedManZhao.algorithmStar.exception.OperatorOperationException;
 import io.github.beardedManZhao.algorithmStar.operands.matrix.ColorMatrix;
 import io.github.beardedManZhao.algorithmStar.operands.matrix.ColumnDoubleMatrix;
@@ -9,6 +7,8 @@ import io.github.beardedManZhao.algorithmStar.operands.matrix.ColumnIntegerMatri
 import io.github.beardedManZhao.algorithmStar.operands.table.Cell;
 import io.github.beardedManZhao.algorithmStar.operands.table.DataFrame;
 import io.github.beardedManZhao.algorithmStar.utils.ASIO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import javax.print.*;

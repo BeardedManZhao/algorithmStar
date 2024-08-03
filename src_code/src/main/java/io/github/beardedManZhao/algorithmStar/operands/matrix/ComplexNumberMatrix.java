@@ -43,9 +43,10 @@ public class ComplexNumberMatrix extends Matrix<ComplexNumberMatrix, ComplexNumb
     }
 
     public static ComplexNumberMatrix parse(String[]... complexNumberStrings) {
-        ComplexNumber[][] complexNumbers = new ComplexNumber[complexNumberStrings.length][complexNumberStrings[0].length];
+        int length = complexNumberStrings[0].length;
+        final ComplexNumber[][] complexNumbers = new ComplexNumber[complexNumberStrings.length][length];
         for (int row = 0; row < complexNumberStrings.length; row++) {
-            for (int col = 0; col < complexNumbers.length; col++) {
+            for (int col = 0; col < length; col++) {
                 complexNumbers[row][col] = ComplexNumber.parse(complexNumberStrings[row][col]);
             }
         }

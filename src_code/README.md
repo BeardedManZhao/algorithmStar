@@ -8,7 +8,8 @@
 
 ### Update log:
 
-* Framework version: 1.32 - 1.40
-* Refactoring software package names to avoid confusion and conflicts
+* Framework version: 1.41 - 1.42
+* Fixed the problem that complex matrices would be incomplete when parsing strings
+* Added support for complex matrices in the matrix factory!
 
-### Version update date : 2024-06-20
+### Version update date : 2024-08-03

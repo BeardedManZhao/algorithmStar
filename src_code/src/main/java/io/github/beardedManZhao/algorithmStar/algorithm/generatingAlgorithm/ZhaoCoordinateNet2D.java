@@ -1,7 +1,5 @@
 package io.github.beardedManZhao.algorithmStar.algorithm.generatingAlgorithm;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import io.github.beardedManZhao.algorithmStar.algorithm.OperationAlgorithm;
 import io.github.beardedManZhao.algorithmStar.algorithm.OperationAlgorithmManager;
 import io.github.beardedManZhao.algorithmStar.exception.TargetNotRealizedException;
@@ -13,6 +11,8 @@ import io.github.beardedManZhao.algorithmStar.operands.coordinateNet.RouteNet;
 import io.github.beardedManZhao.algorithmStar.operands.route.DoubleConsanguinityRoute2D;
 import io.github.beardedManZhao.algorithmStar.operands.route.IntegerConsanguinityRoute2D;
 import io.github.beardedManZhao.algorithmStar.utils.ASClass;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.util.ArrayList;

@@ -1,6 +1,5 @@
 package io.github.beardedManZhao.algorithmStar.core.model;
 
-import org.jetbrains.annotations.NotNull;
 import io.github.beardedManZhao.algorithmStar.exception.OperatorOperationException;
 import io.github.beardedManZhao.algorithmStar.operands.coordinate.IntegerCoordinateTwo;
 import io.github.beardedManZhao.algorithmStar.operands.matrix.ColorMatrix;
@@ -8,6 +7,7 @@ import io.github.beardedManZhao.algorithmStar.operands.table.Cell;
 import io.github.beardedManZhao.algorithmStar.operands.table.SingletonCell;
 import io.github.beardedManZhao.algorithmStar.utils.ASClass;
 import io.github.beardedManZhao.algorithmStar.utils.DependentAlgorithmNameLibrary;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;

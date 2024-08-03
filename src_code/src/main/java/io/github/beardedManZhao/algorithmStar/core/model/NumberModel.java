@@ -1,7 +1,7 @@
 package io.github.beardedManZhao.algorithmStar.core.model;
 
-import org.jetbrains.annotations.NotNull;
 import io.github.beardedManZhao.algorithmStar.operands.table.Cell;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * 数学计算模型抽象，该模型通常是一个训练好的模型，用于深度学习中的结果封装，通过神经网络可训练出该类的实现。

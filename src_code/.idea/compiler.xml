@@ -7,7 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="AlgorithmStar-machineBrain" />
-        <module name="src_code" />
+        <module name="algorithmStar" />
       </profile>
     </annotationProcessing>
   </component>

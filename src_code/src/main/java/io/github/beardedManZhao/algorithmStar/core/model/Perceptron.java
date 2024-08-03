@@ -1,12 +1,12 @@
 package io.github.beardedManZhao.algorithmStar.core.model;
 
-import org.jetbrains.annotations.NotNull;
 import io.github.beardedManZhao.algorithmStar.operands.matrix.DoubleMatrix;
 import io.github.beardedManZhao.algorithmStar.operands.table.Cell;
 import io.github.beardedManZhao.algorithmStar.operands.table.SingletonCell;
 import io.github.beardedManZhao.algorithmStar.operands.vector.DoubleVector;
 import io.github.beardedManZhao.algorithmStar.operands.vector.IntegerVector;
 import io.github.beardedManZhao.algorithmStar.utils.ASClass;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * 感知机类，该类实现了AS模型类，其由线性函数与激活函数组成，其接收线性函数中的权重矩阵与数据矩阵对象。

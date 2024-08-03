@@ -1,7 +1,5 @@
 package io.github.beardedManZhao.algorithmStar.algorithm.generatingAlgorithm;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import io.github.beardedManZhao.algorithmStar.algorithm.OperationAlgorithm;
 import io.github.beardedManZhao.algorithmStar.algorithm.OperationAlgorithmManager;
 import io.github.beardedManZhao.algorithmStar.algorithm.distanceAlgorithm.DistanceAlgorithm;
@@ -12,6 +10,8 @@ import io.github.beardedManZhao.algorithmStar.operands.route.DoubleConsanguinity
 import io.github.beardedManZhao.algorithmStar.operands.route.IntegerConsanguinityRoute;
 import io.github.beardedManZhao.algorithmStar.utils.ASClass;
 import io.github.beardedManZhao.algorithmStar.utils.DependentAlgorithmNameLibrary;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;

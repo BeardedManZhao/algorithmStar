@@ -1,7 +1,5 @@
 package io.github.beardedManZhao.algorithmStar.integrator;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import io.github.beardedManZhao.algorithmStar.algorithm.OperationAlgorithm;
 import io.github.beardedManZhao.algorithmStar.algorithm.OperationAlgorithmManager;
 import io.github.beardedManZhao.algorithmStar.exception.OperatorOperationException;
@@ -12,6 +10,8 @@ import io.github.beardedManZhao.algorithmStar.operands.coordinate.IntegerCoordin
 import io.github.beardedManZhao.algorithmStar.operands.route.IntegerConsanguinityRoute2D;
 import io.github.beardedManZhao.algorithmStar.utils.ASClass;
 import io.github.beardedManZhao.algorithmStar.utils.ASIO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

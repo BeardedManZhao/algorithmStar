@@ -1,9 +1,9 @@
 package io.github.beardedManZhao.algorithmStar.core.model;
 
-import org.jetbrains.annotations.NotNull;
 import io.github.beardedManZhao.algorithmStar.exception.OperatorOperationException;
 import io.github.beardedManZhao.algorithmStar.operands.table.Cell;
 import io.github.beardedManZhao.algorithmStar.operands.vector.DoubleVector;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * 线性神经网络学习模型，该模型针对大量数据样本能够自动的生成神经网络进行批量学习操作。最终会返回一个学习之后的数学模型。

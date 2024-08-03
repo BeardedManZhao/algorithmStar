@@ -1,11 +1,11 @@
 package io.github.beardedManZhao.algorithmStar.algorithm.modelAlgorithm;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import io.github.beardedManZhao.algorithmStar.algorithm.OperationAlgorithm;
 import io.github.beardedManZhao.algorithmStar.algorithm.OperationAlgorithmManager;
 import io.github.beardedManZhao.algorithmStar.operands.matrix.DoubleMatrix;
 import io.github.beardedManZhao.algorithmStar.operands.matrix.IntegerMatrix;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 模型推测计算组件，每一个模型推测计算组件都应实现与本抽象，抽象中包含了最基本的函数，其函数计算逻辑等待实现。

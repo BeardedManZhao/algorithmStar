@@ -1,8 +1,8 @@
 package io.github.beardedManZhao.algorithmStar.algorithm.featureExtraction;
 
+import io.github.beardedManZhao.algorithmStar.algorithm.OperationAlgorithmManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import io.github.beardedManZhao.algorithmStar.algorithm.OperationAlgorithmManager;
 
 /**
  * 所有能够处理字符串数组的特征提取计算组件对象的共同抽象类

@@ -1,13 +1,13 @@
 package io.github.beardedManZhao.algorithmStar.algorithm.probabilisticAlgorithm;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import io.github.beardedManZhao.algorithmStar.algorithm.OperationAlgorithm;
 import io.github.beardedManZhao.algorithmStar.algorithm.OperationAlgorithmManager;
 import io.github.beardedManZhao.algorithmStar.operands.matrix.DoubleMatrix;
 import io.github.beardedManZhao.algorithmStar.operands.matrix.IntegerMatrix;
 import io.github.beardedManZhao.algorithmStar.utils.filter.ArrayDoubleFiltering;
 import io.github.beardedManZhao.algorithmStar.utils.filter.ArrayIntegerFiltering;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 概率计算组件的所有抽象，包含概率计算组件中最基本的一些计算函数，所有的概率计算组件都应实现本抽象类。
