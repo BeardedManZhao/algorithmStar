@@ -8,7 +8,9 @@
 
 ### Update log:
 
-* Framework version: 1.42-1.43
-* Removed the log. Enhance performance!
+* Framework version: 1.41 - 1.42
+* Fixed the problem that complex matrices would be incomplete when parsing strings
+* Added support for complex matrices in the matrix factory!
+* Removed redundant errors in the factory class `MatixFactory`
 
-### Version update date : 2024-12-25
+### Version update date : 2024-08-03

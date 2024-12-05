@@ -21,7 +21,7 @@ public final class OperationAlgorithmManager implements OperationAlgorithm {
     /**
      * AS  version
      */
-    public final static float VERSION = 1.41f;
+    public final static float VERSION = 1.43f;
 
     /**
      * 计算组件的日志打印开关，当此处值为false的时候，计算组件中的日志将不会被打印，logger也不会被调用，一般来说，这里为了减少冗余的字符串实例化操作，会设置为false，当需要调试的时候才需要打开此处的数值。
@@ -35,17 +35,7 @@ public final class OperationAlgorithmManager implements OperationAlgorithm {
      * An archive collection of algorithm objects into which you can store algorithm objects
      */
     private final static HashMap<String, OperationAlgorithm> STRING_OPERATION_ALGORITHM_HASH_MAP = new HashMap<>();
-    private final static Logger LOGGER = LoggerFactory.getLogger("OperationAlgorithmManager");
     private final static OperationAlgorithmManager OPERATION_ALGORITHM_MANAGER = new OperationAlgorithmManager();
-
-    static {
-        LOGGER.info("+============================== Welcome to [AlgorithmStar-Java] ==============================+");
-        LOGGER.info("+ \tStart time " + new Date());
-        LOGGER.info("+ \tversion: " + VERSION);
-        LOGGER.info("+ \tCalculation component manager initialized successfully");
-        LOGGER.info("+ \tFor more information, see: https://github.com/BeardedManZhao/algorithmStar.git");
-        LOGGER.info("+--------------------------------------------------------------------------------------------------+");
-    }
 
 
     private OperationAlgorithmManager() {
@@ -94,7 +84,6 @@ public final class OperationAlgorithmManager implements OperationAlgorithm {
      *                           The algorithm object that needs to be registered
      */
     public void register(OperationAlgorithm operationAlgorithm) {
-        LOGGER.info("register OperationAlgorithm:" + operationAlgorithm.getAlgorithmName());
         STRING_OPERATION_ALGORITHM_HASH_MAP.put(operationAlgorithm.getAlgorithmName(), operationAlgorithm);
     }
 
@@ -106,23 +95,17 @@ public final class OperationAlgorithmManager implements OperationAlgorithm {
      * @param algorithmName 需要取注册的算法名称
      *                      <p>
      *                      The name of the algorithm that needs to be registered
-     * @return 是否取消注册成功！
+     * @return 是否取消注册成功！ 如果没有成功返回 falas 错误原因："It seems that the algorithm you want to unregister has never been registered in the management class, and cannot be found in the management: [algorithmName]
      * <p>
      * Whether the cancellation of registration is successful!
      */
     public boolean unRegister(String algorithmName) {
         if (DependentAlgorithmNameLibrary.isPrefabricated(algorithmName)) {
-            String s = "您想要取消注册的算法属于其它算法的依赖，因此为了程序的安全不予执行！如果您一定要删除，请使用管理类的'Unloading(algorithmName)'";
-            LOGGER.error(s, new OperationAlgorithmManagementException(s));
-            return false;
+            throw new OperationAlgorithmManagementException(
+                    "您想要取消注册的算法属于其它算法的依赖，因此为了程序的安全不予执行！如果您一定要删除，请使用管理类的'Unloading(algorithmName)'"
+            );
         } else {
-            if (Unloading(algorithmName)) {
-                LOGGER.info("Cancelled the registration of an algorithm, name:" + algorithmName);
-                return true;
-            } else {
-                LOGGER.error("It seems that the algorithm you want to unregister has never been registered in the management class, and cannot be found in the management:" + algorithmName);
-                return false;
-            }
+            return Unloading(algorithmName);
         }
     }
 
@@ -146,13 +129,9 @@ public final class OperationAlgorithmManager implements OperationAlgorithm {
     public OperationAlgorithm get(String algorithmName) {
         OperationAlgorithm operationAlgorithm = STRING_OPERATION_ALGORITHM_HASH_MAP.get(algorithmName);
         if (operationAlgorithm != null) {
-            LOGGER.info("An operation algorithm was obtained:" + algorithmName);
             return operationAlgorithm;
         } else {
-            String s = "没有找到名为[" + algorithmName + "]的算法\tNo name was found[" + algorithmName + "]algorithm";
-            OperationAlgorithmNotFound operationAlgorithmNotFound = new OperationAlgorithmNotFound(s);
-            LOGGER.error(s, operationAlgorithmNotFound);
-            throw operationAlgorithmNotFound;
+            throw new OperationAlgorithmNotFound("没有找到名为[" + algorithmName + "]的算法\tNo name was found[" + algorithmName + "]algorithm");
         }
     }
 

@@ -32,7 +32,7 @@ AS库目录有多个版本，如果希望查询不同版本的更新日志以及
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>algorithmStar</artifactId>
-        <version>1.42</version>
+        <version>1.43</version>
     </dependency>
 </dependencies>
 ```
@@ -42,6 +42,8 @@ AS库目录有多个版本，如果希望查询不同版本的更新日志以及
 在1.17版本之后，AS库的所有依赖被剥离，更好避免依赖的捆绑问题，减少项目发生冲突的可能性，同时也可以按照开发者的需求使用更加适合的依赖配置项，您可以在这里查看到AS库所依赖的第三方库依赖。
 
 #### 必选依赖项
+
+> 注意：log4j2 在 1.43 以及以后的版本中不需要导入了！！！为了增强性能，1.43 版本中将log4j2 移除！
 
 AS库在进行诸多计算函数的时候会产生一些日志数据，因此AS库的使用需要导入日志依赖项，这个依赖项是必不可少的，请按照如下的方式导入依赖。
 

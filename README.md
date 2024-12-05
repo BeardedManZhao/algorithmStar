@@ -41,7 +41,7 @@ can add it to your maven project, or you can download it from Releases and manua
     <dependency>
         <groupId>io.github.BeardedManZhao</groupId>
         <artifactId>algorithmStar</artifactId>
-        <version>1.42</version>
+        <version>1.44</version>
     </dependency>
 </dependencies>
 ```
@@ -54,6 +54,8 @@ according to the needs of developers. You can view third-party library dependenc
 here.
 
 #### Required Dependencies
+
+> Note: log4j2 does not need to be imported in versions 1.43 and later!!! To enhance performance, log4j2 has been removed in version 1.43!
 
 The AS library generates some log data when performing many calculation functions. Therefore, the use of the AS library
 requires importing log dependencies, which are essential. Please import the dependencies as follows.
