@@ -2,8 +2,6 @@ package io.github.beardedManZhao.algorithmStar.core.model.dataSet;
 
 import io.github.beardedManZhao.algorithmStar.operands.matrix.block.IntegerMatrixSpace;
 import io.github.beardedManZhao.algorithmStar.utils.dataContainer.KeyValue;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -18,8 +16,6 @@ import java.util.List;
  * @author zhao
  */
 public final class Share {
-
-    public final static Logger LOGGER = LoggerFactory.getLogger("ASDataSet");
 
     /**
      * 字母数据集的初始权重
@@ -98,7 +94,6 @@ public final class Share {
         IntegerMatrixSpace[] integerMatrixSpaces = new IntegerMatrixSpace[urls.length];
         int index = -1;
         for (String url : urls) {
-            LOGGER.info("downLoad train image => " + url);
             integerMatrixSpaces[++index] = IntegerMatrixSpace.parse(new URL(url), w, h);
         }
         return integerMatrixSpaces;
@@ -118,7 +113,6 @@ public final class Share {
         int index = -1;
         for (String[] url : urls) {
             for (String url1 : url) {
-                LOGGER.info("downLoad train image => " + url1);
                 integerMatrixSpaces[++index] = IntegerMatrixSpace.parse(new URL(url1), w, h);
             }
         }
@@ -137,7 +131,6 @@ public final class Share {
     public static List<KeyValue<String, IntegerMatrixSpace>> getImageWeight(int w, int h, List<KeyValue<String, String>> nameAndUrl) throws MalformedURLException {
         ArrayList<KeyValue<String, IntegerMatrixSpace>> list = new ArrayList<>(nameAndUrl.size() + 2);
         for (KeyValue<String, String> value : nameAndUrl) {
-            LOGGER.info("downLoad category image => category[" + value.getKey() + "]\tURL = " + value.getValue());
             list.add(new KeyValue<>(value.getKey(), IntegerMatrixSpace.parse(new URL(value.getValue()), w, h)));
         }
         return list;

@@ -10,8 +10,6 @@ import io.github.beardedManZhao.algorithmStar.operands.coordinate.IntegerCoordin
 import io.github.beardedManZhao.algorithmStar.operands.route.IntegerConsanguinityRoute2D;
 import io.github.beardedManZhao.algorithmStar.utils.ASClass;
 import io.github.beardedManZhao.algorithmStar.utils.ASIO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -31,7 +29,6 @@ import java.awt.image.BufferedImage;
  */
 public final class Route2DDrawingIntegrator implements AlgorithmIntegrator<Route2DDrawingIntegrator> {
 
-    private final Logger logger;
     private final String IntegratorName;
     private final Route2DDrawingLauncher route2DDrawingStarter;
     private String imageOutPath = "image.jpg";
@@ -53,9 +50,6 @@ public final class Route2DDrawingIntegrator implements AlgorithmIntegrator<Route
      */
     public Route2DDrawingIntegrator(String integratorName, String AlgorithmLauncherName) {
         IntegratorName = integratorName;
-        logger = LoggerFactory.getLogger(integratorName);
-        logger.info("+======================================= << " + this.IntegratorName + " >> started =============================================+");
-        logger.info("+--------------------------------------- << Extract the algorithm required by the integrator >> ---------------------------------------+");
         OperationAlgorithm operationAlgorithm = OperationAlgorithmManager.getInstance().get(AlgorithmLauncherName);
         if (operationAlgorithm instanceof Route2DDrawingLauncher) {
             this.route2DDrawingStarter = ASClass.transform(operationAlgorithm);
@@ -72,9 +66,6 @@ public final class Route2DDrawingIntegrator implements AlgorithmIntegrator<Route
     public Route2DDrawingIntegrator(String integratorName, Route2DDrawingLauncher route2DDrawingLauncher) {
         this.IntegratorName = integratorName;
         this.route2DDrawingStarter = route2DDrawingLauncher;
-        logger = LoggerFactory.getLogger(integratorName);
-        logger.info("+======================================= << " + this.IntegratorName + " >> started =============================================+");
-        logger.info("+--------------------------------------- << Extract the algorithm required by the integrator >> ---------------------------------------+");
     }
 
     /**
@@ -162,7 +153,6 @@ public final class Route2DDrawingIntegrator implements AlgorithmIntegrator<Route
      */
     @Override
     public boolean run() {
-        logger.info("+--------------------------------------- << Build Picture >> ---------------------------------------+");
         // 创建一个图片
         BufferedImage image = new BufferedImage(this.imageWidth, this.imageHeight, BufferedImage.TYPE_INT_RGB);
         // 准备绘图工具
@@ -182,11 +172,9 @@ public final class Route2DDrawingIntegrator implements AlgorithmIntegrator<Route
         run2(g);
         // 将图片对象输出到指定的路径下!
         if (!ASIO.outImage(image, this.imageOutPath)) {
-            logger.error("+ Error in image output!");
-        } else {
-            logger.info("+--------------------------------------- << output Picture >> ---------------------------------------+");
+            throw new OperatorOperationException("图片输出失败,请检查您的路径是否正确,或者您的图片是否被占用,或者您的图片是否超出了您的磁盘空间。\n" +
+                    "Image output failed, please check whether your path is correct, or whether your image is occupied, or whether your image exceeds your disk space.");
         }
-        logger.info("+======================================= << " + this.IntegratorName + " >> stopped =============================================+");
         return true;
     }
 
@@ -212,7 +200,6 @@ public final class Route2DDrawingIntegrator implements AlgorithmIntegrator<Route
     private void run1(Graphics2D graphics2D) {
         // 第二版接口的附加任务启动
         if (this.route2DDrawingStarter instanceof Route2DDrawingLauncher2) {
-            logger.info("+ >>> Start the first task (unique to the second version interface)");
             Route2DDrawingLauncher2 dDrawingStarter = (Route2DDrawingLauncher2) this.route2DDrawingStarter;
             dDrawingStarter.AdditionalTasks1(graphics2D, this);
         }
@@ -226,7 +213,6 @@ public final class Route2DDrawingIntegrator implements AlgorithmIntegrator<Route
     private void run2(Graphics2D graphics2D) {
         // 第二版接口的附加任务启动
         if (this.route2DDrawingStarter instanceof Route2DDrawingLauncher2) {
-            logger.info("+ >>> Start the second task (unique to the second version interface)");
             Route2DDrawingLauncher2 dDrawingStarter = (Route2DDrawingLauncher2) this.route2DDrawingStarter;
             dDrawingStarter.AdditionalTasks2(graphics2D, this);
         }
@@ -242,7 +228,6 @@ public final class Route2DDrawingIntegrator implements AlgorithmIntegrator<Route
      * @param endPointCoordinate 终止坐标对象
      */
     public void drawARoute(Graphics2D graphics2D, String startName, String endName, IntegerCoordinateTwo startingCoordinate, IntegerCoordinateTwo endPointCoordinate) {
-        logger.info("+ Draw a circuit " + startName + " -> " + endName);
         // 开始绘制
         int startX = startingCoordinate.getX() << this.discreteThreshold;
         int startY = -startingCoordinate.getY() << this.discreteThreshold;

@@ -88,17 +88,11 @@ public class DirectionalDijkstra2D extends Dijkstra2D {
         if (isForward()) {
             // 获取起始点到终止点的名称
             String SEName = startingCoordinateName + " -> " + endPointCoordinateName;
-            if (OperationAlgorithmManager.PrintCalculationComponentLog) {
-                logger.info("Insert " + SEName + " => " + trueDistance);
-            }
             extracted(startingCoordinateName, endPointCoordinateName, trueDistance);
             this.doubleConsanguinityRoute2DHashMap.put(SEName, route);
         } else {
             // 获取起始点到终止点的名称
             String ESName = endPointCoordinateName + " -> " + startingCoordinateName;
-            if (OperationAlgorithmManager.PrintCalculationComponentLog) {
-                logger.info("Insert " + ESName + " => " + trueDistance);
-            }
             extracted(endPointCoordinateName, startingCoordinateName, trueDistance);
             this.doubleConsanguinityRoute2DHashMap.put(ESName, route);
         }

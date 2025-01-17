@@ -7,8 +7,6 @@ import io.github.beardedManZhao.algorithmStar.operands.matrix.ColumnIntegerMatri
 import io.github.beardedManZhao.algorithmStar.operands.table.Cell;
 import io.github.beardedManZhao.algorithmStar.operands.table.DataFrame;
 import io.github.beardedManZhao.algorithmStar.utils.ASIO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import javax.print.*;
@@ -30,7 +28,6 @@ import java.io.OutputStreamWriter;
  */
 public final class PrintServiceOutput implements OutputComponent {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger("PrintServiceOutput");
     private final PrintService printService;
     private final DocFlavor flavor;
     private final PrintRequestAttributeSet printRequestAttributeSet;
@@ -48,10 +45,8 @@ public final class PrintServiceOutput implements OutputComponent {
         String pn = pName.toString();
         for (PrintService service : PrintServiceLookup.lookupPrintServices(this.flavor, this.printRequestAttributeSet)) {
             String name = service.getName();
-            LOGGER.info("find " + name);
             if (pn.equals(name)) {
                 printService = service;
-                LOGGER.info("ok -> " + name);
                 return;
             }
         }
@@ -71,7 +66,6 @@ public final class PrintServiceOutput implements OutputComponent {
      */
     @Override
     public boolean open() {
-        LOGGER.info("open()");
         printJob = printService.createPrintJob();
         return true;
     }
@@ -83,7 +77,6 @@ public final class PrintServiceOutput implements OutputComponent {
      */
     @Override
     public boolean isOpen() {
-        LOGGER.info("isOpen()");
         return printJob != null;
     }
 
@@ -98,7 +91,6 @@ public final class PrintServiceOutput implements OutputComponent {
      */
     @Override
     public void writeByteArray(byte[] data) {
-        LOGGER.info("writeByteArray(byte[] data)");
         Doc doc = new SimpleDoc(data, flavor, hashDocAttributeSet);
         try {
             printJob.print(doc, printRequestAttributeSet);
@@ -114,7 +106,6 @@ public final class PrintServiceOutput implements OutputComponent {
      */
     @Override
     public void writeMat(ColumnIntegerMatrix matrix) {
-        LOGGER.info("writeMat(ColumnIntegerMatrix matrix)");
         throw new OperatorOperationException("暂不支持矩阵数值对象的输出。");
     }
 
@@ -125,7 +116,6 @@ public final class PrintServiceOutput implements OutputComponent {
      */
     @Override
     public void writeMat(ColumnDoubleMatrix matrix) {
-        LOGGER.info("writeMat(ColumnDoubleMatrix matrix)");
         throw new OperatorOperationException("暂不支持矩阵数值对象的输出。");
     }
 
@@ -140,7 +130,6 @@ public final class PrintServiceOutput implements OutputComponent {
      */
     @Override
     public void writeImage(ColorMatrix colorMatrix) {
-        LOGGER.info("writeImage(ColorMatrix colorMatrix)");
         BufferedImage image = new BufferedImage(colorMatrix.getColCount(), colorMatrix.getRowCount(), BufferedImage.TYPE_INT_RGB);
         colorMatrix.drawToImage(image);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -149,12 +138,10 @@ public final class PrintServiceOutput implements OutputComponent {
                 ImageIO.write(image, "JPG", byteArrayOutputStream);
             } else if (DocFlavor.BYTE_ARRAY.PNG.equals(this.flavor)) {
                 ImageIO.write(image, "PNG", byteArrayOutputStream);
-            } else {
-                LOGGER.error("不支持格式[" + this.flavor + "]，目前支持 JPG PNG");
             }
             writeByteArray(byteArrayOutputStream.toByteArray());
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new OperatorOperationException(e);
         } finally {
             ASIO.close(byteArrayOutputStream);
         }
@@ -169,7 +156,6 @@ public final class PrintServiceOutput implements OutputComponent {
      */
     @Override
     public void writeDataFrame(DataFrame dataFrame) {
-        LOGGER.info("writeDataFrame(DataFrame dataFrame)");
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         OutputStreamWriter outputStreamWriter = new OutputStreamWriter(byteArrayOutputStream);
         BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
@@ -200,6 +186,5 @@ public final class PrintServiceOutput implements OutputComponent {
      */
     @Override
     public void close() throws IOException {
-        LOGGER.info("close()");
     }
 }

@@ -3,10 +3,7 @@ package io.github.beardedManZhao.algorithmStar.algorithm;
 import io.github.beardedManZhao.algorithmStar.exception.OperationAlgorithmManagementException;
 import io.github.beardedManZhao.algorithmStar.exception.OperationAlgorithmNotFound;
 import io.github.beardedManZhao.algorithmStar.utils.DependentAlgorithmNameLibrary;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -21,13 +18,16 @@ public final class OperationAlgorithmManager implements OperationAlgorithm {
     /**
      * AS  version
      */
-    public final static float VERSION = 1.43f;
+    public final static float VERSION = 1.44f;
 
     /**
      * 计算组件的日志打印开关，当此处值为false的时候，计算组件中的日志将不会被打印，logger也不会被调用，一般来说，这里为了减少冗余的字符串实例化操作，会设置为false，当需要调试的时候才需要打开此处的数值。
      * <p>
      * The log printing switch of the calculation component. When the value here is false, the log in the calculation component will not be printed and the logger will not be called. Generally speaking, in order to reduce redundant string instantiation operations, the value here will be set to false. You need to turn on the value here only when debugging is required.
+     *
+     * @deprecated 1.44 以及以后的版本中 将不会使用日志功能，此配置将于 1.45 版本中正式移除。
      */
+    @Deprecated
     public static final boolean PrintCalculationComponentLog = false;
     /**
      * 算法对象存档集合，您可以将算法对象存储到该集合中

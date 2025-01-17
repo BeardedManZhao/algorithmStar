@@ -6,8 +6,6 @@ import io.github.beardedManZhao.algorithmStar.operands.matrix.DoubleMatrix;
 import io.github.beardedManZhao.algorithmStar.operands.matrix.IntegerMatrix;
 import io.github.beardedManZhao.algorithmStar.utils.filter.ArrayDoubleFiltering;
 import io.github.beardedManZhao.algorithmStar.utils.filter.ArrayIntegerFiltering;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,11 +20,9 @@ import java.util.List;
  */
 public abstract class SchemeAlgorithm implements OperationAlgorithm {
 
-    protected final Logger logger;
     protected final String AlgorithmName;
 
     protected SchemeAlgorithm(String AlgorithmName) {
-        this.logger = LoggerFactory.getLogger(AlgorithmName);
         this.AlgorithmName = AlgorithmName;
     }
 

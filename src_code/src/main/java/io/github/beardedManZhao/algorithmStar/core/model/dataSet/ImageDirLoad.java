@@ -39,7 +39,6 @@ public class ImageDirLoad implements ASDataSet {
                 for (String s : dirName) {
                     ++xCount;
                     names2.add(name);
-                    Share.LOGGER.info("load image => " + s);
                     integerMatrixSpaces[++index] = IntegerMatrixSpace.parse(absolutePath + '/' + s, w, h);
                 }
                 hashMap.put(name, integerMatrixSpaces);

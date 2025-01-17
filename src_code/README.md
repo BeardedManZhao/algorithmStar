@@ -8,7 +8,7 @@
 
 ### Update log:
 
-* Framework version: 1.42-1.43
+* Framework version: 1.42-1.44
 * Removed the log. Enhance performance!
 
-### Version update date : 2024-12-25
+### Version update date : 2025-01-17

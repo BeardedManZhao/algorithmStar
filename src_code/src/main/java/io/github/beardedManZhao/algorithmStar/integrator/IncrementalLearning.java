@@ -11,8 +11,6 @@ import io.github.beardedManZhao.algorithmStar.operands.vector.DoubleVector;
 import io.github.beardedManZhao.algorithmStar.operands.vector.IntegerVector;
 import io.github.beardedManZhao.algorithmStar.utils.ASClass;
 import io.github.beardedManZhao.algorithmStar.utils.ASMath;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 
@@ -27,7 +25,6 @@ import java.util.HashMap;
  */
 public final class IncrementalLearning implements AlgorithmIntegrator<IncrementalLearning> {
 
-    private final Logger logger;
     private final String IntegratorName;
     private final IncrementalLearningLauncher incrementalLearning;
     private double StartingValue = -10;
@@ -40,8 +37,6 @@ public final class IncrementalLearning implements AlgorithmIntegrator<Incrementa
 
     public IncrementalLearning(String integratorName, IncrementalLearningLauncher incrementalLearningLauncher) {
         IntegratorName = integratorName;
-        logger = LoggerFactory.getLogger(integratorName);
-        logger.info("+======================================= << " + this.IntegratorName + " >> started =============================================+");
         this.incrementalLearning = incrementalLearningLauncher;
     }
 
@@ -57,9 +52,6 @@ public final class IncrementalLearning implements AlgorithmIntegrator<Incrementa
      */
     public IncrementalLearning(String integratorName, String AlgorithmLauncherName) {
         IntegratorName = integratorName;
-        logger = LoggerFactory.getLogger(integratorName);
-        logger.info("+======================================= << " + this.IntegratorName + " >> started =============================================+");
-        logger.info("+--------------------------------------- << Extract the algorithm required by the integrator >> ---------------------------------------+");
         OperationAlgorithm operationAlgorithm = OperationAlgorithmManager.getInstance().get(AlgorithmLauncherName);
         if (operationAlgorithm instanceof IncrementalLearningLauncher) {
             this.incrementalLearning = ASClass.transform(operationAlgorithm);
@@ -172,7 +164,6 @@ public final class IncrementalLearning implements AlgorithmIntegrator<Incrementa
      * The learning process set of return θ is a hash set, in which the key is the real result value, and the value is the model calculation result set of the result value, and the model calculation result is also a hash map set, in which the key It is the θ during calculation, and value is the model result value after calculation. You can use the value and Yn in this data set to compare, and compare the result value that is more similar, then the key of the result value is θ in the model, which can be achieved more precise location.
      */
     public HashMap<Double, HashMap<Double, Double>> BuildingLearningSequences(double[] doubles1, double[] doubles2) {
-        logger.info("+ BuildingLearningSequences················θStartingValue = " + this.StartingValue + "  θTerminationValue = " + this.TerminationValue);
         if (doubles1.length == doubles2.length) {
             int $D = (int) ASMath.absoluteValue(this.StartingValue - this.TerminationValue);
             // 构建一个集合，用于存储每一个结果值的数据学习集合，其中的key是
@@ -203,7 +194,6 @@ public final class IncrementalLearning implements AlgorithmIntegrator<Incrementa
      * The learning process set of return θ is a hash set, in which the key is the real result value, and the value is the model calculation result set of the result value, and the model calculation result is also a hash map set, in which the key It is the θ during calculation, and value is the model result value after calculation. You can use the value and Yn in this data set to compare, and compare the result value that is more similar, then the key of the result value is θ in the model, which can be achieved more precise location.
      */
     public HashMap<Integer, HashMap<Double, Double>> BuildingLearningSequences(int[] doubles1, int[] doubles2) {
-        logger.info("+ BuildingLearningSequences················θStartingValue = " + this.StartingValue + "  θTerminationValue = " + this.TerminationValue);
         if (doubles1.length == doubles2.length) {
             int $D = (int) ASMath.absoluteValue(this.StartingValue - this.TerminationValue);
             // 构建一个集合，用于存储每一个结果值的数据学习集合，其中的key是
@@ -292,7 +282,6 @@ public final class IncrementalLearning implements AlgorithmIntegrator<Incrementa
             // 将当前计算出来的当前参数最佳θ存储到参数集合中
             resValues[now] = res;
             now++;
-            logger.info("+ A value of θ is calculated as: " + res);
         }
         // 返回差距最小的θ数据集的平均数
         return ASMath.avg(resValues);
@@ -329,7 +318,6 @@ public final class IncrementalLearning implements AlgorithmIntegrator<Incrementa
                     res = $;
                 }
             }
-            logger.info("+ A value of θ is calculated as: " + res);
             // 将当前计算出来的当前参数最佳θ存储到参数集合中
             resValues[now] = res;
             now++;
@@ -428,11 +416,8 @@ public final class IncrementalLearning implements AlgorithmIntegrator<Incrementa
                 this.tempRes = -1;
             }
             this.tempRes = run(this.doubleVector1, this.doubleVector2);
-            logger.info("+======================================= << " + this.IntegratorName + " >> stopped =============================================+");
             return true;
         } else {
-            logger.error("您使用的是递增学习集成器的父类方法，在该方法运行之前，您应该调用setDoubleVector 为待计算的向量进行配置");
-            logger.error("+ You are using the superclass method of the incremental learning integrator, before the method runs, you should call setDoubleVector to configure the vector to be computed");
             return false;
         }
     }

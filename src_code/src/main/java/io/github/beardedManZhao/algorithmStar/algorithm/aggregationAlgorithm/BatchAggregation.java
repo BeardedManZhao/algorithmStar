@@ -4,8 +4,6 @@ import io.github.beardedManZhao.algorithmStar.algorithm.OperationAlgorithmManage
 import io.github.beardedManZhao.algorithmStar.exception.OperatorOperationException;
 import io.github.beardedManZhao.algorithmStar.operands.vector.DoubleVector;
 import io.github.beardedManZhao.algorithmStar.operands.vector.IntegerVector;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.CountDownLatch;
 
@@ -27,12 +25,10 @@ public abstract class BatchAggregation implements AggregationAlgorithm {
     protected final static String DOUBLE_VECTOR_FUNCTION_LOG = "run function => double calculation(DoubleVector doubleVector)";
     protected final static String INTS_VECTOR_FUNCTION_LOG = "run function => int[] calculation(boolean Multithreading, IntegerVector... integerVector)";
     protected final static String DOUBLES_VECTOR_FUNCTION_LOG = "run function => double[] calculation(boolean Multithreading, DoubleVector... doubleVector)";
-    protected final Logger logger;
     private final String Name;
 
     protected BatchAggregation(String name) {
         Name = name;
-        logger = LoggerFactory.getLogger(name);
     }
 
     /**
@@ -46,7 +42,6 @@ public abstract class BatchAggregation implements AggregationAlgorithm {
      * @return 向量中所有元素的聚合结果数值
      */
     public int calculation(IntegerVector integerVector) {
-        logger.info(INT_VECTOR_FUNCTION_LOG);
         return calculation(integerVector.toArray());
     }
 
@@ -61,7 +56,6 @@ public abstract class BatchAggregation implements AggregationAlgorithm {
      * @return 向量中所有元素的聚合结果数值
      */
     public double calculation(DoubleVector doubleVector) {
-        logger.info(DOUBLE_VECTOR_FUNCTION_LOG);
         return calculation(doubleVector.toArray());
     }
 
@@ -79,7 +73,6 @@ public abstract class BatchAggregation implements AggregationAlgorithm {
      * @return 向量中所有元素的聚合结果数值
      */
     public int[] calculation(boolean Multithreading, IntegerVector... integerVector) {
-        logger.info(INTS_VECTOR_FUNCTION_LOG);
         final int[] res = new int[integerVector.length];
         if (Multithreading) {
             final CountDownLatch countDownLatch = new CountDownLatch(integerVector.length);
@@ -119,7 +112,6 @@ public abstract class BatchAggregation implements AggregationAlgorithm {
      * @return 向量中所有元素的聚合结果数值
      */
     public double[] calculation(boolean Multithreading, DoubleVector... doubleVector) {
-        logger.info(DOUBLES_VECTOR_FUNCTION_LOG);
         final double[] res = new double[doubleVector.length];
         if (Multithreading) {
             final CountDownLatch countDownLatch = new CountDownLatch(doubleVector.length);
@@ -160,7 +152,6 @@ public abstract class BatchAggregation implements AggregationAlgorithm {
      * The result value of the new array after aggregation of each group of data.
      */
     public double[] calculation(boolean Multithreading, double[]... doubles) {
-        logger.info(DOUBLES_FUNCTION_LOG);
         double[] res = new double[doubles.length];
         if (Multithreading) {
             final CountDownLatch countDownLatch = new CountDownLatch(doubles.length);
@@ -202,7 +193,6 @@ public abstract class BatchAggregation implements AggregationAlgorithm {
      * The result value of the new array after aggregation of each group of data.
      */
     public int[] calculation(boolean Multithreading, int[]... ints) {
-        logger.info(INTS_FUNCTION_LOG);
         int[] res = new int[ints.length];
         if (Multithreading) {
             final CountDownLatch countDownLatch = new CountDownLatch(ints.length);

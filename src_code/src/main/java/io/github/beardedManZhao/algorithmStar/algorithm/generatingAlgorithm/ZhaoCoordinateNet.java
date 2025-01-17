@@ -5,8 +5,6 @@ import io.github.beardedManZhao.algorithmStar.algorithm.OperationAlgorithmManage
 import io.github.beardedManZhao.algorithmStar.exception.TargetNotRealizedException;
 import io.github.beardedManZhao.algorithmStar.operands.route.DoubleConsanguinityRoute;
 import io.github.beardedManZhao.algorithmStar.utils.ASClass;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,17 +21,14 @@ import java.util.List;
  */
 public class ZhaoCoordinateNet implements GeneratingAlgorithm {
 
-    protected final Logger logger;
     protected final String AlgorithmName;
     private final HashMap<String, DoubleConsanguinityRoute> stringDoubleConsanguinityCoordinateHashMap = new HashMap<>();
 
     protected ZhaoCoordinateNet() {
         this.AlgorithmName = "ZhaoCoordinateNet";
-        this.logger = LoggerFactory.getLogger("ZhaoCoordinateNet");
     }
 
     protected ZhaoCoordinateNet(String AlgorithmName) {
-        this.logger = LoggerFactory.getLogger(AlgorithmName);
         this.AlgorithmName = AlgorithmName;
     }
 
@@ -87,33 +82,16 @@ public class ZhaoCoordinateNet implements GeneratingAlgorithm {
         String endPointCoordinateName = doubleConsanguinityRoute.getEndPointCoordinateName();
         // 判断该路线的结束点 是否有和其它点的依赖关系,如果有就在两点血亲坐标之间建立新血亲
         List<DoubleConsanguinityRoute> start = getConsanguinity(doubleConsanguinityRoute);
-        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
-            for (DoubleConsanguinityRoute consanguinityCoordinate : start) {
-                String startingCoordinateName1 = consanguinityCoordinate.getStartingCoordinateName();
-                if (startingCoordinateName1.equals(startingCoordinateName)) {
-                    // 如果是起始点有关联,就生成一个新血亲坐标,旧结束 -> 新结束
-                    String s = consanguinityCoordinate.getEndPointCoordinateName() + " -> " + endPointCoordinateName;
-                    logger.info("Generate Coordinate Path :  " + s);
-                    stringDoubleConsanguinityCoordinateHashMap.put(s, DoubleConsanguinityRoute.parse(s, consanguinityCoordinate.getEndPointCoordinate(), doubleConsanguinityRoute.getEndPointCoordinate()));
-                } else {
-                    // 如果是结束点有关联,就生成一个新血亲坐标,旧起始 -> 新起始
-                    String s = consanguinityCoordinate.getStartingCoordinateName() + " -> " + startingCoordinateName;
-                    logger.info("Generate Coordinate Path :  " + s);
-                    stringDoubleConsanguinityCoordinateHashMap.put(s, DoubleConsanguinityRoute.parse(s, consanguinityCoordinate.getStartingCoordinate(), doubleConsanguinityRoute.getStartingCoordinate()));
-                }
-            }
-        } else {
-            for (DoubleConsanguinityRoute consanguinityCoordinate : start) {
-                String startingCoordinateName1 = consanguinityCoordinate.getStartingCoordinateName();
-                if (startingCoordinateName1.equals(startingCoordinateName)) {
-                    // 如果是起始点有关联,就生成一个新血亲坐标,旧结束 -> 新结束
-                    String s = consanguinityCoordinate.getEndPointCoordinateName() + " -> " + endPointCoordinateName;
-                    stringDoubleConsanguinityCoordinateHashMap.put(s, DoubleConsanguinityRoute.parse(s, consanguinityCoordinate.getEndPointCoordinate(), doubleConsanguinityRoute.getEndPointCoordinate()));
-                } else {
-                    // 如果是结束点有关联,就生成一个新血亲坐标,旧起始 -> 新起始
-                    String s = consanguinityCoordinate.getStartingCoordinateName() + " -> " + startingCoordinateName;
-                    stringDoubleConsanguinityCoordinateHashMap.put(s, DoubleConsanguinityRoute.parse(s, consanguinityCoordinate.getStartingCoordinate(), doubleConsanguinityRoute.getStartingCoordinate()));
-                }
+        for (DoubleConsanguinityRoute consanguinityCoordinate : start) {
+            String startingCoordinateName1 = consanguinityCoordinate.getStartingCoordinateName();
+            if (startingCoordinateName1.equals(startingCoordinateName)) {
+                // 如果是起始点有关联,就生成一个新血亲坐标,旧结束 -> 新结束
+                String s = consanguinityCoordinate.getEndPointCoordinateName() + " -> " + endPointCoordinateName;
+                stringDoubleConsanguinityCoordinateHashMap.put(s, DoubleConsanguinityRoute.parse(s, consanguinityCoordinate.getEndPointCoordinate(), doubleConsanguinityRoute.getEndPointCoordinate()));
+            } else {
+                // 如果是结束点有关联,就生成一个新血亲坐标,旧起始 -> 新起始
+                String s = consanguinityCoordinate.getStartingCoordinateName() + " -> " + startingCoordinateName;
+                stringDoubleConsanguinityCoordinateHashMap.put(s, DoubleConsanguinityRoute.parse(s, consanguinityCoordinate.getStartingCoordinate(), doubleConsanguinityRoute.getStartingCoordinate()));
             }
         }
         stringDoubleConsanguinityCoordinateHashMap.put(startingCoordinateName + " -> " + endPointCoordinateName, doubleConsanguinityRoute);

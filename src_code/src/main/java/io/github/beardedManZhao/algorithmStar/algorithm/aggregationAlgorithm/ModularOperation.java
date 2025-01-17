@@ -60,7 +60,6 @@ public class ModularOperation extends BatchAggregation {
      */
     @Override
     public int calculation(IntegerVector integerVector) {
-        logger.info(INT_VECTOR_FUNCTION_LOG);
         return integerVector.moduleLength();
     }
 
@@ -76,7 +75,6 @@ public class ModularOperation extends BatchAggregation {
      */
     @Override
     public double calculation(DoubleVector doubleVector) {
-        logger.info(DOUBLE_VECTOR_FUNCTION_LOG);
         return doubleVector.moduleLength();
     }
 
@@ -92,7 +90,6 @@ public class ModularOperation extends BatchAggregation {
      */
     @Override
     public double calculation(double... doubles) {
-        logger.info(DOUBLE_FUNCTION_LOG);
         return calculation(DoubleVector.parse(doubles));
     }
 
@@ -108,7 +105,6 @@ public class ModularOperation extends BatchAggregation {
      */
     @Override
     public int calculation(int... ints) {
-        logger.info(INT_FUNCTION_LOG);
         return calculation(IntegerVector.parse(ints));
     }
 }

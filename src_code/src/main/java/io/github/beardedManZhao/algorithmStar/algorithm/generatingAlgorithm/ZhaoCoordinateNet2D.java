@@ -11,8 +11,6 @@ import io.github.beardedManZhao.algorithmStar.operands.coordinateNet.RouteNet;
 import io.github.beardedManZhao.algorithmStar.operands.route.DoubleConsanguinityRoute2D;
 import io.github.beardedManZhao.algorithmStar.operands.route.IntegerConsanguinityRoute2D;
 import io.github.beardedManZhao.algorithmStar.utils.ASClass;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -34,8 +32,6 @@ import java.util.List;
  * It is recommended to use the Integer Consanguinity Route 2 D type, because when generating a connection, the important thing is not the value, but the relationship between the two, so the precision between the two does not need to be too high. In the end, considering the performance, an integer will be used. Carry out data saving!
  */
 public class ZhaoCoordinateNet2D implements GeneratingAlgorithm2D, Route2DDrawingLauncher2 {
-
-    protected final Logger logger;
     protected final String AlgorithmName;
     private final HashMap<String, IntegerConsanguinityRoute2D> stringDoubleConsanguinityCoordinateHashMap = new HashMap<>();
     private final HashMap<String, IntegerConsanguinityRoute2D> GenerateLineRoute2DHashMap = new HashMap<>();
@@ -44,11 +40,9 @@ public class ZhaoCoordinateNet2D implements GeneratingAlgorithm2D, Route2DDrawin
 
     protected ZhaoCoordinateNet2D() {
         this.AlgorithmName = "ZhaoCoordinateNet2D";
-        this.logger = LoggerFactory.getLogger("ZhaoCoordinateNet2D");
     }
 
     protected ZhaoCoordinateNet2D(String AlgorithmName) {
-        this.logger = LoggerFactory.getLogger(AlgorithmName);
         this.AlgorithmName = AlgorithmName;
     }
 
@@ -135,14 +129,8 @@ public class ZhaoCoordinateNet2D implements GeneratingAlgorithm2D, Route2DDrawin
      */
     public void addRouteNet(RouteNet<IntegerCoordinateTwo, IntegerConsanguinityRoute2D> routeNet, boolean isMultithreading) {
         if (isMultithreading) {
-            if (OperationAlgorithmManager.PrintCalculationComponentLog) {
-                logger.info("Multithreading Analyze network....");
-            }
             new Thread(() -> addRouteNet(routeNet), "ZhaoCoordinateNet2D").start();
         } else {
-            if (OperationAlgorithmManager.PrintCalculationComponentLog) {
-                logger.info("Analyzing network using single thread....");
-            }
             addRouteNet(routeNet);
         }
     }
@@ -158,15 +146,8 @@ public class ZhaoCoordinateNet2D implements GeneratingAlgorithm2D, Route2DDrawin
      */
     public void addRouteNet(RouteNet<IntegerCoordinateTwo, IntegerConsanguinityRoute2D> routeNet) {
         HashSet<IntegerConsanguinityRoute2D> netDataSet = routeNet.getNetDataSet();
-        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
-            for (IntegerConsanguinityRoute2D integerConsanguinityRoute2D : netDataSet) {
-                logger.info("Analyze relationships : " + integerConsanguinityRoute2D);
-                addRoute(integerConsanguinityRoute2D);
-            }
-        } else {
-            for (IntegerConsanguinityRoute2D integerConsanguinityRoute2D : netDataSet) {
-                addRoute(integerConsanguinityRoute2D);
-            }
+        for (IntegerConsanguinityRoute2D integerConsanguinityRoute2D : netDataSet) {
+            addRoute(integerConsanguinityRoute2D);
         }
     }
 
@@ -189,19 +170,16 @@ public class ZhaoCoordinateNet2D implements GeneratingAlgorithm2D, Route2DDrawin
             if (startingCoordinateName1.equals(startingCoordinateName)) {
                 // 如果是起始点有关联,就生成一个新血亲坐标,旧结束 -> 新结束
                 String s = consanguinityRoute2D.getEndPointCoordinateName() + " -> " + endPointCoordinateName;
-                logger.info("Generate Coordinate Path :  " + s);
                 IntegerConsanguinityRoute2D parse = IntegerConsanguinityRoute2D.parse(s, consanguinityRoute2D.getEndPointCoordinate(), integerConsanguinityRoute2D.getEndPointCoordinate());
                 GenerateLineRoute2DHashMap.put(s, parse);
             } else {
                 // 如果是结束点有关联,就生成一个新血亲坐标,旧起始 -> 新起始
                 String s = startingCoordinateName1 + " -> " + startingCoordinateName;
-                logger.info("Generate Coordinate Path :  " + s);
                 IntegerConsanguinityRoute2D parse = IntegerConsanguinityRoute2D.parse(s, consanguinityRoute2D.getStartingCoordinate(), integerConsanguinityRoute2D.getStartingCoordinate());
                 GenerateLineRoute2DHashMap.put(s, parse);
             }
         }
         String s = startingCoordinateName + " -> " + endPointCoordinateName;
-        logger.info("Insert a Coordinate Path :  " + s);
         stringDoubleConsanguinityCoordinateHashMap.put(s, integerConsanguinityRoute2D);
     }
 

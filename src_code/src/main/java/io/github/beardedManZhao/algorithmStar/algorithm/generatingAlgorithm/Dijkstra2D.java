@@ -11,8 +11,6 @@ import io.github.beardedManZhao.algorithmStar.operands.route.DoubleConsanguinity
 import io.github.beardedManZhao.algorithmStar.operands.route.IntegerConsanguinityRoute2D;
 import io.github.beardedManZhao.algorithmStar.utils.ASClass;
 import io.github.beardedManZhao.algorithmStar.utils.DependentAlgorithmNameLibrary;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -28,7 +26,6 @@ import java.util.LinkedHashMap;
  */
 public class Dijkstra2D implements GeneratingAlgorithm2D {
 
-    protected final Logger logger;
     protected final String AlgorithmName;
     // 线路记载容器
     protected final HashMap<String, DoubleConsanguinityRoute2D> doubleConsanguinityRoute2DHashMap = new HashMap<>();
@@ -38,11 +35,9 @@ public class Dijkstra2D implements GeneratingAlgorithm2D {
 
     protected Dijkstra2D() {
         this.AlgorithmName = "Dijkstra2D";
-        this.logger = LoggerFactory.getLogger("Dijkstra2D");
     }
 
     protected Dijkstra2D(String AlgorithmName) {
-        this.logger = LoggerFactory.getLogger(AlgorithmName);
         this.AlgorithmName = AlgorithmName;
     }
 
@@ -142,9 +137,6 @@ public class Dijkstra2D implements GeneratingAlgorithm2D {
         String ESName = endPointCoordinateName + " -> " + startingCoordinateName;
         // 计算该线路的始末坐标距离
         double trueDistance = this.distanceAlgorithm.getTrueDistance(route);
-        if (OperationAlgorithmManager.PrintCalculationComponentLog) {
-            logger.info("Insert " + SEName + " AND " + ESName + "=> " + trueDistance);
-        }
         // 第一轮分配起始点的周边
         extracted(startingCoordinateName, endPointCoordinateName, trueDistance);
         // 第二轮分配终止点的周边，因为该起始点属于终止点的周边

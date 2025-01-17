@@ -6,8 +6,6 @@ import io.github.beardedManZhao.algorithmStar.exception.TargetNotRealizedExcepti
 import io.github.beardedManZhao.algorithmStar.integrator.launcher.HashClassificationLauncher;
 import io.github.beardedManZhao.algorithmStar.utils.ASClass;
 import io.github.beardedManZhao.algorithmStar.utils.dataContainer.SetAndValue;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,8 +22,6 @@ import java.util.List;
  *                You need to classify the data type of each element of the data.
  */
 public final class HashClassificationIntegrator<VALUE> implements AlgorithmIntegrator<HashClassificationIntegrator<VALUE>> {
-
-    private final Logger logger;
     private final String IntegratorName;
     private final HashClassificationLauncher<VALUE> hashClassificationLauncher;
 
@@ -37,7 +33,6 @@ public final class HashClassificationIntegrator<VALUE> implements AlgorithmInteg
      */
     public HashClassificationIntegrator(String integratorName, HashClassificationLauncher<VALUE> HashClassificationLauncher) {
         IntegratorName = integratorName;
-        this.logger = LoggerFactory.getLogger(integratorName);
         this.hashClassificationLauncher = HashClassificationLauncher;
     }
 
@@ -53,9 +48,6 @@ public final class HashClassificationIntegrator<VALUE> implements AlgorithmInteg
      */
     public HashClassificationIntegrator(String integratorName, String AlgorithmLauncherName) {
         IntegratorName = integratorName;
-        logger = LoggerFactory.getLogger(integratorName);
-        logger.info("+======================================= << " + this.IntegratorName + " >> started =============================================+");
-        logger.info("+--------------------------------------- << Extract the algorithm required by the integrator >> ---------------------------------------+");
         OperationAlgorithm operationAlgorithm = OperationAlgorithmManager.getInstance().get(AlgorithmLauncherName);
         if (operationAlgorithm instanceof HashClassificationLauncher<?>) {
             this.hashClassificationLauncher = ASClass.transform(operationAlgorithm);
@@ -107,7 +99,6 @@ public final class HashClassificationIntegrator<VALUE> implements AlgorithmInteg
                     // 如果包含，代表当前的数据属于 s 类别 将当前数据增加到该列表的数据集合中
                     if (setAndValue.getStringSet().containsAll(stringHashSetHashMap.get(s))) {
                         VALUE value = setAndValue.getValue();
-                        logger.info("MultiClassification >>> Data [" + value + "] belongs to category = [" + s + "]");
                         if (res.containsKey(s)) {
                             res.get(s).add(value);
                         } else {
@@ -127,7 +118,6 @@ public final class HashClassificationIntegrator<VALUE> implements AlgorithmInteg
                     // 如果包含，代表当前的数据属于 s 类别 将当前数据增加到该列表的数据集合中
                     if (setAndValue.getStringSet().containsAll(stringHashSetHashMap.get(s))) {
                         VALUE value = setAndValue.getValue();
-                        logger.info("Single category >>> Data [" + value + "] belongs to category = [" + s + "]");
                         if (res.containsKey(s)) {
                             res.get(s).add(value);
                         } else {

@@ -4,8 +4,6 @@ import io.github.beardedManZhao.algorithmStar.exception.OperatorOperationExcepti
 import io.github.beardedManZhao.algorithmStar.operands.table.*;
 import io.github.beardedManZhao.algorithmStar.utils.ASIO;
 import io.github.beardedManZhao.algorithmStar.utils.ASStr;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -24,7 +22,6 @@ import java.util.Scanner;
  */
 public final class InputByStream implements InputComponent {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger("InputByStream");
     private final InputStream inputStream;
     private final Scanner scanner;
     private final Charset charSet;
@@ -62,8 +59,6 @@ public final class InputByStream implements InputComponent {
      */
     @Override
     public boolean open() {
-        LOGGER.info("open()");
-        LOGGER.info("The data input stream component is ready!!!!");
         return isOpen();
     }
 
@@ -74,7 +69,6 @@ public final class InputByStream implements InputComponent {
      */
     @Override
     public boolean isOpen() {
-        LOGGER.info("isOpen()");
         return true;
     }
 
@@ -87,7 +81,6 @@ public final class InputByStream implements InputComponent {
      */
     @Override
     public byte[] getByteArray() {
-        LOGGER.info("getByteArray()");
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         try {
             while (scanner.hasNext()) {
@@ -110,7 +103,6 @@ public final class InputByStream implements InputComponent {
      */
     @Override
     public int[][] getInt2Array() {
-        LOGGER.info("getInt2Array()");
         int[][] res = new int[this.rowLength][];
         int index = -1;
         while (++index < this.rowLength) {
@@ -134,7 +126,6 @@ public final class InputByStream implements InputComponent {
      */
     @Override
     public double[][] getDouble2Array() {
-        LOGGER.info("getDouble2Array()");
         double[][] res = new double[this.rowLength][];
         int index = -1;
         while (++index < this.rowLength) {
@@ -160,7 +151,6 @@ public final class InputByStream implements InputComponent {
      */
     @Override
     public DataFrame getDataFrame() {
-        LOGGER.info("getDataFrame()");
         DataFrame select = FDataFrame.select(
                 FieldCell.parse(ASStr.splitByChar(scanner.nextLine(), sep)), pk
         );
@@ -182,7 +172,6 @@ public final class InputByStream implements InputComponent {
      */
     @Override
     public DataFrame getSFDataFrame() {
-        LOGGER.info("getSFDataFrame()");
         DataFrame select = SFDataFrame.select(
                 FieldCell.parse(ASStr.splitByChar(scanner.nextLine(), sep)), pk
         );
@@ -202,7 +191,6 @@ public final class InputByStream implements InputComponent {
      */
     @Override
     public InputStream getInputStream() {
-        LOGGER.info("getInputStream()");
         return inputStream;
     }
 
@@ -215,7 +203,6 @@ public final class InputByStream implements InputComponent {
      */
     @Override
     public BufferedImage getBufferedImage() {
-        LOGGER.info("getBufferedImage()");
         try {
             return ImageIO.read(inputStream);
         } catch (IOException e) {
@@ -236,7 +223,6 @@ public final class InputByStream implements InputComponent {
      */
     @Override
     public void close() {
-        LOGGER.info("close()");
         ASIO.close(this.scanner);
     }
 }
