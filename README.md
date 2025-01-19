@@ -1,5 +1,7 @@
 # ![image](https://user-images.githubusercontent.com/113756063/194830221-abe24fcc-484b-4769-b3b7-ec6d8138f436.png) Algorithm Star-MachineBrain
 
+[<img src="https://api.gitsponsors.com/api/badge/img?id=548640505" height="20">](https://api.gitsponsors.com/api/badge/link?p=OCYwu2OQQZNImJxntwGly0CF0GzQF3UpyC4YoozDq3ezkPKOgDSKcak3kvDVK6wUNLhN2WA583h8y2w8OFE1EP8tqcV68bn2GXfrLoRKKGQCCKuzJSTYUDtGcdcR0EhBOW5u3ilUzq/Bu1SQrkyDSA==)
+
 - 切换到 [中文文档](https://github.com/BeardedManZhao/algorithmStar/blob/main/README-Chinese.md)
 - knowledge base
   <a href="https://github.com/BeardedManZhao/algorithmStar/blob/main/KnowledgeDocument/knowledge%20base.md">
