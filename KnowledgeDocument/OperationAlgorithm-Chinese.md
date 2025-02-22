@@ -67,20 +67,17 @@ public class MAIN1 {
 | io.github.beardedManZhao.algorithmStar.algorithm.differenceAlgorithm.JaccardSimilarityCoefficient | v1.0 | 计算两个数据样本之间的杰卡德相似系数   |
 
 ```java
-import io.github.beardedManZhao.algorithmStar.algorithm.HammingDistance;
-import io.github.beardedManZhao.algorithmStar.operands.coordinate.DoubleCoordinateTwo;
-import io.github.beardedManZhao.algorithmStar.operands.coordinate.IntegerCoordinateTwo;
+import io.github.beardedManZhao.algorithmStar.algorithm.differenceAlgorithm.HammingDistance;
 
-/**
- * 示例代码文件
- */
-public class MAIN1 {
+public class Main3 {
+
     public static void main(String[] args) {
         // 获取汉明算法
-        HammingDistance<IntegerCoordinateTwo, DoubleCoordinateTwo> h = HammingDistance.getInstance("H");
+        HammingDistance h = HammingDistance.getInstance("H");
         // 计算两个字符串之间的差异处总数
-        System.out.println(h.getMinimumNumberOfReplacements("Hello world!", "Hello algorithmStar"));
+        System.out.println(h.getMinimumNumberOfReplacements("Hello world!", "Hello algor!"));
     }
+
 }
 ```
 
